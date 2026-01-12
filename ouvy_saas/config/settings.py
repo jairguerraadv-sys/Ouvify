@@ -115,45 +115,61 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # BANCO DE DADOS
 # =============================================================================
 
-DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
+# Suporte para DATABASE_URL (Railway, Heroku, etc.)
+DATABASE_URL = os.getenv('DATABASE_URL')
 
-if DB_ENGINE == 'postgresql':
-    # Configuração PostgreSQL para produção
+if DATABASE_URL:
+    # Produção: usar DATABASE_URL (Railway, Heroku, etc.)
+    import dj_database_url
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('DB_NAME', 'ouvy_db'),
-            'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'Jagn52476386@'),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '5432'),
-            'CONN_MAX_AGE': 600,  # Conexões persistentes
-            'OPTIONS': {
-                'connect_timeout': 10,
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+        )
+    }
+    print("✅ Banco de dados configurado via DATABASE_URL")
+else:
+    # Desenvolvimento: suportar configuração manual ou SQLite
+    DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
+
+    if DB_ENGINE == 'postgresql':
+        # Configuração PostgreSQL manual para desenvolvimento
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': os.getenv('DB_NAME', 'ouvy_db'),
+                'USER': os.getenv('DB_USER', 'postgres'),
+                'PASSWORD': os.getenv('DB_PASSWORD', ''),
+                'HOST': os.getenv('DB_HOST', 'localhost'),
+                'PORT': os.getenv('DB_PORT', '5432'),
+                'CONN_MAX_AGE': 600,
+                'OPTIONS': {
+                    'connect_timeout': 10,
+                }
             }
         }
-    }
-    
-    # Validação de credenciais em produção
-    if not DEBUG and not os.getenv('DB_PASSWORD'):
-        raise ValueError(
-            "🔴 ERRO DE SEGURANÇA: DB_PASSWORD não configurada em modo de produção!\n"
-            "Configure a variável DB_PASSWORD no arquivo .env"
-        )
-else:
-    # SQLite para desenvolvimento (fallback)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+        
+        # Validação de credenciais em produção
+        if not DEBUG and not os.getenv('DB_PASSWORD'):
+            raise ValueError(
+                "🔴 ERRO: DB_PASSWORD não configurada!\n"
+                "Configure em Railway: DATABASE_URL ou DB_PASSWORD"
+            )
+    else:
+        # SQLite para desenvolvimento (fallback)
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
         }
-    }
-    
-    if not DEBUG:
-        print(
-            "⚠️ AVISO: Usando SQLite em modo de produção. "
-            "Configure DB_ENGINE=postgresql no .env para usar PostgreSQL."
-        )
+        
+        if not DEBUG:
+            print(
+                "⚠️ AVISO: Usando SQLite em modo de produção. "
+                "Configure DATABASE_URL no .env para usar PostgreSQL."
+            )
 
 
 # Password validation
