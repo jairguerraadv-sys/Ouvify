@@ -21,15 +21,23 @@ load_dotenv(BASE_DIR.parent / '.env')
 # CONFIGURAÇÕES DE SEGURANÇA
 # =============================================================================
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv(
-    'SECRET_KEY',
-    # Valor default apenas para desenvolvimento
-    'django-insecure-dev-key-CHANGE-THIS-IN-PRODUCTION-min-50-chars-required'
-)
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+# Em produção, SECRET_KEY é obrigatória; em desenvolvimento usamos uma fallback explícita
+if not SECRET_KEY:
+    if DEBUG:
+        SECRET_KEY = 'o@(xepdag^i8-=a)e*z$ap9$q7%t!+ib02qv=@m*8m*rl^3c&8'
+        print("⚠️  SECRET_KEY ausente; usando fallback de desenvolvimento. Configure SECRET_KEY no .env.")
+    else:
+        raise ValueError(
+            "🔴 ERRO DE SEGURANÇA: SECRET_KEY não configurada em produção!\n"
+            "Defina a variável de ambiente SECRET_KEY com uma chave única.\n"
+            "Gere uma nova: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'"
+        )
 
 # Hosts permitidos
 ALLOWED_HOSTS = os.getenv(
@@ -113,7 +121,7 @@ if DB_ENGINE == 'postgresql':
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('DB_NAME', 'ouvy_db'),
             'USER': os.getenv('DB_USER', 'postgres'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'Jagn52476386@'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
             'CONN_MAX_AGE': 600,  # Conexões persistentes

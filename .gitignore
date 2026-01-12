@@ -73,3 +73,8 @@ node_modules/
 venv/
 .venv/
 db.sqlite3
+node_modules/
+.env
+venv/
+.venv/
+db.sqlite3
