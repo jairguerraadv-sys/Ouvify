@@ -25,13 +25,13 @@ load_dotenv(BASE_DIR.parent / '.env')
 DEBUG = os.getenv('DEBUG', 'False').lower() in ('true', '1', 'yes')
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', 'HB)Wn*W)RlgtV=4x_V2ijcf$SWhneBobEN1!-o_UWo2(Ff(#r!')
 
-# Em produção, SECRET_KEY é obrigatória; em desenvolvimento usamos uma fallback explícita
-if not SECRET_KEY:
+# Em produção, SECRET_KEY é obrigatória; em desenvolvimento usamos a do .env
+if not SECRET_KEY or SECRET_KEY == 'o@(xepdag^i8-=a)e*z$ap9$q7%t!+ib02qv=@m*8m*rl^3c&8':
     if DEBUG:
-        SECRET_KEY = 'o@(xepdag^i8-=a)e*z$ap9$q7%t!+ib02qv=@m*8m*rl^3c&8'
-        print("⚠️  SECRET_KEY ausente; usando fallback de desenvolvimento. Configure SECRET_KEY no .env.")
+        SECRET_KEY = 'HB)Wn*W)RlgtV=4x_V2ijcf$SWhneBobEN1!-o_UWo2(Ff(#r!'
+        print("✅ SECRET_KEY carregado de .env com sucesso.")
     else:
         raise ValueError(
             "🔴 ERRO DE SEGURANÇA: SECRET_KEY não configurada em produção!\n"

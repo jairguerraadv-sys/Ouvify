@@ -13,6 +13,16 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  // TypeScript rules enhancement
+  {
+    rules: {
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/explicit-function-return-types": "warn",
+      "@typescript-eslint/no-unused-vars": "error",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-debugger": "error",
+    },
+  },
 ]);
 
 export default eslintConfig;

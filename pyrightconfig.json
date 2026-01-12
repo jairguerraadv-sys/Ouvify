@@ -9,7 +9,9 @@
   ],
   "pythonVersion": "3.14",
   "pythonPlatform": "Darwin",
-  "typeCheckingMode": "basic",
+  "typeCheckingMode": "standard",
   "reportMissingImports": "warning",
-  "reportMissingTypeStubs": false
+  "reportMissingTypeStubs": false,
+  "reportUnusedImports": "error",
+  "reportUnusedVariables": "error"
 }
