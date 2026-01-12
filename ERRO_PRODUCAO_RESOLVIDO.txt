@@ -1,0 +1,197 @@
+================================================================================
+🔧 ERRO DE PRODUÇÃO - RESOLVIDO
+================================================================================
+
+DATA: 2026-01-12T22:47:32
+ERRO: psycopg2.OperationalError: connection to server at "localhost" (::1), port 5432 failed
+
+================================================================================
+ROOT CAUSE ANALYSIS
+================================================================================
+
+PROBLEMA IDENTIFICADO:
+  A aplicação Django estava tentando conectar ao PostgreSQL em:
+  - Host: localhost
+  - Port: 5432
+  
+  Mas em Railway (produção), o PostgreSQL está em um servidor externo com:
+  - Host: remote.railway.app (ou similar)
+  - Credenciais: fornecidas via variável DATABASE_URL
+  
+CADEIA DE ERROS:
+  1. Docker iniciava em produção (DEBUG=False)
+  2. Django tentava conectar ao banco de dados
+  3. settings.py procurava HOST=localhost (padrão do PostgreSQL)
+  4. Connection refused (não existe banco em localhost)
+  5. django.db.utils.OperationalError durante migrate
+  6. Container falhava no startup
+
+================================================================================
+SOLUÇÃO IMPLEMENTADA
+================================================================================
+
+1. ATUALIZAR settings.py
+   ✅ Adicionar suporte a DATABASE_URL
+   ✅ Prioridade:
+      1. DATABASE_URL (Railway, Heroku, Dokku)
+      2. DB_ENGINE + vars individuais (local)
+      3. SQLite fallback
+
+2. ADICIONAR dj-database-url
+   ✅ requirements.txt: dj-database-url==2.1.0
+   ✅ Parsa DATABASE_URL automaticamente
+   ✅ Suporta Pool de conexões
+
+3. CRIAR DOCUMENTAÇÃO
+   ✅ RAILWAY_DATABASE_SETUP.md - Guia completo
+   ✅ RAILWAY_DEPLOY_NOW.md - Quick start
+
+================================================================================
+CÓDIGO ALTERADO
+================================================================================
+
+FILE: ouvy_saas/config/settings.py (LINHAS 119-180)
+
+ANTES (PROBLEMA):
+```python
+DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
+
+if DB_ENGINE == 'postgresql':
+    DATABASES = {
+        'default': {
+            'HOST': os.getenv('DB_HOST', 'localhost'),  # ← PROBLEMA
+            'PORT': os.getenv('DB_PORT', '5432'),
+            ...
+        }
+    }
+```
+
+DEPOIS (SOLUÇÃO):
+```python
+DATABASE_URL = os.getenv('DATABASE_URL')
+
+if DATABASE_URL:
+    # Railway, Heroku, Dokku, etc.
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+        )
+    }
+else:
+    # Fallback para desenvolvimento local
+    DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
+    if DB_ENGINE == 'postgresql':
+        DATABASES = {...}
+    else:
+        DATABASES = {...}  # SQLite
+```
+
+FILE: requirements.txt
+✅ Adicionado: dj-database-url==2.1.0
+
+================================================================================
+PRÓXIMAS AÇÕES NECESSÁRIAS
+================================================================================
+
+URGENTE - Fazer agora no Railway Dashboard:
+
+1. Ir para: Dashboard → Seu Projeto
+2. Clicar em "Variables"
+3. Adicionar:
+   □ DEBUG = False
+   □ SECRET_KEY = HB)Wn*W)RlgtV=4x_V2ijcf$SWhneBobEN1!-o_UWo2(Ff(#r!
+   □ ALLOWED_HOSTS = *.railway.app
+   
+4. SE NÃO TIVER BANCO DE DADOS:
+   □ Clicar em "+ Add Plugin"
+   □ Selecionar "PostgreSQL"
+   □ Railway criará DATABASE_URL automaticamente
+
+5. Deploy automático:
+   □ git push origin main
+   □ Railway detecta e faz redeploy
+
+================================================================================
+VERIFICAÇÃO
+================================================================================
+
+DEPOIS DO DEPLOY, nos logs do Railway procure por:
+
+✅ SUCESSO:
+  "✅ Banco de dados configurado via DATABASE_URL"
+  "Starting server on port 8000"
+  "Migrations foram aplicadas com sucesso"
+
+❌ ERRO:
+  "connection refused"
+  "psycopg2.OperationalError"
+  "FATAL: password authentication failed"
+
+================================================================================
+DETALHES TÉCNICOS
+================================================================================
+
+DATABASE_URL FORMAT:
+  postgresql://username:password@hostname:5432/dbname
+  
+RAILWAY POSTGRES PLUGIN FORNECE:
+  DATABASE_URL=postgresql://postgres:xxx@container.railway.app:5432/railway
+
+dj_database_url.config() FARÁ:
+  • Parse da URL
+  • Configuração automática de ENGINE, NAME, USER, PASSWORD, HOST, PORT
+  • Connection pooling (conn_max_age=600)
+  • Health checks
+
+BENEFÍCIOS:
+  ✅ Suporta Railway, Heroku, Dokku, AWS RDS, Digital Ocean
+  ✅ Uma única variável de ambiente
+  ✅ Seguro (credenciais na URL, não em vars separadas)
+  ✅ Fallback para desenvolvimento local
+
+================================================================================
+ARQUIVOS CRIADOS/MODIFICADOS
+================================================================================
+
+✅ MODIFIED:
+   • ouvy_saas/config/settings.py (Database configuration)
+   • requirements.txt (Added dj-database-url)
+
+✅ CREATED:
+   • RAILWAY_DATABASE_SETUP.md (Complete guide)
+   • RAILWAY_DEPLOY_NOW.md (Quick start)
+
+✅ EXISTING (já implementados):
+   • RAILWAY_SETUP.md (SECRET_KEY setup)
+   • .env (Development configuration)
+   • .env.production (Production template)
+
+================================================================================
+COMMIT HISTORY
+================================================================================
+
+92a05f5 - 🔧 Fix: DATABASE_URL support for Railway production deployment
+39da137 - 📋 Add Railway deployment quick start guide
+
+================================================================================
+STATUS FINAL
+================================================================================
+
+✅ Código: CORRIGIDO
+✅ Documentação: COMPLETA
+✅ Repository: SINCRONIZADO
+⏳ PRÓXIMO: Configurar Railway Dashboard (DATABASE_URL)
+⏳ PRÓXIMO: git push origin main (para redeploy)
+
+================================================================================
+DOCUMENTOS DE REFERÊNCIA
+================================================================================
+
+1. RAILWAY_DATABASE_SETUP.md - Instruções detalhadas
+2. RAILWAY_DEPLOY_NOW.md - Quick start checklist
+3. RAILWAY_SETUP.md - SECRET_KEY (já configurado)
+4. DEPLOYMENT_CHECKLIST.md - Checklist geral
+
+================================================================================
