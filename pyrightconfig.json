@@ -1,0 +1,15 @@
+{
+  "include": [
+    "ouvy_saas",
+    "test_*.py"
+  ],
+  "extraPaths": [
+    "ouvy_saas",
+    "ouvy_saas/apps"
+  ],
+  "pythonVersion": "3.14",
+  "pythonPlatform": "Darwin",
+  "typeCheckingMode": "basic",
+  "reportMissingImports": "warning",
+  "reportMissingTypeStubs": false
+}
