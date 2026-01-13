@@ -8,27 +8,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 🎨 Paleta de cores profissional e elegante - Ouvy
-        // Cyan vibrante (ícone/acento principal)
+        // 🎨 Paleta Ouvy - Baseada na Logo
+        // Ciano/Turquesa (Ondas da Logo) - Cor Principal
         primary: {
-          50: "#F0FDFB",
-          100: "#CCFBF1",
-          light: "#00E5FF",
-          DEFAULT: "#00BCD4",
-          dark: "#0097A7",
-          950: "#042F31",
+          50: "#ECFEFF",
+          100: "#CFFAFE",
+          200: "#A5F3FC",
+          300: "#67E8F9",
+          400: "#22D3EE",
+          500: "#06B6D4", // Cor exata da logo
+          600: "#0891B2",
+          700: "#0E7490",
+          800: "#155E75",
+          900: "#164E63",
+          950: "#083344",
         },
-        // Azul marinho profundo (base/textos)
+        // Azul Escuro/Marinho (Texto da Logo) - Cor Secundária
         secondary: {
-          light: "#1A3A52",
-          DEFAULT: "#0A1E3B",
-          dark: "#051121",
-        },
-        // Neutros elegantes
-        neutral: {
           50: "#F8FAFC",
           100: "#F1F5F9",
-          150: "#EFEFEF",
           200: "#E2E8F0",
           300: "#CBD5E1",
           400: "#94A3B8",
@@ -36,27 +34,44 @@ const config: Config = {
           600: "#475569",
           700: "#334155",
           800: "#1E293B",
-          900: "#0F172A",
+          900: "#0F172A", // Cor exata do texto da logo
+          950: "#020617",
         },
-        // Accent: Variações para gradientes
+        // Neutros elegantes
+        neutral: {
+          50: "#FAFAFA",
+          100: "#F5F5F5",
+          200: "#E5E5E5",
+          300: "#D4D4D4",
+          400: "#A3A3A3",
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#171717",
+          950: "#0A0A0A",
+        },
+        // Accent: Tom mais claro do ciano para destaques
         accent: {
-          light: "#00D4FF",
-          DEFAULT: "#00D4FF",
-          bright: "#00F5FF",
+          light: "#22D3EE",
+          DEFAULT: "#06B6D4",
+          dark: "#0891B2",
         },
         // Backgrounds
         background: {
           DEFAULT: "#FFFFFF",
           secondary: "#F8FAFC",
           tertiary: "#F1F5F9",
+          dark: "#0F172A",
         },
         // Textos
         text: {
-          primary: "#0A1E3B",
+          primary: "#0F172A",
           secondary: "#475569",
           tertiary: "#64748B",
+          inverse: "#FFFFFF",
         },
-        // Estados semânticos com variações
+        // Estados semânticos
         success: {
           light: "#D1FAE5",
           DEFAULT: "#10B981",

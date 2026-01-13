@@ -282,22 +282,25 @@ export default function CadastroPage() {
 
   if (success) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-cyan-50 flex items-center justify-center p-4">
-        <Card variant="elevated" className="w-full max-w-md text-center">
+      <main className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-wave-pulse" />
+        <Card variant="elevated" className="w-full max-w-md text-center relative z-10 animate-scale-in shadow-elegant">
           <CardHeader>
-            <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-12 h-12 text-success" />
+            <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
+              <CheckCircle className="w-12 h-12 text-white" />
             </div>
-            <h2 className="text-3xl font-bold text-secondary mb-2">Conta Criada!</h2>
-            <p className="text-neutral-600">
-              Bem-vindo ao Ouvy, {formData.nome.split(' ')[0]}!
+            <h2 className="text-3xl font-bold text-secondary-900 mb-2">
+              Conta Criada!
+            </h2>
+            <p className="text-secondary-600">
+              Bem-vindo ao <span className="text-gradient-primary font-semibold">Ouvy</span>, {formData.nome.split(' ')[0]}!
             </p>
           </CardHeader>
           <div className="p-6">
-            <p className="text-neutral-600 mb-6">
+            <p className="text-secondary-600 mb-6">
               Você será redirecionado para seu dashboard em segundos...
             </p>
-            <div className="w-8 h-8 border-4 border-cyan-100 border-t-primary rounded-full animate-spin mx-auto"></div>
+            <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin mx-auto"></div>
           </div>
         </Card>
       </main>
@@ -305,30 +308,34 @@ export default function CadastroPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-cyan-50 pt-12 pb-12 px-4">
-      <div className="max-w-md mx-auto">
+    <main className="min-h-screen bg-gradient-mesh pt-12 pb-12 px-4">
+      {/* Elementos decorativos */}
+      <div className="absolute top-40 right-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-40 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      
+      <div className="max-w-md mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-10">
-          <Link href="/" className="inline-block mb-6 hover:opacity-80 transition">
-            <Logo variant="full" />
+        <div className="text-center mb-10 animate-fade-in">
+          <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
+            <Logo variant="full" size="lg" colorScheme="default" />
           </Link>
-          <h1 className="text-4xl font-bold text-secondary mt-6 mb-2">
+          <h1 className="text-4xl font-bold text-secondary-900 mt-6 mb-2">
             Criar Conta
           </h1>
-          <p className="text-neutral-600">
-            Comece seu canal de ética agora
+          <p className="text-secondary-600">
+            Comece seu <span className="text-gradient-primary font-semibold">canal de ética</span> agora
           </p>
         </div>
 
         {/* Form */}
-        <Card variant="elevated">
-          <form onSubmit={handleSubmit} className="p-8 space-y-4">
+        <Card variant="elevated" className="shadow-elegant animate-slide-up">
+          <form onSubmit={handleSubmit} className="p-8 space-y-5">
             {/* Erro geral */}
             {errors.submit && (
-              <div className="bg-error/10 border border-error text-error rounded-lg p-4 flex gap-3">
+              <div className="bg-error/10 border border-error/30 text-error rounded-lg p-4 flex gap-3 animate-slide-down">
                 <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <div>
-                  <p className="font-medium">Erro ao criar conta</p>
+                  <p className="font-semibold">Erro ao criar conta</p>
                   <p className="text-sm mt-1">
                     {typeof errors.submit === 'string' ? errors.submit : errors.submit[0]}
                   </p>
@@ -337,8 +344,8 @@ export default function CadastroPage() {
             )}
 
             {/* Nome Completo */}
-            <div>
-              <label className="block text-sm font-semibold text-secondary mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-secondary-900">
                 Nome Completo
               </label>
               <input
@@ -347,22 +354,23 @@ export default function CadastroPage() {
                 value={formData.nome}
                 onChange={handleChange}
                 placeholder="João Silva Santos"
-                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.nome
                     ? 'border-error bg-error/5'
-                    : 'border-neutral-200'
+                    : 'border-secondary-200 hover:border-secondary-300'
                 }`}
               />
               {errors.nome && (
-                <p className="text-error text-sm mt-1">
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
                   {typeof errors.nome === 'string' ? errors.nome : errors.nome[0]}
                 </p>
               )}
             </div>
 
             {/* Email */}
-            <div>
-              <label className="block text-sm font-semibold text-secondary mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-secondary-900">
                 Email Corporativo
               </label>
               <input
@@ -371,22 +379,23 @@ export default function CadastroPage() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="seu@empresa.com"
-                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.email
                     ? 'border-error bg-error/5'
-                    : 'border-neutral-200'
+                    : 'border-secondary-200 hover:border-secondary-300'
                 }`}
               />
               {errors.email && (
-                <p className="text-error text-sm mt-1">
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
                   {typeof errors.email === 'string' ? errors.email : errors.email[0]}
                 </p>
               )}
             </div>
 
             {/* Senha */}
-            <div>
-              <label className="block text-sm font-semibold text-secondary mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-secondary-900">
                 Senha
               </label>
               <input
@@ -394,33 +403,34 @@ export default function CadastroPage() {
                 name="senha"
                 value={formData.senha}
                 onChange={handleChange}
-                placeholder="Mín. 8 caracteres"
-                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                placeholder="Mínimo 8 caracteres"
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.senha
                     ? 'border-error bg-error/5'
-                    : 'border-neutral-200'
+                    : 'border-secondary-200 hover:border-secondary-300'
                 }`}
               />
               {errors.senha && (
-                <p className="text-error text-sm mt-1">
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
                   {typeof errors.senha === 'string' ? errors.senha : errors.senha[0]}
                 </p>
               )}
             </div>
 
             {/* Divider */}
-            <div className="relative py-2">
+            <div className="relative py-3">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-neutral-200"></div>
+                <div className="w-full border-t border-secondary-200"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-neutral-600 font-medium">Dados da Empresa</span>
+                <span className="px-4 bg-white text-secondary-600 font-semibold">Dados da Empresa</span>
               </div>
             </div>
 
             {/* Nome da Empresa */}
-            <div>
-              <label className="block text-sm font-semibold text-secondary mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-secondary-900">
                 Nome da Empresa
               </label>
               <input
@@ -429,69 +439,71 @@ export default function CadastroPage() {
                 value={formData.nome_empresa}
                 onChange={handleChange}
                 placeholder="Minha Empresa LTDA"
-                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
                   errors.nome_empresa
                     ? 'border-error bg-error/5'
-                    : 'border-neutral-200'
+                    : 'border-secondary-200 hover:border-secondary-300'
                 }`}
               />
               {errors.nome_empresa && (
-                <p className="text-error text-sm mt-1">
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
                   {typeof errors.nome_empresa === 'string' ? errors.nome_empresa : errors.nome_empresa[0]}
                 </p>
               )}
             </div>
 
             {/* Subdomínio */}
-            <div>
-              <label className="block text-sm font-semibold text-secondary mb-2">
+            <div className="space-y-2">
+              <label className="block text-sm font-semibold text-secondary-900">
                 Seu Subdomínio
               </label>
-              <div className="flex items-center">
+              <div className="flex items-center rounded-lg overflow-hidden border border-secondary-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all duration-200">
                 <input
                   type="text"
                   name="subdominio_desejado"
                   value={formData.subdominio_desejado}
                   onChange={handleChange}
                   placeholder="minhaempresa"
-                  className={`flex-1 px-4 py-2.5 rounded-l-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  className={`flex-1 px-4 py-3 border-0 focus:ring-0 ${
                     errors.subdominio_desejado
-                      ? 'border-error bg-error/5'
-                      : 'border-neutral-200'
+                      ? 'bg-error/5'
+                      : 'bg-transparent'
                   }`}
                 />
-                <div className="bg-neutral-100 px-3 py-2.5 rounded-r-lg border border-l-0 border-neutral-200 text-neutral-600 text-sm font-medium">
+                <div className="bg-gradient-primary-soft px-4 py-3 text-primary-700 text-sm font-semibold">
                   .ouvy.com
                 </div>
               </div>
               <div className="mt-2 flex items-center justify-between">
                 {subdominioStatus === 'checking' && (
-                  <span className="text-sm text-neutral-500 flex items-center gap-2">
+                  <span className="text-sm text-secondary-500 flex items-center gap-2 font-medium">
                     <Loader className="w-4 h-4 animate-spin" />
                     Verificando...
                   </span>
                 )}
                 {subdominioStatus === 'available' && (
-                  <span className="text-sm text-success flex items-center gap-2">
+                  <span className="text-sm text-success flex items-center gap-2 font-semibold">
                     <CheckCircle className="w-4 h-4" />
                     Disponível!
                   </span>
                 )}
                 {subdominioStatus === 'taken' && (
-                  <span className="text-sm text-error flex items-center gap-2">
+                  <span className="text-sm text-error flex items-center gap-2 font-semibold">
                     <XCircle className="w-4 h-4" />
                     Já está em uso
                   </span>
                 )}
                 {subdominioStatus === 'invalid' && (
-                  <span className="text-sm text-warning flex items-center gap-2">
+                  <span className="text-sm text-warning flex items-center gap-2 font-semibold">
                     <AlertCircle className="w-4 h-4" />
                     Mínimo 3 caracteres válidos
                   </span>
                 )}
               </div>
               {errors.subdominio_desejado && (
-                <p className="text-error text-sm mt-1">
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
                   {typeof errors.subdominio_desejado === 'string' ? errors.subdominio_desejado : errors.subdominio_desejado[0]}
                 </p>
               )}
@@ -502,16 +514,17 @@ export default function CadastroPage() {
               type="submit" 
               variant="default"
               size="lg"
-              className="w-full" 
+              className="w-full shadow-elegant group" 
               isLoading={loading}
             >
               {loading ? "Criando conta..." : "Criar Conta Grátis"}
+              {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
             </Button>
 
             {/* Login Link */}
-            <p className="text-center text-neutral-600 text-sm">
+            <p className="text-center text-secondary-600 text-sm">
               Já tem conta?{' '}
-              <Link href="/login" className="text-primary font-semibold hover:text-primary/80 transition">
+              <Link href="/login" className="text-primary-500 font-semibold hover:text-primary-600 transition-colors">
                 Entre aqui
               </Link>
             </p>
@@ -519,19 +532,25 @@ export default function CadastroPage() {
         </Card>
 
         {/* Benefícios */}
-        <div className="mt-10 space-y-3">
-          <p className="text-sm text-neutral-600 font-medium mb-4">Incluso no plano:</p>
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-            <span className="text-sm text-neutral-700">30 dias de teste grátis - sem cartão de crédito</span>
+        <div className="mt-10 space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <p className="text-sm text-secondary-700 font-semibold mb-4">✨ Incluso no plano:</p>
+          <div className="flex items-center gap-3 group">
+            <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CheckCircle className="w-4 h-4 text-success" />
+            </div>
+            <span className="text-sm text-secondary-700 font-medium">30 dias de teste grátis - sem cartão de crédito</span>
           </div>
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-            <span className="text-sm text-neutral-700">Suporte por email 24/7</span>
+          <div className="flex items-center gap-3 group">
+            <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CheckCircle className="w-4 h-4 text-success" />
+            </div>
+            <span className="text-sm text-secondary-700 font-medium">Suporte por email 24/7</span>
           </div>
-          <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
-            <span className="text-sm text-neutral-700">Personalizável com sua logo e cores</span>
+          <div className="flex items-center gap-3 group">
+            <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+              <CheckCircle className="w-4 h-4 text-success" />
+            </div>
+            <span className="text-sm text-secondary-700 font-medium">Personalizável com sua logo e cores</span>
           </div>
         </div>
       </div>
