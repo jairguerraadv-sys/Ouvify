@@ -29,7 +29,7 @@ export function NavBar({
   return (
     <nav
       className={cn(
-        'w-full bg-white border-b border-neutral-200',
+        'w-full bg-background border-b border-neutral-200', // Fundo branco limpo
         sticky && 'sticky top-0 z-50',
         'shadow-sm',
         className
@@ -50,8 +50,8 @@ export function NavBar({
                   className={cn(
                     'text-sm font-medium transition-colors py-2 px-1',
                     link.active
-                      ? 'text-primary border-b-2 border-primary'
-                      : 'text-neutral-700 hover:text-secondary'
+                      ? 'text-primary border-b-2 border-primary' // Ciano ativo
+                      : 'text-secondary hover:text-primary' // Azul marinho -> ciano no hover
                   )}
                 >
                   {link.label}
@@ -84,8 +84,8 @@ export function NavBar({
                 className={cn(
                   'block px-4 py-2 text-sm font-medium rounded-md transition-colors',
                   link.active
-                    ? 'bg-primary text-white'
-                    : 'text-neutral-700 hover:bg-neutral-100'
+                    ? 'bg-primary text-white' // Fundo ciano ativo
+                    : 'text-secondary hover:bg-neutral-100' // Azul marinho com hover sutil
                 )}
               >
                 {link.label}

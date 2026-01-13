@@ -31,15 +31,28 @@ const config: Config = {
           700: "#334155",   // Cinza escuro
           900: "#0F172A",   // Cinza muito escuro
         },
-        // Auxiliares
+        // Accent: Variação do ciano para destaques
+        accent: {
+          DEFAULT: "#00D4FF", // Ciano mais brilhante para gradientes/hovers
+        },
+        // Backgrounds limpos
+        background: {
+          DEFAULT: "#FFFFFF", // Branco limpo
+          secondary: "#F8FAFC", // Cinza muito claro para seções secundárias
+        },
+        // Textos com alto contraste
+        text: {
+          primary: "#0A1E3B", // Azul marinho para títulos (igual secondary)
+          secondary: "#475569", // Cinza neutro para parágrafos
+        },
+        // Estados semânticos
         success: "#10B981",
         warning: "#F59E0B",
         error: "#EF4444",
         info: "#3B82F6",
       },
       fontFamily: {
-        sans: ["var(--font-inter, 'Inter')", "sans-serif"],
-        display: ["var(--font-display, 'Inter')", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"], // Tipografia moderna Inter para combinar com a logo
       },
       typography: {
         DEFAULT: {
