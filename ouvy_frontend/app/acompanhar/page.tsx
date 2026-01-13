@@ -153,9 +153,9 @@ export default function AcompanharPage() {
       'pendente': 'bg-yellow-100 text-yellow-800 border-yellow-300',
       'em_analise': 'bg-primary/10 text-primary border-primary/30',
       'resolvido': 'bg-green-100 text-green-800 border-green-300',
-      'fechado': 'bg-gray-100 text-gray-800 border-gray-300'
+      'fechado': 'bg-neutral-100 text-secondary border-neutral-300'
     };
-    return cores[status] || 'bg-gray-100 text-gray-800 border-gray-300';
+    return cores[status] || 'bg-neutral-100 text-secondary border-neutral-300';
   };
 
   const getStatusIcon = (status: string) => {
@@ -169,14 +169,14 @@ export default function AcompanharPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4">
+    <main className="min-h-screen bg-gradient-to-br from-background-secondary to-background py-12 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          <h1 className="text-4xl font-bold text-secondary mb-2">
             🔍 Acompanhar Feedback
           </h1>
-          <p className="text-gray-600">
+          <p className="text-text-secondary">
             Digite o código do protocolo para consultar o status
           </p>
         </div>
@@ -187,7 +187,7 @@ export default function AcompanharPage() {
             <div>
               <label 
                 htmlFor="protocolo" 
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium text-secondary mb-2"
               >
                 Código do Protocolo
               </label>
@@ -197,10 +197,10 @@ export default function AcompanharPage() {
                 value={protocolo}
                 onChange={(e) => setProtocolo(e.target.value)}
                 placeholder="Ex: OUVY-A3B9-K7M2"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800 text-lg font-mono uppercase"
+                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary text-lg font-mono uppercase"
                 maxLength={17}
               />
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-text-secondary">
                 O código foi enviado para você após o registro do feedback
               </p>
             </div>
@@ -256,26 +256,26 @@ export default function AcompanharPage() {
             <div className="p-6 space-y-6">
               {/* Informações Básicas */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-3">
+                <h3 className="text-lg font-semibold text-secondary mb-3">
                   Informações do Feedback
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-start">
-                    <span className="text-gray-500 font-medium w-24 flex-shrink-0">Tipo:</span>
-                    <span className="text-gray-800">{feedback.tipo_display}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Tipo:</span>
+                    <span className="text-secondary">{feedback.tipo_display}</span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-gray-500 font-medium w-24 flex-shrink-0">Título:</span>
-                    <span className="text-gray-800 font-semibold">{feedback.titulo}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Título:</span>
+                    <span className="text-secondary font-semibold">{feedback.titulo}</span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-gray-500 font-medium w-24 flex-shrink-0">Enviado em:</span>
-                    <span className="text-gray-800">{formatarData(feedback.data_criacao)}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Enviado em:</span>
+                    <span className="text-secondary">{formatarData(feedback.data_criacao)}</span>
                   </div>
                   {feedback.data_atualizacao !== feedback.data_criacao && (
                     <div className="flex items-start">
-                      <span className="text-gray-500 font-medium w-24 flex-shrink-0">Atualizado em:</span>
-                      <span className="text-gray-800">{formatarData(feedback.data_atualizacao)}</span>
+                      <span className="text-text-secondary font-medium w-24 flex-shrink-0">Atualizado em:</span>
+                      <span className="text-secondary">{formatarData(feedback.data_atualizacao)}</span>
                     </div>
                   )}
                 </div>
@@ -283,12 +283,12 @@ export default function AcompanharPage() {
 
               {/* Timeline de Status */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                <h3 className="text-lg font-semibold text-secondary mb-4">
                   Timeline
                 </h3>
                 <div className="relative pl-8 space-y-6">
                   {/* Linha vertical */}
-                  <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-gray-200"></div>
+                  <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-neutral-200"></div>
 
                   {/* Evento: Criado */}
                   <div className="relative">

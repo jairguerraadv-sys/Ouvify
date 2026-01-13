@@ -102,13 +102,13 @@ export default function Home() {
           <form onSubmit={handleSubmit} className="p-8 space-y-6">
             {/* Tipo de Feedback */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Tipo de Manifestação
               </label>
               <select
                 value={formData.tipo}
                 onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800"
+                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
                 required
               >
                 <option value="denuncia">🚨 Denúncia</option>
@@ -128,7 +128,7 @@ export default function Home() {
                 value={formData.titulo}
                 onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
                 placeholder="Resuma sua manifestação em poucas palavras"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800"
+                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
                 required
                 maxLength={200}
               />
@@ -136,7 +136,7 @@ export default function Home() {
 
             {/* Descrição */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-secondary mb-2">
                 Descrição
               </label>
               <textarea
@@ -144,7 +144,7 @@ export default function Home() {
                 onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
                 placeholder="Descreva sua manifestação com detalhes..."
                 rows={5}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800 resize-none"
+                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary resize-none"
                 required
               />
             </div>
@@ -156,11 +156,11 @@ export default function Home() {
                 id="anonimo"
                 checked={formData.anonimo}
                 onChange={(e) => setFormData({ ...formData, anonimo: e.target.checked })}
-                className="mt-1 h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded"
+                className="mt-1 h-4 w-4 text-primary focus:ring-primary border-neutral-300 rounded"
               />
-              <label htmlFor="anonimo" className="ml-3 text-sm text-gray-700">
+              <label htmlFor="anonimo" className="ml-3 text-sm text-secondary">
                 <span className="font-medium">Enviar anonimamente</span>
-                <p className="text-gray-500 mt-1">
+                <p className="text-text-secondary mt-1">
                   Sua identidade será protegida. Não será possível responder diretamente.
                 </p>
               </label>
@@ -169,7 +169,7 @@ export default function Home() {
             {/* Email (se não for anônimo) */}
             {!formData.anonimo && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-secondary mb-2">
                   E-mail para Contato
                 </label>
                 <input
@@ -177,10 +177,10 @@ export default function Home() {
                   value={formData.email_contato}
                   onChange={(e) => setFormData({ ...formData, email_contato: e.target.value })}
                   placeholder="seu@email.com"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800"
+                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
                   required={!formData.anonimo}
                 />
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-text-secondary">
                   Usaremos apenas para enviar atualizações sobre sua manifestação
                 </p>
               </div>
@@ -216,8 +216,8 @@ export default function Home() {
             </button>
 
             {/* Link para Acompanhar */}
-            <div className="text-center pt-4 border-t border-gray-200">
-              <p className="text-sm text-gray-600 mb-2">
+            <div className="text-center pt-4 border-t border-neutral-200">
+              <p className="text-sm text-text-secondary mb-2">
                 Já enviou uma manifestação?
               </p>
               <a 
@@ -230,11 +230,11 @@ export default function Home() {
           </form>
 
           {/* Footer */}
-          <div className="bg-gray-50 px-8 py-4 text-center border-t border-gray-200">
-            <p className="text-xs text-gray-500">
+          <div className="bg-background-secondary px-8 py-4 text-center border-t border-neutral-200">
+            <p className="text-xs text-text-secondary">
               🔒 Suas informações são tratadas com total confidencialidade
             </p>
-            <p className="text-xs text-gray-400 mt-1">
+            <p className="text-xs text-neutral-500 mt-1">
               Powered by Ouvy SaaS
             </p>
           </div>

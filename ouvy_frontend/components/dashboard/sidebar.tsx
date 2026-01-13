@@ -67,7 +67,7 @@ export function Sidebar({ user }: SidebarProps) {
           variant="ghost"
           size="icon"
           onClick={() => setOpen(!open)}
-          className="text-slate-600"
+          className="text-text-secondary"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </Button>
@@ -110,7 +110,7 @@ export function Sidebar({ user }: SidebarProps) {
                 className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
                   active
                     ? 'bg-primary/10 text-primary'
-                    : 'text-slate-600 hover:bg-slate-100'
+                    : 'text-text-secondary hover:bg-neutral-100'
                 }`}
               >
                 <Icon className="h-5 w-5" />
@@ -131,10 +131,10 @@ export function Sidebar({ user }: SidebarProps) {
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 truncate">
+                <p className="text-sm font-medium text-secondary truncate">
                   {user.name}
                 </p>
-                <p className="text-xs text-slate-600 truncate">
+                <p className="text-xs text-text-secondary truncate">
                   {user.email}
                 </p>
               </div>
@@ -142,7 +142,7 @@ export function Sidebar({ user }: SidebarProps) {
           )}
           <Button
             variant="outline"
-            className="w-full justify-start text-slate-600 hover:text-slate-900"
+            className="w-full justify-start text-text-secondary hover:text-secondary"
             onClick={() => setOpen(false)}
           >
             <LogOut className="h-4 w-4 mr-2" />

@@ -33,12 +33,12 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
         {/* Conteúdo */}
         <div className="p-6 space-y-6">
           {/* Protocolo em destaque */}
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-5 border-2 border-blue-200">
-            <p className="text-sm text-gray-600 mb-2 text-center font-medium">
+          <div className="bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg p-5 border-2 border-primary/20">
+            <p className="text-sm text-text-secondary mb-2 text-center font-medium">
               Seu código de protocolo:
             </p>
-            <div className="bg-white rounded-lg p-4 border-2 border-dashed border-blue-300">
-              <p className="text-2xl font-bold text-center text-gray-800 font-mono tracking-wider">
+            <div className="bg-white rounded-lg p-4 border-2 border-dashed border-primary/30">
+              <p className="text-2xl font-bold text-center text-secondary font-mono tracking-wider">
                 {protocolo}
               </p>
             </div>
@@ -89,14 +89,14 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
             
             <button
               onClick={onClose}
-              className="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
+              className="block w-full bg-neutral-100 hover:bg-neutral-200 text-secondary font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
             >
               Fechar
             </button>
           </div>
 
           {/* Informação adicional */}
-          <p className="text-xs text-gray-500 text-center">
+          <p className="text-xs text-text-secondary text-center">
             Você também pode acessar <strong>/acompanhar</strong> a qualquer momento
           </p>
         </div>

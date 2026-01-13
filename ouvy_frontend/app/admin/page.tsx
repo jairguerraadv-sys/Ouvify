@@ -56,7 +56,7 @@ export default function AdminDashboard() {
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
         <Card className="bg-slate-900 border-slate-800 p-8">
           <h1 className="text-2xl font-semibold mb-2">Acesso Negado</h1>
-          <p className="text-slate-300">Área restrita a Super Admins.</p>
+          <p className="text-neutral-300">Área restrita a Super Admins.</p>
         </Card>
       </main>
     );
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       <aside className="bg-slate-900 border-r border-slate-800 p-6 space-y-6">
         <div>
           <h2 className="text-lg font-semibold">Ouvy Admin</h2>
-          <p className="text-xs text-slate-400">Torre de Controle</p>
+          <p className="text-xs text-neutral-400">Torre de Controle</p>
         </div>
         <nav className="space-y-2 text-sm">
           <div className="font-medium text-white">Visão Geral</div>

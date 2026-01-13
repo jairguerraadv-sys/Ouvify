@@ -148,11 +148,11 @@ export default function FeedbacksPage() {
                       <TableHeader>
                         <TableRow className="border-neutral-200">
                           <TableHead className="text-secondary font-semibold">Protocolo</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Assunto</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Categoria</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Data</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Status</TableHead>
-                          <TableHead className="w-10 text-slate-900 font-semibold text-right">Ações</TableHead>
+                          <TableHead className="text-secondary font-semibold">Assunto</TableHead>
+                          <TableHead className="text-secondary font-semibold">Categoria</TableHead>
+                          <TableHead className="text-secondary font-semibold">Data</TableHead>
+                          <TableHead className="text-secondary font-semibold">Status</TableHead>
+                          <TableHead className="w-10 text-secondary font-semibold text-right">Ações</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -173,8 +173,8 @@ export default function FeedbacksPage() {
                   // Empty State
                   <div className="text-center py-12">
                     <div className="text-5xl mb-4">📭</div>
-                    <h3 className="text-lg font-semibold text-slate-900 mb-1">Tudo limpo por aqui!</h3>
-                    <p className="text-slate-600">
+                    <h3 className="text-lg font-semibold text-secondary mb-1">Tudo limpo por aqui!</h3>
+                    <p className="text-text-secondary">
                       {searchTerm || statusFilter 
                         ? 'Nenhum feedback corresponde aos seus critérios.' 
                         : 'Nenhum feedback foi enviado ainda.'}
@@ -185,13 +185,13 @@ export default function FeedbacksPage() {
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="border-slate-200">
-                          <TableHead className="text-slate-900 font-semibold">Protocolo</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Assunto</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Categoria</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Data</TableHead>
-                          <TableHead className="text-slate-900 font-semibold">Status</TableHead>
-                          <TableHead className="w-10 text-slate-900 font-semibold text-right">Ações</TableHead>
+                        <TableRow className="border-neutral-200">
+                          <TableHead className="text-secondary font-semibold">Protocolo</TableHead>
+                          <TableHead className="text-secondary font-semibold">Assunto</TableHead>
+                          <TableHead className="text-secondary font-semibold">Categoria</TableHead>
+                          <TableHead className="text-secondary font-semibold">Data</TableHead>
+                          <TableHead className="text-secondary font-semibold">Status</TableHead>
+                          <TableHead className="w-10 text-secondary font-semibold text-right">Ações</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
