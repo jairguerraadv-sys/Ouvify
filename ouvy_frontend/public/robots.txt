@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /dashboard/*
+Disallow: /_next/
+Disallow: /public/
+
+Sitemap: https://ouvy-frontend.vercel.app/sitemap.xml
+
+# Delay for aggressive crawlers
+User-agent: AhrefsBot
+User-agent: SemrushBot
+Crawl-delay: 10
