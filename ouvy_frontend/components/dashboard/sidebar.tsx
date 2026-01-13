@@ -1,22 +1,22 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
-import {
-  LayoutDashboard,
-  MessageSquare,
-  BarChart3,
-  Settings,
+import { 
+  Home, 
+  MessageSquare, 
+  BarChart3, 
+  Settings, 
   LogOut,
-  Menu,
-  X,
-  ChevronDown
+  Sparkles,
+  Shield
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Logo } from '@/components/ui/logo';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   user?: {
@@ -26,133 +26,97 @@ interface SidebarProps {
   };
 }
 
+const navigation = [
+  { name: 'Visão Geral', href: '/dashboard', icon: Home },
+  { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare },
+  { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3 },
+  { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings },
+];
+
 export function Sidebar({ user }: SidebarProps) {
-  const [open, setOpen] = useState(false);
-  const [logoSrc, setLogoSrc] = useState<string>('/logo.png');
-  const [imageError, setImageError] = useState<boolean>(false);
   const pathname = usePathname();
 
-  const navigation = [
-    { name: 'Visão Geral', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare },
-    { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3 },
-    { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings }
-  ];
-
-  const isActive = (href: string) => pathname === href;
-
-  // White Label: tentar carregar logo do tenant; se falhar, usar logo padrão
-  useEffect(() => {
-    const fetchTenantLogo = async () => {
-      try {
-        const res = await fetch('/api/tenant-info/');
-        if (res.ok) {
-          const data = await res.json();
-          if (data?.logo) {
-            setLogoSrc(data.logo);
-          }
-        }
-      } catch (e) {
-        // Silencia erros e mantém fallback padrão
-      }
-    };
-    fetchTenantLogo();
-  }, []);
-
   return (
-    <>
-      {/* Mobile Toggle */}
-      <div className="fixed top-0 left-0 z-50 p-4 lg:hidden">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setOpen(!open)}
-          className="text-text-secondary"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </Button>
+    <div className="flex h-screen w-64 flex-col border-r border-slate-200 bg-white">
+      {/* Logo */}
+      <div className="flex h-16 items-center border-b border-slate-200 px-6">
+        <Logo variant="full" size="sm" colorScheme="default" />
       </div>
 
-      {/* Mobile Overlay */}
-      {open && (
-        <div
-          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
-          onClick={() => setOpen(false)}
-        />
-      )}
+      {/* Navigation */}
+      <nav className="flex-1 space-y-1 px-3 py-4">
+        {navigation.map((item) => {
+          const isActive = pathname === item.href || pathname.startsWith(item.href + '/');
+          const Icon = item.icon;
+          
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
+                isActive
+                  ? 'bg-primary-50 text-primary-600'
+                  : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+              )}
+            >
+              <Icon className={cn(
+                'h-5 w-5 transition-colors',
+                isActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600'
+              )} />
+              {item.name}
+            </Link>
+          );
+        })}
+      </nav>
 
-      {/* Sidebar */}
-      <aside
-        className={`fixed left-0 top-0 z-40 h-screen w-64 border-r border-slate-200 bg-white transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          open ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        {/* Logo */}
-        <div className="flex h-16 items-center border-b border-slate-200 px-6">
-          <div className="hidden lg:block">
-            <Logo variant="full" size="md" linkTo="/dashboard" />
-          </div>
-          <div className="block lg:hidden">
-            <Logo variant="icon" size="sm" linkTo="/dashboard" />
-          </div>
-        </div>
+      <Separator className="mx-3" />
 
-        {/* Navigation */}
-        <nav className="flex-1 space-y-2 px-4 py-6">
-          {navigation.map((item) => {
-            const Icon = item.icon;
-            const active = isActive(item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setOpen(false)}
-                className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
-                  active
-                    ? 'bg-primary/10 text-primary'
-                    : 'text-text-secondary hover:bg-neutral-100'
-                }`}
-              >
-                <Icon className="h-5 w-5" />
-                {item.name}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* User Profile */}
-        <div className="border-t border-slate-200 p-4 space-y-4">
-          {user && (
-            <div className="flex items-center gap-3 px-2">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="bg-primary/20 text-primary">
-                  {user.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-secondary truncate">
-                  {user.name}
-                </p>
-                <p className="text-xs text-text-secondary truncate">
-                  {user.email}
-                </p>
-              </div>
+      {/* Plan Card */}
+      <div className="p-4">
+        <div className="rounded-lg border border-slate-200 bg-gradient-to-br from-primary-50 to-secondary-50 p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600">
+              <Sparkles className="h-4 w-4 text-white" />
             </div>
-          )}
-          <Button
-            variant="outline"
-            className="w-full justify-start text-text-secondary hover:text-secondary"
-            onClick={() => setOpen(false)}
-          >
-            <LogOut className="h-4 w-4 mr-2" />
-            Sair
+            <div>
+              <p className="text-xs font-semibold text-secondary-600">Plano Pro</p>
+              <Badge variant="secondary" className="mt-0.5 h-4 px-1 text-[10px]">
+                Ativo
+              </Badge>
+            </div>
+          </div>
+          <p className="text-xs text-slate-600 mb-3">
+            Recursos ilimitados até 15/02/2026
+          </p>
+          <Button size="sm" className="w-full bg-primary-500 hover:bg-primary-600 text-white text-xs h-8">
+            Fazer Upgrade
           </Button>
         </div>
-      </aside>
+      </div>
 
-      {/* Spacer para desktop */}
-      <div className="hidden lg:block w-64" />
-    </>
+      {/* User Profile */}
+      <div className="border-t border-slate-200 p-4">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-9 w-9">
+            <AvatarImage src={user?.avatar} alt={user?.name || 'User'} />
+            <AvatarFallback className="bg-primary-100 text-primary-600 text-sm font-semibold">
+              {user?.name?.charAt(0).toUpperCase() || 'U'}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-secondary-600 truncate">
+              {user?.name || 'Usuário'}
+            </p>
+            <p className="text-xs text-slate-500 truncate">
+              {user?.email || 'email@example.com'}
+            </p>
+          </div>
+          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-600">
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

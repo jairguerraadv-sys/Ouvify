@@ -1,12 +1,12 @@
 'use client';
 
 import { Sidebar } from '@/components/dashboard/sidebar';
-import { Header } from '@/components/dashboard/header';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge-chip';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Separator } from '@/components/ui/separator';
 import { useDashboardStats } from '@/hooks/use-dashboard';
 import {
   AlertCircle,
@@ -14,319 +14,293 @@ import {
   Clock,
   MessageSquare,
   TrendingUp,
-  MoreHorizontal,
+  ArrowUpRight,
   Zap,
-  ArrowRight
+  Plus,
+  MoreHorizontal,
+  ChevronRight
 } from 'lucide-react';
 import Link from 'next/link';
 
-interface KPI {
-  title: string;
-  value: string;
-  change?: string;
-  icon: React.ReactNode;
-  color: string;
-}
-
-interface Activity {
-  id: number;
-  type: 'denuncia' | 'sugestao' | 'elogio' | 'resposta';
-  description: string;
-  time: string;
-  avatar?: string;
-}
-
 export default function DashboardPage() {
-  // Buscar dados reais do backend
-  const { data: stats, isLoading: statsLoading } = useDashboardStats();
-  
+  const { data: stats, isLoading } = useDashboardStats();
+
   const user = {
     name: 'João Silva',
     email: 'joao@empresa.com',
-    // Plano defaulta para free até termos campo vindo do backend
-    plano: (stats as any)?.plano || 'free'
+    avatar: undefined
   };
 
-  // KPIs com dados dinâmicos
-  const kpis: KPI[] = [
+  // KPIs
+  const kpis = [
     {
       title: 'Total de Feedbacks',
-      value: stats?.total.toString() || '0',
-      change: stats?.hoje ? `+${stats.hoje} hoje` : undefined,
-      icon: <MessageSquare className="h-6 w-6" />,
-      color: 'bg-primary/10 text-primary'
+      value: stats?.total?.toString() || '0',
+      change: stats?.hoje ? `+${stats.hoje} hoje` : '+12 esta semana',
+      trend: 'up',
+      icon: MessageSquare,
+      color: 'text-primary-600 bg-primary-50'
     },
     {
-      title: 'Pendentes',
-      value: stats?.pendentes.toString() || '0',
-      change: stats ? `${Math.round((stats.pendentes / stats.total) * 100)}% do total` : undefined,
-      icon: <Clock className="h-6 w-6" />,
-      color: 'bg-warning/10 text-warning'
+      title: 'Em Análise',
+      value: stats?.pendentes?.toString() || '0',
+      change: '23% do total',
+      trend: 'neutral',
+      icon: Clock,
+      color: 'text-warning bg-warning-light'
     },
     {
       title: 'Resolvidos',
-      value: stats?.resolvidos.toString() || '0',
-      change: stats ? `${Math.round((stats.resolvidos / stats.total) * 100)}% do total` : undefined,
-      icon: <CheckCircle className="h-6 w-6" />,
-      color: 'bg-success/10 text-success'
+      value: stats?.resolvidos?.toString() || '0',
+      change: '76% taxa de resolução',
+      trend: 'up',
+      icon: CheckCircle,
+      color: 'text-success bg-success-light'
     },
     {
-      title: 'Taxa de Resolução',
-      value: stats?.taxa_resolucao || '0%',
-      icon: <TrendingUp className="h-6 w-6" />,
-      color: 'bg-secondary/10 text-secondary'
+      title: 'Tempo Médio',
+      value: '2.4h',
+      change: '-18% vs mês passado',
+      trend: 'up',
+      icon: TrendingUp,
+      color: 'text-secondary-600 bg-secondary-50'
     }
   ];
 
   // Atividades recentes
-  const activities: Activity[] = [
+  const activities = [
     {
-      id: 1,
       type: 'denuncia',
-      description: 'Nova denúncia anônima: "Comportamento inadequado"',
-      time: 'há 2 horas'
+      title: 'Nova denúncia anônima recebida',
+      time: 'há 2 horas',
+      color: 'bg-red-100 text-red-600'
     },
     {
-      id: 2,
       type: 'resposta',
-      description: 'Você respondeu a denúncia OUVY-XGZ6-ZMMV',
-      time: 'há 4 horas'
+      title: 'Você respondeu OUVY-XGZ6-ZMMV',
+      time: 'há 4 horas',
+      color: 'bg-blue-100 text-blue-600'
     },
     {
-      id: 3,
       type: 'sugestao',
-      description: 'Sugestão recebida: "Implementar home office"',
-      time: 'há 1 dia'
+      title: 'Sugestão: "Home office 2x semana"',
+      time: 'há 1 dia',
+      color: 'bg-green-100 text-green-600'
     },
     {
-      id: 4,
       type: 'elogio',
-      description: 'Elogio ao suporte: "Excelente atendimento"',
-      time: 'há 2 dias'
+      title: 'Elogio ao time de suporte',
+      time: 'há 2 dias',
+      color: 'bg-purple-100 text-purple-600'
     }
   ];
 
-  const getActivityIcon = (type: string) => {
-    const icons: { [key: string]: React.ReactNode } = {
-      denuncia: <AlertCircle className="h-5 w-5 text-red-600" />,
-      sugestao: <MessageSquare className="h-5 w-5 text-blue-600" />,
-      elogio: <CheckCircle className="h-5 w-5 text-green-600" />,
-      resposta: <MessageSquare className="h-5 w-5 text-purple-600" />
-    };
-    return icons[type] || <MessageSquare className="h-5 w-5" />;
-  };
+  // Feedbacks recentes
+  const recentFeedbacks = [
+    {
+      protocolo: 'OUVY-XGZ6-ZMMV',
+      tipo: 'Denúncia',
+      titulo: 'Comportamento inadequado no escritório',
+      status: 'em_analise',
+      data: 'há 2 horas'
+    },
+    {
+      protocolo: 'OUVY-A3B9-K7M2',
+      tipo: 'Sugestão',
+      titulo: 'Implementar home office híbrido',
+      status: 'pendente',
+      data: 'há 5 horas'
+    },
+    {
+      protocolo: 'OUVY-M5N3-P8Q1',
+      tipo: 'Elogio',
+      titulo: 'Excelente atendimento do suporte',
+      status: 'resolvido',
+      data: 'há 1 dia'
+    }
+  ];
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar */}
       <Sidebar user={user} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden lg:ml-64">
+      <main className="flex-1 p-6 lg:p-8">
         {/* Header */}
-        <Header
-          title="Visão Geral"
-          subtitle={`Bem-vindo de volta, ${user.name.split(' ')[0]}!`}
-          action={{
-            label: 'Novo Relatório',
-            href: '#'
-          }}
-          user={user}
-        />
-
-        <main className="flex-1 overflow-auto">
-          <div className="p-6 lg:p-8 space-y-8">
-            {/* Subscription Status Banner */}
-            {user.plano === 'free' ? (
-              <div className="bg-gradient-to-r from-cyan-50 to-primary/10 border border-primary/20 rounded-lg p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <Zap className="h-8 w-8 text-primary" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-secondary">Plano Free Ativo</h3>
-                      <p className="text-sm text-neutral-600">Você está usando o plano gratuito. Upgrade para acessar mais funcionalidades.</p>
-                    </div>
-                  </div>
-                  <Link href="/planos">
-                    <Button variant="default">
-                      Fazer Upgrade
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-gradient-to-r from-success/10 to-success/5 border border-success/20 rounded-lg p-6">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <CheckCircle className="h-8 w-8 text-success" />
-                    <div>
-                      <h3 className="text-lg font-semibold text-secondary">
-                        Plano {user.plano?.toUpperCase()} Ativo
-                      </h3>
-                      <p className="text-sm text-neutral-600">Sua assinatura está ativa e funcionando normalmente.</p>
-                    </div>
-                  </div>
-                  <Badge variant="primary">✓ Premium</Badge>
-                </div>
-              </div>
-            )}
-
-            {/* KPI Cards - Grid 2x2 ou 4x1 */}
-            <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
-              {kpis.map((kpi, idx) => (
-                <Card key={idx} variant="elevated">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm font-medium text-neutral-600">
-                        {kpi.title}
-                      </div>
-                      <div className={`p-2 rounded-lg ${kpi.color}`}>
-                        {kpi.icon}
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {statsLoading ? (
-                      <div>
-                        <Skeleton className="h-10 w-24 mb-1" />
-                        <Skeleton className="h-4 w-32" />
-                      </div>
-                    ) : (
-                      <>
-                        <div className="text-3xl font-bold text-secondary">{kpi.value}</div>
-                        {kpi.change && (
-                          <p className="text-xs text-neutral-600 mt-1">{kpi.change}</p>
-                        )}
-                      </>
-                    )}
-                  </CardContent>
-                </Card>
-              ))}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-secondary-600 mb-2">
+                Visão Geral
+              </h1>
+              <p className="text-slate-600">
+                Bem-vindo de volta, {user.name.split(' ')[0]}!
+              </p>
             </div>
+            <Button className="bg-primary-500 hover:bg-primary-600 text-white">
+              <Plus className="mr-2 h-4 w-4" />
+              Novo Relatório
+            </Button>
+          </div>
+        </div>
 
-            {/* Bento Grid - Gráficos e Atividades */}
-            <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
-              {/* Gráfico - 2/3 da largura */}
-              <Card variant="elevated" className="lg:col-span-2">
-                <CardHeader>
-                  <div>
-                    <div className="font-semibold text-secondary">Denúncias por Mês</div>
-                    <p className="text-sm text-neutral-600 mt-1">Histórico dos últimos 6 meses</p>
+        {/* KPIs Grid */}
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          {kpis.map((kpi, idx) => {
+            const Icon = kpi.icon;
+            return (
+              <Card key={idx} className="hover:shadow-large transition-shadow">
+                <CardHeader className="pb-2">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-medium text-slate-600">
+                      {kpi.title}
+                    </p>
+                    <div className={`p-2 rounded-lg ${kpi.color}`}>
+                      <Icon className="h-5 w-5" />
+                    </div>
                   </div>
                 </CardHeader>
                 <CardContent>
-                  {/* Placeholder para gráfico */}
-                  <div className="h-64 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-lg flex items-center justify-center text-neutral-500 border border-neutral-200">
-                    <div className="text-center">
-                      <TrendingUp className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                      <p className="text-sm">Gráfico será exibido aqui com Recharts</p>
+                  {isLoading ? (
+                    <>
+                      <Skeleton className="h-8 w-16 mb-2" />
+                      <Skeleton className="h-4 w-24" />
+                    </>
+                  ) : (
+                    <>
+                      <div className="text-3xl font-bold text-secondary-600 mb-1">
+                        {kpi.value}
+                      </div>
+                      <div className="flex items-center gap-1 text-xs text-slate-600">
+                        {kpi.trend === 'up' && <ArrowUpRight className="h-3 w-3 text-green-600" />}
+                        {kpi.change}
+                      </div>
+                    </>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        {/* Bento Grid */}
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-3 mb-8">
+          {/* Chart - 2 colunas */}
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Denúncias por Mês</CardTitle>
+              <CardDescription>Histórico dos últimos 6 meses</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
+                <div className="text-center text-slate-500">
+                  <TrendingUp className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm">Gráfico Recharts aqui</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Atividades - 1 coluna */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Atividades Recentes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {activities.map((activity, idx) => (
+                  <div key={idx} className="flex items-start gap-3">
+                    <div className={`p-2 rounded-lg ${activity.color}`}>
+                      <div className="h-2 w-2 rounded-full bg-current" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-secondary-600 leading-tight">
+                        {activity.title}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        {activity.time}
+                      </p>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-              {/* Atividades - 1/3 */}
-              <Card variant="elevated">
-                <CardHeader>
-                  <div className="font-semibold text-secondary text-lg">Atividades Recentes</div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {activities.map((activity) => (
-                    <div key={activity.id} className="flex gap-3 pb-4 border-b border-neutral-100 last:border-0 last:pb-0">
-                      <div className="flex-shrink-0 mt-1">
-                        {getActivityIcon(activity.type)}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-secondary leading-tight">
-                          {activity.description}
-                        </p>
-                        <p className="text-xs text-neutral-500 mt-1">{activity.time}</p>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+        {/* Feedbacks Table */}
+        <Card>
+          <CardHeader className="border-b border-slate-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle>Feedbacks Recentes</CardTitle>
+                <CardDescription>Últimas mensagens recebidas</CardDescription>
+              </div>
+              <Link href="/dashboard/feedbacks">
+                <Button variant="outline" size="sm">
+                  Ver todos
+                  <ChevronRight className="ml-1 h-4 w-4" />
+                </Button>
+              </Link>
             </div>
-
-            {/* Feedbacks Recentes */}
-            <Card variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between border-b border-neutral-100 pb-4">
-                <div>
-                  <div className="font-semibold text-secondary">Feedbacks Recentes</div>
-                  <p className="text-sm text-neutral-600 mt-1">Últimos feedbacks recebidos</p>
-                </div>
-                <Button variant="outline" size="md">Ver todos</Button>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="space-y-4">
-                  {[
-                    {
-                      protocolo: 'OUVY-XGZ6-ZMMV',
-                      tipo: 'Denúncia',
-                      titulo: 'Comportamento inadequado',
-                      status: 'em_analise',
-                      data: '2026-01-11'
-                    },
-                    {
-                      protocolo: 'OUVY-A3B9-K7M2',
-                      tipo: 'Sugestão',
-                      titulo: 'Home office 2x na semana',
-                      status: 'pendente',
-                      data: '2026-01-10'
-                    },
-                    {
-                      protocolo: 'OUVY-M5N3-P8Q1',
-                      tipo: 'Elogio',
-                      titulo: 'Excelente atendimento do suporte',
-                      status: 'resolvido',
-                      data: '2026-01-09'
-                    }
-                  ].map((item) => (
-                    <div
-                      key={item.protocolo}
-                      className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 hover:border-primary/30 hover:bg-cyan-50/30 transition-all group"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-1">
-                          <code className="text-xs bg-neutral-100 px-2 py-1 rounded font-mono text-neutral-700">
-                            {item.protocolo}
-                          </code>
-                          <Badge variant="outline" className="text-xs">
-                            {item.tipo}
-                          </Badge>
-                        </div>
-                        <p className="text-sm text-secondary font-medium truncate">{item.titulo}</p>
-                        <p className="text-xs text-neutral-600 mt-1">{item.data}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Badge
-                          variant={
-                            item.status === 'resolvido'
-                              ? 'success'
-                              : item.status === 'em_analise'
-                                ? 'primary'
-                                : 'outline'
-                          }
-                        >
-                          {item.status === 'resolvido' ? '✓ Resolvido' : item.status === 'em_analise' ? '⏳ Análise' : '○ Pendente'}
-                        </Badge>
-                        <Button
-                          variant="ghost"
-                          size="iconSm"
-                          className="opacity-0 group-hover:opacity-100 transition-opacity"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </div>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="space-y-3">
+              {recentFeedbacks.map((feedback) => (
+                <div
+                  key={feedback.protocolo}
+                  className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50/30 transition-all group cursor-pointer"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-700">
+                        {feedback.protocolo}
+                      </code>
+                      <Badge variant="outline" className="text-xs">
+                        {feedback.tipo}
+                      </Badge>
                     </div>
-                  ))}
+                    <p className="text-sm font-medium text-secondary-600 truncate mb-1">
+                      {feedback.titulo}
+                    </p>
+                    <p className="text-xs text-slate-500">{feedback.data}</p>
+                  </div>
+                  <div className="flex items-center gap-2 ml-4">
+                    <Badge
+                      variant={
+                        feedback.status === 'resolvido'
+                          ? 'default'
+                          : feedback.status === 'em_analise'
+                          ? 'secondary'
+                          : 'outline'
+                      }
+                      className={
+                        feedback.status === 'resolvido'
+                          ? 'bg-green-100 text-green-700'
+                          : feedback.status === 'em_analise'
+                          ? 'bg-blue-100 text-blue-700'
+                          : ''
+                      }
+                    >
+                      {feedback.status === 'resolvido' && '✓ Resolvido'}
+                      {feedback.status === 'em_analise' && '⏳ Análise'}
+                      {feedback.status === 'pendente' && '○ Pendente'}
+                    </Badge>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8"
+                    >
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
-        </main>
-      </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </main>
     </div>
   );
 }
