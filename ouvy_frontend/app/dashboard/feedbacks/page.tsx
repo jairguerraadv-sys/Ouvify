@@ -42,20 +42,20 @@ export default function FeedbacksPage() {
 
   const getCategoryBadge = (tipo: string) => {
     const variants: { [key: string]: { label: string; className: string } } = {
-      denuncia: { label: '🚨 Denúncia', className: 'bg-red-100 text-red-700 hover:bg-red-100' },
-      sugestao: { label: '💡 Sugestão', className: 'bg-blue-100 text-blue-700 hover:bg-blue-100' },
-      elogio: { label: '⭐ Elogio', className: 'bg-green-100 text-green-700 hover:bg-green-100' },
-      reclamacao: { label: '😔 Reclamação', className: 'bg-gray-100 text-gray-700 hover:bg-gray-100' }
+      denuncia: { label: '🚨 Denúncia', className: 'bg-error/10 text-error hover:bg-error/10' },
+      sugestao: { label: '💡 Sugestão', className: 'bg-primary/10 text-primary hover:bg-primary/10' },
+      elogio: { label: '⭐ Elogio', className: 'bg-success/10 text-success hover:bg-success/10' },
+      reclamacao: { label: '😔 Reclamação', className: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-100' }
     };
     return variants[tipo] || variants.reclamacao;
   };
 
   const getStatusBadge = (status: string) => {
     const variants: { [key: string]: { label: string; className: string } } = {
-      pendente: { label: 'Pendente', className: 'bg-yellow-100 text-yellow-700 hover:bg-yellow-100' },
-      em_analise: { label: 'Em Análise', className: 'bg-blue-100 text-blue-700 hover:bg-blue-100' },
-      resolvido: { label: 'Resolvido', className: 'bg-green-100 text-green-700 hover:bg-green-100' },
-      fechado: { label: 'Fechado', className: 'bg-gray-100 text-gray-700 hover:bg-gray-100' }
+      pendente: { label: 'Pendente', className: 'bg-warning/10 text-warning hover:bg-warning/10' },
+      em_analise: { label: 'Em Análise', className: 'bg-primary/10 text-primary hover:bg-primary/10' },
+      resolvido: { label: 'Resolvido', className: 'bg-success/10 text-success hover:bg-success/10' },
+      fechado: { label: 'Fechado', className: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-100' }
     };
     return variants[status] || variants.pendente;
   };
@@ -70,7 +70,7 @@ export default function FeedbacksPage() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-neutral-50">
       {/* Sidebar */}
       <Sidebar user={user} />
 
@@ -86,33 +86,33 @@ export default function FeedbacksPage() {
         {/* Content */}
         <main className="flex-1 overflow-auto">
           <div className="p-6 lg:p-8">
-            <Card className="border-slate-200">
+            <Card variant="elevated" className="border-neutral-200">
               {/* Toolbar */}
-              <CardHeader className="border-b border-slate-200 pb-4">
+              <CardHeader className="border-b border-neutral-200 pb-4">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <CardTitle>Lista de Feedbacks</CardTitle>
-                    <CardDescription>
+                    <CardTitle className="text-secondary">Lista de Feedbacks</CardTitle>
+                    <CardDescription className="text-neutral-600">
                       {filteredFeedbacks.length} feedback{filteredFeedbacks.length !== 1 ? 's' : ''}
                     </CardDescription>
                   </div>
-                  <Button>+ Novo Feedback</Button>
+                  <Button variant="default">+ Novo Feedback</Button>
                 </div>
 
                 {/* Filtros */}
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center mt-4">
                   <div className="flex-1 relative">
-                    <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+                    <Search className="absolute left-3 top-3 h-4 w-4 text-neutral-400" />
                     <Input
                       placeholder="Buscar por protocolo ou termo..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 border-slate-200"
+                      className="pl-10 border-neutral-200 focus:ring-primary focus:border-primary"
                     />
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="border-slate-200 gap-2">
+                      <Button variant="outline" className="border-neutral-200 gap-2">
                         <Filter className="h-4 w-4" />
                         Status {statusFilter && '✓'}
                       </Button>
@@ -126,7 +126,7 @@ export default function FeedbacksPage() {
                         <DropdownMenuItem
                           key={status}
                           onClick={() => setStatusFilter(status)}
-                          className={statusFilter === status ? 'bg-slate-100' : ''}
+                          className={statusFilter === status ? 'bg-primary/10 text-primary' : ''}
                         >
                           {status === 'pendente' && 'Pendente'}
                           {status === 'em_analise' && 'Em Análise'}
@@ -146,8 +146,8 @@ export default function FeedbacksPage() {
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
-                        <TableRow className="border-slate-200">
-                          <TableHead className="text-slate-900 font-semibold">Protocolo</TableHead>
+                        <TableRow className="border-neutral-200">
+                          <TableHead className="text-secondary font-semibold">Protocolo</TableHead>
                           <TableHead className="text-slate-900 font-semibold">Assunto</TableHead>
                           <TableHead className="text-slate-900 font-semibold">Categoria</TableHead>
                           <TableHead className="text-slate-900 font-semibold">Data</TableHead>

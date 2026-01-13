@@ -91,9 +91,9 @@ export default function ConfiguracoesPage() {
         </Card>
 
         {/* Zona de Perigo */}
-        <Card className="p-6 border-red-200 bg-red-50">
-          <h3 className="text-lg font-medium mb-2 text-red-800">⚠️ Zona de Perigo</h3>
-          <p className="text-sm text-red-700 mb-4">
+        <Card variant="elevated" className="p-6 border-error/20 bg-error/5">
+          <h3 className="text-lg font-medium mb-2 text-error">⚠️ Zona de Perigo</h3>
+          <p className="text-sm text-error/80 mb-4">
             Ações irreversíveis que afetam toda a conta
           </p>
           <Button variant="destructive">Desativar Conta</Button>
