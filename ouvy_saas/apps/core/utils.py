@@ -48,7 +48,7 @@ def get_tenant_id() -> Optional[int]:
         ID do tenant (int) ou None
     """
     tenant = get_current_tenant()
-    return tenant.id if tenant else None
+    return tenant.pk if tenant else None
 
 
 def tenant_context_required(func):

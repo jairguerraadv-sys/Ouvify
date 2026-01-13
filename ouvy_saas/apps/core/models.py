@@ -65,7 +65,7 @@ class TenantAwareModel(models.Model):
         Sobrescreve o save para definir automaticamente o tenant atual
         se não estiver definido.
         """
-        if not self.pk and not self.client_id:
+        if not self.pk and not hasattr(self, 'client_id') or (hasattr(self, 'client_id') and not self.client_id):
             # Apenas define o tenant na criação do objeto
             tenant = get_current_tenant()
             if tenant is None:

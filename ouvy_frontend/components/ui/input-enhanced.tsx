@@ -3,7 +3,7 @@
 import React, { InputHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   error?: string;
   hint?: string;
@@ -103,7 +103,7 @@ export function InputEnhanced({
 export const Input = InputEnhanced;
 
 // Textarea Component
-interface TextareaProps extends Omit<InputHTMLAttributes<HTMLTextAreaElement>, 'type'> {
+interface TextareaProps extends Omit<InputHTMLAttributes<HTMLTextAreaElement>, 'type' | 'size'> {
   label?: string;
   error?: string;
   hint?: string;

@@ -47,7 +47,6 @@ export default function LoginPage() {
 
   return (
     <main className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4">
-      {/* Elementos decorativos */}
       <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl animate-float" />
       <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-primary-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
       
@@ -140,24 +139,6 @@ export default function LoginPage() {
               Criar conta grátis
             </Button>
           </Link>
-        </div>
-      </Card>
-    </main>
-  );
-} 
-            isLoading={loading}
-          >
-            {loading ? "Entrando..." : "Entrar"}
-          </Button>
-        </form>
-
-        <div className="p-6 border-t border-neutral-100 text-center">
-          <p className="text-sm text-neutral-600">
-            Não tem conta?{" "}
-            <a href="/cadastro" className="text-primary font-semibold hover:text-primary/80 transition">
-              Cadastre-se
-            </a>
-          </p>
         </div>
       </Card>
     </main>

@@ -242,4 +242,5 @@ class FeedbackInteracao(TenantAwareModel):
 
     def __str__(self):
         autor_nome = self.autor.get_username() if self.autor else 'Anónimo'
-        return f"[{self.get_tipo_display()}] {autor_nome}: {self.mensagem[:50]}"
+        tipo_display = dict(self.TIPO_INTERACAO_CHOICES).get(self.tipo, self.tipo)
+        return f"[{tipo_display}] {autor_nome}: {self.mensagem[:50]}"

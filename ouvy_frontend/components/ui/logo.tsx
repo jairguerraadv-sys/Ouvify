@@ -1,153 +1,95 @@
-'use client';
-
-import React from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
+type LogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+type LogoVariant = 'full' | 'icon';
+type LogoColorScheme = 'default' | 'white' | 'dark';
+
 interface LogoProps {
+  variant?: LogoVariant;
+  size?: LogoSize;
+  colorScheme?: LogoColorScheme;
   className?: string;
-  variant?: 'full' | 'icon-only';
-  colorScheme?: 'default' | 'white' | 'dark';
   href?: string;
   linkTo?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
+const sizeConfig = {
+  xs: { icon: 'w-6 h-6', text: 'text-lg', gap: 'gap-1.5' },
+  sm: { icon: 'w-8 h-8', text: 'text-xl', gap: 'gap-2' },
+  md: { icon: 'w-10 h-10', text: 'text-2xl', gap: 'gap-2.5' },
+  lg: { icon: 'w-12 h-12', text: 'text-3xl', gap: 'gap-3' },
+  xl: { icon: 'w-16 h-16', text: 'text-4xl', gap: 'gap-4' },
+};
+
 export function Logo({
-  className,
   variant = 'full',
+  size = 'md',
   colorScheme = 'default',
-  href = '/',
+  className,
+  href,
   linkTo,
-  size = 'md'
 }: LogoProps) {
-  // Mapeamento de tamanhos proporcionais
-  const sizeMap = {
-    xs: { icon: 'w-5 h-5', text: 'text-base', gap: 'gap-1.5' },
-    sm: { icon: 'w-6 h-6', text: 'text-lg', gap: 'gap-2' },
-    md: { icon: 'w-8 h-8', text: 'text-2xl', gap: 'gap-2.5' },
-    lg: { icon: 'w-10 h-10', text: 'text-3xl', gap: 'gap-3' },
-    xl: { icon: 'w-12 h-12', text: 'text-4xl', gap: 'gap-3.5' },
+  const { icon: iconSize, text: textSize, gap } = sizeConfig[size];
+
+  const iconColors = {
+    default: 'text-primary-500',
+    white: 'text-white',
+    dark: 'text-secondary-900',
   };
 
-  // Cores baseadas no esquema (usando cores da logo)
-  const colorClasses = {
-    default: {
-      icon: 'text-primary-500',  // Ciano da logo
-      text: 'text-secondary-900', // Azul escuro da logo
-    },
-    white: {
-      icon: 'text-white',
-      text: 'text-white',
-    },
-    dark: {
-      icon: 'text-primary-500',
-      text: 'text-secondary-900',
-    },
+  const textColors = {
+    default: 'text-secondary-900',
+    white: 'text-white',
+    dark: 'text-secondary-900',
   };
 
-  // Logo Icon - Ondas sonoras estilizadas (baseado na logo Ouvy)
-  const LogoIcon = () => (
-    <svg
-      viewBox="0 0 40 40"
-      fill="none"
-      className={cn(
-        sizeMap[size].icon,
-        colorClasses[colorScheme].icon,
-        'transition-transform duration-300 hover:scale-105'
-      )}
+  const SonicWaveIcon = () => (
+    <svg 
+      className={cn(iconSize, iconColors[colorScheme])}
+      viewBox="0 0 48 48" 
+      fill="none" 
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="Ouvy Icon"
     >
-      {/* Onda 1 - Externa */}
-      <path
-        d="M10 20C10 13.37 15.37 8 22 8"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.4"
+      <path 
+        d="M24 8C15.163 8 8 15.163 8 24s7.163 16 16 16 16-7.163 16-16S32.837 8 24 8z" 
+        fill="currentColor" 
+        opacity="0.2"
       />
-      {/* Onda 2 - Média */}
-      <path
-        d="M14 20C14 15.58 17.58 12 22 12"
-        stroke="currentColor"
-        strokeWidth="2.5"
+      <path 
+        d="M12 24c0-6.627 5.373-12 12-12M24 12c6.627 0 12 5.373 12 12M36 24c0 6.627-5.373 12-12 12M24 36c-6.627 0-12-5.373-12-12" 
+        stroke="currentColor" 
+        strokeWidth="3" 
         strokeLinecap="round"
-        strokeLinejoin="round"
         opacity="0.6"
       />
-      {/* Onda 3 - Interna */}
-      <path
-        d="M18 20C18 17.79 19.79 16 22 16"
-        stroke="currentColor"
-        strokeWidth="2.5"
+      <path 
+        d="M16 24c0-4.418 3.582-8 8-8M24 16c4.418 0 8 3.582 8 8M32 24c0 4.418-3.582 8-8 8M24 32c-4.418 0-8-3.582-8-8" 
+        stroke="currentColor" 
+        strokeWidth="3" 
         strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.8"
       />
-      {/* Ponto central */}
-      <circle 
-        cx="22" 
-        cy="20" 
-        r="2.5" 
-        fill="currentColor"
-      />
+      <circle cx="24" cy="24" r="3" fill="currentColor" />
     </svg>
   );
 
-  // Texto "ouvy" com tipografia moderna
   const LogoText = () => (
     <span 
       className={cn(
-        sizeMap[size].text,
-        colorClasses[colorScheme].text,
-        'font-bold tracking-tight leading-none'
+        textSize, 
+        'font-bold tracking-tight leading-none',
+        textColors[colorScheme]
       )}
-      style={{ fontFamily: 'Inter, sans-serif' }}
     >
-      ouvy
+      Ouvy
     </span>
   );
 
-  // Conteúdo baseado em variant
   const content = (
     <>
       {variant === 'full' ? (
-        <div className={cn('inline-flex items-center', sizeMap[size].gap, className)}>
-          <LogoIcon />
-          <LogoText />
-        </div>
-      ) : (
-        <div className={cn('inline-flex items-center', className)}>
-          <LogoIcon />
-        </div>
-      )}
-    </>
-  );
-
-  // Com ou sem Link
-  const targetHref = linkTo ?? href;
-
-  if (targetHref) {
-    return (
-      <Link 
-        href={targetHref}
-        className="inline-flex items-center hover:opacity-90 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2 rounded-lg"
-        aria-label="Ouvy - Canal de Ética"
-      >
-        {content}
-      </Link>
-    );
-  }
-
-  return <div className="inline-flex">{content}</div>;
-}
-
-  // Conteúdo baseado em variant
-  const content = (
-    <>
-      {variant === 'full' ? (
-        <div className={cn('flex items-center gap-2', className)}>
+        <div className={cn('flex items-center', gap, className)}>
           <SonicWaveIcon />
           <LogoText />
         </div>
@@ -159,19 +101,19 @@ export function Logo({
     </>
   );
 
-  // Com ou sem Link
   const targetHref = linkTo ?? href;
 
   if (targetHref) {
     return (
       <Link 
         href={targetHref}
-        className="inline-flex items-center hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+        className="inline-flex items-center hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 rounded-lg"
+        aria-label="Ouvy - Canal de Ética"
       >
         {content}
       </Link>
     );
   }
 
-  return <>{content}</>;
+  return <div className="inline-flex">{content}</div>;
 }

@@ -90,10 +90,10 @@ export function Sidebar({ user }: SidebarProps) {
         {/* Logo */}
         <div className="flex h-16 items-center border-b border-slate-200 px-6">
           <div className="hidden lg:block">
-            <Logo width={120} height={30} linkTo="/dashboard" />
+            <Logo variant="full" size="md" linkTo="/dashboard" />
           </div>
           <div className="block lg:hidden">
-            <Logo variant="icon-only" width={40} height={40} linkTo="/dashboard" />
+            <Logo variant="icon" size="sm" linkTo="/dashboard" />
           </div>
         </div>
 
