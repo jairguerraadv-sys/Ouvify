@@ -4,6 +4,30 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* 🎨 Design System: Ouvy Brand Colors */
+:root {
+  --primary: #00BCD4;
+  --primary-light: #00E5FF;
+  --primary-dark: #0097A7;
+  
+  --secondary: #0A1E3B;
+  --secondary-light: #1A3A52;
+  --secondary-dark: #051121;
+  
+  --neutral-50: #F8FAFC;
+  --neutral-100: #F1F5F9;
+  --neutral-200: #E2E8F0;
+  --neutral-300: #CBD5E1;
+  --neutral-500: #64748B;
+  --neutral-700: #334155;
+  --neutral-900: #0F172A;
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+  --info: #3B82F6;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -45,6 +69,61 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+}
+
+/* 🎨 Estilos globais do Design System */
+
+* {
+  @apply transition-colors duration-200;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-secondary;
+  font-feature-settings: "rounding-percentages" 1;
+}
+
+/* Focus rings com tema primário */
+:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Links com cor primária */
+a {
+  @apply text-primary hover:text-primary-dark transition-colors;
+  text-decoration: none;
+}
+
+a:hover {
+  @apply underline;
+}
+
+/* Inputs com tema */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+textarea,
+select {
+  @apply px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-white text-secondary placeholder-neutral-400;
+}
+
+/* Scrollbar customizado */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-neutral-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-primary rounded-full hover:bg-primary-dark;
 }
 
 /* Animações customizadas */
