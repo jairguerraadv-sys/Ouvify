@@ -50,6 +50,17 @@ allowed_hosts_str = os.getenv(
 )
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(',') if h.strip()]
 
+# Permitir liberar hosts temporariamente via env (para diagnóstico em produção)
+if os.getenv('ALLOW_ALL_HOSTS', 'False').lower() in ('true', '1', 'yes'):
+    ALLOWED_HOSTS = ['*']
+
+# Utilizar cabeçalhos de proxy para host/esquema corretos atrás de reverse proxy
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+if DEBUG:
+    print(f"🌐 ALLOWED_HOSTS: {ALLOWED_HOSTS}")
+
 # Validação de segurança em produção
 if not DEBUG and SECRET_KEY.startswith('django-insecure'):
     raise ValueError(
