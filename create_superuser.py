@@ -1,12 +1,12 @@
 #!/usr/bin/env python
-"""
-Script para criar superusuário no Railway via manage.py shell
-Execute no Railway Dashboard > Settings > Run Command:
+import os
+import sys
+import django
 
-cd ouvy_saas && python manage.py shell < ../create_superuser.py
-
-Ou copie o conteúdo abaixo e execute via shell interativo.
-"""
+# Adiciona o diretório ouvy_saas ao path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'ouvy_saas'))
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
 
 from django.contrib.auth import get_user_model
 
@@ -23,9 +23,10 @@ else:
     admin = User.objects.create_superuser(
         username='admin',
         email='admin@ouvy.com',
-        password='Admin@Ouvy2026!'  # ⚠️ TROQUE ESTA SENHA DEPOIS!
+        password='Admin@Ouvy2026Temp!'
     )
     print("🎉 Superusuário criado com sucesso!")
     print(f"   Username: {admin.username}")
     print(f"   Email: {admin.email}")
+    print("⚠️  IMPORTANTE: Acesse /admin/ e troque a senha imediatamente!")
     print("⚠️  IMPORTANTE: Acesse /admin/ e troque a senha imediatamente!")

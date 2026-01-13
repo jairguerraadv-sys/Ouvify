@@ -1,0 +1,19 @@
+{
+  "python.defaultInterpreterPath": "./venv/bin/python",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/ouvy_saas",
+    "${workspaceFolder}/ouvy_saas/apps"
+  ],
+  "python.analysis.autoSearchPaths": true,
+  "python.analysis.diagnosticMode": "workspace",
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/*.pyc": true,
+    "**/.DS_Store": true
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "[python]": {
+    "editor.formatOnSave": false
+  }
+}

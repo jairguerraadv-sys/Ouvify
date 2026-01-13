@@ -37,7 +37,7 @@ if not DEBUG and not SECRET_KEY_ENV:
     )
 
 # Em desenvolvimento, usar fallback; em produção, usar da env
-SECRET_KEY = SECRET_KEY_ENV or 'HB)Wn*W)RlgtV=4x_V2ijcf$SWhneBobEN1!-o_UWo2(Ff(#r!'
+SECRET_KEY = SECRET_KEY_ENV or 'r0FpXcqiJeBmF7EPR2AhEAsI0L8HV1dNMDueS7DP1PE9vENXI'
 
 if DEBUG:
     print("✅ SECRET_KEY carregado de .env com sucesso.")
