@@ -8,6 +8,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.routers import DefaultRouter
 from apps.feedbacks.views import FeedbackViewSet
 from apps.core.views import home
@@ -21,6 +22,7 @@ from apps.tenants.views import (
 )
 from rest_framework.authtoken.views import obtain_auth_token
 
+@csrf_exempt
 @require_http_methods(["GET"])
 def health_check(request):
     """Health check endpoint for deployment monitoring."""

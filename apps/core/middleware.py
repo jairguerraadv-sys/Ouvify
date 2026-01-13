@@ -25,6 +25,15 @@ class TenantMiddleware:
         # Limpar qualquer tenant anterior
         clear_current_tenant()
         
+        # Permitir certos endpoints sem validação de tenant
+        path = request.path.lower()
+        if path in ['/health/', '/api-token-auth/'] or path.startswith('/api/'):
+            # Requisições de API/health não exigem tenant
+            request.tenant = None
+            response = self.get_response(request)
+            clear_current_tenant()
+            return response
+        
         # Extrair o host da requisição
         host = request.get_host().lower()
         
