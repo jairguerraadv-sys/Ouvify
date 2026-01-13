@@ -243,7 +243,7 @@ if not DEBUG:
 # Origens permitidas para requisições do frontend
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3000,http://127.0.0.1:3000'
+    'http://localhost:3000,http://127.0.0.1:3000,https://ouvy-frontend.vercel.app,https://ouvy-frontend-i7mfpgzih-jairguerraadv-sys-projects.vercel.app'
 ).split(',')
 
 # Permitir credenciais (cookies, headers de autenticação)
@@ -260,6 +260,11 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+]
+
+# Adicionar suporte para preview deployments do Vercel (*.vercel.app)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",  # Todos os deployments do Vercel
 ]
 
 # =============================================================================
