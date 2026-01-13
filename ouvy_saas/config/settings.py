@@ -84,8 +84,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware', # Adicionado para API
-    # 'django.middleware.common.CommonMiddleware',  # Desabilitado: Railway usa proxy reverse + ALLOWED_HOSTS já validado
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.common.CommonMiddleware',  # Desabilitado: Railway usa proxy reverse
+    # 'django.middleware.csrf.CsrfViewMiddleware',  # Desabilitado: API usa token auth, não cookie CSRF
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
