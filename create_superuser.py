@@ -1,12 +1,5 @@
 #!/usr/bin/env python
-import os
-import sys
-import django
-
-# Adiciona o diretório ouvy_saas ao path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'ouvy_saas'))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
+"""Script standalone para criar superusuário - execute via manage.py shell"""
 
 from django.contrib.auth import get_user_model
 
