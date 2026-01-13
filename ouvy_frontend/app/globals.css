@@ -123,7 +123,7 @@ select {
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-primary rounded-full hover:bg-primary-dark;
+  @apply bg-primary rounded-full hover:opacity-90 transition-opacity;
 }
 
 /* Animações customizadas */

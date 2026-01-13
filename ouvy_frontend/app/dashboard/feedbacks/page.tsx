@@ -40,8 +40,8 @@ export default function FeedbacksPage() {
     return matchesSearch && matchesStatus;
   });
 
-  const getCategoryBadge = (tipo: string) => {
-    const variants: { [key: string]: { label: string; variant: string } } = {
+  const getCategoryBadge = (tipo: string): { label: string; variant: "success" | "warning" | "error" | "info" | "primary" | "secondary" | "outline" } => {
+    const variants: { [key: string]: { label: string; variant: "success" | "warning" | "error" | "info" | "primary" | "secondary" | "outline" } } = {
       denuncia: { label: '🚨 Denúncia', variant: 'error' },
       sugestao: { label: '💡 Sugestão', variant: 'primary' },
       elogio: { label: '⭐ Elogio', variant: 'success' },
@@ -50,8 +50,8 @@ export default function FeedbacksPage() {
     return variants[tipo] || variants.reclamacao;
   };
 
-  const getStatusBadge = (status: string) => {
-    const variants: { [key: string]: { label: string; variant: string } } = {
+  const getStatusBadge = (status: string): { label: string; variant: "success" | "warning" | "error" | "info" | "primary" | "secondary" | "outline" } => {
+    const variants: { [key: string]: { label: string; variant: "success" | "warning" | "error" | "info" | "primary" | "secondary" | "outline" } } = {
       pendente: { label: 'Pendente', variant: 'warning' },
       em_analise: { label: 'Em Análise', variant: 'primary' },
       resolvido: { label: 'Resolvido', variant: 'success' },

@@ -254,7 +254,7 @@ export default function LandingPage() {
           <Button
             variant="default"
             size="lg"
-            className="bg-primary hover:bg-primary-dark"
+            className="bg-primary hover:opacity-90 transition-opacity"
           >
             Começar Grátis <ArrowRight className="w-4 h-4" />
           </Button>

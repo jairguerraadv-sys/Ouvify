@@ -9,7 +9,7 @@ interface LogoProps {
   className?: string;
   width?: number;
   height?: number;
-  variant?: 'full' | 'icon' | 'text';
+  variant?: 'full' | 'icon' | 'text' | 'icon-only';
   linkTo?: string;
   darkMode?: boolean;
   colorScheme?: 'auto' | 'primary' | 'white';
@@ -96,7 +96,7 @@ export function Logo({
 
   // Variantes de layout
   const LogoContent = () => {
-    if (variant === 'icon') {
+    if (variant === 'icon' || variant === 'icon-only') {
       return (
         <div className={cn('flex items-center', className)}>
           <SonicWaveIcon />

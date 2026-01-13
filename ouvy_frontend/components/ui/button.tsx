@@ -12,10 +12,10 @@ const buttonVariants = cva(
       variant: {
         // Primário: Cyan vibrante
         default:
-          "bg-primary text-white shadow-md hover:bg-primary-dark hover:shadow-lg active:scale-95",
+          "bg-primary text-white shadow-md hover:opacity-90 hover:shadow-lg active:scale-95 transition-all",
         // Secundário: Azul marinho
         secondary:
-          "bg-secondary text-white shadow-md hover:bg-secondary-dark hover:shadow-lg active:scale-95",
+          "bg-secondary text-white shadow-md hover:opacity-90 hover:shadow-lg active:scale-95 transition-all",
         // Outline: Bordas primárias
         outline:
           "border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all",
