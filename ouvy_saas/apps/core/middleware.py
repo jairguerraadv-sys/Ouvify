@@ -26,6 +26,8 @@ class TenantMiddleware:
         '/api/check-subdominio/',
         '/api-token-auth/',
         '/api/token/',
+        '/health/',  # Health check para monitoring
+        '/api/',  # Todas as rotas API (já filtradas por permissions nas views)
     ]
     
     def __init__(self, get_response):
