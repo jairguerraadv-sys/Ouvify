@@ -6,6 +6,8 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
 from rest_framework.routers import DefaultRouter
 from apps.feedbacks.views import FeedbackViewSet
 from apps.core.views import home
@@ -18,6 +20,11 @@ from apps.tenants.views import (
     StripeWebhookView,
 )
 from rest_framework.authtoken.views import obtain_auth_token
+
+@require_http_methods(["GET"])
+def health_check(request):
+    """Health check endpoint for deployment monitoring."""
+    return JsonResponse({"status": "ok"}, status=200)
 
 # Router DRF - Gera automaticamente rotas REST + actions customizadas
 router = DefaultRouter()
@@ -37,6 +44,7 @@ router.register(r'admin/tenants', TenantAdminViewSet, basename='admin-tenants')
 
 urlpatterns = [
     path('', home, name='home'),  # Rota raiz para teste de multi-tenancy
+    path('health/', health_check, name='health-check'),  # Health check endpoint
     path('admin/', admin.site.urls),
     
     # Endpoint público para informações do tenant atual
