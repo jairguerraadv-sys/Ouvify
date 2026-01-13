@@ -3,10 +3,10 @@
 import { useState } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Header } from '@/components/dashboard/header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/ui/badge-chip';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import {
@@ -41,21 +41,21 @@ export default function FeedbacksPage() {
   });
 
   const getCategoryBadge = (tipo: string) => {
-    const variants: { [key: string]: { label: string; className: string } } = {
-      denuncia: { label: '🚨 Denúncia', className: 'bg-error/10 text-error hover:bg-error/10' },
-      sugestao: { label: '💡 Sugestão', className: 'bg-primary/10 text-primary hover:bg-primary/10' },
-      elogio: { label: '⭐ Elogio', className: 'bg-success/10 text-success hover:bg-success/10' },
-      reclamacao: { label: '😔 Reclamação', className: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-100' }
+    const variants: { [key: string]: { label: string; variant: string } } = {
+      denuncia: { label: '🚨 Denúncia', variant: 'error' },
+      sugestao: { label: '💡 Sugestão', variant: 'primary' },
+      elogio: { label: '⭐ Elogio', variant: 'success' },
+      reclamacao: { label: '😔 Reclamação', variant: 'warning' }
     };
     return variants[tipo] || variants.reclamacao;
   };
 
   const getStatusBadge = (status: string) => {
-    const variants: { [key: string]: { label: string; className: string } } = {
-      pendente: { label: 'Pendente', className: 'bg-warning/10 text-warning hover:bg-warning/10' },
-      em_analise: { label: 'Em Análise', className: 'bg-primary/10 text-primary hover:bg-primary/10' },
-      resolvido: { label: 'Resolvido', className: 'bg-success/10 text-success hover:bg-success/10' },
-      fechado: { label: 'Fechado', className: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-100' }
+    const variants: { [key: string]: { label: string; variant: string } } = {
+      pendente: { label: 'Pendente', variant: 'warning' },
+      em_analise: { label: 'Em Análise', variant: 'primary' },
+      resolvido: { label: 'Resolvido', variant: 'success' },
+      fechado: { label: 'Fechado', variant: 'outline' }
     };
     return variants[status] || variants.pendente;
   };
@@ -70,7 +70,7 @@ export default function FeedbacksPage() {
   };
 
   return (
-    <div className="flex h-screen bg-neutral-50">
+    <div className="flex h-screen bg-slate-50">
       {/* Sidebar */}
       <Sidebar user={user} />
 
@@ -86,15 +86,15 @@ export default function FeedbacksPage() {
         {/* Content */}
         <main className="flex-1 overflow-auto">
           <div className="p-6 lg:p-8">
-            <Card variant="elevated" className="border-neutral-200">
+            <Card variant="elevated">
               {/* Toolbar */}
-              <CardHeader className="border-b border-neutral-200 pb-4">
+              <CardHeader className="border-b border-neutral-100 pb-4">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                   <div>
-                    <CardTitle className="text-secondary">Lista de Feedbacks</CardTitle>
-                    <CardDescription className="text-neutral-600">
+                    <div className="font-semibold text-secondary">Lista de Feedbacks</div>
+                    <div className="text-sm text-neutral-600 mt-1">
                       {filteredFeedbacks.length} feedback{filteredFeedbacks.length !== 1 ? 's' : ''}
-                    </CardDescription>
+                    </div>
                   </div>
                   <Button variant="default">+ Novo Feedback</Button>
                 </div>
@@ -107,7 +107,7 @@ export default function FeedbacksPage() {
                       placeholder="Buscar por protocolo ou termo..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      className="pl-10 border-neutral-200 focus:ring-primary focus:border-primary"
+                      className="pl-10 border-neutral-200 focus:ring-primary"
                     />
                   </div>
                   <DropdownMenu>
@@ -126,7 +126,7 @@ export default function FeedbacksPage() {
                         <DropdownMenuItem
                           key={status}
                           onClick={() => setStatusFilter(status)}
-                          className={statusFilter === status ? 'bg-primary/10 text-primary' : ''}
+                          className={statusFilter === status ? 'bg-neutral-100' : ''}
                         >
                           {status === 'pendente' && 'Pendente'}
                           {status === 'em_analise' && 'Em Análise'}
@@ -202,25 +202,25 @@ export default function FeedbacksPage() {
                           return (
                             <TableRow
                               key={feedback.id}
-                              className="border-slate-200 hover:bg-slate-50 transition-colors"
+                              className="border-neutral-200 hover:bg-cyan-50/30 transition-colors"
                             >
-                              <TableCell className="font-mono text-sm text-slate-700">
+                              <TableCell className="font-mono text-sm text-neutral-700">
                                 {feedback.protocolo}
                               </TableCell>
                               <TableCell className="max-w-xs truncate">
-                                {feedback.anonimo && <span className="text-xs text-slate-500 mr-2">🔒</span>}
-                                <span className="text-slate-900">{feedback.titulo}</span>
+                                {feedback.anonimo && <span className="text-xs text-neutral-500 mr-2">🔒</span>}
+                                <span className="text-secondary">{feedback.titulo}</span>
                               </TableCell>
                               <TableCell>
-                                <Badge className={categoryBadge.className}>
+                                <Badge variant={categoryBadge.variant}>
                                   {categoryBadge.label}
                                 </Badge>
                               </TableCell>
-                              <TableCell className="text-sm text-slate-600">
+                              <TableCell className="text-sm text-neutral-600">
                                 {formatDate(feedback.data_criacao)}
                               </TableCell>
                               <TableCell>
-                                <Badge className={statusBadge.className}>
+                                <Badge variant={statusBadge.variant}>
                                   {statusBadge.label}
                                 </Badge>
                               </TableCell>

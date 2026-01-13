@@ -511,7 +511,7 @@ export default function CadastroPage() {
             {/* Login Link */}
             <p className="text-center text-neutral-600 text-sm">
               Já tem conta?{' '}
-              <Link href="/login" className="text-primary font-semibold hover:opacity-80 transition">
+              <Link href="/login" className="text-primary font-semibold hover:text-primary/80 transition">
                 Entre aqui
               </Link>
             </p>

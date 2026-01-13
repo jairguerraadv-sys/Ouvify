@@ -107,15 +107,10 @@ export default function LoginPage() {
         <div className="p-6 border-t border-neutral-100 text-center">
           <p className="text-sm text-neutral-600">
             Não tem conta?{" "}
-            <a href="/cadastro" className="text-primary font-semibold hover:opacity-80 transition">
+            <a href="/cadastro" className="text-primary font-semibold hover:text-primary/80 transition">
               Cadastre-se
             </a>
           </p>
-        </div>
-      </Card>
-    </main>
-  );
-}
         </div>
       </Card>
     </main>

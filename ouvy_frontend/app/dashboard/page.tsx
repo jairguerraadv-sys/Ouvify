@@ -2,8 +2,8 @@
 
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Header } from '@/components/dashboard/header';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge, Chip } from '@/components/ui/badge-chip';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge-chip';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -116,7 +116,8 @@ export default function DashboardPage() {
     return icons[type] || <MessageSquare className="h-5 w-5" />;
   };
 
-    <div className="flex h-screen bg-neutral-50">
+  return (
+    <div className="flex h-screen bg-slate-50">
       {/* Sidebar */}
       <Sidebar user={user} />
 
@@ -133,12 +134,11 @@ export default function DashboardPage() {
           user={user}
         />
 
-        {/* Content */}
         <main className="flex-1 overflow-auto">
           <div className="p-6 lg:p-8 space-y-8">
             {/* Subscription Status Banner */}
             {user.plano === 'free' ? (
-              <div className="bg-gradient-to-r from-cyan-50/50 to-cyan-100/50 border border-primary/20 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-cyan-50 to-primary/10 border border-primary/20 rounded-lg p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <Zap className="h-8 w-8 text-primary" />
@@ -175,12 +175,12 @@ export default function DashboardPage() {
             {/* KPI Cards - Grid 2x2 ou 4x1 */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {kpis.map((kpi, idx) => (
-                <Card key={idx} variant="elevated" className="hover:shadow-md transition-shadow">
+                <Card key={idx} variant="elevated">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-neutral-600">
+                      <div className="text-sm font-medium text-neutral-600">
                         {kpi.title}
-                      </CardTitle>
+                      </div>
                       <div className={`p-2 rounded-lg ${kpi.color}`}>
                         {kpi.icon}
                       </div>
@@ -210,8 +210,10 @@ export default function DashboardPage() {
               {/* Gráfico - 2/3 da largura */}
               <Card variant="elevated" className="lg:col-span-2">
                 <CardHeader>
-                  <CardTitle>Denúncias por Mês</CardTitle>
-                  <CardDescription>Histórico dos últimos 6 meses</CardDescription>
+                  <div>
+                    <div className="font-semibold text-secondary">Denúncias por Mês</div>
+                    <p className="text-sm text-neutral-600 mt-1">Histórico dos últimos 6 meses</p>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder para gráfico */}
@@ -227,7 +229,7 @@ export default function DashboardPage() {
               {/* Atividades - 1/3 */}
               <Card variant="elevated">
                 <CardHeader>
-                  <CardTitle className="text-lg">Atividades Recentes</CardTitle>
+                  <div className="font-semibold text-secondary text-lg">Atividades Recentes</div>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {activities.map((activity) => (
@@ -249,14 +251,14 @@ export default function DashboardPage() {
 
             {/* Feedbacks Recentes */}
             <Card variant="elevated">
-              <CardHeader className="flex flex-row items-center justify-between">
+              <CardHeader className="flex flex-row items-center justify-between border-b border-neutral-100 pb-4">
                 <div>
-                  <CardTitle>Feedbacks Recentes</CardTitle>
-                  <CardDescription>Últimos feedbacks recebidos</CardDescription>
+                  <div className="font-semibold text-secondary">Feedbacks Recentes</div>
+                  <p className="text-sm text-neutral-600 mt-1">Últimos feedbacks recebidos</p>
                 </div>
-                <Button variant="outline" size="sm">Ver todos</Button>
+                <Button variant="outline" size="md">Ver todos</Button>
               </CardHeader>
-              <CardContent>
+              <CardContent className="pt-6">
                 <div className="space-y-4">
                   {[
                     {
@@ -283,7 +285,7 @@ export default function DashboardPage() {
                   ].map((item) => (
                     <div
                       key={item.protocolo}
-                      className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 hover:border-primary/30 hover:bg-primary/5 transition-all group"
+                      className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 hover:border-primary/30 hover:bg-cyan-50/30 transition-all group"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
@@ -303,7 +305,7 @@ export default function DashboardPage() {
                             item.status === 'resolvido'
                               ? 'success'
                               : item.status === 'em_analise'
-                                ? 'warning'
+                                ? 'primary'
                                 : 'outline'
                           }
                         >
@@ -311,7 +313,7 @@ export default function DashboardPage() {
                         </Badge>
                         <Button
                           variant="ghost"
-                          size="icon"
+                          size="iconSm"
                           className="opacity-0 group-hover:opacity-100 transition-opacity"
                         >
                           <MoreHorizontal className="h-4 w-4" />

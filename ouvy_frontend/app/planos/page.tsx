@@ -3,11 +3,9 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge-chip';
+import { Badge } from '@/components/ui/badge';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
-import { NavBar } from '@/components/ui/navbar-footer';
-import { Footer } from '@/components/ui/navbar-footer';
 
 interface Plan {
   id: string;
@@ -126,58 +124,52 @@ export default function PlanosPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white via-neutral-50 to-cyan-50">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Header */}
-      <NavBar links={[
-        { href: '/', label: 'Início' },
-        { href: '/planos', label: 'Planos' }
-      ]} sticky />
-
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-secondary mb-4">
+        <div className="text-center">
+          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Escolha o plano ideal
           </h1>
-          <p className="text-xl text-neutral-600 mb-8">
+          <p className="text-xl text-gray-600 mb-8">
             Escale sua operação com feedbacks estruturados
           </p>
         </div>
 
         {/* Error Message */}
         {error && (
-          <div className="max-w-md mx-auto mb-8 p-4 bg-error/10 border border-error text-error rounded-lg">
-            <p className="text-sm">{error}</p>
+          <div className="max-w-md mx-auto mb-8 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700 text-sm">{error}</p>
           </div>
         )}
 
         {/* Plans Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-8 mb-12">
           {PLANS.map((plan) => (
             <Card
               key={plan.id}
-              variant={plan.badge ? 'elevated' : 'default'}
               className={`flex flex-col transition-all ${
-                plan.badge ? 'ring-2 ring-primary md:scale-105' : ''
+                plan.badge ? 'ring-2 ring-blue-500 md:scale-105' : ''
               }`}
             >
               {/* Badge */}
               {plan.badge && (
                 <div className="flex justify-center pt-4">
-                  <Badge variant="primary">{plan.badge}</Badge>
+                  <Badge className="bg-blue-500 text-white">{plan.badge}</Badge>
                 </div>
               )}
 
               <CardHeader>
-                <CardTitle className="text-2xl text-secondary">{plan.name}</CardTitle>
-                <CardDescription className="text-neutral-600">{plan.description}</CardDescription>
+                <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                <CardDescription>{plan.description}</CardDescription>
 
                 {/* Price */}
                 <div className="mt-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-5xl font-bold text-primary">
+                    <span className="text-5xl font-bold text-gray-900">
                       {plan.price}
                     </span>
-                    <span className="text-neutral-600">{plan.currency}/mês</span>
+                    <span className="text-gray-600">{plan.currency}/mês</span>
                   </div>
                 </div>
               </CardHeader>
@@ -187,8 +179,8 @@ export default function PlanosPage() {
                 <div className="space-y-4 flex-1">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                      <span className="text-neutral-700">{feature}</span>
+                      <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -198,8 +190,7 @@ export default function PlanosPage() {
                   <Button
                     onClick={() => handleSubscribe(plan.id)}
                     disabled={plan.isDisabled || loadingPlan === plan.id}
-                    variant={plan.badge ? 'default' : 'outline'}
-                    size="lg"
+                    variant={plan.buttonVariant}
                     className="w-full"
                   >
                     {loadingPlan === plan.id ? (
@@ -219,9 +210,9 @@ export default function PlanosPage() {
 
         {/* Footer CTA */}
         <div className="text-center">
-          <p className="text-neutral-600 mb-4">
+          <p className="text-gray-600 mb-4">
             Dúvidas? Entre em contato com nosso suporte em{' '}
-            <a href="mailto:support@ouvy.com" className="text-primary hover:opacity-80 font-semibold transition">
+            <a href="mailto:support@ouvy.com" className="text-blue-600 hover:underline">
               support@ouvy.com
             </a>
           </p>
@@ -230,8 +221,6 @@ export default function PlanosPage() {
           </Link>
         </div>
       </div>
-
-      <Footer />
-    </main>
+    </div>
   );
 }
