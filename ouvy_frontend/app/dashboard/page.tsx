@@ -3,7 +3,7 @@
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Header } from '@/components/dashboard/header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Badge, Chip } from '@/components/ui/badge-chip';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -54,27 +54,27 @@ export default function DashboardPage() {
       value: stats?.total.toString() || '0',
       change: stats?.hoje ? `+${stats.hoje} hoje` : undefined,
       icon: <MessageSquare className="h-6 w-6" />,
-      color: 'bg-blue-50 text-blue-600'
+      color: 'bg-primary/10 text-primary'
     },
     {
       title: 'Pendentes',
       value: stats?.pendentes.toString() || '0',
       change: stats ? `${Math.round((stats.pendentes / stats.total) * 100)}% do total` : undefined,
       icon: <Clock className="h-6 w-6" />,
-      color: 'bg-yellow-50 text-yellow-600'
+      color: 'bg-warning/10 text-warning'
     },
     {
       title: 'Resolvidos',
       value: stats?.resolvidos.toString() || '0',
       change: stats ? `${Math.round((stats.resolvidos / stats.total) * 100)}% do total` : undefined,
       icon: <CheckCircle className="h-6 w-6" />,
-      color: 'bg-green-50 text-green-600'
+      color: 'bg-success/10 text-success'
     },
     {
       title: 'Taxa de Resolução',
       value: stats?.taxa_resolucao || '0%',
       icon: <TrendingUp className="h-6 w-6" />,
-      color: 'bg-purple-50 text-purple-600'
+      color: 'bg-secondary/10 text-secondary'
     }
   ];
 
@@ -116,8 +116,7 @@ export default function DashboardPage() {
     return icons[type] || <MessageSquare className="h-5 w-5" />;
   };
 
-  return (
-    <div className="flex h-screen bg-slate-50">
+    <div className="flex h-screen bg-neutral-50">
       {/* Sidebar */}
       <Sidebar user={user} />
 
@@ -139,17 +138,17 @@ export default function DashboardPage() {
           <div className="p-6 lg:p-8 space-y-8">
             {/* Subscription Status Banner */}
             {user.plano === 'free' ? (
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-cyan-50/50 to-cyan-100/50 border border-primary/20 rounded-lg p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <Zap className="h-8 w-8 text-blue-600" />
+                    <Zap className="h-8 w-8 text-primary" />
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">Plano Free Ativo</h3>
-                      <p className="text-sm text-gray-600">Você está usando o plano gratuito. Upgrade para acessar mais funcionalidades.</p>
+                      <h3 className="text-lg font-semibold text-secondary">Plano Free Ativo</h3>
+                      <p className="text-sm text-neutral-600">Você está usando o plano gratuito. Upgrade para acessar mais funcionalidades.</p>
                     </div>
                   </div>
                   <Link href="/planos">
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button variant="default">
                       Fazer Upgrade
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
@@ -157,18 +156,18 @@ export default function DashboardPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-6">
+              <div className="bg-gradient-to-r from-success/10 to-success/5 border border-success/20 rounded-lg p-6">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <CheckCircle className="h-8 w-8 text-green-600" />
+                    <CheckCircle className="h-8 w-8 text-success" />
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-lg font-semibold text-secondary">
                         Plano {user.plano?.toUpperCase()} Ativo
                       </h3>
-                      <p className="text-sm text-gray-600">Sua assinatura está ativa e funcionando normalmente.</p>
+                      <p className="text-sm text-neutral-600">Sua assinatura está ativa e funcionando normalmente.</p>
                     </div>
                   </div>
-                  <Badge className="bg-green-600">✓ Premium</Badge>
+                  <Badge variant="primary">✓ Premium</Badge>
                 </div>
               </div>
             )}
@@ -176,10 +175,10 @@ export default function DashboardPage() {
             {/* KPI Cards - Grid 2x2 ou 4x1 */}
             <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
               {kpis.map((kpi, idx) => (
-                <Card key={idx} className="border-slate-200 hover:shadow-md transition-shadow">
+                <Card key={idx} variant="elevated" className="hover:shadow-md transition-shadow">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm font-medium text-slate-600">
+                      <CardTitle className="text-sm font-medium text-neutral-600">
                         {kpi.title}
                       </CardTitle>
                       <div className={`p-2 rounded-lg ${kpi.color}`}>
@@ -195,9 +194,9 @@ export default function DashboardPage() {
                       </div>
                     ) : (
                       <>
-                        <div className="text-3xl font-bold text-slate-900">{kpi.value}</div>
+                        <div className="text-3xl font-bold text-secondary">{kpi.value}</div>
                         {kpi.change && (
-                          <p className="text-xs text-slate-600 mt-1">{kpi.change}</p>
+                          <p className="text-xs text-neutral-600 mt-1">{kpi.change}</p>
                         )}
                       </>
                     )}
@@ -209,14 +208,14 @@ export default function DashboardPage() {
             {/* Bento Grid - Gráficos e Atividades */}
             <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
               {/* Gráfico - 2/3 da largura */}
-              <Card className="lg:col-span-2 border-slate-200">
+              <Card variant="elevated" className="lg:col-span-2">
                 <CardHeader>
                   <CardTitle>Denúncias por Mês</CardTitle>
                   <CardDescription>Histórico dos últimos 6 meses</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {/* Placeholder para gráfico */}
-                  <div className="h-64 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg flex items-center justify-center text-slate-500 border border-slate-200">
+                  <div className="h-64 bg-gradient-to-br from-neutral-50 to-neutral-100 rounded-lg flex items-center justify-center text-neutral-500 border border-neutral-200">
                     <div className="text-center">
                       <TrendingUp className="h-12 w-12 mx-auto mb-2 opacity-50" />
                       <p className="text-sm">Gráfico será exibido aqui com Recharts</p>
@@ -226,21 +225,21 @@ export default function DashboardPage() {
               </Card>
 
               {/* Atividades - 1/3 */}
-              <Card className="border-slate-200">
+              <Card variant="elevated">
                 <CardHeader>
                   <CardTitle className="text-lg">Atividades Recentes</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {activities.map((activity) => (
-                    <div key={activity.id} className="flex gap-3 pb-4 border-b border-slate-100 last:border-0 last:pb-0">
+                    <div key={activity.id} className="flex gap-3 pb-4 border-b border-neutral-100 last:border-0 last:pb-0">
                       <div className="flex-shrink-0 mt-1">
                         {getActivityIcon(activity.type)}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-slate-900 leading-tight">
+                        <p className="text-sm text-secondary leading-tight">
                           {activity.description}
                         </p>
-                        <p className="text-xs text-slate-500 mt-1">{activity.time}</p>
+                        <p className="text-xs text-neutral-500 mt-1">{activity.time}</p>
                       </div>
                     </div>
                   ))}
@@ -249,7 +248,7 @@ export default function DashboardPage() {
             </div>
 
             {/* Feedbacks Recentes */}
-            <Card className="border-slate-200">
+            <Card variant="elevated">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
                   <CardTitle>Feedbacks Recentes</CardTitle>
@@ -284,27 +283,27 @@ export default function DashboardPage() {
                   ].map((item) => (
                     <div
                       key={item.protocolo}
-                      className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all group"
+                      className="flex items-center justify-between p-4 rounded-lg border border-neutral-200 hover:border-primary/30 hover:bg-primary/5 transition-all group"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <code className="text-xs bg-slate-100 px-2 py-1 rounded font-mono text-slate-700">
+                          <code className="text-xs bg-neutral-100 px-2 py-1 rounded font-mono text-neutral-700">
                             {item.protocolo}
                           </code>
                           <Badge variant="outline" className="text-xs">
                             {item.tipo}
                           </Badge>
                         </div>
-                        <p className="text-sm text-slate-900 font-medium truncate">{item.titulo}</p>
-                        <p className="text-xs text-slate-600 mt-1">{item.data}</p>
+                        <p className="text-sm text-secondary font-medium truncate">{item.titulo}</p>
+                        <p className="text-xs text-neutral-600 mt-1">{item.data}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge
                           variant={
                             item.status === 'resolvido'
-                              ? 'default'
+                              ? 'success'
                               : item.status === 'em_analise'
-                                ? 'secondary'
+                                ? 'warning'
                                 : 'outline'
                           }
                         >

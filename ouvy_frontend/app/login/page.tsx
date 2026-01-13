@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Card } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
 import axios from "axios";
 
@@ -24,7 +22,6 @@ export default function LoginPage() {
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
       
-      // Tentar obter token via Django REST auth
       const response = await axios.post(`${apiUrl}/api-token-auth/`, {
         username: email,
         password: senha,
@@ -47,64 +44,78 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md p-8">
-        <div className="flex justify-center mb-6">
-          <Logo width={160} height={40} />
-        </div>
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold mb-2">Bem-vindo de volta</h1>
-          <p className="text-muted-foreground">Entre na sua conta Ouvy</p>
-        </div>
+    <main className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-cyan-50 flex items-center justify-center p-4">
+      <Card variant="elevated" className="w-full max-w-md">
+        <CardHeader>
+          <div className="flex justify-center mb-6">
+            <Logo variant="full" className="justify-center" />
+          </div>
+          <h1 className="text-3xl font-bold text-secondary text-center mb-2">
+            Bem-vindo de volta
+          </h1>
+          <p className="text-neutral-500 text-center">
+            Entre na sua conta Ouvy
+          </p>
+        </CardHeader>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
-            <Input
+            <label className="block text-sm font-semibold text-secondary mb-2">
+              Email
+            </label>
+            <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="seu@email.com"
+              className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Senha</label>
-            <Input
+            <label className="block text-sm font-semibold text-secondary mb-2">
+              Senha
+            </label>
+            <input
               type="password"
               value={senha}
               onChange={(e) => setSenha(e.target.value)}
               placeholder="••••••••"
+              className="w-full px-4 py-2.5 border border-neutral-200 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
               required
             />
           </div>
 
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+            <div className="p-3 bg-error/10 border border-error text-error rounded-lg text-sm font-medium">
               {error}
             </div>
           )}
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button 
+            type="submit" 
+            variant="default"
+            size="lg"
+            className="w-full" 
+            isLoading={loading}
+          >
             {loading ? "Entrando..." : "Entrar"}
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground">
+        <div className="p-6 border-t border-neutral-100 text-center">
+          <p className="text-sm text-neutral-600">
             Não tem conta?{" "}
-            <a href="/cadastro" className="text-primary hover:underline font-medium">
+            <a href="/cadastro" className="text-primary font-semibold hover:opacity-80 transition">
               Cadastre-se
             </a>
           </p>
         </div>
-
-        <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded">
-          <p className="text-xs text-blue-800">
-            <strong>ℹ️ Nota:</strong> Esta página requer configuração da autenticação Django REST.
-            Use o endpoint <code className="bg-blue-100 px-1 rounded">/api-token-auth/</code> ou ajuste conforme seu backend.
-          </p>
+      </Card>
+    </main>
+  );
+}
         </div>
       </Card>
     </main>

@@ -93,7 +93,7 @@ body {
 
 /* Links com cor primária */
 a {
-  @apply text-primary hover:text-primary-dark transition-colors;
+  @apply text-primary hover:opacity-80 transition-all;
   text-decoration: none;
 }
 

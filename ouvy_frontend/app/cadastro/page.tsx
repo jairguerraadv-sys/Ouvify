@@ -4,8 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
-import { AlertCircle, CheckCircle, Loader, XCircle } from 'lucide-react';
+import { AlertCircle, CheckCircle, Loader, XCircle, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
+import { Card, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge-chip';
 
 interface FormData {
   nome: string;
@@ -279,253 +282,259 @@ export default function CadastroPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
-        <div className="bg-white rounded-2xl shadow-lg p-12 max-w-md w-full text-center">
-          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-12 h-12 text-green-600" />
+      <main className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-cyan-50 flex items-center justify-center p-4">
+        <Card variant="elevated" className="w-full max-w-md text-center">
+          <CardHeader>
+            <div className="w-20 h-20 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-6">
+              <CheckCircle className="w-12 h-12 text-success" />
+            </div>
+            <h2 className="text-3xl font-bold text-secondary mb-2">Conta Criada!</h2>
+            <p className="text-neutral-600">
+              Bem-vindo ao Ouvy, {formData.nome.split(' ')[0]}!
+            </p>
+          </CardHeader>
+          <div className="p-6">
+            <p className="text-neutral-600 mb-6">
+              Você será redirecionado para seu dashboard em segundos...
+            </p>
+            <div className="w-8 h-8 border-4 border-cyan-100 border-t-primary rounded-full animate-spin mx-auto"></div>
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Conta Criada!</h2>
-          <p className="text-slate-600 mb-2">
-            Bem-vindo ao Ouvy, {formData.nome.split(' ')[0]}!
-          </p>
-          <p className="text-slate-600 mb-6">
-            Você será redirecionado para seu dashboard em segundos...
-          </p>
-          <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
-        </div>
-      </div>
+        </Card>
+      </main>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pt-20 pb-12 px-4">
+    <main className="min-h-screen bg-gradient-to-br from-white via-neutral-50 to-cyan-50 pt-12 pb-12 px-4">
       <div className="max-w-md mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <Link href="/" className="inline-block mb-6">
-            <Logo width={160} height={40} />
+        <div className="text-center mb-10">
+          <Link href="/" className="inline-block mb-6 hover:opacity-80 transition">
+            <Logo variant="full" />
           </Link>
-          <h1 className="text-4xl font-bold text-slate-900 mt-6 mb-2">Criar Conta</h1>
-          <p className="text-slate-600">Comece seu canal de ética agora</p>
+          <h1 className="text-4xl font-bold text-secondary mt-6 mb-2">
+            Criar Conta
+          </h1>
+          <p className="text-neutral-600">
+            Comece seu canal de ética agora
+          </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-8 space-y-6">
-          {/* Erro geral */}
-          {errors.submit && (
-            <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex gap-3">
-              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-red-700 font-medium">Erro ao criar conta</p>
-                <p className="text-red-600 text-sm mt-1">
-                  {typeof errors.submit === 'string' ? errors.submit : errors.submit[0]}
-                </p>
+        <Card variant="elevated">
+          <form onSubmit={handleSubmit} className="p-8 space-y-4">
+            {/* Erro geral */}
+            {errors.submit && (
+              <div className="bg-error/10 border border-error text-error rounded-lg p-4 flex gap-3">
+                <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="font-medium">Erro ao criar conta</p>
+                  <p className="text-sm mt-1">
+                    {typeof errors.submit === 'string' ? errors.submit : errors.submit[0]}
+                  </p>
+                </div>
               </div>
-            </div>
-          )}
-
-          {/* Nome Completo */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Nome Completo
-            </label>
-            <input
-              type="text"
-              name="nome"
-              value={formData.nome}
-              onChange={handleChange}
-              placeholder="João Silva Santos"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
-                errors.nome
-                  ? 'border-red-300 bg-red-50'
-                  : 'border-slate-200 focus:border-blue-500'
-              }`}
-            />
-            {errors.nome && (
-              <p className="text-red-600 text-sm mt-1">
-                {typeof errors.nome === 'string' ? errors.nome : errors.nome[0]}
-              </p>
             )}
-          </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Email Corporativo
-            </label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="seu@empresa.com"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
-                errors.email
-                  ? 'border-red-300 bg-red-50'
-                  : 'border-slate-200 focus:border-blue-500'
-              }`}
-            />
-            {errors.email && (
-              <p className="text-red-600 text-sm mt-1">
-                {typeof errors.email === 'string' ? errors.email : errors.email[0]}
-              </p>
-            )}
-          </div>
-
-          {/* Senha */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Senha
-            </label>
-            <input
-              type="password"
-              name="senha"
-              value={formData.senha}
-              onChange={handleChange}
-              placeholder="Mín. 8 caracteres, 1 letra, 1 número"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
-                errors.senha
-                  ? 'border-red-300 bg-red-50'
-                  : 'border-slate-200 focus:border-blue-500'
-              }`}
-            />
-            {errors.senha && (
-              <p className="text-red-600 text-sm mt-1">
-                {typeof errors.senha === 'string' ? errors.senha : errors.senha[0]}
-              </p>
-            )}
-          </div>
-
-          {/* Divider */}
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-slate-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-slate-600 font-medium">Dados da Empresa</span>
-            </div>
-          </div>
-
-          {/* Nome da Empresa */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Nome da Empresa
-            </label>
-            <input
-              type="text"
-              name="nome_empresa"
-              value={formData.nome_empresa}
-              onChange={handleChange}
-              placeholder="Minha Empresa LTDA"
-              className={`w-full px-4 py-3 rounded-lg border-2 transition focus:outline-none ${
-                errors.nome_empresa
-                  ? 'border-red-300 bg-red-50'
-                  : 'border-slate-200 focus:border-blue-500'
-              }`}
-            />
-            {errors.nome_empresa && (
-              <p className="text-red-600 text-sm mt-1">
-                {typeof errors.nome_empresa === 'string' ? errors.nome_empresa : errors.nome_empresa[0]}
-              </p>
-            )}
-          </div>
-
-          {/* Subdomínio */}
-          <div>
-            <label className="block text-sm font-semibold text-slate-900 mb-2">
-              Seu Subdomínio
-            </label>
-            <div className="flex items-center">
+            {/* Nome Completo */}
+            <div>
+              <label className="block text-sm font-semibold text-secondary mb-2">
+                Nome Completo
+              </label>
               <input
                 type="text"
-                name="subdominio_desejado"
-                value={formData.subdominio_desejado}
+                name="nome"
+                value={formData.nome}
                 onChange={handleChange}
-                placeholder="minhaempresa"
-                className={`flex-1 px-4 py-3 rounded-l-lg border-2 transition focus:outline-none ${
-                  errors.subdominio_desejado
-                    ? 'border-red-300 bg-red-50'
-                    : 'border-slate-200 focus:border-blue-500'
+                placeholder="João Silva Santos"
+                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.nome
+                    ? 'border-error bg-error/5'
+                    : 'border-neutral-200'
                 }`}
               />
-              <div className="bg-slate-100 px-4 py-3 rounded-r-lg border-2 border-l-0 border-slate-200 text-slate-600 font-medium">
-                .ouvy.com
+              {errors.nome && (
+                <p className="text-error text-sm mt-1">
+                  {typeof errors.nome === 'string' ? errors.nome : errors.nome[0]}
+                </p>
+              )}
+            </div>
+
+            {/* Email */}
+            <div>
+              <label className="block text-sm font-semibold text-secondary mb-2">
+                Email Corporativo
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="seu@empresa.com"
+                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.email
+                    ? 'border-error bg-error/5'
+                    : 'border-neutral-200'
+                }`}
+              />
+              {errors.email && (
+                <p className="text-error text-sm mt-1">
+                  {typeof errors.email === 'string' ? errors.email : errors.email[0]}
+                </p>
+              )}
+            </div>
+
+            {/* Senha */}
+            <div>
+              <label className="block text-sm font-semibold text-secondary mb-2">
+                Senha
+              </label>
+              <input
+                type="password"
+                name="senha"
+                value={formData.senha}
+                onChange={handleChange}
+                placeholder="Mín. 8 caracteres"
+                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.senha
+                    ? 'border-error bg-error/5'
+                    : 'border-neutral-200'
+                }`}
+              />
+              {errors.senha && (
+                <p className="text-error text-sm mt-1">
+                  {typeof errors.senha === 'string' ? errors.senha : errors.senha[0]}
+                </p>
+              )}
+            </div>
+
+            {/* Divider */}
+            <div className="relative py-2">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-neutral-200"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-neutral-600 font-medium">Dados da Empresa</span>
               </div>
             </div>
-            <div className="mt-2 flex items-center justify-between">
-              {subdominioStatus === 'checking' && (
-                <span className="text-sm text-slate-500 flex items-center gap-2">
-                  <Loader className="w-4 h-4 animate-spin" />
-                  Verificando disponibilidade...
-                </span>
-              )}
-              {subdominioStatus === 'available' && (
-                <span className="text-sm text-green-600 flex items-center gap-2">
-                  <CheckCircle className="w-4 h-4" />
-                  Subdomínio disponível!
-                </span>
-              )}
-              {subdominioStatus === 'taken' && (
-                <span className="text-sm text-red-600 flex items-center gap-2">
-                  <XCircle className="w-4 h-4" />
-                  Já está em uso
-                </span>
-              )}
-              {subdominioStatus === 'invalid' && (
-                <span className="text-sm text-amber-600 flex items-center gap-2">
-                  <AlertCircle className="w-4 h-4" />
-                  Mínimo 3 caracteres válidos
-                </span>
+
+            {/* Nome da Empresa */}
+            <div>
+              <label className="block text-sm font-semibold text-secondary mb-2">
+                Nome da Empresa
+              </label>
+              <input
+                type="text"
+                name="nome_empresa"
+                value={formData.nome_empresa}
+                onChange={handleChange}
+                placeholder="Minha Empresa LTDA"
+                className={`w-full px-4 py-2.5 rounded-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                  errors.nome_empresa
+                    ? 'border-error bg-error/5'
+                    : 'border-neutral-200'
+                }`}
+              />
+              {errors.nome_empresa && (
+                <p className="text-error text-sm mt-1">
+                  {typeof errors.nome_empresa === 'string' ? errors.nome_empresa : errors.nome_empresa[0]}
+                </p>
               )}
             </div>
-            {errors.subdominio_desejado && (
-              <p className="text-red-600 text-sm mt-1">
-                {typeof errors.subdominio_desejado === 'string' ? errors.subdominio_desejado : errors.subdominio_desejado[0]}
-              </p>
-            )}
-          </div>
 
-          {/* Submit */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 text-white font-semibold py-3 rounded-lg transition flex items-center justify-center gap-2"
-          >
-            {loading ? (
-              <>
-                <Loader className="w-5 h-5 animate-spin" />
-                Criando conta...
-              </>
-            ) : (
-              'Criar Conta Grátis'
-            )}
-          </button>
+            {/* Subdomínio */}
+            <div>
+              <label className="block text-sm font-semibold text-secondary mb-2">
+                Seu Subdomínio
+              </label>
+              <div className="flex items-center">
+                <input
+                  type="text"
+                  name="subdominio_desejado"
+                  value={formData.subdominio_desejado}
+                  onChange={handleChange}
+                  placeholder="minhaempresa"
+                  className={`flex-1 px-4 py-2.5 rounded-l-lg border transition focus:ring-2 focus:ring-primary focus:border-transparent ${
+                    errors.subdominio_desejado
+                      ? 'border-error bg-error/5'
+                      : 'border-neutral-200'
+                  }`}
+                />
+                <div className="bg-neutral-100 px-3 py-2.5 rounded-r-lg border border-l-0 border-neutral-200 text-neutral-600 text-sm font-medium">
+                  .ouvy.com
+                </div>
+              </div>
+              <div className="mt-2 flex items-center justify-between">
+                {subdominioStatus === 'checking' && (
+                  <span className="text-sm text-neutral-500 flex items-center gap-2">
+                    <Loader className="w-4 h-4 animate-spin" />
+                    Verificando...
+                  </span>
+                )}
+                {subdominioStatus === 'available' && (
+                  <span className="text-sm text-success flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4" />
+                    Disponível!
+                  </span>
+                )}
+                {subdominioStatus === 'taken' && (
+                  <span className="text-sm text-error flex items-center gap-2">
+                    <XCircle className="w-4 h-4" />
+                    Já está em uso
+                  </span>
+                )}
+                {subdominioStatus === 'invalid' && (
+                  <span className="text-sm text-warning flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4" />
+                    Mínimo 3 caracteres válidos
+                  </span>
+                )}
+              </div>
+              {errors.subdominio_desejado && (
+                <p className="text-error text-sm mt-1">
+                  {typeof errors.subdominio_desejado === 'string' ? errors.subdominio_desejado : errors.subdominio_desejado[0]}
+                </p>
+              )}
+            </div>
 
-          {/* Login Link */}
-          <p className="text-center text-slate-600 text-sm">
-            Já tem conta?{' '}
-            <Link href="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
-              Entre aqui
-            </Link>
-          </p>
-        </form>
+            {/* Submit */}
+            <Button 
+              type="submit" 
+              variant="default"
+              size="lg"
+              className="w-full" 
+              isLoading={loading}
+            >
+              {loading ? "Criando conta..." : "Criar Conta Grátis"}
+            </Button>
+
+            {/* Login Link */}
+            <p className="text-center text-neutral-600 text-sm">
+              Já tem conta?{' '}
+              <Link href="/login" className="text-primary font-semibold hover:opacity-80 transition">
+                Entre aqui
+              </Link>
+            </p>
+          </form>
+        </Card>
 
         {/* Benefícios */}
-        <div className="mt-12 space-y-4 text-sm text-slate-600">
+        <div className="mt-10 space-y-3">
+          <p className="text-sm text-neutral-600 font-medium mb-4">Incluso no plano:</p>
           <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            <span>30 dias de teste grátis - sem cartão de crédito</span>
+            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+            <span className="text-sm text-neutral-700">30 dias de teste grátis - sem cartão de crédito</span>
           </div>
           <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            <span>Suporte por email 24/7</span>
+            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+            <span className="text-sm text-neutral-700">Suporte por email 24/7</span>
           </div>
           <div className="flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            <span>Personalizável com sua logo e cores</span>
+            <CheckCircle className="w-5 h-5 text-success flex-shrink-0" />
+            <span className="text-sm text-neutral-700">Personalizável com sua logo e cores</span>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
