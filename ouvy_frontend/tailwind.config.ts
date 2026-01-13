@@ -11,20 +11,32 @@ const config: Config = {
         // 🎨 Paleta Ouvy - Baseada na Logo
         // Ciano/Turquesa (Ondas da Logo) - Cor Principal
         primary: {
-          50: "#ECFEFF",
-          100: "#CFFAFE",
-          200: "#A5F3FC",
-          300: "#67E8F9",
-          400: "#22D3EE",
-          500: "#06B6D4", // Cor exata da logo
-          600: "#0891B2",
-          700: "#0E7490",
-          800: "#155E75",
-          900: "#164E63",
-          950: "#083344",
+          50: "#E6F9FA",
+          100: "#CCF3F5",
+          200: "#99E7EB",
+          300: "#66DBE1",
+          400: "#33CFD7",
+          500: "#00C2CB", // Ciano principal do logo
+          600: "#009BA3",
+          700: "#00747A",
+          800: "#004E52",
+          900: "#002729",
         },
         // Azul Escuro/Marinho (Texto da Logo) - Cor Secundária
         secondary: {
+          50: "#E8EBF0",
+          100: "#D1D7E1",
+          200: "#A3AFC3",
+          300: "#7587A5",
+          400: "#475F87",
+          500: "#0B1E3B", // Azul marinho do logo
+          600: "#09182F",
+          700: "#071223",
+          800: "#040C18",
+          900: "#02060C",
+        },
+        // Cores neutras (slate)
+        slate: {
           50: "#F8FAFC",
           100: "#F1F5F9",
           200: "#E2E8F0",
@@ -34,42 +46,13 @@ const config: Config = {
           600: "#475569",
           700: "#334155",
           800: "#1E293B",
-          900: "#0F172A", // Cor exata do texto da logo
-          950: "#020617",
+          900: "#0F172A",
         },
-        // Neutros elegantes
-        neutral: {
-          50: "#FAFAFA",
-          100: "#F5F5F5",
-          200: "#E5E5E5",
-          300: "#D4D4D4",
-          400: "#A3A3A3",
-          500: "#737373",
-          600: "#525252",
-          700: "#404040",
-          800: "#262626",
-          900: "#171717",
-          950: "#0A0A0A",
-        },
-        // Accent: Tom mais claro do ciano para destaques
-        accent: {
-          light: "#22D3EE",
-          DEFAULT: "#06B6D4",
-          dark: "#0891B2",
-        },
-        // Backgrounds
-        background: {
+        // Surfaces para fundos
+        surface: {
           DEFAULT: "#FFFFFF",
           secondary: "#F8FAFC",
           tertiary: "#F1F5F9",
-          dark: "#0F172A",
-        },
-        // Textos
-        text: {
-          primary: "#0F172A",
-          secondary: "#475569",
-          tertiary: "#64748B",
-          inverse: "#FFFFFF",
         },
         // Estados semânticos
         success: {
@@ -91,6 +74,19 @@ const config: Config = {
           light: "#DBEAFE",
           DEFAULT: "#3B82F6",
           dark: "#1D4ED8",
+        },
+        // Cor green (para ícones de sucesso)
+        green: {
+          50: "#F0FDF4",
+          100: "#DCFCE7",
+          200: "#BBF7D0",
+          300: "#86EFAC",
+          400: "#4ADE80",
+          500: "#10B981",
+          600: "#059669",
+          700: "#047857",
+          800: "#065F46",
+          900: "#064E3B",
         },
       },
       fontFamily: {
@@ -137,16 +133,9 @@ const config: Config = {
         },
       },
       boxShadow: {
-        xs: "0 1px 1px 0 rgba(10, 30, 59, 0.05)",
-        sm: "0 1px 2px 0 rgba(10, 30, 59, 0.05), 0 1px 1px -1px rgba(10, 30, 59, 0.04)",
-        DEFAULT: "0 1px 3px 0 rgba(10, 30, 59, 0.1), 0 1px 2px -1px rgba(10, 30, 59, 0.06)",
-        subtle: "0 2px 8px rgba(10, 30, 59, 0.08)",
-        md: "0 4px 6px -1px rgba(10, 30, 59, 0.1), 0 2px 4px -2px rgba(10, 30, 59, 0.06)",
-        lg: "0 10px 15px -3px rgba(10, 30, 59, 0.1), 0 4px 6px -4px rgba(10, 30, 59, 0.05)",
-        xl: "0 20px 25px -5px rgba(10, 30, 59, 0.1), 0 8px 10px -6px rgba(10, 30, 59, 0.04)",
-        "2xl": "0 25px 50px -12px rgba(10, 30, 59, 0.15)",
-        "3xl": "0 35px 60px -15px rgba(10, 30, 59, 0.2)",
-        neon: "0 0 20px rgba(0, 188, 212, 0.3)",
+        soft: "0 2px 8px rgba(11, 30, 59, 0.08)",
+        medium: "0 4px 16px rgba(11, 30, 59, 0.12)",
+        large: "0 8px 32px rgba(11, 30, 59, 0.16)",
       },
       borderRadius: {
         xs: "0.25rem",

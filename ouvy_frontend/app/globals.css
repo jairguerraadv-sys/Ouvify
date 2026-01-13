@@ -2,13 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: rgb(71 85 105);
+    background-color: rgb(255 255 255);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: rgb(11 30 59);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 /* ===== Design System Ouvy - Baseado na Logo ===== */
 
 /* ===== CSS Variables ===== */
 :root {
   /* Cores da Logo */
-  --primary: 6 182 212;        /* #06B6D4 - Ciano/Turquesa */
-  --secondary: 15 23 42;       /* #0F172A - Azul Escuro */
+  --primary: 0 194 203;        /* #00C2CB - Ciano */
+  --secondary: 11 30 59;       /* #0B1E3B - Azul Marinho */
   
   /* Backgrounds */
   --background: 255 255 255;
