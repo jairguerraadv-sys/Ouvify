@@ -16,6 +16,7 @@ import {
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Logo } from '@/components/ui/logo';
 
 interface SidebarProps {
   user?: {
@@ -88,21 +89,12 @@ export function Sidebar({ user }: SidebarProps) {
       >
         {/* Logo */}
         <div className="flex h-16 items-center border-b border-slate-200 px-6">
-          <Link href="/" className="flex items-center gap-2">
-            {imageError ? (
-              <span className="text-xl font-bold text-slate-900">Ouvy</span>
-            ) : (
-              <Image
-                src={logoSrc}
-                alt="Logo"
-                width={140}
-                height={40}
-                className="h-auto w-[140px]"
-                onError={() => setImageError(true)}
-                priority
-              />
-            )}
-          </Link>
+          <div className="hidden lg:block">
+            <Logo width={120} height={30} linkTo="/dashboard" />
+          </div>
+          <div className="block lg:hidden">
+            <Logo variant="icon-only" width={40} height={40} linkTo="/dashboard" />
+          </div>
         </div>
 
         {/* Navigation */}

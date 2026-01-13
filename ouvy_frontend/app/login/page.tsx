@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Logo } from "@/components/ui/logo";
 import axios from "axios";
 
 export default function LoginPage() {
@@ -49,7 +50,7 @@ export default function LoginPage() {
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
       <Card className="w-full max-w-md p-8">
         <div className="flex justify-center mb-6">
-          <Image src="/logo.png" alt="Ouvy Logo" width={180} height={50} className="h-auto" />
+          <Logo width={160} height={40} />
         </div>
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-2">Bem-vindo de volta</h1>

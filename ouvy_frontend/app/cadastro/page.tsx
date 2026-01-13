@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import Link from 'next/link';
 import { AlertCircle, CheckCircle, Loader, XCircle } from 'lucide-react';
+import { Logo } from '@/components/ui/logo';
 
 interface FormData {
   nome: string;
@@ -301,10 +302,8 @@ export default function CadastroPage() {
       <div className="max-w-md mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <Link href="/" className="inline-block">
-            <span className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-              Ouvy
-            </span>
+          <Link href="/" className="inline-block mb-6">
+            <Logo width={160} height={40} />
           </Link>
           <h1 className="text-4xl font-bold text-slate-900 mt-6 mb-2">Criar Conta</h1>
           <p className="text-slate-600">Comece seu canal de ética agora</p>
