@@ -43,10 +43,12 @@ if DEBUG:
     print("✅ SECRET_KEY carregado de .env com sucesso.")
 
 # Hosts permitidos
-ALLOWED_HOSTS = os.getenv(
+# Parse ALLOWED_HOSTS from env, supporting wildcard patterns
+allowed_hosts_str = os.getenv(
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,.local,*.railway.app'
-).split(',')
+    'localhost,127.0.0.1,.local,.railway.app,ouvy-saas-production.up.railway.app'
+)
+ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(',')]
 
 # Validação de segurança em produção
 if not DEBUG and SECRET_KEY.startswith('django-insecure'):
