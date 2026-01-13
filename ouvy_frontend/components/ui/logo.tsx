@@ -1,153 +1,126 @@
 'use client';
 
-import Image from 'next/image';
+import React from 'react';
 import Link from 'next/link';
-import { Waves } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
   className?: string;
-  width?: number;
-  height?: number;
-  variant?: 'full' | 'icon' | 'text' | 'icon-only';
-  linkTo?: string;
-  darkMode?: boolean;
+  variant?: 'full' | 'icon-only';
   colorScheme?: 'auto' | 'primary' | 'white';
+  href?: string;
+  linkTo?: string; // backward-compatible alias
+  width?: number;  // optional explicit icon width (px)
+  height?: number; // optional explicit icon height (px)
+  size?: 'sm' | 'md' | 'lg';
 }
 
 export function Logo({
   className,
-  width = 180,
-  height = 45,
   variant = 'full',
-  linkTo = '/',
-  darkMode = false,
-  colorScheme = 'auto'
+  colorScheme = 'auto',
+  href = '/',
+  linkTo,
+  width,
+  height,
+  size = 'md'
 }: LogoProps) {
-  // Determina as cores baseado no esquema
-  const isDark = colorScheme === 'white' ? false : darkMode;
-  
-  const iconColorClass = {
-    auto: isDark ? 'text-cyan-400' : 'text-cyan-500',
-    primary: 'text-cyan-500',
-    white: 'text-white'
-  }[colorScheme];
+  // Mapeamento de tamanhos
+  const sizeMap = {
+    sm: { icon: 'w-6 h-6', text: 'text-lg' },
+    md: { icon: 'w-8 h-8', text: 'text-xl' },
+    lg: { icon: 'w-10 h-10', text: 'text-2xl' },
+  };
 
-  const textColorClass = {
-    auto: isDark ? 'text-white' : 'text-slate-900',
-    primary: 'text-slate-900',
-    white: 'text-white'
-  }[colorScheme];
+  // Cores baseadas no esquema
+  const colorMap = {
+    auto: 'text-primary',
+    primary: 'text-primary',
+    white: 'text-white',
+  };
 
-  // SVG inline da onda sonora (ícone do Ouvy)
+  const textColorMap = {
+    auto: 'text-secondary',
+    primary: 'text-secondary',
+    white: 'text-white',
+  };
+
+  // SVG Inline - Ondas Sonoras (Ícone da Logo)
   const SonicWaveIcon = () => (
     <svg
-      width="32"
-      height="32"
-      viewBox="0 0 32 32"
+      viewBox="0 0 24 24"
       fill="none"
-      className={cn('w-8 h-8', iconColorClass)}
+      className={cn(sizeMap[size].icon, colorMap[colorScheme])}
+      style={{
+        ...(width ? { width } : {}),
+        ...(height ? { height } : {}),
+      }}
+      xmlns="http://www.w3.org/2000/svg"
     >
       {/* Ondas sonoras em arco */}
       <path
-        d="M8 16C8 12.686 10.686 10 14 10"
+        d="M6 15C6 11.686 8.686 9 12 9"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.5"
       />
       <path
-        d="M4 16C4 10.477 8.477 6 14 6"
+        d="M2 15C2 9.477 6.477 5 12 5"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
         opacity="0.3"
       />
       <path
-        d="M14 18C12.343 18 11 16.657 11 15C11 13.343 12.343 12 14 12"
+        d="M12 21C10.343 21 9 19.657 9 18C9 16.343 10.343 15 12 15"
         stroke="currentColor"
-        strokeWidth="2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path
-        d="M14 26C8.477 26 4 21.523 4 16"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity="0.3"
-      />
-      <circle cx="14" cy="15" r="2" fill="currentColor" />
+      <circle cx="12" cy="15" r="1.5" fill="currentColor" />
     </svg>
   );
 
-  // Componente "Ouvy" com tipografia moderna
-  const OuvyText = ({ className: textClass }: { className?: string }) => (
+  // Texto "Ouvy" com tipografia moderna
+  const LogoText = () => (
     <span className={cn(
-      'text-2xl font-bold tracking-tight',
-      textClass
+      sizeMap[size].text,
+      textColorMap[colorScheme],
+      'font-bold tracking-tight'
     )}>
       Ouvy
     </span>
   );
 
-  // Variantes de layout
-  const LogoContent = () => {
-    if (variant === 'icon' || variant === 'icon-only') {
-      return (
+  // Conteúdo baseado em variant
+  const content = (
+    <>
+      {variant === 'full' ? (
+        <div className={cn('flex items-center gap-2', className)}>
+          <SonicWaveIcon />
+          <LogoText />
+        </div>
+      ) : (
         <div className={cn('flex items-center', className)}>
           <SonicWaveIcon />
         </div>
-      );
-    }
-
-    if (variant === 'text') {
-      return (
-        <div className={cn('flex items-center', className)}>
-          <OuvyText className={textColorClass} />
-        </div>
-      );
-    }
-
-    // Full variant: ícone + texto
-    return (
-      <div className={cn('flex items-center gap-3', className)}>
-        <SonicWaveIcon />
-        <OuvyText className={textColorClass} />
-      </div>
-    );
-  };
-
-  // Se tiver logo.png em /public, usa ele como fallback
-  const LogoImageFallback = () => (
-    <Image
-      src="/logo.png"
-      alt="Ouvy - Canal de Ética Profissional"
-      width={width}
-      height={height}
-      className="w-auto h-auto"
-      priority
-    />
-  );
-
-  // Wrapper com Link se necessário
-  const content = (
-    <>
-      {/* Try usar a imagem PNG primeiro */}
-      <div className="hidden">
-        <LogoImageFallback />
-      </div>
-      {/* Fallback: ícone SVG + texto */}
-      <LogoContent />
+      )}
     </>
   );
 
-  if (linkTo) {
+  // Com ou sem Link
+  const targetHref = linkTo ?? href;
+
+  if (targetHref) {
     return (
-      <Link href={linkTo} className="inline-flex items-center hover:opacity-80 transition-opacity">
+      <Link 
+        href={targetHref}
+        className="inline-flex items-center hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
+      >
         {content}
       </Link>
     );

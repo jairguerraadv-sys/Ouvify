@@ -45,8 +45,8 @@ export default function RelatoriosPage() {
         </Card>
       </div>
 
-      <Card className="p-6 bg-blue-50 border-blue-200">
-        <p className="text-sm text-blue-800">
+      <Card className="p-6 bg-primary/10 border-primary/20">
+        <p className="text-sm text-primary">
           <strong>💡 Em breve:</strong> Gráficos interativos, dashboards customizáveis e agendamento de relatórios automáticos.
         </p>
       </Card>

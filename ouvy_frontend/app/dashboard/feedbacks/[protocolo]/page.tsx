@@ -14,7 +14,7 @@ function StatusBadge({ status }: { status: string }) {
     status === "pendente"
       ? "bg-yellow-500"
       : status === "em_analise"
-      ? "bg-blue-500"
+      ? "bg-primary"
       : status === "resolvido"
       ? "bg-green-600"
       : "bg-gray-500";
@@ -132,7 +132,7 @@ export default function FeedbackTicketPage() {
                     className={`max-w-xl rounded-lg p-3 text-sm shadow-sm ${
                       isInterna
                         ? "bg-yellow-50 border border-yellow-200"
-                        : "bg-blue-50 border border-blue-200"
+                        : "bg-primary/10 border border-primary/20"
                     }`}
                   >
                     <div className="flex justify-between mb-1">

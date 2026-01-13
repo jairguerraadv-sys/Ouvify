@@ -149,13 +149,13 @@ export default function PlanosPage() {
             <Card
               key={plan.id}
               className={`flex flex-col transition-all ${
-                plan.badge ? 'ring-2 ring-blue-500 md:scale-105' : ''
+                plan.badge ? 'ring-2 ring-primary md:scale-105' : ''
               }`}
             >
               {/* Badge */}
               {plan.badge && (
                 <div className="flex justify-center pt-4">
-                  <Badge className="bg-blue-500 text-white">{plan.badge}</Badge>
+                  <Badge className="bg-primary text-white">{plan.badge}</Badge>
                 </div>
               )}
 

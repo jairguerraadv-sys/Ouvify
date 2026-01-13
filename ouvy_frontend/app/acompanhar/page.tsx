@@ -151,7 +151,7 @@ export default function AcompanharPage() {
   const getStatusColor = (status: string) => {
     const cores: Record<string, string> = {
       'pendente': 'bg-yellow-100 text-yellow-800 border-yellow-300',
-      'em_analise': 'bg-blue-100 text-blue-800 border-blue-300',
+      'em_analise': 'bg-primary/10 text-primary border-primary/30',
       'resolvido': 'bg-green-100 text-green-800 border-green-300',
       'fechado': 'bg-gray-100 text-gray-800 border-gray-300'
     };
@@ -304,10 +304,10 @@ export default function AcompanharPage() {
                   {/* Evento: Em Análise (se aplicável) */}
                   {(feedback.status === 'em_analise' || feedback.status === 'resolvido' || feedback.status === 'fechado') && (
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
-                      <div className="bg-blue-50 rounded-lg p-4">
-                        <p className="font-semibold text-blue-800">🔍 Em Análise</p>
-                        <p className="text-sm text-blue-600 mt-1">
+                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-primary border-2 border-white"></div>
+                      <div className="bg-primary/10 rounded-lg p-4">
+                        <p className="font-semibold text-primary">🔍 Em Análise</p>
+                        <p className="text-sm text-primary-dark mt-1">
                           Estamos avaliando sua manifestação
                         </p>
                       </div>
@@ -379,8 +379,8 @@ export default function AcompanharPage() {
               )}
 
               {/* Informações Adicionais */}
-              <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500">
-                <p className="text-sm text-blue-800">
+              <div className="bg-primary/10 rounded-lg p-4 border-l-4 border-primary">
+                <p className="text-sm text-primary">
                   <strong>💡 Dica:</strong> Guarde este código de protocolo para consultas futuras. 
                   Você receberá notificações quando houver atualizações sobre seu feedback.
                 </p>

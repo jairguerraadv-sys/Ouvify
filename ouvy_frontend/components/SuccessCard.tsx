@@ -82,7 +82,7 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
           <div className="space-y-3">
             <a
               href="/acompanhar"
-              className="block w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
+              className="block w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
             >
               🔍 Acompanhar Status Agora
             </a>

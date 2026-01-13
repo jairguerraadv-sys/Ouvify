@@ -1,9 +1,9 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader } from '@/components/ui/card';
-import { Badge, Chip } from '@/components/ui/badge-chip';
-import { NavBar, Footer } from '@/components/ui/navbar-footer';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { NavBar } from '@/components/ui/navbar';
+import { Footer } from '@/components/ui/footer';
 import { CheckCircle, Shield, BarChart3, Zap, ArrowRight, Users, Lock, TrendingUp } from 'lucide-react';
 
 export default function LandingPage() {
@@ -18,20 +18,23 @@ export default function LandingPage() {
         ]}
         rightContent={
           <>
-            <Button variant="ghost">Entrar</Button>
-            <Button variant="default">Começar Agora</Button>
+            <Button variant="ghost" size="sm">Entrar</Button>
+            <Button variant="default" size="sm">Começar Agora</Button>
           </>
         }
         sticky
       />
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-white via-neutral-50 to-cyan-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+      <section className="relative overflow-hidden bg-gradient-to-br from-white via-neutral-50 to-blue-50 pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             {/* Esquerda: Texto */}
             <div className="space-y-6">
-              <Badge variant="outline">🚀 Novo: White Label Completo</Badge>
+              <div className="inline-flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-full">
+                <span className="w-2 h-2 bg-primary rounded-full" />
+                <span className="text-sm font-medium text-primary">Novo: White Label Completo</span>
+              </div>
 
               <h1 className="text-5xl md:text-6xl font-bold text-secondary leading-tight">
                 Seu <span className="text-primary">Canal de Ética</span>
@@ -43,8 +46,8 @@ export default function LandingPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
-                <Button variant="default" size="lg">
-                  Começar Grátis <ArrowRight className="w-4 h-4" />
+                <Button variant="default" size="lg" className="group">
+                  Começar Grátis <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
                 <Button variant="outline" size="lg">
                   Ver Demo
@@ -53,15 +56,18 @@ export default function LandingPage() {
 
               {/* Trust badges */}
               <div className="flex flex-wrap gap-3 pt-8">
-                <Chip variant="default" icon={<CheckCircle size={16} />}>
+                <div className="inline-flex items-center gap-2 text-sm font-medium text-secondary">
+                  <CheckCircle className="w-5 h-5 text-primary" />
                   LGPD Compliant
-                </Chip>
-                <Chip variant="default" icon={<CheckCircle size={16} />}>
+                </div>
+                <div className="inline-flex items-center gap-2 text-sm font-medium text-secondary">
+                  <CheckCircle className="w-5 h-5 text-primary" />
                   ISO 27001
-                </Chip>
-                <Chip variant="default" icon={<CheckCircle size={16} />}>
+                </div>
+                <div className="inline-flex items-center gap-2 text-sm font-medium text-secondary">
+                  <CheckCircle className="w-5 h-5 text-primary" />
                   Seguro
-                </Chip>
+                </div>
               </div>
             </div>
 
@@ -69,18 +75,25 @@ export default function LandingPage() {
             <div className="relative hidden md:block">
               <div className="absolute inset-0 bg-gradient-to-r from-primary to-cyan-300 rounded-3xl blur-3xl opacity-20 -z-10" />
               <Card variant="elevated" className="p-8">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="flex items-center gap-4">
-                    <Shield className="w-12 h-12 text-primary" />
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Shield className="w-6 h-6 text-primary" />
+                    </div>
                     <div>
                       <p className="font-semibold text-secondary">Proteção Máxima</p>
                       <p className="text-sm text-neutral-500">Criptografia end-to-end</p>
                     </div>
                   </div>
-                  <div className="h-2 bg-neutral-200 rounded-full overflow-hidden">
-                    <div className="h-full w-3/4 bg-primary rounded-full" />
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                      <Lock className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-secondary">Privacidade</p>
+                      <p className="text-sm text-neutral-500">Anonimato total garantido</p>
+                    </div>
                   </div>
-                  <p className="text-xs text-neutral-500">Disponível 24/7</p>
                 </div>
               </Card>
             </div>
@@ -100,144 +113,48 @@ export default function LandingPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: Lock,
                 title: 'Segurança Garantida',
                 description: 'Criptografia end-to-end com conformidade LGPD e ISO 27001',
-                badge: 'ISO 27001',
               },
               {
                 icon: Users,
                 title: 'White Label',
                 description: 'Personalize completamente com sua marca e cores',
-                badge: 'Customizável',
               },
               {
                 icon: Zap,
                 title: 'Rápido e Eficiente',
                 description: 'Interface intuitiva para cadastro de feedbacks em segundos',
-                badge: 'Performance',
               },
               {
                 icon: TrendingUp,
                 title: 'Análise em Tempo Real',
                 description: 'Dashboards com métricas completas do seu canal',
-                badge: 'Analytics',
-              },
-              {
-                icon: Shield,
-                title: 'Anonimato Total',
-                description: 'Proteja a identidade dos denunciantes com segurança máxima',
-                badge: 'Privado',
-              },
-              {
-                icon: CheckCircle,
-                title: 'Suporte 24/7',
-                description: 'Time dedicado pronto para ajudar sua empresa',
-                badge: 'Suporte',
               },
             ].map((feature, idx) => {
               const Icon = feature.icon;
               return (
-                <Card key={idx} variant="elevated">
+                <Card key={idx} variant="default">
                   <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <Icon className="w-8 h-8 text-primary" />
-                      <Badge variant="primary" size="sm">
-                        {feature.badge}
-                      </Badge>
+                    <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                      <Icon className="w-6 h-6 text-primary" />
                     </div>
-                    <h3 className="text-lg font-bold text-secondary mt-4">
+                    <h3 className="text-lg font-bold text-secondary">
                       {feature.title}
                     </h3>
                   </CardHeader>
-                  <div className="p-6 text-neutral-600">
-                    {feature.description}
-                  </div>
+                  <CardContent>
+                    <p className="text-sm text-neutral-600">
+                      {feature.description}
+                    </p>
+                  </CardContent>
                 </Card>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section id="pricing" className="py-20 md:py-32 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-secondary mb-4">
-              Planos Simples e Transparentes
-            </h2>
-            <p className="text-xl text-neutral-600">
-              Escolha o plano perfeito para sua empresa
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Starter',
-                price: 'Grátis',
-                description: 'Para pequenas empresas',
-                features: ['Até 50 usuários', 'Canal básico', 'Suporte por email'],
-              },
-              {
-                name: 'Business',
-                price: 'R$ 999',
-                description: 'Para empresas em crescimento',
-                features: [
-                  'Até 500 usuários',
-                  'White Label completo',
-                  'Suporte prioritário',
-                  'Analytics avançado',
-                ],
-                highlighted: true,
-              },
-              {
-                name: 'Enterprise',
-                price: 'Custom',
-                description: 'Para grandes corporações',
-                features: ['Usuários ilimitados', 'Customização total', 'Suporte dedicado'],
-              },
-            ].map((plan, idx) => (
-              <Card
-                key={idx}
-                variant={plan.highlighted ? 'outlined' : 'elevated'}
-                className={plan.highlighted ? 'md:scale-105' : ''}
-              >
-                <CardHeader>
-                  <h3 className="text-2xl font-bold text-secondary">
-                    {plan.name}
-                  </h3>
-                  <p className="text-sm text-neutral-500">{plan.description}</p>
-                </CardHeader>
-                <div className="p-6 space-y-6">
-                  <div className="text-4xl font-bold text-primary">
-                    {plan.price}
-                    <span className="text-sm text-neutral-500 font-normal">/mês</span>
-                  </div>
-                  <ul className="space-y-3">
-                    {plan.features.map((feature, i) => (
-                      <li
-                        key={i}
-                        className="flex items-center gap-2 text-neutral-700"
-                      >
-                        <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <Button
-                    variant={plan.highlighted ? 'default' : 'outline'}
-                    className="w-full"
-                  >
-                    {plan.highlighted ? 'Comece Agora' : 'Saiba Mais'}
-                  </Button>
-                </div>
-              </Card>
-            ))}
           </div>
         </div>
       </section>
@@ -254,13 +171,15 @@ export default function LandingPage() {
           <Button
             variant="default"
             size="lg"
-            className="bg-primary hover:opacity-90 transition-opacity"
+            className="bg-primary hover:opacity-90"
           >
             Começar Grátis <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </section>
 
+      {/* Footer */}
+      <Footer showBranding />
     </>
   );
 }
