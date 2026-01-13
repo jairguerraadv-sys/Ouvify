@@ -3,7 +3,8 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Badge, Chip } from '@/components/ui/badge-chip';
-import { NavBar, Footer } from '@/components/ui/navbar-footer';
+import { NavBar } from '@/components/ui/navbar';
+import { Footer } from '@/components/ui/footer';
 import { Logo } from '@/components/ui/logo';
 import {
   Shield,

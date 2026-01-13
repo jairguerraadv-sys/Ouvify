@@ -5,15 +5,15 @@
  * uma interface profissional, elegante e moderna.
  * 
  * Paleta de cores:
- * - Primary: #00BCD4 (Cyan - Marca)
- * - Secondary: #0A1E3B (Azul Marinho - Base)
+ * - Primary: #06B6D4 (Cyan - Marca)
+ * - Secondary: #0F172A (Azul Escuro - Base)
  * - Accents: Gradientes e variações
  */
 
 // Core Components
-export { LogoEnhanced } from './logo-enhanced';
-export { NavBarEnhanced } from './navbar-enhanced';
-export { FooterEnhanced } from './footer-enhanced';
+export { Logo } from './logo';
+export { NavBar } from './navbar';
+export { Footer } from './footer';
 
 // Sections & Layouts
 export { Hero, FeatureGrid, FeatureCard, StatsGrid, Stat } from './sections';
@@ -21,20 +21,16 @@ export { Hero, FeatureGrid, FeatureCard, StatsGrid, Stat } from './sections';
 // Cards
 export { 
   Card, 
-  CardEnhanced,
   CardHeader,
-  CardHeaderEnhanced,
   CardContent,
-  CardContentEnhanced,
   CardFooter,
-  CardFooterEnhanced,
-} from './card-enhanced';
+} from './card';
 
 // Inputs & Forms
-export { InputEnhanced, Input, TextareaEnhanced, Textarea } from './input-enhanced';
+export { Input } from './input';
 
 // Buttons
-export { ButtonEnhanced, Button } from './button-enhanced';
+export { Button } from './button';
 
 // UI Elements
 export { 
@@ -44,7 +40,7 @@ export {
   PricingCard,
 } from './elements';
 
-// Exports para compatibilidade com código existente
+// Exports para compatibilidade
 export { 
   Badge as BadgeChip,
   Alert as AlertBox,
