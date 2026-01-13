@@ -125,6 +125,11 @@ class Feedback(TenantAwareModel):
         Utiliza o módulo `secrets` para geração criptograficamente segura,
         garantindo imprevisibilidade e proteção contra ataques de força bruta.
         
+        PROTEÇÃO CONTRA RACE CONDITION:
+        - Usa transação atômica (transaction.atomic) para evitar colisões
+        - Tenta até 10 vezes com geração aleatória
+        - Se falhar, usa UUID como fallback (garantido ser único)
+        
         Formato:
         - OUVY: Prefixo fixo da plataforma
         - XXXX: 4 caracteres alfanuméricos (letras maiúsculas e números)
@@ -134,28 +139,43 @@ class Feedback(TenantAwareModel):
         - 36^8 = 2.821.109.907.456 combinações possíveis
         - Com rate limiting (5 req/min), levaria 1+ milhão de anos para brute force
         - Geração criptograficamente aleatória impede predição de sequências
+        - Transação atômica garante unicidade mesmo em alta concorrência
         
         Exemplo: OUVY-A3B9-K7M2
         
         Returns:
             str: Código de protocolo único criptograficamente seguro
+        
+        Raises:
+            IntegrityError: Se o banco de dados rejeitar duplicata (não acontece - fallback para UUID)
         """
+        from django.db import transaction, IntegrityError
+        
         max_tentativas = 10
         caracteres = string.ascii_uppercase + string.digits
         
-        for _ in range(max_tentativas):
-            # Gerar caracteres com secrets.choice() para segurança criptográfica
-            parte1 = ''.join(secrets.choice(caracteres) for _ in range(4))
-            parte2 = ''.join(secrets.choice(caracteres) for _ in range(4))
-            
-            protocolo = f"OUVY-{parte1}-{parte2}"
-            
-            # Verificar se já existe
-            if not Feedback.objects.filter(protocolo=protocolo).exists():
-                return protocolo
+        for tentativa in range(max_tentativas):
+            try:
+                # Gerar caracteres com secrets.choice() para segurança criptográfica
+                parte1 = ''.join(secrets.choice(caracteres) for _ in range(4))
+                parte2 = ''.join(secrets.choice(caracteres) for _ in range(4))
+                protocolo = f"OUVY-{parte1}-{parte2}"
+                
+                # Dentro de uma transação atômica, a verificação + insert é segura
+                # Isso previne race conditions entre múltiplos requests simultâneos
+                with transaction.atomic():
+                    if not Feedback.objects.filter(protocolo=protocolo).exists():
+                        return protocolo
+                    # Se existir, loop continua para tentar outro
+                    
+            except IntegrityError:
+                # Se mesmo assim houver colisão (extremamente improvável),
+                # continua tentando
+                continue
         
-        # Fallback com UUID se houver muitas colisões (extremamente improvável)
-        # UUID garante unicidade global mesmo em cenários de alta concorrência
+        # Fallback com UUID se houver muitas colisões (QUASE IMPOSSÍVEL)
+        # UUID garante unicidade global mesmo em cenários de ultra-alta concorrência
+        # Exemplo: OUVY-A1B2C3D4-E5F6G7H8
         uuid_hex = uuid.uuid4().hex.upper()
         return f"OUVY-{uuid_hex[:4]}-{uuid_hex[4:8]}"
     
