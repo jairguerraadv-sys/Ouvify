@@ -36,7 +36,15 @@ class TenantMiddleware:
         '/api-token-auth/',
         '/api/token/',
         '/health/',  # Health check para monitoring
-        '/api/',  # Todas as rotas API (já filtradas por permissions nas views)
+        '/ready/',   # Readiness check
+        '/api/password-reset/',  # Reset de senha
+        '/api/feedbacks/consultar-protocolo/',  # Consulta pública de protocolo
+    ]
+    
+    # URLs que permitem tenant via header mesmo sem subdomínio
+    HEADER_TENANT_URLS = [
+        '/api/feedbacks/',
+        '/api/tenant-info/',
     ]
     
     def __init__(self, get_response):
