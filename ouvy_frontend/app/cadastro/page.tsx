@@ -184,6 +184,15 @@ export default function CadastroPage() {
       
     } catch (error) {
       console.error('❌ Erro ao criar conta:', error);
+      console.error('Dados enviados:', formData);
+      
+      // Log detalhado do erro
+      if (error && typeof error === 'object' && 'response' in error) {
+        const axiosError = error as any;
+        console.error('Response data:', axiosError.response?.data);
+        console.error('Response status:', axiosError.response?.status);
+      }
+      
       const errorMessage = getErrorMessage(error);
       setErrors({ submit: errorMessage });
     } finally {

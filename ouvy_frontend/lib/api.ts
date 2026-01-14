@@ -2,7 +2,10 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import type { ApiError } from './types';
 
 // Configuração da API
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 
+                (process.env.NODE_ENV === 'production' 
+                  ? 'https://ouvy-saas-production.up.railway.app' 
+                  : 'http://127.0.0.1:8000');
 
 // Criar instância do axios
 export const apiClient: AxiosInstance = axios.create({
