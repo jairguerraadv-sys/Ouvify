@@ -91,7 +91,7 @@ export function getErrorMessage(error: unknown): string {
         return errors || 'Dados inválidos';
       }
       const firstError = Object.values(apiError.errors)[0];
-      return Array.isArray(firstError) ? firstError[0] : firstError;
+      return Array.isArray(firstError) ? firstError[0] : String(firstError || 'Dados inválidos');
     }
     
     // Fallback para status code
