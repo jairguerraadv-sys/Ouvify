@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "cd ouvy_frontend && npm install && npm run build",
-  "outputDirectory": "ouvy_frontend/.next",
-  "installCommand": "echo 'Skipping root install'",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
   "framework": "nextjs",
   "rootDirectory": "ouvy_frontend",
   "headers": [
