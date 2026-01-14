@@ -25,12 +25,11 @@ interface AuthContextType {
 }
 
 interface RegisterData {
-  name: string;
+  nome: string;
   email: string;
-  password: string;
-  empresa?: string;
-  cnpj?: string;
-  subdominio?: string;
+  senha: string;
+  nome_empresa: string;
+  subdominio_desejado: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);

@@ -1,5 +1,6 @@
 'use client';
 
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -39,6 +40,14 @@ import {
 } from 'lucide-react';
 
 export default function FeedbacksPage() {
+  return (
+    <ProtectedRoute>
+      <FeedbacksContent />
+    </ProtectedRoute>
+  );
+}
+
+function FeedbacksContent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<FeedbackStatus | 'todos'>('todos');
   

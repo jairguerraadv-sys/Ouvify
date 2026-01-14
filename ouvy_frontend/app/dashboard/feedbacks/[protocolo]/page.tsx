@@ -1,5 +1,6 @@
 "use client";
 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useParams, useRouter } from "next/navigation";
 import { useFeedbackDetails } from "@/hooks/use-feedback-details";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,14 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function FeedbackTicketPage() {
+  return (
+    <ProtectedRoute>
+      <FeedbackTicketContent />
+    </ProtectedRoute>
+  );
+}
+
+function FeedbackTicketContent() {
   const params = useParams<{ protocolo: string }>();
   const router = useRouter();
   const protocolo = params?.protocolo;

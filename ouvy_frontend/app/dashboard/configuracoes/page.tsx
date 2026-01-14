@@ -1,11 +1,20 @@
 "use client";
 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState, useEffect } from "react";
 
 export default function ConfiguracoesPage() {
+  return (
+    <ProtectedRoute>
+      <ConfiguracoesContent />
+    </ProtectedRoute>
+  );
+}
+
+function ConfiguracoesContent() {
   const [tenant, setTenant] = useState<any>(null);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 "use client";
 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { useMemo, useCallback } from "react";
 import useSWR from "swr";
 import { api, apiClient } from "@/lib/api";
@@ -23,6 +24,14 @@ const fetcher = async (url: string): Promise<TenantAdmin[]> => {
 };
 
 export default function AdminDashboard() {
+  return (
+    <ProtectedRoute>
+      <AdminContent />
+    </ProtectedRoute>
+  );
+}
+
+function AdminContent() {
   const { data, error, mutate, isLoading } = useSWR<TenantAdmin[]>("/api/admin/tenants/", fetcher, {
     revalidateOnFocus: true,
   });

@@ -1,5 +1,6 @@
 'use client';
 
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +24,14 @@ import {
 import Link from 'next/link';
 
 export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
+  );
+}
+
+function DashboardContent() {
   const { stats, isLoading } = useDashboardStats();
 
   const user = {

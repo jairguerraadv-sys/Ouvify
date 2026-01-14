@@ -1,9 +1,18 @@
 "use client";
 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export default function RelatoriosPage() {
+  return (
+    <ProtectedRoute>
+      <RelatoriosContent />
+    </ProtectedRoute>
+  );
+}
+
+function RelatoriosContent() {
   return (
     <main className="p-6 space-y-6">
       <header>

@@ -1,5 +1,6 @@
 'use client';
 
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { DashboardHeader } from '@/components/dashboard/header';
@@ -10,6 +11,14 @@ import { Badge } from '@/components/ui/badge';
 import { User, Mail, Building, Calendar, Shield, Camera, Sparkles } from 'lucide-react';
 
 export default function PerfilPage() {
+  return (
+    <ProtectedRoute>
+      <PerfilContent />
+    </ProtectedRoute>
+  );
+}
+
+function PerfilContent() {
   const [loading, setLoading] = useState(false);
 
   // Mock data - substituir por dados reais da API

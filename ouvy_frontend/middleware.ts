@@ -1,38 +1,29 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Rotas que requerem autenticação
-const protectedRoutes = [
-  '/dashboard',
-  '/admin',
-];
-
-// Rotas que só podem ser acessadas sem autenticação (redirect se autenticado)
-const authRoutes = [
+// Rotas públicas (não requerem autenticação)
+const publicRoutes = [
+  '/',
   '/login',
   '/cadastro',
+  '/recuperar-senha',
+  '/acompanhar',
+  '/enviar',
+  '/demo',
+  '/precos',
+  '/recursos',
 ];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get('auth_token')?.value;
 
-  // Verificar se é rota protegida
-  const isProtectedRoute = protectedRoutes.some(route => pathname.startsWith(route));
-  const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
-
-  // Se rota protegida e sem token, redirecionar para login
-  if (isProtectedRoute && !token) {
-    const loginUrl = new URL('/login', request.url);
-    loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
+  // Permitir todas as rotas públicas
+  if (publicRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))) {
+    return NextResponse.next();
   }
 
-  // Se rota de autenticação e com token, redirecionar para dashboard
-  if (isAuthRoute && token) {
-    return NextResponse.redirect(new URL('/dashboard', request.url));
-  }
-
+  // Para rotas protegidas (/dashboard, /admin), o AuthContext client-side
+  // fará o redirect se necessário
   return NextResponse.next();
 }
 

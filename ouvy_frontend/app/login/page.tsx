@@ -62,19 +62,33 @@ export default function LoginPage() {
     setApiError("");
 
     try {
-      const response = await api.post<AuthToken>("/api-token-auth/", {
+      const response = await api.post<{ token: string }>("/api-token-auth/", {
         username: formData.email,
         password: formData.senha,
       });
 
       if (response.token) {
         storage.set("auth_token", response.token);
-        if (response.tenant) {
-          storage.set("tenant_id", response.tenant.id);
+        
+        // Buscar informações do usuário após login
+        try {
+          const userResponse = await api.get<AuthToken>("/api/tenant-info/", {
+            headers: {
+              Authorization: `Token ${response.token}`
+            }
+          });
+          
+          if (userResponse.tenant) {
+            storage.set("tenant_id", userResponse.tenant.id);
+          }
+        } catch (err) {
+          console.warn("Não foi possível buscar tenant_info:", err);
         }
+        
         router.push("/dashboard");
       }
     } catch (error) {
+      console.error("Erro no login:", error);
       setApiError(getErrorMessage(error));
     } finally {
       setLoading(false);
