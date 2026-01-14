@@ -617,11 +617,11 @@ test('deve fazer login com sucesso', async ({ page }) => {
 
 ### Prioridade ALTA (fazer antes do lançamento)
 
-- [ ] #1 - Remover `any` tipos em lib/api.ts e contexts
-- [ ] #2 - Criar logger condicional para produção
-- [ ] #3 - Sanitizar HTML inputs com DOMPurify
+- [x] #1 - Remover `any` tipos em lib/api.ts e contexts ✅ **APLICADO**
+- [x] #2 - Criar logger condicional para produção ✅ **APLICADO**
+- [x] #3 - Sanitizar HTML inputs com DOMPurify ⚠️ **PARCIAL** (precisa instalar lib)
 - [ ] #4 - Adicionar debounce em buscas
-- [ ] #7 - Implementar ErrorBoundary
+- [x] #7 - Implementar ErrorBoundary ✅ **APLICADO**
 
 ### Prioridade MÉDIA (fazer nas próximas semanas)
 
