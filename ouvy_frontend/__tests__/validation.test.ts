@@ -18,7 +18,7 @@ describe('Validation Library', () => {
 
     it('validates email format', () => {
       const data = { email: 'invalid-email' };
-      const rules = { email: { required: true, type: 'email' } };
+      const rules = { email: { required: true, type: 'email' as const } };
 
       const result = validateForm(data, rules);
       
@@ -54,7 +54,7 @@ describe('Validation Library', () => {
       };
       const rules = {
         name: { required: true, minLength: 3 },
-        email: { required: true, type: 'email' },
+        email: { required: true, type: 'email' as const },
         password: { required: true, minLength: 8 },
       };
 

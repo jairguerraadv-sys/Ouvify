@@ -35,7 +35,7 @@ describe('SEO Library', () => {
         description: 'Welcome'
       });
 
-      expect(metadata.twitter?.card).toBe('summary_large_image');
+      expect((metadata.twitter as any)?.card).toBe('summary_large_image');
       expect(metadata.twitter?.title).toBe('Home | Ouvy');
     });
 
@@ -47,7 +47,10 @@ describe('SEO Library', () => {
         image: customImage
       });
 
-      expect(metadata.openGraph?.images?.[0]).toMatchObject({
+      const images = Array.isArray(metadata.openGraph?.images) 
+        ? metadata.openGraph.images 
+        : [metadata.openGraph?.images];
+      expect(images[0]).toMatchObject({
         url: expect.stringContaining(customImage)
       });
     });
