@@ -58,9 +58,9 @@ export default function LandingPage() {
   ], []);
 
   const navLinks = useMemo(() => [
-    { label: 'Produto', href: '#produto' },
-    { label: 'Segurança', href: '#seguranca' },
-    { label: 'Preços', href: '#precos' },
+    { label: 'Recursos', href: '/recursos' },
+    { label: 'Preços', href: '/precos' },
+    { label: 'Demo', href: '/demo' },
   ], []);
 
   return (
