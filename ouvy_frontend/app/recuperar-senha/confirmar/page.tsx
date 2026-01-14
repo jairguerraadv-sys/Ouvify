@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Logo } from '@/components/ui/logo';
-import { ArrowLeft, CheckCircle, Lock, AlertCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { api, getErrorMessage } from '@/lib/api';
 
-export default function ConfirmarRecuperacaoPage() {
+function ConfirmarRecuperacaoContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [password, setPassword] = useState('');
@@ -204,5 +204,24 @@ export default function ConfirmarRecuperacaoPage() {
         </Card>
       </div>
     </main>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+      <div className="flex flex-col items-center gap-4">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        <p className="text-muted-foreground">Carregando...</p>
+      </div>
+    </main>
+  );
+}
+
+export default function ConfirmarRecuperacaoPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ConfirmarRecuperacaoContent />
+    </Suspense>
   );
 }
