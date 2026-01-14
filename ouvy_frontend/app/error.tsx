@@ -52,12 +52,12 @@ export default function Error({
             <RefreshCcw className="w-4 h-4" />
             Tentar Novamente
           </Button>
-          <Button asChild variant="outline" size="lg" className="gap-2">
-            <Link href="/">
+          <Link href="/">
+            <Button variant="outline" size="lg" className="gap-2">
               <Home className="w-4 h-4" />
               Voltar ao Início
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         </div>
 
         {/* Help Text */}

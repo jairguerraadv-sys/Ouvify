@@ -191,6 +191,20 @@ export default function CadastroPage() {
         const axiosError = error as any;
         console.error('Response data:', axiosError.response?.data);
         console.error('Response status:', axiosError.response?.status);
+        
+        // Extrair erros de validação por campo
+        const responseData = axiosError.response?.data;
+        if (responseData?.errors && typeof responseData.errors === 'object') {
+          const fieldErrors: FormErrors = {};
+          
+          Object.entries(responseData.errors).forEach(([field, messages]) => {
+            const msgArray = Array.isArray(messages) ? messages : [messages];
+            fieldErrors[field] = msgArray[0] as string;
+          });
+          
+          setErrors(fieldErrors);
+          return;
+        }
       }
       
       const errorMessage = getErrorMessage(error);
