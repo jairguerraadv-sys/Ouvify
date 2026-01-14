@@ -15,6 +15,7 @@ from apps.tenants.subscription_management import ManageSubscriptionView, Reactiv
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
 from apps.core.views import home
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
+from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
 
@@ -27,11 +28,7 @@ TenantAdminViewSet = tenant_views.TenantAdminViewSet  # type: ignore[attr-define
 CreateCheckoutSessionView = tenant_views.CreateCheckoutSessionView  # type: ignore[attr-defined]
 StripeWebhookView = tenant_views.StripeWebhookView  # type: ignore[attr-defined]
 
-@csrf_exempt
-@require_http_methods(["GET"])
-def health_check(request):
-    """Health check endpoint for deployment monitoring."""
-    return JsonResponse({"status": "ok"}, status=200)
+
 
 # Router DRF - Gera automaticamente rotas REST + actions customizadas
 router = DefaultRouter()
@@ -51,7 +48,8 @@ router.register(r'admin/tenants', TenantAdminViewSet, basename='admin-tenants')
 
 urlpatterns = [
     path('', home, name='home'),  # Rota raiz para teste de multi-tenancy
-    path('health/', health_check, name='health-check'),  # Health check endpoint
+    path('health/', health_check_view, name='health-check'),  # Health check endpoint
+    path('ready/', readiness_check, name='readiness-check'),  # Readiness check endpoint
     path('admin/', admin.site.urls),
     
     # Endpoint público para informações do tenant atual

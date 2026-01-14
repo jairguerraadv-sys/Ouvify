@@ -3,6 +3,8 @@ Views para recuperação de senha.
 """
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError as DjangoValidationError
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -12,9 +14,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
+from rest_framework.throttling import AnonRateThrottle
 import logging
 
 logger = logging.getLogger(__name__)
+
+
+class PasswordResetRateThrottle(AnonRateThrottle):
+    """Rate limiting para password reset: 3 tentativas por hora por IP"""
+    rate = '3/hour'
 
 
 class PasswordResetRequestView(APIView):
@@ -25,8 +33,11 @@ class PasswordResetRequestView(APIView):
     Body: {
         "email": "usuario@example.com"
     }
+    
+    Rate Limit: 3 requisições por hora por IP (proteção contra força bruta)
     """
     permission_classes = [AllowAny]
+    throttle_classes = [PasswordResetRateThrottle]
     
     def post(self, request):
         email = request.data.get('email', '').lower().strip()
@@ -68,10 +79,13 @@ Atenciosamente,
 Equipe Ouvy
                 """
                 
+                # Mascarar email nos logs para segurança
+                email_masked = f"{email[:3]}***@{email.split('@')[1]}"
+                
                 # Em desenvolvimento, apenas log
                 if settings.DEBUG:
-                    logger.info(f"🔗 Link de recuperação: {reset_link}")
-                    logger.info(f"📧 Email seria enviado para: {email}")
+                    logger.info(f"🔗 Link de recuperação gerado (dev mode)")
+                    logger.info(f"📧 Email de teste para: {email_masked}")
                 else:
                     send_mail(
                         subject,
@@ -81,7 +95,7 @@ Equipe Ouvy
                         fail_silently=False,
                     )
                 
-                logger.info(f"✅ Email de recuperação enviado para {email}")
+                logger.info(f"✅ Email de recuperação enviado para {email_masked}")
                 
             except Exception as e:
                 logger.error(f"❌ Erro ao enviar email: {str(e)}")
@@ -125,10 +139,15 @@ class PasswordResetConfirmView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # Validar senha
-        if len(new_password) < 6:
+        # Validar senha com validadores do Django (strong password policy)
+        try:
+            validate_password(new_password)
+        except DjangoValidationError as e:
             return Response(
-                {"detail": "A senha deve ter no mínimo 6 caracteres"},
+                {
+                    "detail": "Senha não atende aos requisitos de segurança",
+                    "errors": list(e.messages)
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
         

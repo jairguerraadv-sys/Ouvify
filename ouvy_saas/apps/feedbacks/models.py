@@ -112,6 +112,9 @@ class Feedback(TenantAwareModel):
             models.Index(fields=['client', 'tipo']),
             models.Index(fields=['client', 'status']),
             models.Index(fields=['protocolo']),
+            # Índices compostos para otimização de paginação e dashboards
+            models.Index(fields=['client', '-data_criacao']),
+            models.Index(fields=['client', 'status', '-data_criacao']),
         ]
     
     def __str__(self):

@@ -13,6 +13,7 @@ from .serializers import (
 )
 from .serializers import FeedbackInteracaoSerializer
 from .throttles import ProtocoloConsultaThrottle
+from .constants import InteracaoTipo, FeedbackStatus
 from apps.core.utils import get_client_ip, build_search_query
 from apps.core.pagination import StandardResultsSetPagination
 import logging
@@ -130,7 +131,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         - novo_status: string (opcional, obrigatório se tipo='MUDANCA_STATUS')
         """
         try:
-            feedback = self.get_queryset().get(pk=pk)
+            feedback = self.get_queryset().select_related('client').get(pk=pk)
         except Feedback.DoesNotExist:
             logger.warning(
                 f"⚠️ Tentativa de adicionar interação em feedback inexistente | "
@@ -144,16 +145,28 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
         if not mensagem:
             return Response({"error": "Campo 'mensagem' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
-        if tipo not in ['MENSAGEM_PUBLICA', 'NOTA_INTERNA', 'MUDANCA_STATUS']:
-            return Response({"error": "Tipo inválido"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Validar tipo usando constantes do modelo
+        valid_tipos = InteracaoTipo.values()
+        if tipo not in valid_tipos:
+            return Response(
+                {"error": f"Tipo inválido. Use um de: {valid_tipos}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        if tipo == 'MUDANCA_STATUS':
+        if tipo == InteracaoTipo.MUDANCA_STATUS:
             if not novo_status:
-                return Response({"error": "Campo 'novo_status' é obrigatório para mudanças de status"}, status=status.HTTP_400_BAD_REQUEST)
-            # Validar novo_status contra choices do modelo
-            status_values = [s[0] for s in Feedback.STATUS_CHOICES]
-            if novo_status not in status_values:
-                return Response({"error": "Status inválido"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": "Campo 'novo_status' é obrigatório para mudanças de status"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            # Validar novo_status usando constantes
+            valid_status = FeedbackStatus.values()
+            if novo_status not in valid_status:
+                return Response(
+                    {"error": f"Status inválido. Use um de: {valid_status}"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         # Criar interação
         interacao = FeedbackInteracao.objects.create(
@@ -164,7 +177,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         )
 
         # Atualizar status se necessário
-        if tipo == 'MUDANCA_STATUS':
+        if tipo == InteracaoTipo.MUDANCA_STATUS:
             feedback.status = novo_status
             feedback.save(update_fields=['status', 'data_atualizacao'])
 
@@ -210,11 +223,20 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         # Calcular timestamp de 24h atrás
         hoje_inicio = timezone.now() - timedelta(hours=24)
         
-        # Estatísticas usando agregação eficiente
-        total = queryset.count()
-        pendentes = queryset.filter(status='pendente').count()
-        resolvidos = queryset.filter(status='resolvido').count()
-        hoje = queryset.filter(data_criacao__gte=hoje_inicio).count()
+        # Estatísticas usando agregação eficiente (1 query em vez de 4)
+        from django.db.models import Count, Q
+        
+        stats = queryset.aggregate(
+            total=Count('id'),
+            pendentes=Count('id', filter=Q(status='pendente')),
+            resolvidos=Count('id', filter=Q(status='resolvido')),
+            hoje=Count('id', filter=Q(data_criacao__gte=hoje_inicio))
+        )
+        
+        total = stats['total']
+        pendentes = stats['pendentes']
+        resolvidos = stats['resolvidos']
+        hoje = stats['hoje']
         
         # Calcular taxa de resolução (evitar divisão por zero)
         taxa_resolucao = f"{(resolvidos / total * 100):.1f}%" if total > 0 else "0%"

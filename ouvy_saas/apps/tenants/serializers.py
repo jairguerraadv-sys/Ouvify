@@ -38,7 +38,7 @@ class RegisterTenantSerializer(serializers.Serializer):
     )
     
     def validate_email(self, value):
-        """Verifica se o email já está em uso."""
+        """Verifica se o email já está em uso e valida domínio."""
         value = value.lower().strip()
         
         if User.objects.filter(email=value).exists():
@@ -48,6 +48,19 @@ class RegisterTenantSerializer(serializers.Serializer):
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', value):
             raise serializers.ValidationError("Formato de email inválido.")
         
+        # Validar contra domínios temporários/descartáveis
+        disposable_domains = [
+            'tempmail.com', '10minutemail.com', 'guerrillamail.com',
+            'mailinator.com', 'throwaway.email', 'temp-mail.org',
+            'fakeinbox.com', 'yopmail.com', 'maildrop.cc'
+        ]
+        domain = value.split('@')[1].lower()
+        if domain in disposable_domains:
+            raise serializers.ValidationError(
+                "Email temporário não permitido. Use um email permanente."
+            )
+        
+        return value
         return value
     
     def validate_subdominio_desejado(self, value):

@@ -9,6 +9,7 @@ from apps.tenants.models import Client
 from apps.tenants.services import StripeService
 import logging
 import stripe
+from stripe import error as stripe_error
 
 logger = logging.getLogger(__name__)
 
@@ -52,15 +53,15 @@ class ManageSubscriptionView(APIView):
                 return Response(
                     {
                         "plano": client.plano,
-                        "status": subscription.status,
-                        "current_period_end": subscription.current_period_end,
-                        "cancel_at_period_end": subscription.cancel_at_period_end,
+                        "status": getattr(subscription, 'status', 'unknown'),
+                        "current_period_end": getattr(subscription, 'current_period_end', None),
+                        "cancel_at_period_end": getattr(subscription, 'cancel_at_period_end', False),
                         "has_subscription": True,
                         "stripe_customer_id": client.stripe_customer_id,
                     },
                     status=status.HTTP_200_OK
                 )
-            except stripe.error.StripeError as e:
+            except stripe_error.StripeError as e:
                 logger.error(f"❌ Erro ao buscar assinatura no Stripe: {str(e)}")
                 return Response(
                     {
@@ -106,12 +107,12 @@ class ManageSubscriptionView(APIView):
                     {
                         "message": "Assinatura cancelada com sucesso",
                         "detail": "Seu acesso permanecerá ativo até o final do período pago",
-                        "cancel_at": subscription.current_period_end
+                        "cancel_at": getattr(subscription, 'current_period_end', None)
                     },
                     status=status.HTTP_200_OK
                 )
             
-            except stripe.error.StripeError as e:
+            except stripe_error.StripeError as e:
                 logger.error(f"❌ Erro ao cancelar no Stripe: {str(e)}")
                 return Response(
                     {"detail": "Erro ao cancelar assinatura. Tente novamente."},
@@ -186,7 +187,7 @@ class ManageSubscriptionView(APIView):
                     status=status.HTTP_200_OK
                 )
             
-            except stripe.error.StripeError as e:
+            except stripe_error.StripeError as e:
                 logger.error(f"❌ Erro ao atualizar plano no Stripe: {str(e)}")
                 return Response(
                     {"detail": "Erro ao atualizar plano. Tente novamente."},
@@ -238,7 +239,7 @@ class ReactivateSubscriptionView(APIView):
                     status=status.HTTP_200_OK
                 )
             
-            except stripe.error.StripeError as e:
+            except stripe_error.StripeError as e:
                 logger.error(f"❌ Erro ao reativar no Stripe: {str(e)}")
                 return Response(
                     {"detail": "Erro ao reativar assinatura. Tente novamente."},

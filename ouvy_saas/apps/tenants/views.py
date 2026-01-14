@@ -8,6 +8,8 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from django.db import transaction
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 from .serializers import ClientPublicSerializer, RegisterTenantSerializer, ClientSerializer, UserSerializer, TenantAdminSerializer
 from .models import Client
 from .services import StripeService
@@ -24,9 +26,12 @@ class TenantInfoView(APIView):
     
     O TenantMiddleware já identificou a empresa e injetou no request.
     Esta view apenas serializa e retorna essas informações.
+    
+    Cache: 5 minutos (informações públicas mudam raramente)
     """
     permission_classes = [AllowAny]
 
+    @method_decorator(cache_page(60 * 5))  # Cache de 5 minutos
     def get(self, request):
         # O TenantMiddleware já injetou o 'tenant' dentro do request
         tenant = getattr(request, 'tenant', None)

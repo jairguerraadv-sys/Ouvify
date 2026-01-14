@@ -89,7 +89,9 @@ class TenantMiddleware:
             # 2. Se ainda não tiver tenant, usar o primeiro ativo (desenvolvimento)
             if not tenant:
                 try:
-                    tenant = Client.objects.filter(ativo=True).first()
+                    tenant = Client.objects.filter(ativo=True).only(
+                        'id', 'nome', 'subdominio', 'ativo'
+                    ).first()
                     if tenant:
                         set_current_tenant(tenant)
                         request.tenant = tenant
@@ -110,7 +112,10 @@ class TenantMiddleware:
             if subdomain not in ['www', 'api', 'admin']:
                 try:
                     # Buscar o tenant pelo subdomínio (case-insensitive)
-                    tenant = Client.objects.get(
+                    # Otimizado: carregar apenas campos necessários
+                    tenant = Client.objects.only(
+                        'id', 'nome', 'subdominio', 'ativo'
+                    ).get(
                         subdominio__iexact=subdomain,
                         ativo=True
                     )
