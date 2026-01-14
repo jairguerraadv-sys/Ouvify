@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFeedbacks } from '@/hooks/use-dashboard';
+import { useDebounce } from '@/hooks/use-common';
 import { formatDate } from '@/lib/helpers';
 import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
 import {
@@ -48,8 +49,11 @@ export default function FeedbacksPage() {
 }
 
 function FeedbacksContent() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState<FeedbackStatus | 'todos'>('todos');
+  
+  // Debounce do termo de busca para otimizar performance (500ms delay)
+  const searchTerm = useDebounce(searchInput, 500);
   
   // Buscar feedbacks usando o hook
   const { feedbacks, isLoading, error } = useFeedbacks(
@@ -143,8 +147,8 @@ function FeedbacksContent() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
                   placeholder="Buscar por protocolo ou assunto..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
                   className="pl-9"
                 />
               </div>

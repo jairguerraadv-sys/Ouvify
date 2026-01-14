@@ -40,6 +40,7 @@ function FeedbackTicketContent() {
   const [tab, setTab] = useState<"PUBLICA" | "INTERNA">("PUBLICA");
   const [mensagem, setMensagem] = useState("");
   const [alterandoStatus, setAlterandoStatus] = useState<string | null>(null);
+  const [enviandoMensagem, setEnviandoMensagem] = useState(false);
 
   if (isLoading) {
     return (
@@ -71,15 +72,25 @@ function FeedbackTicketContent() {
 
   const enviar = async () => {
     const tipo = tab === "PUBLICA" ? "MENSAGEM_PUBLICA" : "NOTA_INTERNA";
-    if (!mensagem.trim()) return;
-    await enviarMensagem(mensagem.trim(), tipo as any);
-    setMensagem("");
+    if (!mensagem.trim() || enviandoMensagem) return;
+    
+    setEnviandoMensagem(true);
+    try {
+      await enviarMensagem(mensagem.trim(), tipo as any);
+      setMensagem("");
+    } finally {
+      setEnviandoMensagem(false);
+    }
   };
 
   const onChangeStatus = async (novo: string) => {
+    if (alterandoStatus) return; // Previne múltiplas requisições
     setAlterandoStatus(novo);
-    await atualizarStatus(novo as any);
-    setAlterandoStatus(null);
+    try {
+      await atualizarStatus(novo as any);
+    } finally {
+      setAlterandoStatus(null);
+    }
   };
 
   return (
@@ -98,6 +109,7 @@ function FeedbackTicketContent() {
             className="border rounded px-3 py-2"
             value={alterandoStatus ?? data.status}
             onChange={(e) => onChangeStatus(e.target.value)}
+            disabled={!!alterandoStatus}
           >
             <option value="pendente">Pendente</option>
             <option value="em_analise">Em Análise</option>
@@ -185,7 +197,12 @@ function FeedbackTicketContent() {
               }
             />
             <div className="flex justify-end">
-              <Button onClick={enviar}>Enviar</Button>
+              <Button 
+                onClick={enviar}
+                disabled={!mensagem.trim() || enviandoMensagem}
+              >
+                {enviandoMensagem ? 'Enviando...' : 'Enviar'}
+              </Button>
             </div>
           </Card>
         </div>
