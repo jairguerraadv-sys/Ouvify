@@ -540,29 +540,30 @@ class PasswordResetTestCase(TestCase):
 
 ### Prioridade ALTA (fazer antes do lançamento)
 
-- [ ] #1 - Implementar validação forte de senha (Django validators)
-- [ ] #3 - Adicionar índices compostos em Feedback
-- [ ] #5 - Adicionar rate limiting em password reset
-- [ ] #6 - Ajustar logs para não expor links completos
-- [ ] #16 - Criar endpoint de health check
+- [x] #1 - Implementar validação forte de senha (Django validators) ✅ **JÁ IMPLEMENTADO**
+- [x] #3 - Adicionar índices compostos em Feedback ✅ **JÁ IMPLEMENTADO**
+- [x] #5 - Adicionar rate limiting em password reset ✅ **JÁ IMPLEMENTADO**
+- [x] #6 - Ajustar logs para não expor links completos ✅ **JÁ IMPLEMENTADO**
+- [x] #16 - Criar endpoint de health check ✅ **JÁ IMPLEMENTADO**
 
 ### Prioridade MÉDIA (fazer nas próximas semanas)
 
-- [ ] #2 - Otimizar query em adicionar_interacao
-- [ ] #7 - Refatorar validação de enum para usar choices do modelo
-- [ ] #8 - Otimizar dashboard_stats com aggregate
-- [ ] #9 - Adicionar cache em TenantInfoView
-- [ ] #17 - Criar arquivo de constantes
+- [x] #2 - Otimizar query em adicionar_interacao ✅ **APLICADO**
+- [x] #7 - Refatorar validação de enum para usar choices do modelo ✅ **APLICADO**
+- [x] #8 - Otimizar dashboard_stats com aggregate ✅ **JÁ IMPLEMENTADO**
+- [x] #9 - Adicionar cache em TenantInfoView ✅ **APLICADO**
+- [x] #17 - Criar arquivo de constantes ✅ **APLICADO**
+- [x] #15 - Validar emails descartáveis ✅ **APLICADO**
+- [x] Otimizar queries do TenantMiddleware ✅ **APLICADO**
 
 ### Prioridade BAIXA (melhorias futuras)
 
 - [ ] #4 - Avaliar necessidade de select_for_update
-- [ ] #10 - Manter padrão de type hints (já bom)
+- [x] #10 - Manter padrão de type hints (já bom) ✅
 - [ ] #11 - Migrar para structured logging
 - [ ] #12 - Implementar soft delete
 - [ ] #13 - Avaliar cursor pagination
 - [ ] #14 - Adicionar timeouts em Stripe
-- [ ] #15 - Validar emails descartáveis
 
 ---
 
