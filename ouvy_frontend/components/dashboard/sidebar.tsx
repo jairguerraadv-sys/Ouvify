@@ -9,7 +9,8 @@ import {
   Settings, 
   LogOut,
   Sparkles,
-  Shield
+  Shield,
+  CreditCard
 } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
@@ -30,6 +31,7 @@ const navigation = [
   { name: 'Visão Geral', href: '/dashboard', icon: Home },
   { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare },
   { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3 },
+  { name: 'Assinatura', href: '/dashboard/assinatura', icon: CreditCard },
   { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings },
 ];
 

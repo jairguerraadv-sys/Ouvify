@@ -16,7 +16,9 @@ from apps.feedbacks import views as feedback_views  # type: ignore[import-not-fo
 from apps.core.views import home
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
+from apps.tenants.logout_views import LogoutView  # type: ignore[import-not-found]
 from apps.core.lgpd_views import AccountDeletionView, DataExportView  # type: ignore[import-not-found]
+from apps.core.profile_views import UserProfileUpdateView  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
 
@@ -51,7 +53,9 @@ urlpatterns = [
     path('', home, name='home'),  # Rota raiz para teste de multi-tenancy
     path('health/', health_check_view, name='health-check'),  # Health check endpoint
     path('ready/', readiness_check, name='readiness-check'),  # Readiness check endpoint
-    path('admin/', admin.site.urls),
+    
+    # Admin Django - URL obscurecida para segurança (não usar /admin/)
+    path('painel-admin-ouvy-2026/', admin.site.urls),
     
     # Endpoint público para informações do tenant atual
     path('api/tenant-info/', TenantInfoView.as_view(), name='tenant-info'),
@@ -73,6 +77,12 @@ urlpatterns = [
     path('api/', include(router.urls)),  # API REST endpoints
     # Auth token (DRF authtoken)
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    
+    # Logout com invalidação de token
+    path('api/logout/', LogoutView.as_view(), name='api-logout'),
+    
+    # Perfil do Usuário
+    path('api/auth/me/', UserProfileUpdateView.as_view(), name='user-profile'),
     
     # Password Reset
     path('api/password-reset/request/', PasswordResetRequestView.as_view(), name='password-reset-request'),

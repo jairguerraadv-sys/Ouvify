@@ -1,20 +1,23 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { H1, H2, Paragraph } from '@/components/ui/typography';
 import { NavBar } from '@/components/ui/navbar';
 import { Footer } from '@/components/ui/footer';
+import { api, getErrorMessage } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   Check, 
   X, 
   Zap,
-  HelpCircle
+  HelpCircle,
+  Loader2
 } from 'lucide-react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 interface Plan {
   id: string;
@@ -157,15 +160,65 @@ const FAQ = [
 
 export default function PrecosPage() {
   const router = useRouter();
+  const { user } = useAuth();
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'yearly'>('monthly');
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
 
-  const handleSelectPlan = (planId: string) => {
+  const handleSelectPlan = async (planId: string) => {
+    // Plano gratuito: redireciona para cadastro
     if (planId === 'free') {
       router.push('/cadastro');
-    } else if (planId === 'enterprise') {
+      return;
+    }
+
+    // Enterprise: solicitar demo
+    if (planId === 'enterprise') {
       router.push('/demo');
-    } else {
-      router.push('/cadastro?plano=' + planId);
+      return;
+    }
+
+    // Planos pagos: verificar autenticação
+    if (!user) {
+      // Redireciona para login e depois volta para preços
+      router.push(`/login?redirect=/precos&plan=${planId}`);
+      return;
+    }
+
+    // Iniciar processo de checkout Stripe
+    setLoadingPlan(planId);
+
+    try {
+      // Mapear planId para Stripe Price ID
+      const priceIdMap: Record<string, string> = {
+        'starter': process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER_MONTHLY || 'price_starter',
+        'pro': process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO_MONTHLY || 'price_pro',
+      };
+
+      const priceId = priceIdMap[planId];
+      
+      if (!priceId) {
+        throw new Error('Plano inválido');
+      }
+
+      // Criar sessão de checkout no Stripe
+      const response = await api.post<{ checkout_url: string }>('/api/tenants/subscribe/', {
+        price_id: priceId,
+        success_url: `${window.location.origin}/dashboard?payment=success&plan=${planId}`,
+        cancel_url: `${window.location.origin}/precos?payment=cancelled`,
+      });
+
+      // Redirecionar para Stripe Checkout
+      if (response.checkout_url) {
+        window.location.href = response.checkout_url;
+      } else {
+        throw new Error('URL de checkout não retornada');
+      }
+    } catch (error) {
+      console.error('Erro ao criar checkout:', error);
+      const errorMsg = getErrorMessage(error);
+      alert(`Erro ao processar pagamento: ${errorMsg}\n\nTente novamente ou entre em contato com o suporte.`);
+    } finally {
+      setLoadingPlan(null);
     }
   };
 
@@ -288,8 +341,16 @@ export default function PrecosPage() {
                       onClick={() => handleSelectPlan(plan.id)}
                       variant={plan.buttonVariant}
                       className="w-full"
+                      disabled={loadingPlan === plan.id}
                     >
-                      {plan.buttonText}
+                      {loadingPlan === plan.id ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Processando...
+                        </>
+                      ) : (
+                        plan.buttonText
+                      )}
                     </Button>
                   </CardHeader>
 

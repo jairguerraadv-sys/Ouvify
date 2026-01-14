@@ -54,6 +54,13 @@ ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(',') if h.strip()]
 if os.getenv('ALLOW_ALL_HOSTS', 'False').lower() in ('true', '1', 'yes'):
     ALLOWED_HOSTS = ['*']
 
+# Bloquear configuração insegura em produção
+if not DEBUG and ALLOWED_HOSTS == ['*']:
+    raise ValueError(
+        "🔴 ERRO DE SEGURANÇA: ALLOW_ALL_HOSTS ativado em produção. "
+        "Defina ALLOWED_HOSTS com domínios específicos."
+    )
+
 # Utilizar cabeçalhos de proxy para host/esquema corretos atrás de reverse proxy
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -284,6 +291,15 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     'http://localhost:3000,http://127.0.0.1:3000,https://ouvy-frontend-jairguerraadv-sys-projects.vercel.app'
 ).split(',')
 
+# Segurança CORS: bloquear origens de desenvolvimento em produção
+if not DEBUG:
+    dev_origins = {'http://localhost:3000', 'http://127.0.0.1:3000'}
+    if any(origin.strip() in dev_origins for origin in CORS_ALLOWED_ORIGINS):
+        raise ValueError(
+            "🔴 ERRO DE SEGURANÇA: CORS_ALLOWED_ORIGINS contém localhost em produção. "
+            "Defina apenas os domínios do frontend em produção."
+        )
+
 # Permitir credenciais (cookies, headers de autenticação)
 # Em produção, o padrão é False para evitar leakage de cookies
 CORS_ALLOW_CREDENTIALS = os.getenv(
@@ -317,6 +333,10 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -394,6 +414,13 @@ STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')  # Será configurado após testar webhook local
 STRIPE_REQUEST_TIMEOUT = int(os.getenv('STRIPE_REQUEST_TIMEOUT', '10'))
 STRIPE_MAX_NETWORK_RETRIES = int(os.getenv('STRIPE_MAX_NETWORK_RETRIES', '2'))
+
+# Price IDs do Stripe (substitua pelos IDs reais após criar produtos)
+STRIPE_PRICE_IDS = {
+    'starter_monthly': os.getenv('STRIPE_PRICE_STARTER_MONTHLY', ''),
+    'pro_monthly': os.getenv('STRIPE_PRICE_PRO_MONTHLY', ''),
+    'enterprise_monthly': os.getenv('STRIPE_PRICE_ENTERPRISE_MONTHLY', ''),
+}
 
 BASE_URL = os.getenv('BASE_URL', 'http://localhost:3000')
 
