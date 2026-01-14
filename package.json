@@ -1,0 +1,14 @@
+{
+  "name": "ouvy-saas-monorepo",
+  "private": true,
+  "scripts": {
+    "dev": "cd ouvy_frontend && npm run dev",
+    "build": "cd ouvy_frontend && npm run build",
+    "start": "cd ouvy_frontend && npm run start",
+    "lint": "cd ouvy_frontend && npm run lint",
+    "postinstall": "cd ouvy_frontend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
