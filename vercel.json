@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "cd ouvy_frontend && npm run build",
+  "outputDirectory": "ouvy_frontend/.next",
+  "installCommand": "cd ouvy_frontend && npm install",
+  "framework": "nextjs"
+}
