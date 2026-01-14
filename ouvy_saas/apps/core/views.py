@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from django.utils.html import escape
 from apps.core.utils import get_current_tenant
 
 
@@ -34,21 +35,31 @@ def home(request):
         </html>
         """)
     
+    # IMPORTANTE: Escapar dados do banco para prevenir XSS
+    tenant_nome = escape(tenant.nome)
+    tenant_subdominio = escape(tenant.subdominio)
+    tenant_cor = escape(tenant.cor_primaria) if tenant.cor_primaria else '#667eea'
+    
+    # Validar que cor_primaria é um hex válido (prevenir injeção CSS)
+    import re
+    if not re.match(r'^#[0-9A-Fa-f]{6}$', tenant_cor):
+        tenant_cor = '#667eea'  # Fallback seguro
+    
     # Aqui está a mágica do White Label: Usamos a cor do banco de dados no CSS!
     html = f"""
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>{tenant.nome} - Ouvy</title>
+            <title>{tenant_nome} - Ouvy</title>
         </head>
         <body style="font-family: sans-serif; text-align: center; padding: 50px; margin: 0;">
-            <div style="background-color: {tenant.cor_primaria}; color: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-                <h1>🎯 Bem-vindo à {tenant.nome}</h1>
+            <div style="background-color: {tenant_cor}; color: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                <h1>🎯 Bem-vindo à {tenant_nome}</h1>
                 <p>Este é um canal exclusivo e personalizado</p>
             </div>
             <div style="margin-top: 30px; padding: 20px; background: #f5f5f5; border-radius: 10px;">
-                <p><strong>Subdomínio:</strong> {tenant.subdominio}</p>
-                <p><strong>Cor Primária:</strong> {tenant.cor_primaria}</p>
+                <p><strong>Subdomínio:</strong> {tenant_subdominio}</p>
+                <p><strong>Cor Primária:</strong> {tenant_cor}</p>
                 <p><strong>Status:</strong> {'✅ Ativo' if tenant.ativo else '❌ Inativo'}</p>
             </div>
             <p style="margin-top: 20px; color: #666;">

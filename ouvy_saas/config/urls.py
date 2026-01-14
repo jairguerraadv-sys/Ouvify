@@ -16,6 +16,7 @@ from apps.feedbacks import views as feedback_views  # type: ignore[import-not-fo
 from apps.core.views import home
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
+from apps.core.lgpd_views import AccountDeletionView, DataExportView  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
 
@@ -76,6 +77,10 @@ urlpatterns = [
     # Password Reset
     path('api/password-reset/request/', PasswordResetRequestView.as_view(), name='password-reset-request'),
     path('api/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
+    
+    # LGPD/GDPR - Exclusão e Exportação de Dados
+    path('api/account/', AccountDeletionView.as_view(), name='account-deletion'),
+    path('api/export-data/', DataExportView.as_view(), name='data-export'),
 ]
 
 # Adicionar URLs do Swagger

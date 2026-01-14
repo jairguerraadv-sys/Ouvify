@@ -9,6 +9,8 @@ from .models import Client
 
 # Configurar chave API do Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
+# Configurar timeout e retries (ignorar erro do Pylance - funciona em runtime)
+stripe.max_network_retries = settings.STRIPE_MAX_NETWORK_RETRIES  # type: ignore[attr-defined]
 
 
 # Mapeamento de planos para price IDs do Stripe (Test Mode)

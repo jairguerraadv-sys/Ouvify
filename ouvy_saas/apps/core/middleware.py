@@ -3,6 +3,8 @@ Tenant Middleware for Ouvy SaaS application.
 Handles automatic tenant identification based on subdomain or headers.
 """
 import logging
+import os
+from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.db.models import Q
@@ -39,6 +41,11 @@ class TenantMiddleware:
     
     def __init__(self, get_response):
         self.get_response = get_response
+        # Em produção, o fallback de tenant é desativado por segurança
+        self.fallback_enabled = os.getenv(
+            'TENANT_FALLBACK_ENABLED',
+            'True' if settings.DEBUG else 'False'
+        ).lower() in ('true', '1', 'yes')
         logger.info("🔧 TenantMiddleware initialized")
     
     def __call__(self, request):
@@ -71,12 +78,10 @@ class TenantMiddleware:
             host_without_port == '127.0.0.1'
         )
         
-        # Se for IP/localhost, tentar via header ou usar padrão
+        # Se for IP/localhost, tentar via header ou usar padrão (se habilitado)
         if is_ip_or_localhost or len(parts) == 1:
-            # Sem subdomínio - tentar obter tenant via header ou usar padrão
-            
-            # 1. Tentar via header X-Tenant-ID (útil para desenvolvimento/API)
             tenant_id = request.headers.get('X-Tenant-ID')
+
             if tenant_id:
                 try:
                     tenant = Client.objects.get(id=tenant_id, ativo=True)
@@ -85,9 +90,9 @@ class TenantMiddleware:
                     logger.debug(f"✅ Tenant identificado via header: {tenant.nome}")
                 except (Client.DoesNotExist, ValueError):
                     logger.warning(f"⚠️ Tenant ID inválido no header: {tenant_id}")
-            
-            # 2. Se ainda não tiver tenant, usar o primeiro ativo (desenvolvimento)
-            if not tenant:
+
+            # Fallback só é permitido quando explicitamente ativado
+            if not tenant and self.fallback_enabled:
                 try:
                     tenant = Client.objects.filter(ativo=True).only(
                         'id', 'nome', 'subdominio', 'ativo'
@@ -98,8 +103,16 @@ class TenantMiddleware:
                         logger.debug(f"🔧 Usando tenant padrão (dev): {tenant.nome}")
                 except Exception as e:
                     logger.error(f"❌ Erro ao buscar tenant padrão: {e}")
-            
-            # 3. Se não houver nenhum tenant, deixar None
+
+            if not tenant and not self.fallback_enabled:
+                return JsonResponse(
+                    {
+                        "error": "tenant_required",
+                        "detail": "Informe o tenant via subdomínio ou header X-Tenant-ID",
+                    },
+                    status=400,
+                )
+
             if not tenant:
                 request.tenant = None
                 logger.debug("ℹ️ Nenhum tenant identificado (modo público)")

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Feedback
+from .models import Feedback, FeedbackInteracao
 
 
 @admin.register(Feedback)
@@ -8,6 +8,8 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ['tipo', 'status', 'anonimo', 'data_criacao', 'client']
     search_fields = ['protocolo', 'titulo', 'descricao', 'email_contato']
     readonly_fields = ['protocolo', 'data_criacao', 'data_atualizacao', 'client']
+    date_hierarchy = 'data_criacao'
+    list_per_page = 25
     
     fieldsets = (
         ('Rastreamento', {
@@ -46,3 +48,19 @@ class FeedbackAdmin(admin.ModelAdmin):
         if obj:  # Se estiver editando
             readonly.append('tipo')
         return readonly
+
+
+@admin.register(FeedbackInteracao)
+class FeedbackInteracaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'feedback', 'tipo', 'autor', 'data']
+    list_filter = ['tipo', 'data']
+    search_fields = ['mensagem', 'feedback__protocolo']
+    readonly_fields = ['data', 'client']
+    raw_id_fields = ['feedback', 'autor']
+    list_per_page = 50
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if hasattr(qs.model.objects, 'all_tenants'):
+            return qs.model.objects.all_tenants()
+        return qs

@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm } from '@/lib/validation';
+import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
 import SuccessCard from '@/components/SuccessCard';
 import { Logo } from '@/components/ui/logo';
 import type { FeedbackType } from '@/lib/types';
@@ -51,7 +52,15 @@ export default function EnviarFeedbackPage() {
     }
 
     try {
-      const response = await api.post<{ protocolo: string }>('/api/feedbacks/', formData);
+      // Sanitizar dados antes de enviar para a API
+      const sanitizedData = {
+        ...formData,
+        titulo: stripHtml(formData.titulo.trim()),
+        descricao: sanitizeTextOnly(formData.descricao.trim()),
+        email_contato: formData.anonimo ? '' : stripHtml(formData.email_contato.trim().toLowerCase()),
+      };
+      
+      const response = await api.post<{ protocolo: string }>('/api/feedbacks/', sanitizedData);
       
       // Salvar protocolo retornado
       setProtocolo(response.protocolo);

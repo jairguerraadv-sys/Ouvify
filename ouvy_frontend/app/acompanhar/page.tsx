@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useCallback, useMemo, FormEvent } from 'react';
+import { useState, useCallback, useMemo, FormEvent, useEffect } from 'react';
 import { api, getErrorMessage } from '@/lib/api';
 import { Logo } from '@/components/ui/logo';
 import { formatDate } from '@/lib/helpers';
+import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
 import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
+import { useDebounce } from '@/hooks/use-common';
 
 interface FeedbackInteraction {
   id: number;
@@ -23,16 +25,34 @@ interface FeedbackStatusResponse extends Feedback {
 
 export default function AcompanharPage() {
   const [protocolo, setProtocolo] = useState('');
+  const debouncedProtocolo = useDebounce(protocolo, 300);
   const [feedback, setFeedback] = useState<FeedbackStatusResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [publicMsg, setPublicMsg] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [cooldownMs, setCooldownMs] = useState(0);
+
+  const MAX_MESSAGE_LENGTH = 1000;
+
+  // Cooldown timer to respect rate limiting feedback from API
+  useEffect(() => {
+    if (!cooldownMs) return;
+    const timer = setInterval(() => {
+      setCooldownMs((prev) => (prev - 1000 > 0 ? prev - 1000 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldownMs]);
 
   const buscarProtocolo = useCallback(async (e: FormEvent) => {
     e.preventDefault();
+
+    if (cooldownMs > 0) {
+      setError('Aguarde alguns segundos antes de tentar novamente.');
+      return;
+    }
     
-    if (!protocolo.trim()) {
+    if (!debouncedProtocolo.trim()) {
       setError('Por favor, digite um código de protocolo');
       return;
     }
@@ -43,15 +63,17 @@ export default function AcompanharPage() {
 
     try {
       const response = await api.get<FeedbackStatusResponse>('/api/feedbacks/consultar-protocolo/', {
-        params: { codigo: protocolo.toUpperCase().trim() }
+        params: { codigo: debouncedProtocolo.toUpperCase().trim() }
       });
 
       setFeedback(response);
     } catch (err) {
       const errorMessage = getErrorMessage(err);
+      const status = (err as any)?.response?.status as number | undefined;
       
-      if (errorMessage.includes('429') || errorMessage.includes('tentativas')) {
-        setError('🚨 Muitas tentativas. Por favor, aguarde alguns instantes.');
+      if (status === 429 || errorMessage.includes('429') || errorMessage.includes('tentativas')) {
+        setCooldownMs(60000);
+        setError('🚨 Muitas tentativas. Por favor, aguarde 60 segundos antes de tentar de novo.');
       } else if (errorMessage.includes('404') || errorMessage.includes('não encontrado')) {
         setError('Protocolo não encontrado. Verifique o código digitado.');
       } else if (errorMessage.includes('400') || errorMessage.includes('inválido')) {
@@ -69,14 +91,21 @@ export default function AcompanharPage() {
   const handleEnviarResposta = useCallback(async () => {
     if (!feedback) return;
     if (!publicMsg.trim()) return;
+    if (publicMsg.trim().length > MAX_MESSAGE_LENGTH) {
+      setError(`Mensagem excede o limite de ${MAX_MESSAGE_LENGTH} caracteres.`);
+      return;
+    }
     
     try {
       setIsSending(true);
       setError(null);
       
+      // Sanitizar mensagem antes de enviar
+      const sanitizedMessage = sanitizeTextOnly(publicMsg.trim());
+      
       const res = await api.post<FeedbackInteraction>('/api/feedbacks/responder-protocolo/', {
         protocolo: feedback.protocolo,
-        mensagem: publicMsg.trim(),
+        mensagem: sanitizedMessage,
       });
       
       // Adicionar a nova interação à lista local
@@ -90,7 +119,11 @@ export default function AcompanharPage() {
       setPublicMsg('');
     } catch (err) {
       const errorMessage = getErrorMessage(err);
-      setError(errorMessage || 'Erro ao enviar mensagem. Tente novamente.');
+      if (errorMessage.includes('excede o limite') || errorMessage.includes('limite')) {
+        setError(errorMessage);
+      } else {
+        setError(errorMessage || 'Erro ao enviar mensagem. Tente novamente.');
+      }
     } finally {
       setIsSending(false);
     }
@@ -158,7 +191,7 @@ export default function AcompanharPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || cooldownMs > 0}
               className="w-full bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
             >
               {loading ? (
@@ -176,7 +209,7 @@ export default function AcompanharPage() {
           </form>
 
           {/* Mensagem de Erro */}
-          {error && (
+            {error && (
             <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-red-800 text-sm flex items-center">
                 <span className="mr-2">⚠️</span>
@@ -184,6 +217,11 @@ export default function AcompanharPage() {
               </p>
             </div>
           )}
+            {cooldownMs > 0 && (
+              <div className="mt-3 text-xs text-orange-700">
+                Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta.
+              </div>
+            )}
         </div>
 
         {/* Resultado da Consulta */}
@@ -365,11 +403,14 @@ export default function AcompanharPage() {
                     <p className="text-xs text-gray-500 mb-2">Envie uma mensagem para a empresa</p>
                     <textarea
                       className="w-full border rounded p-2"
-                      placeholder="Escreva sua mensagem..."
+                      placeholder={`Escreva sua mensagem (máx. ${MAX_MESSAGE_LENGTH} caracteres)...`}
                       rows={3}
                       value={publicMsg}
-                      onChange={(e) => setPublicMsg(e.target.value)}
+                      onChange={(e) => setPublicMsg(e.target.value.slice(0, MAX_MESSAGE_LENGTH))}
                     />
+                    <div className="mt-1 text-xs text-gray-500 text-right">
+                      {publicMsg.length}/{MAX_MESSAGE_LENGTH}
+                    </div>
                     <div className="mt-2 flex justify-end">
                       <button
                         onClick={handleEnviarResposta}

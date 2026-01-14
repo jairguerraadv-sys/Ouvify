@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError as DjangoValidationError
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.conf import settings
@@ -15,6 +13,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 from rest_framework.throttling import AnonRateThrottle
+from .email_service import EmailService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -59,47 +58,16 @@ class PasswordResetRequestView(APIView):
             frontend_url = settings.BASE_URL
             reset_link = f"{frontend_url}/recuperar-senha/confirmar?uid={uid}&token={token}"
             
-            # Enviar email (implementar em produção com provedor real)
-            try:
-                # TODO: Configurar SMTP em produção
-                subject = 'Recuperação de Senha - Ouvy'
-                message = f"""
-Olá {user.first_name or user.username},
-
-Você solicitou a recuperação de senha da sua conta Ouvy.
-
-Clique no link abaixo para criar uma nova senha:
-{reset_link}
-
-Este link expira em 24 horas.
-
-Se você não solicitou esta recuperação, ignore este email.
-
-Atenciosamente,
-Equipe Ouvy
-                """
-                
-                # Mascarar email nos logs para segurança
-                email_masked = f"{email[:3]}***@{email.split('@')[1]}"
-                
-                # Em desenvolvimento, apenas log
-                if settings.DEBUG:
-                    logger.info(f"🔗 Link de recuperação gerado (dev mode)")
-                    logger.info(f"📧 Email de teste para: {email_masked}")
-                else:
-                    send_mail(
-                        subject,
-                        message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [email],
-                        fail_silently=False,
-                    )
-                
+            # Enviar email usando o serviço centralizado
+            email_sent = EmailService.send_password_reset(user, reset_link)
+            
+            # Mascarar email nos logs para segurança
+            email_masked = f"{email[:3]}***@{email.split('@')[1]}"
+            
+            if email_sent:
                 logger.info(f"✅ Email de recuperação enviado para {email_masked}")
-                
-            except Exception as e:
-                logger.error(f"❌ Erro ao enviar email: {str(e)}")
-                # Não revelar erro ao usuário por segurança
+            else:
+                logger.warning(f"⚠️ Falha ao enviar email para {email_masked}")
         
         except User.DoesNotExist:
             # Por segurança, não revelar se o email existe ou não

@@ -285,7 +285,11 @@ CORS_ALLOWED_ORIGINS = os.getenv(
 ).split(',')
 
 # Permitir credenciais (cookies, headers de autenticação)
-CORS_ALLOW_CREDENTIALS = os.getenv('CORS_ALLOW_CREDENTIALS', 'True').lower() in ('true', '1', 'yes')
+# Em produção, o padrão é False para evitar leakage de cookies
+CORS_ALLOW_CREDENTIALS = os.getenv(
+    'CORS_ALLOW_CREDENTIALS',
+    'True' if DEBUG else 'False'
+).lower() in ('true', '1', 'yes')
 
 # Headers permitidos
 CORS_ALLOW_HEADERS = [
@@ -388,8 +392,37 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')  # Será configurado após testar webhook local
+STRIPE_REQUEST_TIMEOUT = int(os.getenv('STRIPE_REQUEST_TIMEOUT', '10'))
+STRIPE_MAX_NETWORK_RETRIES = int(os.getenv('STRIPE_MAX_NETWORK_RETRIES', '2'))
 
 BASE_URL = os.getenv('BASE_URL', 'http://localhost:3000')
+
+# =============================================================================
+# CONFIGURAÇÕES DE EMAIL (SMTP)
+# =============================================================================
+
+# Provedor de Email (suporta: SendGrid, AWS SES, Mailgun, SMTP genérico)
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+
+# Configurações SMTP
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.sendgrid.net')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ('true', '1', 'yes')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ('true', '1', 'yes')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'apikey')  # Para SendGrid: 'apikey'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # API Key do provedor
+EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', '30'))
+
+# Remetentes
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Ouvy <no-reply@ouvy.com.br>')
+SERVER_EMAIL = os.getenv('SERVER_EMAIL', DEFAULT_FROM_EMAIL)
+
+# Em produção, usar backend real; em desenvolvimento, apenas console
+if not DEBUG and EMAIL_HOST_PASSWORD:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+elif DEBUG:
+    # Em dev, imprime emails no console
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # =============================================================================
 # VALIDAÇÕES DE AMBIENTE

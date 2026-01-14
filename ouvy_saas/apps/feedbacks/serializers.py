@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Feedback, FeedbackInteracao
 from django.utils import timezone
+from apps.core.sanitizers import sanitize_html_input, sanitize_plain_text
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
@@ -26,6 +27,14 @@ class FeedbackSerializer(serializers.ModelSerializer):
         
         # Campos somente leitura
         read_only_fields = ['id', 'protocolo', 'data_criacao', 'data_atualizacao']
+    
+    def validate_titulo(self, value):
+        """Sanitiza o título contra XSS."""
+        return sanitize_plain_text(value, max_length=200)
+    
+    def validate_descricao(self, value):
+        """Sanitiza a descrição contra XSS."""
+        return sanitize_html_input(value, max_length=5000)
 
 
 class FeedbackInteracaoSerializer(serializers.ModelSerializer):

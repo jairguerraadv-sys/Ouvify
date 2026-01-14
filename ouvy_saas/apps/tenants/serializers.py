@@ -61,7 +61,6 @@ class RegisterTenantSerializer(serializers.Serializer):
             )
         
         return value
-        return value
     
     def validate_subdominio_desejado(self, value):
         """Valida o formato e disponibilidade do subdomínio."""

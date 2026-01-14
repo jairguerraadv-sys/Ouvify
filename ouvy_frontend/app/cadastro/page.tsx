@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge-chip';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm, validateSubdomain } from '@/lib/validation';
+import { stripHtml } from '@/lib/sanitize';
 import { storage, debounce } from '@/lib/helpers';
 import type { RegisterData, AuthToken } from '@/lib/types';
 
@@ -165,7 +166,16 @@ export default function CadastroPage() {
     setErrors({});
 
     try {
-      const response = await api.post<AuthToken>('/api/register-tenant/', formData);
+      // Sanitizar dados antes de enviar para a API
+      const sanitizedData = {
+        ...formData,
+        nome: stripHtml(formData.nome.trim()),
+        email: stripHtml(formData.email.trim().toLowerCase()),
+        nome_empresa: stripHtml(formData.nome_empresa.trim()),
+        subdominio_desejado: formData.subdominio_desejado.toLowerCase().trim(),
+      };
+      
+      const response = await api.post<AuthToken>('/api/register-tenant/', sanitizedData);
 
       // Armazenar dados de autenticação
       const { token, tenant, user } = response;

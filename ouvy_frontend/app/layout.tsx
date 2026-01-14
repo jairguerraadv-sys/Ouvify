@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import { CookieBanner } from "@/components/CookieBanner";
 import "./globals.css"; // ✅ Import DEVE estar aqui, no topo
 
 const inter = Inter({
@@ -78,6 +79,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <Toaster />
+          <CookieBanner />
         </AuthProvider>
       </body>
     </html>

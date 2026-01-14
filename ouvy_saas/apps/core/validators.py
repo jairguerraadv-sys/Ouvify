@@ -7,6 +7,13 @@ from django.core.validators import EmailValidator
 import re
 
 
+def strip_null_bytes(value: str) -> str:
+    """Remove null bytes que podem causar problemas de segurança."""
+    if not value:
+        return ''
+    return value.replace('\x00', '')
+
+
 def validate_subdomain(value: str) -> None:
     """
     Valida se um subdomínio segue as regras DNS.
@@ -17,6 +24,9 @@ def validate_subdomain(value: str) -> None:
     Raises:
         ValidationError: Se o subdomínio for inválido
     """
+    # Sanitizar contra null bytes
+    value = strip_null_bytes(value)
+    
     if not value:
         raise ValidationError('Subdomínio não pode ser vazio')
     

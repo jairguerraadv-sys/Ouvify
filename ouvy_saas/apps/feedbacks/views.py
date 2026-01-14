@@ -13,8 +13,13 @@ from .serializers import (
 )
 from .serializers import FeedbackInteracaoSerializer
 from .throttles import ProtocoloConsultaThrottle
-from .constants import InteracaoTipo, FeedbackStatus
+from .constants import (
+    InteracaoTipo,
+    FeedbackStatus,
+    MAX_INTERACAO_MENSAGEM_LENGTH,
+)
 from apps.core.utils import get_client_ip, build_search_query
+from apps.core.sanitizers import sanitize_html_input
 from apps.core.pagination import StandardResultsSetPagination
 import logging
 
@@ -145,6 +150,9 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
         if not mensagem:
             return Response({"error": "Campo 'mensagem' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Sanitizar mensagem contra XSS
+        mensagem = sanitize_html_input(mensagem, max_length=MAX_INTERACAO_MENSAGEM_LENGTH)
         
         # Validar tipo usando constantes do modelo
         valid_tipos = InteracaoTipo.values()
@@ -374,6 +382,11 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             return Response({"error": "Campo 'protocolo' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
         if not mensagem:
             return Response({"error": "Campo 'mensagem' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Sanitizar inputs contra XSS
+        from apps.core.sanitizers import sanitize_protocol_code
+        protocolo = sanitize_protocol_code(protocolo)
+        mensagem = sanitize_html_input(mensagem, max_length=MAX_INTERACAO_MENSAGEM_LENGTH)
 
         try:
             feedback = Feedback.objects.all_tenants().select_related('client').get(protocolo=protocolo)  # type: ignore[attr-defined]
