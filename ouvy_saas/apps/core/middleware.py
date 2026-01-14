@@ -1,8 +1,15 @@
-from django.http import HttpResponse
+"""
+Tenant Middleware for Ouvy SaaS application.
+Handles automatic tenant identification based on subdomain or headers.
+"""
+import logging
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.db.models import Q
 from apps.tenants.models import Client
 from .utils import set_current_tenant, clear_current_tenant
+
+logger = logging.getLogger(__name__)
 
 
 class TenantMiddleware:
@@ -32,12 +39,14 @@ class TenantMiddleware:
     
     def __init__(self, get_response):
         self.get_response = get_response
+        logger.info("🔧 TenantMiddleware initialized")
     
     def __call__(self, request):
         # Verificar se a URL está na lista de exceções
         if any(request.path.startswith(url) for url in self.EXEMPT_URLS):
             # Processar requisição sem verificar tenant
-            return self.get_response(request)
+            response = self.get_response(request)
+            return response
         
         # Limpar qualquer tenant anterior
         clear_current_tenant()
@@ -53,6 +62,7 @@ class TenantMiddleware:
         parts = host_without_port.split('.')
         
         tenant = None
+        subdomain = None
         
         # Verificar se é um IP (127.0.0.1, 192.168.x.x, etc) ou localhost
         is_ip_or_localhost = (
@@ -72,8 +82,9 @@ class TenantMiddleware:
                     tenant = Client.objects.get(id=tenant_id, ativo=True)
                     set_current_tenant(tenant)
                     request.tenant = tenant
+                    logger.debug(f"✅ Tenant identificado via header: {tenant.nome}")
                 except (Client.DoesNotExist, ValueError):
-                    pass
+                    logger.warning(f"⚠️ Tenant ID inválido no header: {tenant_id}")
             
             # 2. Se ainda não tiver tenant, usar o primeiro ativo (desenvolvimento)
             if not tenant:
@@ -82,12 +93,14 @@ class TenantMiddleware:
                     if tenant:
                         set_current_tenant(tenant)
                         request.tenant = tenant
-                except Exception:
-                    pass
+                        logger.debug(f"🔧 Usando tenant padrão (dev): {tenant.nome}")
+                except Exception as e:
+                    logger.error(f"❌ Erro ao buscar tenant padrão: {e}")
             
             # 3. Se não houver nenhum tenant, deixar None
             if not tenant:
                 request.tenant = None
+                logger.debug("ℹ️ Nenhum tenant identificado (modo público)")
         
         # Se houver subdomínio (mais de uma parte no host e não é IP)
         elif len(parts) > 1:

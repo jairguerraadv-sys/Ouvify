@@ -1,5 +1,6 @@
 import useSWR from 'swr';
-import { apiClient, fetcher, Feedback } from './use-dashboard';
+import { apiClient, fetcher } from './use-dashboard';
+import { Feedback } from '@/lib/types';
 
 export interface FeedbackInteraction {
   id: number;

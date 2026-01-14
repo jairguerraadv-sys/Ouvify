@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 import { Menu, X } from 'lucide-react';
@@ -18,7 +18,7 @@ interface NavBarProps {
   className?: string;
 }
 
-export function NavBar({
+export const NavBar = React.memo(function NavBar({
   links = [],
   rightContent,
   sticky = true,
@@ -26,19 +26,29 @@ export function NavBar({
 }: NavBarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const toggleMobile = useCallback(() => {
+    setMobileOpen(prev => !prev);
+  }, []);
+
+  const closeMobile = useCallback(() => {
+    setMobileOpen(false);
+  }, []);
+
   return (
     <nav
       className={cn(
-        'w-full bg-background border-b border-neutral-200', // Fundo branco limpo
+        'w-full bg-background/95 backdrop-blur-md border-b border-border',
         sticky && 'sticky top-0 z-50',
-        'shadow-sm',
+        'shadow-sm transition-all duration-300',
         className
       )}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Logo variant="full" href="/" size="md" />
+          <Logo href="/" size="sm" />
 
           {/* Desktop Links */}
           {links.length > 0 && (
@@ -48,13 +58,18 @@ export function NavBar({
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'text-sm font-medium transition-colors py-2 px-1',
+                    'text-sm font-semibold transition-all duration-300 py-2 px-1 border-b-2 relative group',
                     link.active
-                      ? 'text-primary border-b-2 border-primary' // Ciano ativo
-                      : 'text-secondary hover:text-primary' // Azul marinho -> ciano no hover
+                      ? 'text-primary border-primary' 
+                      : 'text-secondary border-transparent hover:text-primary hover:border-primary/50'
                   )}
+                  aria-current={link.active ? 'page' : undefined}
                 >
                   {link.label}
+                  <span className={cn(
+                    'absolute inset-x-0 -bottom-px h-0.5 bg-primary transform origin-left transition-transform duration-300',
+                    link.active ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+                  )} />
                 </a>
               ))}
             </div>
@@ -66,8 +81,14 @@ export function NavBar({
 
             {/* Mobile Menu Toggle */}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden text-secondary hover:text-primary transition-colors"
+              onClick={toggleMobile}
+              className={cn(
+                'md:hidden text-secondary hover:text-primary transition-colors duration-200 p-2 hover:bg-muted rounded-md',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+              )}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+              aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -76,17 +97,24 @@ export function NavBar({
 
         {/* Mobile Menu */}
         {mobileOpen && links.length > 0 && (
-          <div className="md:hidden border-t border-neutral-200 py-4 space-y-2">
+          <div 
+            id="mobile-menu"
+            className="md:hidden border-t border-border py-4 space-y-2 animate-slide-down"
+            role="region"
+            aria-label="Mobile navigation"
+          >
             {links.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'block px-4 py-2 text-sm font-medium rounded-md transition-colors',
+                  'block text-sm font-medium transition-all duration-200 py-2 px-4 rounded-md',
                   link.active
-                    ? 'bg-primary text-white' // Fundo ciano ativo
-                    : 'text-secondary hover:bg-neutral-100' // Azul marinho com hover sutil
+                    ? 'text-primary bg-primary/10'
+                    : 'text-secondary hover:text-primary hover:bg-muted'
                 )}
+                onClick={closeMobile}
+                aria-current={link.active ? 'page' : undefined}
               >
                 {link.label}
               </a>
@@ -96,4 +124,4 @@ export function NavBar({
       </div>
     </nav>
   );
-}
+});

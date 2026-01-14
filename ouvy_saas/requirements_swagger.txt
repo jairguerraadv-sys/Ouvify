@@ -1,0 +1,4 @@
+# Django REST Framework + Swagger/OpenAPI
+drf-yasg==1.21.7
+
+# Adicionar ao requirements.txt existente

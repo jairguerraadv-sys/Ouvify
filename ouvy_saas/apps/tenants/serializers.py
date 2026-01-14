@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from .models import Client
+from apps.core.validators import validate_subdomain, validate_strong_password
+from apps.core.utils import is_reserved_subdomain
 import re
 
 
@@ -37,40 +39,62 @@ class RegisterTenantSerializer(serializers.Serializer):
     
     def validate_email(self, value):
         """Verifica se o email já está em uso."""
+        value = value.lower().strip()
+        
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Este email já está cadastrado.")
-        return value.lower()
+        
+        # Validação básica de formato
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', value):
+            raise serializers.ValidationError("Formato de email inválido.")
+        
+        return value
     
     def validate_subdominio_desejado(self, value):
         """Valida o formato e disponibilidade do subdomínio."""
-        # Validar formato
-        if not re.match(r'^[a-z0-9]([a-z0-9-]*[a-z0-9])?$', value):
-            raise serializers.ValidationError(
-                "Subdomínio deve conter apenas letras minúsculas, números e hífens. "
-                "Não pode começar ou terminar com hífen."
-            )
+        value = value.lower().strip()
         
-        # Verificar subdomínios reservados
-        reserved = ['www', 'api', 'admin', 'app', 'dashboard', 'mail', 'smtp', 'ftp']
-        if value in reserved:
-            raise serializers.ValidationError(f"O subdomínio '{value}' está reservado.")
+        # Usar validator do core
+        try:
+            validate_subdomain(value)
+        except Exception as e:
+            raise serializers.ValidationError(str(e))
         
         # Verificar se já existe
         if Client.objects.filter(subdominio=value).exists():
             raise serializers.ValidationError("Este subdomínio já está em uso.")
         
-        return value.lower()
+        return value
     
     def validate_senha(self, value):
-        """Valida a força da senha."""
-        if len(value) < 8:
-            raise serializers.ValidationError("A senha deve ter no mínimo 8 caracteres.")
+        """Valida a força da senha usando validator do core."""
+        try:
+            validate_strong_password(value)
+        except Exception as e:
+            raise serializers.ValidationError(str(e))
         
-        # Verificar se contém pelo menos uma letra e um número
-        if not re.search(r'[A-Za-z]', value) or not re.search(r'\d', value):
-            raise serializers.ValidationError(
-                "A senha deve conter pelo menos uma letra e um número."
-            )
+        return value
+    
+    def validate_nome(self, value):
+        """Valida o nome do usuário."""
+        value = value.strip()
+        
+        if len(value) < 3:
+            raise serializers.ValidationError("Nome deve ter no mínimo 3 caracteres.")
+        
+        # Verificar se tem pelo menos nome e sobrenome
+        parts = value.split()
+        if len(parts) < 2:
+            raise serializers.ValidationError("Por favor, informe nome e sobrenome.")
+        
+        return value
+    
+    def validate_nome_empresa(self, value):
+        """Valida o nome da empresa."""
+        value = value.strip()
+        
+        if len(value) < 3:
+            raise serializers.ValidationError("Nome da empresa deve ter no mínimo 3 caracteres.")
         
         return value
 

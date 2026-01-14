@@ -1,38 +1,27 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
 import Link from 'next/link';
 import { AlertCircle, CheckCircle, Loader, XCircle, ArrowRight } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge-chip';
+import { api, getErrorMessage } from '@/lib/api';
+import { validateForm, validateSubdomain } from '@/lib/validation';
+import { storage, debounce } from '@/lib/helpers';
+import type { RegisterData, AuthToken } from '@/lib/types';
 
-interface FormData {
-  nome: string;
-  email: string;
-  senha: string;
-  nome_empresa: string;
-  subdominio_desejado: string;
+interface FormErrors {
+  [key: string]: string;
 }
 
-interface Errors {
-  [key: string]: string | string[];
-}
-
-interface ApiErrorResponse {
-  detail?: string;
-  errors?: {
-    [key: string]: string[];
-  };
-  error?: string;
-}
+type SubdominioStatus = 'available' | 'taken' | 'checking' | 'invalid' | null;
 
 export default function CadastroPage() {
   const router = useRouter();
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<RegisterData>({
     nome: '',
     email: '',
     senha: '',
@@ -40,46 +29,35 @@ export default function CadastroPage() {
     subdominio_desejado: '',
   });
 
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [subdominioStatus, setSubdominioStatus] = useState<'available' | 'taken' | 'checking' | 'invalid' | null>(null);
-  const subdominioTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+  const [subdominioStatus, setSubdominioStatus] = useState<SubdominioStatus>(null);
+  const checkTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Validar disponibilidade do subdomínio com debounce
-  const checkSubdominioAvailability = async (subdominio: string) => {
+  const checkSubdominioAvailability = useCallback(async (subdominio: string) => {
     if (!subdominio || subdominio.length < 3) {
       setSubdominioStatus('invalid');
       return;
     }
 
-    // Validar formato básico
-    if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(subdominio)) {
+    const validationError = validateSubdomain(subdominio);
+    if (validationError) {
       setSubdominioStatus('invalid');
-      setErrors(prev => ({ ...prev, subdominio_desejado: 'Use apenas letras minúsculas, números e hífens' }));
-      return;
-    }
-
-    // Palavras reservadas
-    const reserved = ['www', 'api', 'admin', 'app', 'mail', 'ftp', 'smtp', 'ouvy'];
-    if (reserved.includes(subdominio)) {
-      setSubdominioStatus('taken');
-      setErrors(prev => ({ ...prev, subdominio_desejado: 'Este subdomínio está reservado' }));
+      setErrors(prev => ({ ...prev, subdominio_desejado: validationError }));
       return;
     }
 
     setSubdominioStatus('checking');
     
     try {
-      // Verificar disponibilidade no backend
-      const response = await axios.get(
-        `${API_URL}/api/check-subdominio/`,
+      const response = await api.get<{ available: boolean }>(
+        '/api/check-subdominio/',
         { params: { subdominio } }
       );
       
-      if (response.data.available) {
+      if (response.available) {
         setSubdominioStatus('available');
         setErrors(prev => {
           const { subdominio_desejado, ...rest } = prev;
@@ -90,14 +68,19 @@ export default function CadastroPage() {
         setErrors(prev => ({ ...prev, subdominio_desejado: 'Este subdomínio já está em uso' }));
       }
     } catch (error) {
-      // Se o endpoint não existir, considerar como disponível por padrão
       console.warn('Endpoint de verificação não implementado, assumindo disponível');
       setSubdominioStatus('available');
     }
-  };
+  }, []);
+
+  // Debounced version
+  const debouncedCheck = useCallback(
+    debounce((subdominio: string) => checkSubdominioAvailability(subdominio), 800),
+    [checkSubdominioAvailability]
+  );
 
   // Validar e formatar subdomínio em tempo real
-  const handleSubdominioChange = (value: string) => {
+  const handleSubdominioChange = useCallback((value: string) => {
     const formatted = value
       .toLowerCase()
       .replace(/[^a-z0-9-]/g, '')
@@ -109,9 +92,8 @@ export default function CadastroPage() {
       return rest;
     });
     
-    // Limpar timeout anterior
-    if (subdominioTimeoutRef.current) {
-      clearTimeout(subdominioTimeoutRef.current);
+    if (checkTimeoutRef.current) {
+      clearTimeout(checkTimeoutRef.current);
     }
 
     if (!formatted) {
@@ -119,71 +101,57 @@ export default function CadastroPage() {
       return;
     }
 
-    // Debounce de 800ms para não sobrecarregar o backend
-    subdominioTimeoutRef.current = setTimeout(() => {
+    checkTimeoutRef.current = setTimeout(() => {
       checkSubdominioAvailability(formatted);
     }, 800);
-  };
+  }, [checkSubdominioAvailability]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
-      if (subdominioTimeoutRef.current) {
-        clearTimeout(subdominioTimeoutRef.current);
+      if (checkTimeoutRef.current) {
+        clearTimeout(checkTimeoutRef.current);
       }
     };
   }, []);
 
-  const validateForm = (): boolean => {
-    const newErrors: Errors = {};
+  // Validação do formulário
+  const validate = useCallback((): boolean => {
+    const validation = validateForm(formData, {
+      nome: {
+        required: true,
+        message: 'Nome completo é obrigatório',
+        custom: (value: string) => {
+          if (value.trim().split(' ').length < 2) {
+            return 'Digite seu nome completo';
+          }
+          return null;
+        },
+      },
+      email: { required: true, type: 'email' },
+      senha: { required: true, type: 'password' },
+      nome_empresa: { required: true, message: 'Nome da empresa é obrigatório' },
+      subdominio_desejado: {
+        required: true,
+        message: 'Subdomínio é obrigatório',
+        custom: (value: string) => {
+          if (value.length < 3) {
+            return 'Subdomínio deve ter no mínimo 3 caracteres';
+          }
+          return validateSubdomain(value);
+        },
+      },
+    });
 
-    // Validar nome
-    if (!formData.nome.trim()) {
-      newErrors.nome = 'Nome completo é obrigatório';
-    } else if (formData.nome.trim().split(' ').length < 2) {
-      newErrors.nome = 'Digite seu nome completo';
-    }
+    setErrors(validation.errors);
+    return validation.isValid;
+  }, [formData]);
 
-    // Validar email
-    if (!formData.email) {
-      newErrors.email = 'Email é obrigatório';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email inválido';
-    }
-
-    // Validar senha
-    if (!formData.senha) {
-      newErrors.senha = 'Senha é obrigatória';
-    } else if (formData.senha.length < 8) {
-      newErrors.senha = 'Senha deve ter no mínimo 8 caracteres';
-    } else if (!/[A-Za-z]/.test(formData.senha)) {
-      newErrors.senha = 'Senha deve conter pelo menos uma letra';
-    } else if (!/\d/.test(formData.senha)) {
-      newErrors.senha = 'Senha deve conter pelo menos um número';
-    }
-
-    // Validar nome da empresa
-    if (!formData.nome_empresa.trim()) {
-      newErrors.nome_empresa = 'Nome da empresa é obrigatório';
-    }
-
-    // Validar subdomínio
-    if (!formData.subdominio_desejado) {
-      newErrors.subdominio_desejado = 'Subdomínio é obrigatório';
-    } else if (formData.subdominio_desejado.length < 3) {
-      newErrors.subdominio_desejado = 'Subdomínio deve ter no mínimo 3 caracteres';
-    } else if (!/^[a-z0-9]([a-z0-9-]*[a-z0-9])?$/.test(formData.subdominio_desejado)) {
-      newErrors.subdominio_desejado = 'Subdomínio inválido';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Submit do formulário
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    if (!validate()) {
       return;
     }
 
@@ -197,79 +165,34 @@ export default function CadastroPage() {
     setErrors({});
 
     try {
-      const response = await axios.post(
-        `${API_URL}/api/register-tenant/`,
-        formData,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      const response = await api.post<AuthToken>('/api/register-tenant/', formData);
 
       // Armazenar dados de autenticação
-      const { token, tenant, user } = response.data;
+      const { token, tenant, user } = response;
       
-      localStorage.setItem('auth_token', token);
-      localStorage.setItem('tenant_id', tenant.id);
-      localStorage.setItem('tenant_subdominio', tenant.subdominio);
-      localStorage.setItem('user_name', user.first_name || user.username);
+      storage.set('auth_token', token);
+      storage.set('tenant_id', tenant?.id?.toString() || '');
+      storage.set('tenant_subdominio', tenant?.subdominio || '');
+      storage.set('user_name', user?.first_name || user?.username || '');
       
       setSuccess(true);
       
       // Redirecionar para dashboard após 2.5 segundos
       setTimeout(() => {
-        // Em produção: window.location.href = `https://${tenant.subdominio}.ouvy.com/dashboard`;
-        // Em desenvolvimento: usar localhost
         router.push('/dashboard');
       }, 2500);
       
-    } catch (error: any) {
-      console.error('❌ Erro ao criar conta:', error.response?.data || error);
-      
-      if (error.response?.data) {
-        const apiError: ApiErrorResponse = error.response.data;
-        
-        // Tratar erros de validação do Django REST Framework
-        if (apiError.errors) {
-          const formattedErrors: Errors = {};
-          
-          Object.entries(apiError.errors).forEach(([field, messages]) => {
-            // DRF retorna arrays de mensagens
-            formattedErrors[field] = Array.isArray(messages) ? messages[0] : messages;
-          });
-          
-          setErrors(formattedErrors);
-        } 
-        // Tratar mensagem de erro genérica
-        else if (apiError.detail) {
-          setErrors({ submit: apiError.detail });
-        }
-        // Tratar erro técnico
-        else if (apiError.error) {
-          setErrors({ submit: `Erro técnico: ${apiError.error}` });
-        }
-        // Fallback
-        else {
-          setErrors({ submit: 'Erro desconhecido ao criar conta' });
-        }
-      } 
-      // Erro de rede ou servidor indisponível
-      else if (error.request) {
-        setErrors({ 
-          submit: 'Não foi possível conectar ao servidor. Verifique sua conexão e tente novamente.' 
-        });
-      } 
-      // Erro na configuração da requisição
-      else {
-        setErrors({ submit: 'Erro ao processar a requisição. Tente novamente.' });
-      }
+    } catch (error) {
+      console.error('❌ Erro ao criar conta:', error);
+      const errorMessage = getErrorMessage(error);
+      setErrors({ submit: errorMessage });
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData, validate, subdominioStatus, router]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle input changes
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     
     if (name === 'subdominio_desejado') {
@@ -278,7 +201,7 @@ export default function CadastroPage() {
       setFormData(prev => ({ ...prev, [name]: value }));
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
-  };
+  }, [handleSubdominioChange]);
 
   if (success) {
     return (
@@ -317,7 +240,7 @@ export default function CadastroPage() {
         {/* Header */}
         <div className="text-center mb-10 animate-fade-in">
           <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
-            <Logo variant="full" size="lg" colorScheme="default" />
+            <Logo size="xl" />
           </Link>
           <h1 className="text-4xl font-bold text-secondary-900 mt-6 mb-2">
             Criar Conta
@@ -337,7 +260,7 @@ export default function CadastroPage() {
                 <div>
                   <p className="font-semibold">Erro ao criar conta</p>
                   <p className="text-sm mt-1">
-                    {typeof errors.submit === 'string' ? errors.submit : errors.submit[0]}
+                    {errors.submit}
                   </p>
                 </div>
               </div>
@@ -363,7 +286,7 @@ export default function CadastroPage() {
               {errors.nome && (
                 <p className="text-error text-sm mt-1 flex items-center gap-1">
                   <span className="w-1 h-1 bg-error rounded-full" />
-                  {typeof errors.nome === 'string' ? errors.nome : errors.nome[0]}
+                  {errors.nome}
                 </p>
               )}
             </div>
@@ -388,7 +311,7 @@ export default function CadastroPage() {
               {errors.email && (
                 <p className="text-error text-sm mt-1 flex items-center gap-1">
                   <span className="w-1 h-1 bg-error rounded-full" />
-                  {typeof errors.email === 'string' ? errors.email : errors.email[0]}
+                  {errors.email}
                 </p>
               )}
             </div>
@@ -413,7 +336,7 @@ export default function CadastroPage() {
               {errors.senha && (
                 <p className="text-error text-sm mt-1 flex items-center gap-1">
                   <span className="w-1 h-1 bg-error rounded-full" />
-                  {typeof errors.senha === 'string' ? errors.senha : errors.senha[0]}
+                  {errors.senha}
                 </p>
               )}
             </div>
@@ -448,7 +371,7 @@ export default function CadastroPage() {
               {errors.nome_empresa && (
                 <p className="text-error text-sm mt-1 flex items-center gap-1">
                   <span className="w-1 h-1 bg-error rounded-full" />
-                  {typeof errors.nome_empresa === 'string' ? errors.nome_empresa : errors.nome_empresa[0]}
+                  {errors.nome_empresa}
                 </p>
               )}
             </div>
@@ -504,7 +427,7 @@ export default function CadastroPage() {
               {errors.subdominio_desejado && (
                 <p className="text-error text-sm mt-1 flex items-center gap-1">
                   <span className="w-1 h-1 bg-error rounded-full" />
-                  {typeof errors.subdominio_desejado === 'string' ? errors.subdominio_desejado : errors.subdominio_desejado[0]}
+                  {errors.subdominio_desejado}
                 </p>
               )}
             </div>

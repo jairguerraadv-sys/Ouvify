@@ -1,14 +1,10 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
-import axios, { AxiosError } from 'axios';
-
-type ProtocoloErrorResponse = {
-  wait_seconds?: number;
-  detail?: string;
-  error?: string;
-  message?: string;
-};
+import { useState, useCallback, useMemo } from 'react';
+import { api, getErrorMessage } from '@/lib/api';
+import { Logo } from '@/components/ui/logo';
+import { formatDate } from '@/lib/helpers';
+import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
 
 interface FeedbackInteraction {
   id: number;
@@ -19,29 +15,21 @@ interface FeedbackInteraction {
   autor_nome: string;
 }
 
-interface FeedbackStatus {
-  protocolo: string;
-  tipo: string;
-  tipo_display: string;
-  status: string;
-  status_display: string;
-  titulo: string;
-  resposta_empresa: string | null;
-  data_resposta: string | null;
-  data_criacao: string;
-  data_atualizacao: string;
+interface FeedbackStatusResponse extends Feedback {
   interacoes?: FeedbackInteraction[];
+  tipo_display: string;
+  status_display: string;
 }
 
 export default function AcompanharPage() {
   const [protocolo, setProtocolo] = useState('');
-  const [feedback, setFeedback] = useState<FeedbackStatus | null>(null);
+  const [feedback, setFeedback] = useState<FeedbackStatusResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [publicMsg, setPublicMsg] = useState('');
   const [isSending, setIsSending] = useState(false);
 
-  const buscarProtocolo = async (e: FormEvent) => {
+  const buscarProtocolo = useCallback(async (e: FormEvent) => {
     e.preventDefault();
     
     if (!protocolo.trim()) {
@@ -54,53 +42,31 @@ export default function AcompanharPage() {
     setFeedback(null);
 
     try {
-      // Detectar subdomínio do host atual
-      const hostname = window.location.hostname;
-      const subdomain = hostname.split('.')[0];
-      
-      // URL base da API (ajuste conforme necessário)
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || `http://${hostname}:8000`;
-      
-      const response = await axios.get(`${apiUrl}/api/feedbacks/consultar-protocolo/`, {
+      const response = await api.get<FeedbackStatusResponse>('/api/feedbacks/consultar-protocolo/', {
         params: { codigo: protocolo.toUpperCase().trim() }
       });
 
-      setFeedback(response.data);
+      setFeedback(response);
     } catch (err) {
-      const error = err as AxiosError<ProtocoloErrorResponse>;
-
-      if (error.response?.status === 429) {
-        const waitSeconds = Number(error.response.data?.wait_seconds);
-        const waitLabel = Number.isFinite(waitSeconds) && waitSeconds > 0
-          ? `${waitSeconds} segundos`
-          : 'alguns instantes';
-        setError(`🚨 Muitas tentativas. Por favor, aguarde ${waitLabel}.`);
-      } else if (error.code === 'ERR_NETWORK' || error.message === 'Network Error') {
-        setError('⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8000');
-      } else if (error.response?.status === 404) {
+      const errorMessage = getErrorMessage(err);
+      
+      if (errorMessage.includes('429') || errorMessage.includes('tentativas')) {
+        setError('🚨 Muitas tentativas. Por favor, aguarde alguns instantes.');
+      } else if (errorMessage.includes('404') || errorMessage.includes('não encontrado')) {
         setError('Protocolo não encontrado. Verifique o código digitado.');
-      } else if (error.response?.status === 400) {
+      } else if (errorMessage.includes('400') || errorMessage.includes('inválido')) {
         setError('Código de protocolo inválido.');
+      } else if (errorMessage.includes('Network') || errorMessage.includes('ERR_NETWORK')) {
+        setError('⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
       } else {
-        setError('Erro ao consultar protocolo. Tente novamente.');
+        setError(errorMessage || 'Erro ao consultar protocolo. Tente novamente.');
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, [protocolo]);
 
-  const formatarData = (dataString: string) => {
-    const data = new Date(dataString);
-    return data.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
-
-  const handleEnviarResposta = async () => {
+  const handleEnviarResposta = useCallback(async () => {
     if (!feedback) return;
     if (!publicMsg.trim()) return;
     
@@ -108,11 +74,7 @@ export default function AcompanharPage() {
       setIsSending(true);
       setError(null);
       
-      // Detectar host
-      const hostname = window.location.hostname;
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || `http://${hostname}:8000`;
-      
-      const res = await axios.post(`${apiUrl}/api/feedbacks/responder-protocolo/`, {
+      const res = await api.post<FeedbackInteraction>('/api/feedbacks/responder-protocolo/', {
         protocolo: feedback.protocolo,
         mensagem: publicMsg.trim(),
       });
@@ -120,35 +82,21 @@ export default function AcompanharPage() {
       // Adicionar a nova interação à lista local
       setFeedback((prev) => {
         if (!prev) return prev;
-        const nova: FeedbackInteraction = res.data;
         const interacoes = prev.interacoes ? [...prev.interacoes] : [];
-        interacoes.unshift(nova); // Mais recente primeiro
+        interacoes.unshift(res); // Mais recente primeiro
         return { ...prev, interacoes };
       });
       
       setPublicMsg('');
     } catch (err) {
-      const error = err as AxiosError<ProtocoloErrorResponse>;
-
-      if (error.response?.status === 429) {
-        const waitSeconds = Number(error.response.data?.wait_seconds);
-        const waitLabel = Number.isFinite(waitSeconds) && waitSeconds > 0
-          ? `${waitSeconds} segundos`
-          : 'alguns instantes';
-        setError(`🚨 Muitas tentativas. Por favor, aguarde ${waitLabel}.`);
-      } else if (error.response?.status === 404) {
-        setError('Protocolo não encontrado.');
-      } else if (error.code === 'ERR_NETWORK') {
-        setError('⚠️ Não foi possível conectar ao servidor.');
-      } else {
-        setError('Erro ao enviar mensagem. Tente novamente.');
-      }
+      const errorMessage = getErrorMessage(err);
+      setError(errorMessage || 'Erro ao enviar mensagem. Tente novamente.');
     } finally {
       setIsSending(false);
     }
-  };
+  }, [feedback, publicMsg]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = useCallback((status: string) => {
     const cores: Record<string, string> = {
       'pendente': 'bg-yellow-100 text-yellow-800 border-yellow-300',
       'em_analise': 'bg-primary/10 text-primary border-primary/30',
@@ -156,9 +104,9 @@ export default function AcompanharPage() {
       'fechado': 'bg-neutral-100 text-secondary border-neutral-300'
     };
     return cores[status] || 'bg-neutral-100 text-secondary border-neutral-300';
-  };
+  }, []);
 
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = useCallback((status: string) => {
     const icones: Record<string, string> = {
       'pendente': '⏳',
       'em_analise': '🔍',
@@ -166,16 +114,19 @@ export default function AcompanharPage() {
       'fechado': '📁'
     };
     return icones[status] || '📋';
-  };
+  }, []);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-background-secondary to-background py-12 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-secondary mb-2">
+          <div className="flex justify-center mb-6">
+            <Logo size="xl" linkTo="/" />
+          </div>
+          <h2 className="text-3xl font-bold text-secondary mb-2">
             🔍 Acompanhar Feedback
-          </h1>
+          </h2>
           <p className="text-text-secondary">
             Digite o código do protocolo para consultar o status
           </p>
@@ -270,12 +221,12 @@ export default function AcompanharPage() {
                   </div>
                   <div className="flex items-start">
                     <span className="text-text-secondary font-medium w-24 flex-shrink-0">Enviado em:</span>
-                    <span className="text-secondary">{formatarData(feedback.data_criacao)}</span>
+                    <span className="text-secondary">{formatDate(feedback.data_criacao, 'long')}</span>
                   </div>
                   {feedback.data_atualizacao !== feedback.data_criacao && (
                     <div className="flex items-start">
                       <span className="text-text-secondary font-medium w-24 flex-shrink-0">Atualizado em:</span>
-                      <span className="text-secondary">{formatarData(feedback.data_atualizacao)}</span>
+                      <span className="text-secondary">{formatDate(feedback.data_atualizacao, 'long')}</span>
                     </div>
                   )}
                 </div>
@@ -296,7 +247,7 @@ export default function AcompanharPage() {
                     <div className="bg-gray-50 rounded-lg p-4">
                       <p className="font-semibold text-gray-800">✅ Feedback Registrado</p>
                       <p className="text-sm text-gray-600 mt-1">
-                        {formatarData(feedback.data_criacao)}
+                        {formatDate(feedback.data_criacao, 'long')}
                       </p>
                     </div>
                   </div>
@@ -328,7 +279,7 @@ export default function AcompanharPage() {
                         </p>
                         {feedback.data_resposta && (
                           <p className="text-sm text-purple-600 mt-2">
-                            Respondido em: {formatarData(feedback.data_resposta)}
+                            Respondido em: {formatDate(feedback.data_resposta, 'long')}
                           </p>
                         )}
                       </div>

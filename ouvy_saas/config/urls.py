@@ -10,17 +10,20 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.routers import DefaultRouter
-from apps.feedbacks.views import FeedbackViewSet
+from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
+from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
 from apps.core.views import home
-from apps.tenants.views import (
-    TenantInfoView,
-    RegisterTenantView,
-    CheckSubdominioView,
-    TenantAdminViewSet,
-    CreateCheckoutSessionView,
-    StripeWebhookView,
-)
 from rest_framework.authtoken.views import obtain_auth_token
+from config.swagger import swagger_urlpatterns
+
+# Expor referências para Pylance
+FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]
+TenantInfoView = tenant_views.TenantInfoView  # type: ignore[attr-defined]
+RegisterTenantView = tenant_views.RegisterTenantView  # type: ignore[attr-defined]
+CheckSubdominioView = tenant_views.CheckSubdominioView  # type: ignore[attr-defined]
+TenantAdminViewSet = tenant_views.TenantAdminViewSet  # type: ignore[attr-defined]
+CreateCheckoutSessionView = tenant_views.CreateCheckoutSessionView  # type: ignore[attr-defined]
+StripeWebhookView = tenant_views.StripeWebhookView  # type: ignore[attr-defined]
 
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -66,4 +69,7 @@ urlpatterns = [
     # Auth token (DRF authtoken)
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
 ]
+
+# Adicionar URLs do Swagger
+urlpatterns += swagger_urlpatterns
 

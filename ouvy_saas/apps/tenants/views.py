@@ -1,3 +1,5 @@
+from typing import Any, Dict, cast
+
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -75,24 +77,24 @@ class RegisterTenantView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        data = serializer.validated_data
+        data: Dict[str, Any] = cast(Dict[str, Any], serializer.validated_data)
         
         try:
             with transaction.atomic():
                 # 1. Criar o usuário
                 user = User.objects.create_user(
-                    username=data['email'],  # Usar email como username
-                    email=data['email'],
-                    password=data['senha'],
-                    first_name=data['nome'].split()[0] if data['nome'] else '',
-                    last_name=' '.join(data['nome'].split()[1:]) if len(data['nome'].split()) > 1 else ''
+                    username=data.get('email', ''),  # type: ignore[arg-type]
+                    email=data.get('email', ''),  # type: ignore[arg-type]
+                    password=data.get('senha', ''),  # type: ignore[arg-type]
+                    first_name=data.get('nome', '').split()[0] if data.get('nome') else '',  # type: ignore[arg-type]
+                    last_name=' '.join(data.get('nome', '').split()[1:]) if len(data.get('nome', '').split()) > 1 else ''  # type: ignore[arg-type]
                 )
                 
                 # 2. Criar o tenant (empresa)
                 tenant = Client.objects.create(
                     owner=user,
-                    nome=data['nome_empresa'],
-                    subdominio=data['subdominio_desejado'],
+                    nome=data.get('nome_empresa', ''),  # type: ignore[arg-type]
+                    subdominio=data.get('subdominio_desejado', ''),  # type: ignore[arg-type]
                     ativo=True
                 )
                 

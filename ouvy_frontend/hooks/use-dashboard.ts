@@ -1,73 +1,18 @@
 import useSWR from 'swr';
-import axios from 'axios';
+import { api, apiClient } from '@/lib/api';
+import type {
+  DashboardStats,
+  Feedback,
+  FeedbackFilters,
+  PaginatedResponse,
+} from '@/lib/types';
 
-// Configuração do axios
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+// Re-exportar para compatibilidade
+export { apiClient };
 
-// Criar instância do axios com configurações padrão
-export const apiClient = axios.create({
-  baseURL: API_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
-// Interceptor para adicionar token de autenticação
-apiClient.interceptors.request.use((config) => {
-  // Tentar obter token do localStorage
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('auth_token');
-    const tenantId = localStorage.getItem('tenant_id');
-    
-    if (token) {
-      config.headers.Authorization = `Token ${token}`;
-    }
-    
-    // Adicionar tenant ID no header para desenvolvimento
-    if (tenantId) {
-      config.headers['X-Tenant-ID'] = tenantId;
-    }
-  }
-  
-  return config;
-});
-
-// Tipos de dados
-export interface DashboardStats {
-  total: number;
-  pendentes: number;
-  resolvidos: number;
-  hoje: number;
-  taxa_resolucao: string;
-}
-
-export interface Feedback {
-  id: number;
-  protocolo: string;
-  tipo: 'denuncia' | 'sugestao' | 'elogio' | 'reclamacao';
-  titulo: string;
-  descricao: string;
-  status: 'pendente' | 'em_analise' | 'resolvido' | 'fechado';
-  categoria: string;
-  anonimo: boolean;
-  email_contato: string | null;
-  data_criacao: string;
-  data_atualizacao: string;
-  resposta_empresa?: string | null;
-  data_resposta?: string | null;
-}
-
-export interface FeedbackFilters {
-  status?: string;
-  tipo?: string;
-  categoria?: string;
-  search?: string;
-}
-
-// Fetcher genérico para SWR
+// Fetcher para SWR
 export const fetcher = async <T,>(url: string): Promise<T> => {
-  const response = await apiClient.get<T>(url);
-  return response.data;
+  return api.get<T>(url);
 };
 
 // Hook para estatísticas do dashboard
@@ -77,72 +22,118 @@ export function useDashboardStats() {
     fetcher,
     {
       refreshInterval: 30000, // Atualizar a cada 30 segundos
-      revalidateOnFocus: true, // Revalidar quando usuário volta à aba
-      revalidateOnReconnect: true, // Revalidar quando reconectar
+      revalidateOnFocus: true,
+      revalidateOnReconnect: true,
+      dedupingInterval: 5000, // Evitar requisições duplicadas em 5s
     }
   );
 
   return {
-    data,
+    stats: data,
     isLoading,
-    error,
-    mutate,
+    error: error?.message,
+    refresh: mutate,
   };
 }
 
-// Hook para lista de feedbacks
-export function useFeedbacks(filters?: FeedbackFilters) {
+// Hook para lista de feedbacks com paginação
+export function useFeedbacks(filters?: FeedbackFilters, page = 1, pageSize = 10) {
   // Construir query params
   const queryParams = new URLSearchParams();
+  queryParams.append('page', page.toString());
+  queryParams.append('page_size', pageSize.toString());
   
   if (filters) {
     if (filters.status) queryParams.append('status', filters.status);
     if (filters.tipo) queryParams.append('tipo', filters.tipo);
     if (filters.categoria) queryParams.append('categoria', filters.categoria);
     if (filters.search) queryParams.append('search', filters.search);
+    if (filters.data_inicio) queryParams.append('data_inicio', filters.data_inicio);
+    if (filters.data_fim) queryParams.append('data_fim', filters.data_fim);
   }
   
-  const queryString = queryParams.toString();
-  const url = queryString 
-    ? `/api/feedbacks/?${queryString}` 
-    : '/api/feedbacks/';
-
-  const { data, error, isLoading, mutate } = useSWR<Feedback[]>(
+  const url = `/api/feedbacks/?${queryParams.toString()}`;
+  
+  const { data, error, isLoading, mutate } = useSWR<PaginatedResponse<Feedback>>(
     url,
     fetcher,
     {
-      refreshInterval: 10000, // Atualizar a cada 10 segundos
-      revalidateOnFocus: true,
+      revalidateOnFocus: false,
+      dedupingInterval: 10000,
     }
   );
 
   return {
-    data: data || [],
+    feedbacks: data?.results || [],
+    total: data?.count || 0,
+    hasMore: !!data?.next,
     isLoading,
-    error,
-    mutate,
+    error: error?.message,
+    refresh: mutate,
   };
 }
 
-// Função auxiliar para criar feedback
-export async function createFeedback(feedback: Partial<Feedback>): Promise<Feedback> {
-  const response = await apiClient.post<Feedback>('/api/feedbacks/', feedback);
-  return response.data;
+// Hook para um feedback específico
+export function useFeedback(protocolo: string) {
+  const { data, error, isLoading, mutate } = useSWR<Feedback>(
+    protocolo ? `/api/feedbacks/${protocolo}/` : null,
+    fetcher,
+    {
+      revalidateOnFocus: true,
+      dedupingInterval: 5000,
+    }
+  );
+
+  return {
+    feedback: data,
+    isLoading,
+    error: error?.message,
+    refresh: mutate,
+  };
 }
 
-// Função auxiliar para atualizar feedback
-export async function updateFeedback(id: number, updates: Partial<Feedback>): Promise<Feedback> {
-  const response = await apiClient.patch<Feedback>(`/api/feedbacks/${id}/`, updates);
-  return response.data;
+// Hook para atualizar status de um feedback
+export function useUpdateFeedbackStatus() {
+  const updateStatus = async (
+    protocolo: string,
+    status: Feedback['status'],
+    resposta?: string
+  ): Promise<Feedback> => {
+    const data = { status, resposta_empresa: resposta };
+    return api.patch<Feedback>(`/api/feedbacks/${protocolo}/`, data);
+  };
+
+  return { updateStatus };
 }
 
-// Função auxiliar para deletar feedback
-export async function deleteFeedback(id: number): Promise<void> {
-  await apiClient.delete(`/api/feedbacks/${id}/`);
+// Hook para criar novo feedback
+export function useCreateFeedback() {
+  const createFeedback = async (data: Partial<Feedback>): Promise<Feedback> => {
+    return api.post<Feedback>('/api/feedbacks/', data);
+  };
+
+  return { createFeedback };
+}
+
+// Hook para categorias
+export function useCategorias() {
+  const { data, error, isLoading } = useSWR<string[]>(
+    '/api/feedbacks/categorias/',
+    fetcher,
+    {
+      revalidateOnMount: true,
+      revalidateOnFocus: false,
+    }
+  );
+
+  return {
+    categorias: data || [],
+    isLoading,
+    error: error?.message,
+  };
 }
 
 // Função auxiliar para consultar protocolo público
-export async function consultarProtocolo(codigo: string) {
-  const response = await apiClient.get(`/api/feedbacks/consultar-protocolo/?codigo=${codigo}`);
-  return response.data;
+export async function consultarProtocolo(codigo: string): Promise<Feedback> {
+  return api.get<Feedback>(`/api/feedbacks/consultar-protocolo/?codigo=${codigo}`);
 }

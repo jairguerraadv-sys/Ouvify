@@ -84,6 +84,7 @@ INSTALLED_APPS = [
     'rest_framework',      # Para criar a API
     'rest_framework.authtoken',  # Para autenticação via token
     'corsheaders',         # Para o frontend conectar (Next.js)
+    'drf_yasg',            # Swagger/OpenAPI documentation
 
     # Nossos Apps (Ouvy)
     'apps.core',
@@ -287,6 +288,8 @@ REST_FRAMEWORK = {
         'protocolo_consulta': '5/minute',  # Rate limit específico para consulta de protocolo
     },
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',  # Handler customizado
+    'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination',  # Paginação padrão
+    'PAGE_SIZE': 20,  # 20 itens por página
 }
 
 # =============================================================================
@@ -360,7 +363,9 @@ if DEBUG:
     print("🟡 MODO DESENVOLVIMENTO ATIVO")
     print("=" * 80)
     print(f"📍 BASE_DIR: {BASE_DIR}")
-    print(f"🗄️  Database: {DATABASES['default']['ENGINE']}")
+    db_config = DATABASES.get('default', {})
+    db_engine = db_config.get('ENGINE', 'N/A') if isinstance(db_config, dict) else 'N/A'
+    print(f"🗄️  Database: {db_engine}")
     print(f"🌐 CORS Origins: {CORS_ALLOWED_ORIGINS}")
     print(f"🔑 SECRET_KEY: {'✅ Configurada' if not SECRET_KEY.startswith('django-insecure') else '⚠️ Usando chave padrão'}")
     print(f"🛡️  Rate Limiting: ✅ Ativado (5 req/min para consulta de protocolo)")

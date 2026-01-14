@@ -1,4 +1,7 @@
+from typing import ClassVar, Optional
+
 from django.db import models
+
 from .utils import get_current_tenant
 
 
@@ -46,6 +49,9 @@ class TenantAwareModel(models.Model):
             descricao = models.TextField()
     """
     
+    # Hint para Pylance/typing: atributo implícito criado pelo Django
+    client_id: Optional[int]
+
     client = models.ForeignKey(
         'tenants.Client',
         on_delete=models.CASCADE,
@@ -55,7 +61,7 @@ class TenantAwareModel(models.Model):
     )
     
     # Manager padrão com filtro por tenant
-    objects = TenantAwareManager()
+    objects = TenantAwareManager()  # type: ignore[assignment]
     
     class Meta:
         abstract = True
@@ -65,7 +71,9 @@ class TenantAwareModel(models.Model):
         Sobrescreve o save para definir automaticamente o tenant atual
         se não estiver definido.
         """
-        if not self.pk and not hasattr(self, 'client_id') or (hasattr(self, 'client_id') and not self.client_id):
+        # Verifica se é criação nova E client não está definido
+        current_client_id: Optional[int] = getattr(self, 'client_id', None)
+        if not self.pk and current_client_id is None:
             # Apenas define o tenant na criação do objeto
             tenant = get_current_tenant()
             if tenant is None:

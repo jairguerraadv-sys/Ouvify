@@ -14,6 +14,7 @@ import Link from 'next/link';
 interface HeaderProps {
   title: string;
   subtitle?: string;
+  description?: string;
   action?: {
     label: string;
     onClick?: () => void;
@@ -25,14 +26,14 @@ interface HeaderProps {
   };
 }
 
-export function Header({ title, subtitle, action, user }: HeaderProps) {
+export function Header({ title, subtitle, description, action, user }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
       <div className="flex h-16 items-center justify-between px-6">
         {/* Left */}
         <div>
           <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-          {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
+          {(subtitle || description) && <p className="text-sm text-slate-600">{subtitle || description}</p>}
         </div>
 
         {/* Right */}
@@ -48,14 +49,23 @@ export function Header({ title, subtitle, action, user }: HeaderProps) {
           )}
 
           {/* Notifications */}
-          <Button variant="ghost" size="icon" className="text-slate-600">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-slate-600"
+            aria-label="Notificações"
+          >
             <Bell className="h-5 w-5" />
           </Button>
 
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="text-slate-600 gap-2">
+              <Button 
+                variant="ghost" 
+                className="text-slate-600 gap-2"
+                aria-label="Menu do usuário"
+              >
                 <span className="hidden sm:inline text-sm">{user?.name}</span>
                 <ChevronDown className="h-4 w-4" />
               </Button>
@@ -90,3 +100,6 @@ export function Header({ title, subtitle, action, user }: HeaderProps) {
     </header>
   );
 }
+
+// Alias para compatibilidade
+export { Header as DashboardHeader };

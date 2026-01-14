@@ -4,42 +4,50 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Ouvy Colors (Cyan + Navy Blue)
+// 🎨 Design System: Ouvy Colors (Cyan + Navy Blue) - Refined
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        // Primário: Cyan vibrante
+        // Primário: Cyan vibrante - para ações principais
         default:
-          "bg-primary text-white shadow-md hover:opacity-90 hover:shadow-lg active:scale-95 transition-all",
-        // Secundário: Azul marinho
+          "bg-primary text-primary-foreground shadow-md hover:bg-primary-dark hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+        // Secundário: Azul marinho - para ações secundárias
         secondary:
-          "bg-secondary text-white shadow-md hover:opacity-90 hover:shadow-lg active:scale-95 transition-all",
-        // Outline: Bordas primárias
+          "bg-secondary text-secondary-foreground shadow-md hover:bg-secondary-dark hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+        // Outline: Bordas primárias - para ações alternativas
         outline:
-          "border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all",
-        // Outline secundário
+          "border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground hover:scale-[1.02] active:scale-[0.98] transition-all",
+        // Outline secundário - para ações alternativas neutras
         "outline-secondary":
-          "border-2 border-secondary text-secondary hover:bg-secondary hover:text-white transition-all",
-        // Ghost: Sem fundo
+          "border-2 border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-secondary-foreground hover:scale-[1.02] active:scale-[0.98] transition-all",
+        // Ghost: Sem fundo - para ações terciárias
         ghost: 
-          "text-secondary hover:bg-neutral-100 active:bg-neutral-200 transition-colors",
+          "text-foreground hover:bg-muted hover:text-secondary active:bg-muted/80 transition-colors",
         "ghost-primary":
-          "text-primary hover:bg-cyan-50 active:bg-cyan-100 transition-colors",
-        // Destrutivo
+          "text-primary hover:bg-primary/10 hover:text-primary-dark active:bg-primary/20 transition-colors",
+        // Destrutivo - para ações perigosas
         destructive:
-          "bg-error text-white shadow-md hover:bg-red-600 hover:shadow-lg active:scale-95",
-        // Link
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-error text-error-foreground shadow-md hover:bg-error/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+        // Link - para navegação inline
+        link: "text-primary underline-offset-4 hover:underline hover:text-primary-dark active:text-primary-dark transition-colors",
+        // Success - para ações positivas
+        success:
+          "bg-success text-success-foreground shadow-md hover:bg-success/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+        // Warning - para ações de aviso
+        warning:
+          "bg-warning text-warning-foreground shadow-md hover:bg-warning/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
       },
       size: {
         default: "h-10 px-4 py-2.5",
         sm: "h-8 rounded-md px-3 text-xs",
         md: "h-9 px-4 py-2 text-sm",
         lg: "h-11 rounded-xl px-6 py-3 text-base",
+        xl: "h-12 rounded-xl px-8 py-4 text-base font-bold",
         icon: "h-10 w-10",
-        iconSm: "h-8 w-8",
+        "icon-sm": "h-8 w-8",
+        "icon-lg": "h-12 w-12",
       },
     },
     defaultVariants: {
@@ -63,6 +71,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         disabled={disabled || isLoading}
+        aria-busy={isLoading}
         ref={ref}
         {...props}
       >
@@ -72,6 +81,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"

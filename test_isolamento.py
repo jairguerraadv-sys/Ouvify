@@ -64,6 +64,9 @@ print("\n" + "=" * 80)
 print("🎯 RESULTADO DO ISOLAMENTO:")
 print("=" * 80)
 
+feedbacks_a = locals().get('feedbacks_a', [])
+feedbacks_b = locals().get('feedbacks_b', [])
+
 empresaA_tem_apenas_seus = all(
     'Empresa A' in fb['titulo'] or 'Automático' in fb['titulo'] 
     for fb in feedbacks_a

@@ -1,11 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useFeedbacks } from '@/hooks/use-dashboard';
+import { formatDate } from '@/lib/helpers';
+import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,66 +40,32 @@ import {
 
 export default function FeedbacksPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('todos');
+  const [statusFilter, setStatusFilter] = useState<FeedbackStatus | 'todos'>('todos');
+  
+  // Buscar feedbacks usando o hook
+  const { feedbacks, isLoading, error } = useFeedbacks(
+    statusFilter !== 'todos' ? { status: statusFilter } : undefined
+  );
 
   const user = {
     name: 'João Silva',
     email: 'joao@empresa.com'
   };
 
-  // Mock data
-  const feedbacks = [
-    {
-      id: 1,
-      protocolo: 'OUVY-XGZ6-ZMMV',
-      tipo: 'Denúncia',
-      assunto: 'Comportamento inadequado no escritório',
-      categoria: 'Conduta',
-      status: 'em_analise',
-      data: '2026-01-11',
-      prioridade: 'alta'
-    },
-    {
-      id: 2,
-      protocolo: 'OUVY-A3B9-K7M2',
-      tipo: 'Sugestão',
-      assunto: 'Implementar home office híbrido',
-      categoria: 'Benefícios',
-      status: 'pendente',
-      data: '2026-01-10',
-      prioridade: 'media'
-    },
-    {
-      id: 3,
-      protocolo: 'OUVY-M5N3-P8Q1',
-      tipo: 'Elogio',
-      assunto: 'Excelente atendimento do suporte técnico',
-      categoria: 'Reconhecimento',
-      status: 'resolvido',
-      data: '2026-01-09',
-      prioridade: 'baixa'
-    },
-    {
-      id: 4,
-      protocolo: 'OUVY-K7L2-N9P4',
-      tipo: 'Denúncia',
-      assunto: 'Vazamento de informações confidenciais',
-      categoria: 'Segurança',
-      status: 'em_analise',
-      data: '2026-01-08',
-      prioridade: 'alta'
-    },
-    {
-      id: 5,
-      protocolo: 'OUVY-Q1R8-S3T6',
-      tipo: 'Reclamação',
-      assunto: 'Ar condicionado não funciona',
-      categoria: 'Infraestrutura',
-      status: 'pendente',
-      data: '2026-01-07',
-      prioridade: 'media'
-    }
-  ];
+  // Filtrar feedbacks baseado no termo de busca
+  const filteredFeedbacks = useMemo(() => {
+    if (!feedbacks) return [];
+    
+    if (!searchTerm.trim()) return feedbacks;
+    
+    const term = searchTerm.toLowerCase();
+    return feedbacks.filter(
+      (f) =>
+        f.protocolo.toLowerCase().includes(term) ||
+        f.titulo.toLowerCase().includes(term) ||
+        f.categoria.toLowerCase().includes(term)
+    );
+  }, [feedbacks, searchTerm]);
 
   const getStatusBadge = (status: string) => {
     const variants: { [key: string]: { label: string; className: string; icon: React.ReactNode } } = {
@@ -138,17 +107,6 @@ export default function FeedbacksPage() {
 
     return colors[categoria] || 'bg-slate-100 text-slate-700';
   };
-
-  const filteredFeedbacks = feedbacks.filter(feedback => {
-    const matchesSearch = 
-      feedback.protocolo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      feedback.assunto.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesStatus = 
-      statusFilter === 'todos' || feedback.status === statusFilter;
-
-    return matchesSearch && matchesStatus;
-  });
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -225,7 +183,20 @@ export default function FeedbacksPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {filteredFeedbacks.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
+                <p className="text-slate-600">Carregando feedbacks...</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                  Erro ao carregar feedbacks
+                </h3>
+                <p className="text-slate-500">{error}</p>
+              </div>
+            ) : filteredFeedbacks.length === 0 ? (
               <div className="text-center py-12">
                 <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
@@ -261,7 +232,7 @@ export default function FeedbacksPage() {
                         <TableCell>
                           <div>
                             <p className="font-medium text-secondary-600 text-sm">
-                              {feedback.assunto}
+                              {feedback.titulo}
                             </p>
                             <p className="text-xs text-slate-500 mt-0.5">
                               {feedback.tipo}
@@ -277,7 +248,7 @@ export default function FeedbacksPage() {
                           </Badge>
                         </TableCell>
                         <TableCell className="text-sm text-slate-600">
-                          {new Date(feedback.data).toLocaleDateString('pt-BR')}
+                          {formatDate(feedback.data_criacao, 'short')}
                         </TableCell>
                         <TableCell>
                           {getStatusBadge(feedback.status)}

@@ -5,15 +5,29 @@
  * uma interface profissional, elegante e moderna.
  * 
  * Paleta de cores:
- * - Primary: #06B6D4 (Cyan - Marca)
- * - Secondary: #0F172A (Azul Escuro - Base)
- * - Accents: Gradientes e variações
+ * - Primary: #00BCD4 (Cyan Vibrante)
+ * - Secondary: #0A1E3B (Navy Profundo)
+ * - Semânticas: Success, Warning, Error, Info
  */
 
 // Core Components
 export { Logo } from './logo';
 export { NavBar } from './navbar';
 export { Footer } from './footer';
+
+// Typography
+export { 
+  H1, 
+  H2, 
+  H3, 
+  H4, 
+  H5, 
+  H6,
+  Paragraph,
+  Lead,
+  Small,
+  Muted,
+} from './typography';
 
 // Sections & Layouts
 export { Hero, FeatureGrid, FeatureCard, StatsGrid, Stat } from './sections';
@@ -24,25 +38,41 @@ export {
   CardHeader,
   CardContent,
   CardFooter,
+  CardTitle,
+  CardDescription,
 } from './card';
 
 // Inputs & Forms
 export { Input } from './input';
 
 // Buttons
-export { Button } from './button';
+export { Button, buttonVariants } from './button';
 
-// UI Elements
-export { 
-  Badge,
-  Alert,
-  Progress,
-  PricingCard,
-} from './elements';
+// Badges & Chips
+export { Badge, Chip } from './badge-chip';
 
-// Exports para compatibilidade
-export { 
-  Badge as BadgeChip,
-  Alert as AlertBox,
-  Progress as ProgressBar,
-} from './elements';
+// Avatar
+export { Avatar, AvatarImage, AvatarFallback } from './avatar';
+
+// Divider
+export { Divider } from './divider';
+
+// Separator
+export { Separator } from './separator';
+
+// Skeleton
+export { Skeleton } from './skeleton';
+
+// Alert
+export { Alert, AlertTitle, AlertDescription, AlertWithIcon } from './alert';
+
+// Status Badge
+export { StatusBadge } from './status-badge';
+
+// Progress
+export { Progress } from './progress';
+
+// Stats Card
+export { StatsCard } from './stats-card';
+
+// (exports duplicados e inválidos removidos)

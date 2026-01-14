@@ -104,11 +104,11 @@ class Feedback(TenantAwareModel):
         verbose_name='Data de Atualização'
     )
     
-    class Meta:
-        verbose_name = 'Feedback'
-        verbose_name_plural = 'Feedbacks'
-        ordering = ['-data_criacao']
-        indexes = [
+    class Meta(TenantAwareModel.Meta):
+        verbose_name: str = 'Feedback'
+        verbose_name_plural: str = 'Feedbacks'
+        ordering: list = ['-data_criacao']
+        indexes: list = [
             models.Index(fields=['client', 'tipo']),
             models.Index(fields=['client', 'status']),
             models.Index(fields=['protocolo']),
@@ -230,11 +230,11 @@ class FeedbackInteracao(TenantAwareModel):
 
     data = models.DateTimeField(auto_now_add=True, verbose_name='Data')
 
-    class Meta:
-        verbose_name = 'Interação do Feedback'
-        verbose_name_plural = 'Interações do Feedback'
-        ordering = ['-data']
-        indexes = [
+    class Meta(TenantAwareModel.Meta):
+        verbose_name: str = 'Interação do Feedback'
+        verbose_name_plural: str = 'Interações do Feedback'
+        ordering: list = ['-data']
+        indexes: list = [
             models.Index(fields=['client']),
             models.Index(fields=['feedback', 'data']),
             models.Index(fields=['tipo']),

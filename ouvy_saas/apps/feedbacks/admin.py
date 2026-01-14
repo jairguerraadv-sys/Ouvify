@@ -42,7 +42,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     
     def get_readonly_fields(self, request, obj=None):
         """Impede edição do client e protocolo após criação"""
-        readonly = list(self.readonly_fields)
+        readonly = [field for field in self.readonly_fields if isinstance(field, str)]
         if obj:  # Se estiver editando
             readonly.append('tipo')
         return readonly

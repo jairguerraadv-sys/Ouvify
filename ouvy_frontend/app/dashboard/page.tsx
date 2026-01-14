@@ -23,7 +23,7 @@ import {
 import Link from 'next/link';
 
 export default function DashboardPage() {
-  const { data: stats, isLoading } = useDashboardStats();
+  const { stats, isLoading } = useDashboardStats();
 
   const user = {
     name: 'João Silva',

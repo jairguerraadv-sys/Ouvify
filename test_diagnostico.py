@@ -23,11 +23,11 @@ print("=" * 80)
 print("\n1️⃣ Empresas no banco de dados:")
 empresas = Client.objects.all()
 for emp in empresas:
-    print(f"   - ID: {emp.id}, Nome: {emp.nome}, Subdomínio: {emp.subdominio}")
+    print(f"   - ID: {emp.id}, Nome: {emp.nome}, Subdomínio: {emp.subdominio}")  # type: ignore[attr-defined]
 
 # 2. Verificar todos os feedbacks (sem filtro)
 print("\n2️⃣ Todos os feedbacks no banco (SEM filtro de tenant):")
-all_feedbacks = Feedback.objects.all_tenants()  # Método especial que pula o filtro
+all_feedbacks = Feedback.objects.all_tenants()  # type: ignore[attr-defined]
 print(f"   Total: {all_feedbacks.count()}")
 for fb in all_feedbacks:
     print(f"   - ID: {fb.id}, Client ID: {fb.client_id}, Título: {fb.titulo}")
@@ -38,10 +38,10 @@ try:
     empresa_a = Client.objects.get(subdominio__iexact='empresaA')
     set_current_tenant(empresa_a)
     feedbacks_a = Feedback.objects.all()
-    print(f"   Tenant ativo: {empresa_a.nome} (ID: {empresa_a.id})")
+    print(f"   Tenant ativo: {empresa_a.nome} (ID: {empresa_a.id})")  # type: ignore[attr-defined]
     print(f"   Feedbacks retornados: {feedbacks_a.count()}")
     for fb in feedbacks_a:
-        print(f"   - ID: {fb.id}, Título: {fb.titulo}")
+        print(f"   - ID: {fb.id}, Título: {fb.titulo}")  # type: ignore[attr-defined]
     clear_current_tenant()
 except Client.DoesNotExist:
     print("   ❌ Empresa A não encontrada!")
@@ -52,10 +52,10 @@ try:
     empresa_b = Client.objects.get(subdominio__iexact='empresaB')
     set_current_tenant(empresa_b)
     feedbacks_b = Feedback.objects.all()
-    print(f"   Tenant ativo: {empresa_b.nome} (ID: {empresa_b.id})")
+    print(f"   Tenant ativo: {empresa_b.nome} (ID: {empresa_b.id})")  # type: ignore[attr-defined]
     print(f"   Feedbacks retornados: {feedbacks_b.count()}")
     for fb in feedbacks_b:
-        print(f"   - ID: {fb.id}, Título: {fb.titulo}")
+        print(f"   - ID: {fb.id}, Título: {fb.titulo}")  # type: ignore[attr-defined]
     clear_current_tenant()
 except Client.DoesNotExist:
     print("   ❌ Empresa B não encontrada!")

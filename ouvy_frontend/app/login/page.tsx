@@ -1,145 +1,201 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
-import { ArrowRight, Lock, Mail } from "lucide-react";
+import { ArrowRight, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import axios from "axios";
+import { api, getErrorMessage } from "@/lib/api";
+import { isValidEmail } from "@/lib/validation";
+import { storage } from "@/lib/helpers";
+import type { AuthToken } from "@/lib/types";
+
+interface LoginForm {
+  email: string;
+  senha: string;
+}
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [formData, setFormData] = useState<LoginForm>({ email: "", senha: "" });
+  const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [apiError, setApiError] = useState("");
+
+  const validate = useCallback((): boolean => {
+    const newErrors: Partial<LoginForm> = {};
+
+    if (!formData.email) {
+      newErrors.email = "Email é obrigatório";
+    } else if (!isValidEmail(formData.email)) {
+      newErrors.email = "Email inválido";
+    }
+
+    if (!formData.senha) {
+      newErrors.senha = "Senha é obrigatória";
+    } else if (formData.senha.length < 6) {
+      newErrors.senha = "Senha deve ter no mínimo 6 caracteres";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [formData]);
+
+  const handleChange = useCallback((field: keyof LoginForm, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    // Limpar erro do campo ao digitar
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+    }
+    setApiError("");
+  }, [errors]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validate()) return;
+
     setLoading(true);
-    setError("");
+    setApiError("");
 
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
-      
-      const response = await axios.post(`${apiUrl}/api-token-auth/`, {
-        username: email,
-        password: senha,
+      const response = await api.post<AuthToken>("/api-token-auth/", {
+        username: formData.email,
+        password: formData.senha,
       });
 
-      if (response.data.token) {
-        localStorage.setItem("auth_token", response.data.token);
+      if (response.token) {
+        storage.set("auth_token", response.token);
+        if (response.tenant) {
+          storage.set("tenant_id", response.tenant.id);
+        }
         router.push("/dashboard");
       }
-    } catch (err: any) {
-      console.error("Erro no login:", err);
-      if (err.response?.status === 400) {
-        setError("Email ou senha incorretos");
-      } else {
-        setError("Erro ao conectar com o servidor. Tente novamente.");
-      }
+    } catch (error) {
+      setApiError(getErrorMessage(error));
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4">
-      <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary-500/10 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-primary-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+    <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
       
-      <Card variant="elevated" className="w-full max-w-md relative z-10 animate-scale-in shadow-elegant">
+      <Card variant="elevated" className="w-full max-w-md relative z-10 animate-scale-in">
         <CardHeader>
           <div className="flex justify-center mb-8">
-            <Logo variant="full" size="lg" colorScheme="default" />
+            <Logo size="xl" />
           </div>
-          <h1 className="text-3xl font-bold text-secondary-900 text-center mb-2">
+          <h1 className="text-3xl font-bold text-secondary text-center mb-2">
             Bem-vindo de volta
           </h1>
-          <p className="text-secondary-600 text-center">
-            Entre na sua conta <span className="text-gradient-primary font-semibold">Ouvy</span>
+          <p className="text-muted-foreground text-center">
+            Entre na sua conta <span className="text-gradient font-semibold">Ouvy</span>
           </p>
         </CardHeader>
 
         <form onSubmit={handleLogin} className="p-6 space-y-5">
+          {/* API Error */}
+          {apiError && (
+            <div 
+              role="alert"
+              aria-live="polite"
+              className="flex items-center gap-2 p-3 bg-error/10 border border-error/30 rounded-lg text-error text-sm"
+            >
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              <span>{apiError}</span>
+            </div>
+          )}
+
+          {/* Email */}
           <div className="space-y-2">
-            <label className="block text-sm font-semibold text-secondary-900">
+            <label className="block text-sm font-semibold text-secondary">
               Email
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary-400" />
-              <input
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={formData.email}
+                onChange={(e) => handleChange("email", e.target.value)}
                 placeholder="seu@email.com"
-                className="w-full pl-11 pr-4 py-3 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white"
-                required
+                className="pl-11"
+                disabled={loading}
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
               />
             </div>
+            {errors.email && (
+              <p id="email-error" className="text-sm text-error">{errors.email}</p>
+            )}
           </div>
 
+          {/* Senha */}
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="block text-sm font-semibold text-secondary-900">
+              <label className="block text-sm font-semibold text-secondary">
                 Senha
               </label>
-              <Link href="/recuperar-senha" className="text-sm text-primary-500 hover:text-primary-600 font-medium">
+              <Link 
+                href="/recuperar-senha" 
+                className="text-sm text-primary hover:text-primary-dark font-medium transition-colors"
+                tabIndex={loading ? -1 : 0}
+              >
                 Esqueceu?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-secondary-400" />
-              <input
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
                 type="password"
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
+                value={formData.senha}
+                onChange={(e) => handleChange("senha", e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-4 py-3 border border-secondary-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 bg-white"
-                required
+                className="pl-11"
+                disabled={loading}
+                aria-invalid={!!errors.senha}
+                aria-describedby={errors.senha ? "senha-error" : undefined}
               />
             </div>
+            {errors.senha && (
+              <p id="senha-error" className="text-sm text-error">{errors.senha}</p>
+            )}
           </div>
 
-          {error && (
-            <div className="p-4 bg-error/10 border border-error/30 text-error rounded-lg text-sm font-medium flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-error rounded-full" />
-              {error}
-            </div>
-          )}
-
-          <Button 
-            type="submit" 
-            variant="default"
+          {/* Submit Button */}
+          <Button
+            type="submit"
             size="lg"
-            className="w-full shadow-elegant group" 
+            className="w-full group"
             disabled={loading}
+            isLoading={loading}
           >
-            {loading ? "Entrando..." : "Entrar"}
-            {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
+            {!loading && (
+              <>
+                Entrar
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </>
+            )}
           </Button>
+
+          {/* Cadastro Link */}
+          <p className="text-center text-sm text-muted-foreground">
+            Não tem uma conta?{" "}
+            <Link
+              href="/cadastro"
+              className="text-primary hover:text-primary-dark font-semibold transition-colors"
+              tabIndex={loading ? -1 : 0}
+            >
+              Cadastre-se grátis
+            </Link>
+          </p>
         </form>
-
-        <div className="px-6 pb-6">
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-secondary-200" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-secondary-500 font-medium">
-                Novo por aqui?
-              </span>
-            </div>
-          </div>
-
-          <Link href="/cadastro">
-            <Button variant="outline" size="lg" className="w-full">
-              Criar conta grátis
-            </Button>
-          </Link>
-        </div>
       </Card>
     </main>
   );

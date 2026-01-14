@@ -1,18 +1,25 @@
 'use client';
 
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useCallback } from 'react';
+import { api, getErrorMessage } from '@/lib/api';
+import { validateForm } from '@/lib/validation';
 import SuccessCard from '@/components/SuccessCard';
+import { Logo } from '@/components/ui/logo';
+import type { FeedbackType } from '@/lib/types';
 
 interface FormData {
-  tipo: string;
+  tipo: FeedbackType;
   titulo: string;
   descricao: string;
   anonimo: boolean;
   email_contato: string;
 }
 
-export default function Home() {
+interface FormErrors {
+  [key: string]: string;
+}
+
+export default function EnviarFeedbackPage() {
   const [formData, setFormData] = useState<FormData>({
     tipo: 'denuncia',
     titulo: '',
@@ -21,24 +28,33 @@ export default function Home() {
     email_contato: ''
   });
   
+  const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [protocolo, setProtocolo] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setErrors({});
+
+    // Validar formulário
+    const validation = validateForm(formData, {
+      titulo: { required: true, minLength: 5, maxLength: 200 },
+      descricao: { required: true, minLength: 10 },
+      email_contato: formData.anonimo ? {} : { required: true, type: 'email' },
+    });
+
+    if (!validation.isValid) {
+      setErrors(validation.errors);
+      setLoading(false);
+      return;
+    }
 
     try {
-      // Detectar subdomínio do host atual
-      const hostname = window.location.hostname;
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || `http://${hostname}:8000`;
-      
-      const response = await axios.post(`${apiUrl}/api/feedbacks/`, formData);
+      const response = await api.post<{ protocolo: string }>('/api/feedbacks/', formData);
       
       // Salvar protocolo retornado
-      setProtocolo(response.data.protocolo);
+      setProtocolo(response.protocolo);
       
       // Limpar formulário
       setFormData({
@@ -48,20 +64,24 @@ export default function Home() {
         anonimo: false,
         email_contato: ''
       });
-    } catch (err: any) {
+    } catch (err) {
       console.error('Erro ao enviar feedback:', err);
+      const errorMessage = getErrorMessage(err);
       
-      if (err.code === 'ERR_NETWORK' || err.message === 'Network Error') {
-        setError('⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando em http://localhost:8000');
-      } else if (err.response?.status === 500) {
-        setError('Erro no servidor. Tente novamente mais tarde.');
+      if (errorMessage.includes('Network') || errorMessage.includes('ERR_NETWORK')) {
+        setErrors({ submit: '⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando.' });
       } else {
-        setError('Erro ao enviar feedback. Tente novamente.');
+        setErrors({ submit: errorMessage });
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, [formData]);
+
+  const handleChange = useCallback((field: keyof FormData, value: any) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setErrors(prev => ({ ...prev, [field]: '', submit: '' }));
+  }, []);
 
   return (
     <>
@@ -70,16 +90,19 @@ export default function Home() {
           
           {/* Header */}
           <div className="bg-primary text-white p-8 text-center">
-            <h1 className="text-3xl font-bold mb-2">
+            <div className="flex justify-center mb-4">
+              <Logo size="lg" />
+            </div>
+            <h2 className="text-2xl font-semibold mb-2">
               📢 Canal de Ouvidoria
-            </h1>
-            <p className="text-blue-100">
+            </h2>
+            <p className="text-white/90">
               Sua voz importa. Compartilhe sua experiência de forma segura.
             </p>
           </div>
 
           {/* Alerta de Backend Offline */}
-          {error && error.includes('conectar ao servidor') && (
+          {errors.submit && errors.submit.includes('conectar ao servidor') && (
             <div className="bg-orange-50 border-l-4 border-orange-400 p-4 m-6">
               <div className="flex items-start">
                 <span className="text-2xl mr-3">🔌</span>
@@ -107,7 +130,7 @@ export default function Home() {
               </label>
               <select
                 value={formData.tipo}
-                onChange={(e) => setFormData({ ...formData, tipo: e.target.value })}
+                onChange={(e) => handleChange('tipo', e.target.value as FeedbackType)}
                 className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
                 required
               >
@@ -126,12 +149,17 @@ export default function Home() {
               <input
                 type="text"
                 value={formData.titulo}
-                onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
+                onChange={(e) => handleChange('titulo', e.target.value)}
                 placeholder="Resuma sua manifestação em poucas palavras"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary ${
+                  errors.titulo ? 'border-error bg-error/5' : 'border-neutral-300'
+                }`}
                 required
                 maxLength={200}
               />
+              {errors.titulo && (
+                <p className="text-error text-sm mt-1">{errors.titulo}</p>
+              )}
             </div>
 
             {/* Descrição */}
@@ -141,12 +169,17 @@ export default function Home() {
               </label>
               <textarea
                 value={formData.descricao}
-                onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+                onChange={(e) => handleChange('descricao', e.target.value)}
                 placeholder="Descreva sua manifestação com detalhes..."
                 rows={5}
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary resize-none"
+                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary resize-none ${
+                  errors.descricao ? 'border-error bg-error/5' : 'border-neutral-300'
+                }`}
                 required
               />
+              {errors.descricao && (
+                <p className="text-error text-sm mt-1">{errors.descricao}</p>
+              )}
             </div>
 
             {/* Checkbox Anônimo */}
@@ -155,7 +188,7 @@ export default function Home() {
                 type="checkbox"
                 id="anonimo"
                 checked={formData.anonimo}
-                onChange={(e) => setFormData({ ...formData, anonimo: e.target.checked })}
+                onChange={(e) => handleChange('anonimo', e.target.checked)}
                 className="mt-1 h-4 w-4 text-primary focus:ring-primary border-neutral-300 rounded"
               />
               <label htmlFor="anonimo" className="ml-3 text-sm text-secondary">
@@ -175,11 +208,16 @@ export default function Home() {
                 <input
                   type="email"
                   value={formData.email_contato}
-                  onChange={(e) => setFormData({ ...formData, email_contato: e.target.value })}
+                  onChange={(e) => handleChange('email_contato', e.target.value)}
                   placeholder="seu@email.com"
-                  className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary ${
+                    errors.email_contato ? 'border-error bg-error/5' : 'border-neutral-300'
+                  }`}
                   required={!formData.anonimo}
                 />
+                {errors.email_contato && (
+                  <p className="text-error text-sm mt-1">{errors.email_contato}</p>
+                )}
                 <p className="mt-1 text-xs text-text-secondary">
                   Usaremos apenas para enviar atualizações sobre sua manifestação
                 </p>
@@ -187,11 +225,11 @@ export default function Home() {
             )}
 
             {/* Mensagem de Erro */}
-            {error && (
+            {errors.submit && (
               <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
                 <p className="text-red-800 text-sm flex items-center">
                   <span className="mr-2">⚠️</span>
-                  {error}
+                  {errors.submit}
                 </p>
               </div>
             )}

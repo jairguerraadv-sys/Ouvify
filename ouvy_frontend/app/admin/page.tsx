@@ -1,12 +1,14 @@
 "use client";
 
+import { useMemo, useCallback } from "react";
 import useSWR from "swr";
-import { apiClient } from "@/hooks/use-dashboard";
+import { api, apiClient } from "@/lib/api";
+import { formatDate } from "@/lib/helpers";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { useMemo } from "react";
+import { Logo } from "@/components/ui/logo";
 
 interface TenantAdmin {
   id: number;
@@ -16,12 +18,9 @@ interface TenantAdmin {
   data_criacao: string;
 }
 
-const fetcher = (url: string) => apiClient.get(url).then((res) => res.data);
-
-function formatDate(value: string) {
-  const d = new Date(value);
-  return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
-}
+const fetcher = async (url: string): Promise<TenantAdmin[]> => {
+  return api.get<TenantAdmin[]>(url);
+};
 
 export default function AdminDashboard() {
   const { data, error, mutate, isLoading } = useSWR<TenantAdmin[]>("/api/admin/tenants/", fetcher, {
@@ -42,14 +41,14 @@ export default function AdminDashboard() {
     };
   }, [data]);
 
-  async function toggleAtivo(tenant: TenantAdmin) {
+  const toggleAtivo = useCallback(async (tenant: TenantAdmin) => {
     try {
-      await apiClient.patch(`/api/admin/tenants/${tenant.id}/`, { ativo: !tenant.ativo });
+      await api.patch(`/api/admin/tenants/${tenant.id}/`, { ativo: !tenant.ativo });
       await mutate();
     } catch (err) {
       console.error("Erro ao atualizar tenant", err);
     }
-  }
+  }, [mutate]);
 
   if (error?.response?.status === 403) {
     return (
@@ -67,8 +66,10 @@ export default function AdminDashboard() {
       {/* Sidebar escura */}
       <aside className="bg-slate-900 border-r border-slate-800 p-6 space-y-6">
         <div>
-          <h2 className="text-lg font-semibold">Ouvy Admin</h2>
-          <p className="text-xs text-neutral-400">Torre de Controle</p>
+          <div className="mb-3">
+            <Logo size="md" />
+          </div>
+          <p className="text-xs text-neutral-400">Torre de Controle Admin</p>
         </div>
         <nav className="space-y-2 text-sm">
           <div className="font-medium text-white">Visão Geral</div>
@@ -134,7 +135,9 @@ export default function AdminDashboard() {
                       {t.subdominio}.localhost
                     </a>
                   </TableCell>
-                  <TableCell className="text-slate-200">{formatDate(t.data_criacao)}</TableCell>
+                  <TableCell className="text-slate-200">
+                    {formatDate(t.data_criacao, 'short')}
+                  </TableCell>
                   <TableCell>
                     <Badge className={t.ativo ? "bg-green-600" : "bg-red-600"}>
                       {t.ativo ? "Ativo" : "Inativo"}

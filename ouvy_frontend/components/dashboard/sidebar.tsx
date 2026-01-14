@@ -39,8 +39,8 @@ export function Sidebar({ user }: SidebarProps) {
   return (
     <div className="flex h-screen w-64 flex-col border-r border-slate-200 bg-white">
       {/* Logo */}
-      <div className="flex h-16 items-center border-b border-slate-200 px-6">
-        <Logo variant="full" size="sm" colorScheme="default" />
+      <div className="flex h-16 items-center justify-center border-b border-slate-200 px-6">
+        <Logo size="md" />
       </div>
 
       {/* Navigation */}
