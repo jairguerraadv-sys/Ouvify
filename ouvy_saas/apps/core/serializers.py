@@ -2,8 +2,10 @@
 Serializers para o app core.
 """
 from rest_framework import serializers
-from apps.core.models import User
+from django.contrib.auth import get_user_model
 import re
+
+User = get_user_model()
 
 
 class UserUpdateSerializer(serializers.ModelSerializer):
