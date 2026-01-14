@@ -50,10 +50,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (token && storedUser) {
         try {
           setUser(JSON.parse(storedUser));
-          // Validar token com backend
-          await apiClient.get('/api/auth/me/');
+          // Configurar header de autenticação
+          apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
         } catch (err) {
-          // Token inválido, limpar
+          // Token inválido ou erro ao parsear, limpar
           localStorage.removeItem('auth_token');
           localStorage.removeItem('user');
           localStorage.removeItem('tenant_id');
@@ -71,24 +71,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      const response = await apiClient.post('/api/auth/login/', {
-        email,
+      // Django obtém_auth_token espera username e password
+      const response = await apiClient.post('/api-token-auth/', {
+        username: email, // Django usa email como username
         password,
       });
 
-      const { token, user: userData, tenant_id } = response.data;
+      const { token } = response.data;
+
+      // Buscar dados do usuário após login
+      apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
+      
+      // Criar objeto user básico (adaptar conforme resposta do backend)
+      const userData = {
+        id: email,
+        name: email.split('@')[0],
+        email: email,
+      };
 
       // Salvar no localStorage
       localStorage.setItem('auth_token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      if (tenant_id) {
-        localStorage.setItem('tenant_id', tenant_id);
-      }
 
       setUser(userData);
       router.push('/dashboard');
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.response?.data?.error || 'Erro ao fazer login';
+      const errorMessage = err.response?.data?.detail || 
+                          err.response?.data?.non_field_errors?.[0] ||
+                          err.response?.data?.error || 
+                          'Erro ao fazer login';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
@@ -110,23 +121,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      const response = await apiClient.post('/api/auth/register/', data);
+      // Mapear para o formato que o backend Django espera
+      const response = await apiClient.post('/api/register-tenant/', {
+        nome: data.name,
+        email: data.email,
+        senha: data.password,
+        nome_empresa: data.empresa || 'Minha Empresa',
+        subdominio_desejado: data.subdominio || data.email.split('@')[0],
+      });
 
-      const { token, user: userData, tenant_id } = response.data;
+      const { token, user: userResponse, tenant } = response.data;
+
+      // Criar objeto user do formato esperado
+      const userData = {
+        id: userResponse.id?.toString() || userResponse.email,
+        name: userResponse.username || data.name,
+        email: userResponse.email,
+        tenant_id: tenant?.id?.toString(),
+        empresa: tenant?.nome,
+      };
 
       // Salvar no localStorage
       localStorage.setItem('auth_token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      if (tenant_id) {
-        localStorage.setItem('tenant_id', tenant_id);
+      if (tenant?.id) {
+        localStorage.setItem('tenant_id', tenant.id.toString());
       }
+
+      // Configurar header de autenticação
+      apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
 
       setUser(userData);
       router.push('/dashboard');
     } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || err.response?.data?.error || 'Erro ao registrar';
-      setError(errorMessage);
-      throw new Error(errorMessage);
+      const errorMessage = err.response?.data?.detail || 
+                          err.response?.data?.errors || 
+                          err.response?.data?.error || 
+                          'Erro ao registrar';
+      setError(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
+      throw new Error(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
     } finally {
       setLoading(false);
     }
