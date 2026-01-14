@@ -4,8 +4,9 @@ import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/ui/logo';
-import { ArrowLeft, Mail, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
+import { api, getErrorMessage } from '@/lib/api';
 
 export default function RecuperarSenhaPage() {
   const [email, setEmail] = useState('');
@@ -26,11 +27,10 @@ export default function RecuperarSenhaPage() {
     }
 
     try {
-      // TODO: Implementar chamada à API
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      await api.post('/api/password-reset/request/', { email });
       setSuccess(true);
     } catch (err) {
-      setError('Erro ao enviar e-mail de recuperação. Tente novamente.');
+      setError(getErrorMessage(err) || 'Erro ao enviar e-mail de recuperação. Tente novamente.');
     } finally {
       setLoading(false);
     }
@@ -113,8 +113,9 @@ export default function RecuperarSenhaPage() {
                 </div>
 
                 {error && (
-                  <div className="bg-error/10 border border-error/30 text-error rounded-lg p-3 text-sm">
-                    {error}
+                  <div className="bg-error/10 border border-error/20 rounded-lg p-3 flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-error flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-error">{error}</p>
                   </div>
                 )}
 

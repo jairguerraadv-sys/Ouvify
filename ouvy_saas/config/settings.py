@@ -63,6 +63,27 @@ SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
 
+# Content Security Policy
+if not DEBUG:
+    CSP_DEFAULT_SRC = ("'self'",)
+    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://js.stripe.com")
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
+    CSP_IMG_SRC = ("'self'", "data:", "https:")
+    CSP_FONT_SRC = ("'self'", "data:")
+    CSP_CONNECT_SRC = ("'self'", "https://api.stripe.com")
+    CSP_FRAME_SRC = ("https://js.stripe.com", "https://hooks.stripe.com")
+    CSP_OBJECT_SRC = ("'none'",)
+    CSP_BASE_URI = ("'self'",)
+    CSP_FORM_ACTION = ("'self'",)
+    
+# Permissions Policy (antigamente Feature-Policy)
+PERMISSIONS_POLICY = {
+    "geolocation": [],
+    "microphone": [],
+    "camera": [],
+    "payment": ["self"],
+}
+
 # HSTS (HTTP Strict Transport Security) - apenas em produção
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000  # 1 ano
@@ -117,6 +138,9 @@ MIDDLEWARE = [
     
     # Middleware de Multi-tenancy (O nosso porteiro)
     'apps.core.middleware.TenantMiddleware',
+    
+    # Middleware de segurança adicional (headers CSP, etc)
+    'apps.core.security_middleware.SecurityHeadersMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'

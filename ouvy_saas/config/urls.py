@@ -11,8 +11,10 @@ from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.routers import DefaultRouter
 from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
+from apps.tenants.subscription_management import ManageSubscriptionView, ReactivateSubscriptionView  # type: ignore[import-not-found]
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
 from apps.core.views import home
+from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
 
@@ -65,9 +67,17 @@ urlpatterns = [
     path('api/tenants/subscribe/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('api/tenants/webhook/', StripeWebhookView.as_view(), name='stripe-webhook'),
     
+    # Endpoints de Gestão de Assinaturas
+    path('api/tenants/subscription/', ManageSubscriptionView.as_view(), name='manage-subscription'),
+    path('api/tenants/subscription/reactivate/', ReactivateSubscriptionView.as_view(), name='reactivate-subscription'),
+    
     path('api/', include(router.urls)),  # API REST endpoints
     # Auth token (DRF authtoken)
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    
+    # Password Reset
+    path('api/password-reset/request/', PasswordResetRequestView.as_view(), name='password-reset-request'),
+    path('api/password-reset/confirm/', PasswordResetConfirmView.as_view(), name='password-reset-confirm'),
 ]
 
 # Adicionar URLs do Swagger
