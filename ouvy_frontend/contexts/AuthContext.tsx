@@ -121,21 +121,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      // Mapear para o formato que o backend Django espera
-      const response = await apiClient.post('/api/register-tenant/', {
-        nome: data.name,
-        email: data.email,
-        senha: data.password,
-        nome_empresa: data.empresa || 'Minha Empresa',
-        subdominio_desejado: data.subdominio || data.email.split('@')[0],
-      });
+      // O RegisterData já vem no formato correto do formulário
+      const response = await apiClient.post('/api/register-tenant/', data);
 
       const { token, user: userResponse, tenant } = response.data;
 
       // Criar objeto user do formato esperado
       const userData = {
         id: userResponse.id?.toString() || userResponse.email,
-        name: userResponse.username || data.name,
+        name: userResponse.username || data.nome,
         email: userResponse.email,
         tenant_id: tenant?.id?.toString(),
         empresa: tenant?.nome,
