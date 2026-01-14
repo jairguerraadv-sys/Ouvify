@@ -243,16 +243,16 @@ export default function TermosPage() {
 
             {/* Footer Actions */}
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8 border-t">
-              <Button asChild variant="default">
-                <Link href="/cadastro">
+              <Link href="/cadastro">
+                <Button variant="default">
                   Aceitar e Começar
-                </Link>
-              </Button>
-              <Button asChild variant="ghost">
-                <Link href="/privacidade">
+                </Button>
+              </Link>
+              <Link href="/privacidade">
+                <Button variant="ghost">
                   Ver Política de Privacidade
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

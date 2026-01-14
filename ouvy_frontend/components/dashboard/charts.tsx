@@ -107,33 +107,37 @@ export function DonutChart({
 }: DonutChartProps) {
   const total = useMemo(() => data.reduce((acc, d) => acc + d.value, 0), [data]);
   
-  const defaultColors = [
-    '#6366f1', // primary
-    '#22c55e', // success
-    '#f59e0b', // warning
-    '#ef4444', // error
-    '#8b5cf6', // purple
-    '#ec4899', // pink
-  ];
-
   // Calcular segmentos do gráfico
   const segments = useMemo(() => {
-    let currentAngle = -90; // Começar no topo
-    return data.map((item, index) => {
+    const defaultColors = [
+      '#6366f1', // primary
+      '#22c55e', // success
+      '#f59e0b', // warning
+      '#ef4444', // error
+      '#8b5cf6', // purple
+      '#ec4899', // pink
+    ];
+    
+    const { segments: calculatedSegments } = data.reduce((acc, item, index) => {
       const percentage = total > 0 ? (item.value / total) * 100 : 0;
       const angle = (percentage / 100) * 360;
-      const startAngle = currentAngle;
-      currentAngle += angle;
+      const startAngle = acc.currentAngle;
+      const endAngle = startAngle + angle;
       
-      return {
+      acc.segments.push({
         ...item,
         percentage,
         startAngle,
-        endAngle: currentAngle,
+        endAngle,
         color: item.color || defaultColors[index % defaultColors.length]
-      };
-    });
-  }, [data, total, defaultColors]);
+      });
+      
+      acc.currentAngle = endAngle;
+      return acc;
+    }, { currentAngle: -90, segments: [] as Array<typeof data[0] & { percentage: number, startAngle: number, endAngle: number, color: string }> });
+    
+    return calculatedSegments;
+  }, [data, total]);
 
   // Função para calcular coordenadas do arco
   const getArcPath = (startAngle: number, endAngle: number, innerRadius: number, outerRadius: number) => {

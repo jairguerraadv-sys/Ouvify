@@ -348,16 +348,16 @@ export default function PrivacidadePage() {
 
             {/* Footer Actions */}
             <div className="flex flex-col sm:flex-row gap-4 items-center justify-center pt-8 border-t">
-              <Button asChild variant="default">
-                <Link href="/cadastro">
+              <Link href="/cadastro">
+                <Button variant="default">
                   Aceitar e Começar
-                </Link>
-              </Button>
-              <Button asChild variant="ghost">
-                <Link href="/termos">
+                </Button>
+              </Link>
+              <Link href="/termos">
+                <Button variant="ghost">
                   Ver Termos de Uso
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             </div>
           </div>
         </div>

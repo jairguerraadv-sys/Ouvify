@@ -2,16 +2,15 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Logo } from '@/components/ui/logo';
 import { Home, ArrowLeft, Search } from 'lucide-react';
 
 export default function NotFound() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
-      <Card variant="elevated" className="max-w-2xl w-full p-8 text-center">
+      <div className="max-w-2xl w-full p-8 text-center bg-card rounded-xl shadow-lg border border-border">
+        {/* Logo */}
         <div className="flex justify-center mb-6">
-          <Logo size="xl" />
+          <div className="text-4xl font-bold text-primary">OUVY</div>
         </div>
 
         {/* 404 Animation */}
@@ -30,14 +29,14 @@ export default function NotFound() {
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/">
-            <Button size="lg" className="gap-2 w-full sm:w-auto">
+          <Link href="/" className="w-full sm:w-auto">
+            <Button size="lg" className="gap-2 w-full">
               <Home className="w-4 h-4" />
               Ir para Home
             </Button>
           </Link>
-          <Link href="/dashboard">
-            <Button variant="outline" size="lg" className="gap-2 w-full sm:w-auto">
+          <Link href="/dashboard" className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="gap-2 w-full">
               <ArrowLeft className="w-4 h-4" />
               Voltar ao Dashboard
             </Button>
@@ -57,7 +56,7 @@ export default function NotFound() {
             Acompanhar um protocolo
           </Link>
         </div>
-      </Card>
+      </div>
     </div>
   );
 }

@@ -82,11 +82,11 @@ function ConfirmarRecuperacaoContent() {
                     Este link de recuperação é inválido ou expirou.
                   </p>
                 </div>
-                <Button asChild className="w-full">
-                  <Link href="/recuperar-senha">
+                <Link href="/recuperar-senha">
+                  <Button className="w-full">
                     Solicitar Novo Link
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </CardContent>
           </Card>
@@ -135,15 +135,14 @@ function ConfirmarRecuperacaoContent() {
                     Você será redirecionado para o login em instantes...
                   </p>
                 </div>
-                <Button 
-                  asChild
-                  className="w-full"
-                  variant="default"
-                >
-                  <Link href="/login">
+                <Link href="/login">
+                  <Button
+                    className="w-full"
+                    variant="default"
+                  >
                     Ir para o Login
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
