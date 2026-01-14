@@ -129,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // Criar objeto user do formato esperado
       const userData = {
         id: userResponse.id?.toString() || userResponse.email,
-        name: userResponse.username || userResponse.first_name || data.nome.split(' ')[0],
+        name: userResponse.username || userResponse.first_name || data.email.split('@')[0],
         email: userResponse.email,
         tenant_id: tenant?.id?.toString(),
         empresa: tenant?.nome,
