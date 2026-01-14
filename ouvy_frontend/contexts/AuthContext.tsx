@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { apiClient } from '@/lib/api';
+import { AxiosError } from 'axios';
 
 interface User {
   id: string;
@@ -94,10 +95,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(userData);
       router.push('/dashboard');
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 
-                          err.response?.data?.non_field_errors?.[0] ||
-                          err.response?.data?.error || 
+    } catch (err: unknown) {
+      const error = err as AxiosError<{detail?: string; non_field_errors?: string[]; error?: string}>;
+      const errorMessage = error.response?.data?.detail || 
+                          error.response?.data?.non_field_errors?.[0] ||
+                          error.response?.data?.error || 
                           'Erro ao fazer login';
       setError(errorMessage);
       throw new Error(errorMessage);
@@ -146,10 +148,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(userData);
       router.push('/dashboard');
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 
-                          err.response?.data?.errors || 
-                          err.response?.data?.error || 
+    } catch (err: unknown) {
+      const error = err as AxiosError<{detail?: string; errors?: Record<string, string[]>; error?: string}>;
+      const errorMessage = error.response?.data?.detail || 
+                          error.response?.data?.errors || 
+                          error.response?.data?.error || 
                           'Erro ao registrar';
       setError(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
       throw new Error(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
@@ -168,8 +171,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       localStorage.setItem('user', JSON.stringify(updatedUser));
       setUser(updatedUser);
-    } catch (err: any) {
-      const errorMessage = err.response?.data?.detail || 'Erro ao atualizar usuário';
+    } catch (err: unknown) {
+      const error = err as AxiosError<{detail?: string}>;
+      const errorMessage = error.response?.data?.detail || 'Erro ao atualizar usuário';
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {

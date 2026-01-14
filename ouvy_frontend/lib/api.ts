@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import type { ApiError } from './types';
+import logger from './logger';
 
 // Configuração da API
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 
@@ -43,15 +44,13 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    // Log detalhado em desenvolvimento
-    if (process.env.NODE_ENV === 'development' || typeof window !== 'undefined') {
-      console.error('API Error:', {
-        url: error.config?.url,
-        method: error.config?.method,
-        status: error.response?.status,
-        data: error.response?.data,
-      });
-    }
+    // Log detalhado apenas em desenvolvimento
+    logger.error('API Error:', {
+      url: error.config?.url,
+      method: error.config?.method,
+      status: error.response?.status,
+      data: error.response?.data,
+    });
     
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       // Token inválido ou expirado
@@ -65,7 +64,7 @@ apiClient.interceptors.response.use(
 );
 
 // Tipos de resposta da API
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   data: T;
   message?: string;
 }
@@ -122,19 +121,19 @@ export async function apiRequest<T>(
 
 // Métodos convenientes
 export const api = {
-  get: <T = any>(url: string, config?: AxiosRequestConfig) =>
+  get: <T>(url: string, config?: AxiosRequestConfig) =>
     apiRequest<T>({ ...config, method: 'GET', url }),
     
-  post: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
+  post: <T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) =>
     apiRequest<T>({ ...config, method: 'POST', url, data }),
     
-  put: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
+  put: <T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) =>
     apiRequest<T>({ ...config, method: 'PUT', url, data }),
     
-  patch: <T = any>(url: string, data?: any, config?: AxiosRequestConfig) =>
+  patch: <T, D = unknown>(url: string, data?: D, config?: AxiosRequestConfig) =>
     apiRequest<T>({ ...config, method: 'PATCH', url, data }),
     
-  delete: <T = any>(url: string, config?: AxiosRequestConfig) =>
+  delete: <T>(url: string, config?: AxiosRequestConfig) =>
     apiRequest<T>({ ...config, method: 'DELETE', url }),
 };
 

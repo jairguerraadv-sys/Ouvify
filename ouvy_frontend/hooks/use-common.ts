@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import logger from '@/lib/logger';
 
 interface ToastState {
   id: string;
@@ -88,7 +89,7 @@ export function useLocalStorage<T>(
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
-      console.error('Error setting localStorage:', error);
+      logger.error('Error setting localStorage:', error);
     }
   };
 
@@ -99,7 +100,7 @@ export function useLocalStorage<T>(
         window.localStorage.removeItem(key);
       }
     } catch (error) {
-      console.error('Error removing localStorage:', error);
+      logger.error('Error removing localStorage:', error);
     }
   };
 
@@ -149,7 +150,7 @@ export function useCopyToClipboard() {
 
   const copy = async (text: string) => {
     if (!navigator?.clipboard) {
-      console.warn('Clipboard not supported');
+      logger.warn('Clipboard not supported');
       return false;
     }
 
@@ -159,7 +160,7 @@ export function useCopyToClipboard() {
       setTimeout(() => setCopiedText(null), 2000);
       return true;
     } catch (error) {
-      console.error('Failed to copy:', error);
+      logger.error('Failed to copy:', error);
       setCopiedText(null);
       return false;
     }
