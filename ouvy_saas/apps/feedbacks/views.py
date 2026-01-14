@@ -60,21 +60,21 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         Retorna o queryset filtrado por tenant com otimizações.
         
         Otimizações aplicadas:
-        - select_related('client', 'autor'): Reduz N+1 queries ao buscar feedbacks
+        - select_related('client'): Reduz N+1 queries ao buscar feedbacks
         - prefetch_related('interacoes'): Pré-carrega interações para detail views
         - Ordenação por data_criacao descendente
         """
         queryset = Feedback.objects.filter(client__isnull=False)
         
-        # Sempre trazer client e autor em uma única query
-        queryset = queryset.select_related('client', 'autor')
+        # Sempre trazer client em uma única query
+        queryset = queryset.select_related('client')
         
         # Se for detail view, pré-carregar interações
         if getattr(self, 'action', None) in ['retrieve', 'adicionar_interacao']:
             queryset = queryset.prefetch_related(
                 Prefetch(
                     'interacoes',
-                    queryset=FeedbackInteracao.objects.select_related('autor').order_by('data_criacao')
+                    queryset=FeedbackInteracao.objects.select_related('autor').order_by('data')
                 )
             )
         

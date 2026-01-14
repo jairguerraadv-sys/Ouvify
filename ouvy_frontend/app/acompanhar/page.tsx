@@ -68,15 +68,17 @@ export default function AcompanharPage() {
 
       setFeedback(response);
     } catch (err) {
-      const errorMessage = getErrorMessage(err);
       const status = (err as any)?.response?.status as number | undefined;
+      const waitSeconds = (err as any)?.response?.data?.wait_seconds as number | undefined;
+      const errorMessage = getErrorMessage(err);
       
       if (status === 429 || errorMessage.includes('429') || errorMessage.includes('tentativas')) {
-        setCooldownMs(60000);
-        setError('🚨 Muitas tentativas. Por favor, aguarde 60 segundos antes de tentar de novo.');
-      } else if (errorMessage.includes('404') || errorMessage.includes('não encontrado')) {
+        const ms = Math.max((waitSeconds ?? 60) * 1000, 0);
+        setCooldownMs(ms);
+        setError(`🚨 Muitas tentativas. Aguarde ${Math.ceil(ms / 1000)} segundos antes de tentar de novo.`);
+      } else if (status === 404 || errorMessage.includes('não encontrado')) {
         setError('Protocolo não encontrado. Verifique o código digitado.');
-      } else if (errorMessage.includes('400') || errorMessage.includes('inválido')) {
+      } else if (status === 400 || errorMessage.includes('inválido')) {
         setError('Código de protocolo inválido.');
       } else if (errorMessage.includes('Network') || errorMessage.includes('ERR_NETWORK')) {
         setError('⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
@@ -86,7 +88,7 @@ export default function AcompanharPage() {
     } finally {
       setLoading(false);
     }
-  }, [protocolo]);
+  }, [debouncedProtocolo, cooldownMs]);
 
   const handleEnviarResposta = useCallback(async () => {
     if (!feedback) return;

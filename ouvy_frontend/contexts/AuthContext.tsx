@@ -108,13 +108,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [router]);
 
-  const logout = useCallback(() => {
-    // Limpar dados
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('tenant_id');
-    setUser(null);
-    router.push('/login');
+  const logout = useCallback(async () => {
+    try {
+      // Invalidar token no servidor
+      await apiClient.post('/api/logout/');
+    } catch (error) {
+      console.error('Erro ao invalidar token no servidor:', error);
+      // Continua o logout mesmo se houver erro no servidor
+    } finally {
+      // Limpar dados locais
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('tenant_id');
+      localStorage.removeItem('tenant_subdominio');
+      setUser(null);
+      router.push('/login');
+    }
   }, [router]);
 
   const register = useCallback(async (data: RegisterData) => {

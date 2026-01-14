@@ -9,3 +9,7 @@ ENV/
 db.sqlite3
 *.log
 .DS_Store
+
+# Arquivos sensíveis com credenciais
+SECURITY_NOTES.md
+COMMIT_MESSAGE.txt

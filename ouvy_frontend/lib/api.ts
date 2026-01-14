@@ -14,7 +14,7 @@ export const apiClient: AxiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 15000, // 15 segundos
+  timeout: 30000, // 30 segundos (aumentado para evitar timeouts em cold starts)
 });
 
 // Interceptor de request - adicionar auth token
@@ -115,7 +115,18 @@ export async function apiRequest<T>(
     const response = await apiClient.request<T>(config);
     return response.data;
   } catch (error) {
-    throw new Error(getErrorMessage(error));
+    // Preserve Axios error metadata (status, response) so callers can branch on it
+    if (axios.isAxiosError(error)) {
+      const enrichedError = error;
+      enrichedError.message = getErrorMessage(error);
+      throw enrichedError;
+    }
+
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error('Erro desconhecido. Tente novamente.');
   }
 }
 

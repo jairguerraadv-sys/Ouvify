@@ -1,86 +1,97 @@
-import requests
-import json
+"""Testa isolamento multi-tenant via API interna sem depender de servidor externo."""
+from django.contrib.auth.models import User
+from django.test import TestCase
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
 
-print("=" * 80)
-print("🔒 TESTE DE ISOLAMENTO - Multi-tenant")
-print("=" * 80)
+from apps.tenants.models import Client
 
-# Criar feedback na Empresa A
-print("\n1️⃣ Criando feedback na EMPRESA A...")
-response_a = requests.post(
-    "http://empresaa.local:8000/api/feedbacks/",
-    json={
-        "tipo": "sugestao",
-        "titulo": "Feedback da Empresa A",
-        "descricao": "Este feedback pertence à Tech Solutions",
-        "anonimo": False,
-        "email_contato": "contato@empresaA.com"
-    }
-)
-print(f"   Status: {response_a.status_code}")
-if response_a.status_code == 201:
-    data_a = response_a.json()
-    print(f"   ✅ ID criado: {data_a['id']}")
 
-# Criar feedback na Empresa B
-print("\n2️⃣ Criando feedback na EMPRESA B...")
-response_b = requests.post(
-    "http://empresab.local:8000/api/feedbacks/",
-    json={
-        "tipo": "reclamacao",
-        "titulo": "Feedback da Empresa B",
-        "descricao": "Este feedback pertence à Padaria do João",
-        "anonimo": False,
-        "email_contato": "contato@empresaB.com"
-    }
-)
-print(f"   Status: {response_b.status_code}")
-if response_b.status_code == 201:
-    data_b = response_b.json()
-    print(f"   ✅ ID criado: {data_b['id']}")
+class IsolamentoAPITest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user_a = User.objects.create_user(
+            username="a@example.com", email="a@example.com", password="Senha123!"
+        )
+        cls.user_b = User.objects.create_user(
+            username="b@example.com", email="b@example.com", password="Senha123!"
+        )
 
-# Listar feedbacks da Empresa A
-print("\n3️⃣ Listando feedbacks visíveis para EMPRESA A...")
-list_a = requests.get("http://empresaa.local:8000/api/feedbacks/")
-if list_a.status_code == 200:
-    feedbacks_a = list_a.json()
-    print(f"   Total de feedbacks: {len(feedbacks_a)}")
-    print("   Títulos:")
-    for fb in feedbacks_a:
-        print(f"      - {fb['titulo']}")
+        cls.tenant_a = Client.objects.create(
+            owner=cls.user_a,
+            nome="Empresa A",
+            subdominio="empresaa",
+            cor_primaria="#3B82F6",
+            ativo=True,
+        )
+        cls.tenant_b = Client.objects.create(
+            owner=cls.user_b,
+            nome="Empresa B",
+            subdominio="empresab",
+            cor_primaria="#10B981",
+            ativo=True,
+        )
 
-# Listar feedbacks da Empresa B
-print("\n4️⃣ Listando feedbacks visíveis para EMPRESA B...")
-list_b = requests.get("http://empresab.local:8000/api/feedbacks/")
-if list_b.status_code == 200:
-    feedbacks_b = list_b.json()
-    print(f"   Total de feedbacks: {len(feedbacks_b)}")
-    print("   Títulos:")
-    for fb in feedbacks_b:
-        print(f"      - {fb['titulo']}")
+        cls.token_a, _ = Token.objects.get_or_create(user=cls.user_a)
+        cls.token_b, _ = Token.objects.get_or_create(user=cls.user_b)
 
-# Verificar isolamento
-print("\n" + "=" * 80)
-print("🎯 RESULTADO DO ISOLAMENTO:")
-print("=" * 80)
+    def _client_for(self, tenant, token):
+        client = APIClient()
+        client.credentials(HTTP_AUTHORIZATION=f"Token {token}")
+        client.defaults['HTTP_HOST'] = f"{tenant.subdominio}.local"
+        return client
 
-feedbacks_a = locals().get('feedbacks_a', [])
-feedbacks_b = locals().get('feedbacks_b', [])
+    def _get_results(self, response):
+        data = response.json()
+        return data.get("results", data) if isinstance(data, dict) else data
 
-empresaA_tem_apenas_seus = all(
-    'Empresa A' in fb['titulo'] or 'Automático' in fb['titulo'] 
-    for fb in feedbacks_a
-)
-empresaB_tem_apenas_seus = all(
-    'Empresa B' in fb['titulo'] 
-    for fb in feedbacks_b
-)
+    def test_isolation_between_tenants(self):
+        client_public_a = APIClient()
+        client_public_a.defaults['HTTP_HOST'] = "empresaa.local"
+        client_public_b = APIClient()
+        client_public_b.defaults['HTTP_HOST'] = "empresab.local"
 
-if len(feedbacks_b) > 0 and 'Empresa A' not in str(feedbacks_b):
-    print("✅ SUCESSO! Cada empresa vê apenas seus próprios feedbacks!")
-    print("✅ O isolamento de dados está funcionando perfeitamente!")
-    print("✅ Seu sistema SaaS White Label está SEGURO! 🔒")
-else:
-    print("⚠️ ATENÇÃO! Pode haver vazamento de dados entre tenants.")
+        # Criar feedbacks públicos (endpoint permite AllowAny)
+        resp_a = client_public_a.post(
+            "/api/feedbacks/",
+            {
+                "tipo": "sugestao",
+                "titulo": "Feedback da Empresa A",
+                "descricao": "Este feedback pertence à Empresa A",
+                "anonimo": False,
+                "email_contato": "contato@empresaa.com",
+            },
+            format="json",
+        )
+        self.assertEqual(resp_a.status_code, 201)
 
-print("=" * 80)
+        resp_b = client_public_b.post(
+            "/api/feedbacks/",
+            {
+                "tipo": "reclamacao",
+                "titulo": "Feedback da Empresa B",
+                "descricao": "Este feedback pertence à Empresa B",
+                "anonimo": False,
+                "email_contato": "contato@empresab.com",
+            },
+            format="json",
+        )
+        self.assertEqual(resp_b.status_code, 201)
+
+        # Listar autenticado por tenant
+        client_a = self._client_for(self.tenant_a, self.token_a.key)
+        list_a = client_a.get("/api/feedbacks/")
+        self.assertEqual(list_a.status_code, 200)
+        data_a = self._get_results(list_a)
+        self.assertEqual(len(data_a), 1)
+        self.assertIn("Empresa A", data_a[0]["titulo"])
+
+        client_b = self._client_for(self.tenant_b, self.token_b.key)
+        list_b = client_b.get("/api/feedbacks/")
+        self.assertEqual(list_b.status_code, 200)
+        data_b = self._get_results(list_b)
+        self.assertEqual(len(data_b), 1)
+        self.assertIn("Empresa B", data_b[0]["titulo"])
+
+        # Garantir que feedbacks não vazam entre tenants
+        self.assertNotEqual(data_a[0]["id"], data_b[0]["id"])

@@ -80,6 +80,16 @@ class Feedback(TenantAwareModel):
         help_text='E-mail para retorno (opcional se anônimo)'
     )
     
+    autor = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='feedbacks_criados',
+        verbose_name='Autor',
+        help_text='Usuário que criou o feedback (para rastreabilidade)'
+    )
+    
     resposta_empresa = models.TextField(
         null=True,
         blank=True,

@@ -1,76 +1,62 @@
-"""
-Script para verificar o estado atual dos feedbacks no banco de dados
-e diagnosticar o problema de isolamento.
-"""
-import os
-import sys
-import django
-
-# Configurar Django
-sys.path.insert(0, '/Users/jairneto/Desktop/ouvy_saas/ouvy_saas')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-django.setup()
+"""Verifica isolamento por tenant via ORM com banco de teste."""
+from django.test import TestCase
 
 from apps.tenants.models import Client
 from apps.feedbacks.models import Feedback
 from apps.core.utils import set_current_tenant, clear_current_tenant
 
-print("=" * 80)
-print("🔍 DIAGNÓSTICO DO BANCO DE DADOS")
-print("=" * 80)
 
-# 1. Verificar empresas
-print("\n1️⃣ Empresas no banco de dados:")
-empresas = Client.objects.all()
-for emp in empresas:
-    print(f"   - ID: {emp.id}, Nome: {emp.nome}, Subdomínio: {emp.subdominio}")  # type: ignore[attr-defined]
+class DiagnosticoTenantIsolationTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.empresa_a = Client.objects.create(
+            nome="Empresa A",
+            subdominio="empresaa",
+            cor_primaria="#3B82F6",
+            ativo=True,
+        )
+        cls.empresa_b = Client.objects.create(
+            nome="Empresa B",
+            subdominio="empresab",
+            cor_primaria="#10B981",
+            ativo=True,
+        )
 
-# 2. Verificar todos os feedbacks (sem filtro)
-print("\n2️⃣ Todos os feedbacks no banco (SEM filtro de tenant):")
-all_feedbacks = Feedback.objects.all_tenants()  # type: ignore[attr-defined]
-print(f"   Total: {all_feedbacks.count()}")
-for fb in all_feedbacks:
-    print(f"   - ID: {fb.id}, Client ID: {fb.client_id}, Título: {fb.titulo}")
+        # Feedbacks em tenants distintos
+        set_current_tenant(cls.empresa_a)
+        Feedback.objects.create(
+            tipo="denuncia",
+            titulo="Feedback A",
+            descricao="Isolamento A",
+            anonimo=True,
+            email_contato="a@a.com",
+        )
+        clear_current_tenant()
 
-# 3. Testar filtro com contexto da Empresa A
-print("\n3️⃣ Testando filtro COM contexto da Empresa A:")
-try:
-    empresa_a = Client.objects.get(subdominio__iexact='empresaA')
-    set_current_tenant(empresa_a)
-    feedbacks_a = Feedback.objects.all()
-    print(f"   Tenant ativo: {empresa_a.nome} (ID: {empresa_a.id})")  # type: ignore[attr-defined]
-    print(f"   Feedbacks retornados: {feedbacks_a.count()}")
-    for fb in feedbacks_a:
-        print(f"   - ID: {fb.id}, Título: {fb.titulo}")  # type: ignore[attr-defined]
-    clear_current_tenant()
-except Client.DoesNotExist:
-    print("   ❌ Empresa A não encontrada!")
+        set_current_tenant(cls.empresa_b)
+        Feedback.objects.create(
+            tipo="elogio",
+            titulo="Feedback B",
+            descricao="Isolamento B",
+            anonimo=True,
+            email_contato="b@b.com",
+        )
+        clear_current_tenant()
 
-# 4. Testar filtro com contexto da Empresa B
-print("\n4️⃣ Testando filtro COM contexto da Empresa B:")
-try:
-    empresa_b = Client.objects.get(subdominio__iexact='empresaB')
-    set_current_tenant(empresa_b)
-    feedbacks_b = Feedback.objects.all()
-    print(f"   Tenant ativo: {empresa_b.nome} (ID: {empresa_b.id})")  # type: ignore[attr-defined]
-    print(f"   Feedbacks retornados: {feedbacks_b.count()}")
-    for fb in feedbacks_b:
-        print(f"   - ID: {fb.id}, Título: {fb.titulo}")  # type: ignore[attr-defined]
-    clear_current_tenant()
-except Client.DoesNotExist:
-    print("   ❌ Empresa B não encontrada!")
+    def test_all_tenants_sees_both(self):
+        total = Feedback.objects.all_tenants().count()  # type: ignore[attr-defined]
+        self.assertEqual(total, 2)
 
-# 5. Verificar contexto durante requisição GET
-print("\n5️⃣ Simulando requisição GET:")
-print("   Quando a API recebe uma requisição, o middleware deve:")
-print("   - Detectar o subdomínio")
-print("   - Buscar o Client")
-print("   - Chamar set_current_tenant()")
-print("   - O ViewSet usa Feedback.objects.all() que aplica o filtro automaticamente")
+    def test_filter_with_tenant_a(self):
+        set_current_tenant(self.empresa_a)
+        feedbacks_a = list(Feedback.objects.all())
+        clear_current_tenant()
+        self.assertEqual(len(feedbacks_a), 1)
+        self.assertEqual(feedbacks_a[0].titulo, "Feedback A")
 
-print("\n" + "=" * 80)
-print("🎯 CONCLUSÃO:")
-print("=" * 80)
-print("Se houver feedbacks no passo 2 mas não nos passos 3 e 4,")
-print("o problema está no filtro ou no contexto do tenant.")
-print("=" * 80)
+    def test_filter_with_tenant_b(self):
+        set_current_tenant(self.empresa_b)
+        feedbacks_b = list(Feedback.objects.all())
+        clear_current_tenant()
+        self.assertEqual(len(feedbacks_b), 1)
+        self.assertEqual(feedbacks_b[0].titulo, "Feedback B")
