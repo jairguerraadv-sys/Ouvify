@@ -7,3 +7,5 @@ stripe==14.1.0
 gunicorn==23.0.0
 dj-database-url==2.1.0
 drf-yasg==1.21.7
+setuptools>=65.0.0
+packaging>=20.0
