@@ -261,6 +261,7 @@ CORS_ALLOW_HEADERS = [
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
+    'x-tenant-id',  # Header customizado para multitenancy
 ]
 
 # Adicionar suporte para preview deployments do Vercel (*.vercel.app)
