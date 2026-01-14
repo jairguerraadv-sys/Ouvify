@@ -43,6 +43,16 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
+    // Log detalhado em desenvolvimento
+    if (process.env.NODE_ENV === 'development' || typeof window !== 'undefined') {
+      console.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        data: error.response?.data,
+      });
+    }
+    
     if (error.response?.status === 401 && typeof window !== 'undefined') {
       // Token inválido ou expirado
       localStorage.removeItem('auth_token');
@@ -70,9 +80,23 @@ export function getErrorMessage(error: unknown): string {
     if (apiError?.message) return apiError.message;
     
     if (apiError?.errors) {
+      // Erros de validação do Django (formato: { field: ["error message"] })
+      if (typeof apiError.errors === 'object') {
+        const errors = Object.entries(apiError.errors)
+          .map(([field, messages]) => {
+            const msgArray = Array.isArray(messages) ? messages : [messages];
+            return `${field}: ${msgArray.join(', ')}`;
+          })
+          .join('; ');
+        return errors || 'Dados inválidos';
+      }
       const firstError = Object.values(apiError.errors)[0];
       return Array.isArray(firstError) ? firstError[0] : firstError;
     }
+    
+    // Fallback para status code
+    if (error.response?.status === 400) return 'Dados inválidos. Verifique os campos.';
+    if (error.response?.status === 500) return 'Erro no servidor. Tente novamente.';
     
     if (error.message) return error.message;
   }
