@@ -129,7 +129,7 @@ function PerfilContent() {
         <DashboardHeader 
           title="Meu Perfil"
           description="Gerencie suas informações pessoais"
-          user={user}
+          user={user || undefined}
         />
 
         <main className="flex-1 overflow-y-auto p-6 lg:p-8">
