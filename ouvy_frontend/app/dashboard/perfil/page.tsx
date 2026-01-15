@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { User, Mail, Building, Calendar, Shield, Camera, Sparkles, Download, Trash2, AlertTriangle } from 'lucide-react';
 import { api, getErrorMessage } from '@/lib/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function PerfilPage() {
   return (
@@ -23,16 +24,17 @@ function PerfilContent() {
   const [loading, setLoading] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const { user } = useAuth();
 
-  // Mock data - substituir por dados reais da API
-  const user = {
-    name: 'João Silva',
-    email: 'joao@empresa.com.br',
-    avatar: '',
-    empresa: 'Tech Solutions Ltda',
-    cargo: 'Gerente de Compliance',
-    cadastro: '15/12/2025',
-    plano: 'Pro',
+  // Dados do usuário real do AuthContext
+  const userData = {
+    name: user?.name || 'Usuário',
+    email: user?.email || '',
+    avatar: user?.avatar || '',
+    empresa: user?.empresa || 'Não informado',
+    cargo: 'Administrador', // TODO: Adicionar campo cargo ao backend
+    cadastro: 'Recente', // TODO: Adicionar data de cadastro ao backend
+    plano: 'Pro', // TODO: Buscar do backend via API
     status: 'Ativo'
   };
 
@@ -121,7 +123,7 @@ function PerfilContent() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50">
-      <Sidebar user={user} />
+      <Sidebar user={user || undefined} />
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <DashboardHeader 
@@ -139,9 +141,9 @@ function PerfilContent() {
                   {/* Avatar */}
                   <div className="relative group">
                     <Avatar className="w-32 h-32 border-4 border-primary/10">
-                      <AvatarImage src={user.avatar} alt={user.name} />
+                      <AvatarImage src={userData.avatar} alt={userData.name} />
                       <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary-dark text-white">
-                        {user.name.split(' ').map(n => n[0]).join('')}
+                        {userData.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
                     <button className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark text-white rounded-full p-2 shadow-lg transition-colors opacity-0 group-hover:opacity-100">
@@ -152,26 +154,26 @@ function PerfilContent() {
                   {/* Info */}
                   <div className="flex-1 text-center sm:text-left">
                     <div className="flex items-center justify-center sm:justify-start gap-3 mb-2">
-                      <h1 className="text-3xl font-bold text-secondary">{user.name}</h1>
+                      <h1 className="text-3xl font-bold text-secondary">{userData.name}</h1>
                       <Badge variant="success" className="gap-1">
                         <Shield className="w-3 h-3" />
                         Verificado
                       </Badge>
                     </div>
-                    <p className="text-muted-foreground mb-4">{user.cargo}</p>
+                    <p className="text-muted-foreground mb-4">{userData.cargo}</p>
                     
                     <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
                       <div className="flex items-center gap-2 text-sm">
                         <Mail className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-secondary">{user.email}</span>
+                        <span className="text-secondary">{userData.email}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Building className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-secondary">{user.empresa}</span>
+                        <span className="text-secondary">{userData.empresa}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm">
                         <Calendar className="w-4 h-4 text-muted-foreground" />
-                        <span className="text-secondary">Membro desde {user.cadastro}</span>
+                        <span className="text-secondary">Membro desde {userData.cadastro}</span>
                       </div>
                     </div>
                   </div>
@@ -181,10 +183,10 @@ function PerfilContent() {
                     <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-xl p-4 border border-primary/20">
                       <div className="flex items-center gap-2 mb-1">
                         <Sparkles className="w-4 h-4 text-primary" />
-                        <span className="text-sm font-semibold text-secondary">Plano {user.plano}</span>
+                        <span className="text-sm font-semibold text-secondary">Plano {userData.plano}</span>
                       </div>
                       <Badge variant="secondary" className="text-xs">
-                        {user.status}
+                        {userData.status}
                       </Badge>
                     </div>
                   </div>
@@ -207,7 +209,7 @@ function PerfilContent() {
                       <label className="text-sm font-medium text-secondary">Nome Completo</label>
                       <input
                         type="text"
-                        defaultValue={user.name}
+                        defaultValue={userData.name}
                         className="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       />
                     </div>
@@ -215,7 +217,7 @@ function PerfilContent() {
                       <label className="text-sm font-medium text-secondary">E-mail</label>
                       <input
                         type="email"
-                        defaultValue={user.email}
+                        defaultValue={userData.email}
                         className="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       />
                     </div>
@@ -223,7 +225,7 @@ function PerfilContent() {
                       <label className="text-sm font-medium text-secondary">Empresa</label>
                       <input
                         type="text"
-                        defaultValue={user.empresa}
+                        defaultValue={userData.empresa}
                         className="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       />
                     </div>
@@ -231,7 +233,7 @@ function PerfilContent() {
                       <label className="text-sm font-medium text-secondary">Cargo</label>
                       <input
                         type="text"
-                        defaultValue={user.cargo}
+                        defaultValue={userData.cargo}
                         className="w-full px-4 py-2 border border-input rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       />
                     </div>

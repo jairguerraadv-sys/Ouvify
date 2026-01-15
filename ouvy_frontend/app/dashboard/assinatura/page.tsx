@@ -10,6 +10,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import useSWR from 'swr';
 import { api } from '@/lib/api';
 import { formatDate } from '@/lib/helpers';
+import { useAuth } from '@/contexts/AuthContext';
 import { 
   CreditCard, 
   AlertTriangle, 
@@ -56,12 +57,7 @@ function AssinaturaContent() {
   );
   
   const [loading, setLoading] = useState(false);
-  
-  // Mock user data (será substituído pelo AuthContext)
-  const user = {
-    name: 'João Silva',
-    email: 'joao@empresa.com',
-  };
+  const { user } = useAuth();
 
   const handleCancelSubscription = async () => {
     const confirmMsg = 
@@ -105,7 +101,7 @@ function AssinaturaContent() {
   if (error) {
     return (
       <div className="flex min-h-screen bg-slate-50">
-        <Sidebar user={user} />
+        <Sidebar user={user || undefined} />
         <main className="flex-1 p-8">
           <Alert variant="error">
             <AlertTriangle className="h-4 w-4" />
@@ -122,7 +118,7 @@ function AssinaturaContent() {
   if (isLoading || !subscription) {
     return (
       <div className="flex min-h-screen bg-slate-50">
-        <Sidebar user={user} />
+        <Sidebar user={user || undefined} />
         <main className="flex-1 p-8">
           <div className="max-w-4xl mx-auto space-y-6">
             <Skeleton className="h-12 w-64" />
@@ -175,7 +171,7 @@ function AssinaturaContent() {
 
   return (
     <div className="flex min-h-screen bg-slate-50">
-      <Sidebar user={user} />
+      <Sidebar user={user || undefined} />
       
       <main className="flex-1 p-6 lg:p-8">
         <div className="max-w-4xl mx-auto space-y-6">
