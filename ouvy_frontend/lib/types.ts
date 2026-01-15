@@ -46,6 +46,8 @@ export interface DashboardStats {
   taxa_resolucao: string;
   por_tipo: Record<FeedbackType, number>;
   por_status: Record<FeedbackStatus, number>;
+  tempo_medio_resposta?: string;
+  variacao_tempo?: string;
 }
 
 export interface FeedbackFilters {
