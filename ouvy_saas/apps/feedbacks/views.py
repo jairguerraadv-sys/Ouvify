@@ -1,25 +1,25 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.request import Request
 from django.utils import timezone
-from django.db.models import Prefetch, Q
+from django.db.models import Prefetch, Q, QuerySet
 from datetime import timedelta
+from typing import Any
 from .models import Feedback, FeedbackInteracao
 from .serializers import (
     FeedbackSerializer,
     FeedbackConsultaSerializer,
     FeedbackDetailSerializer,
+    FeedbackInteracaoSerializer,
 )
-from .serializers import FeedbackInteracaoSerializer
-from .throttles import ProtocoloConsultaThrottle
+from .throttles import ProtocoloConsultaThrottle, FeedbackCriacaoThrottle
 from .constants import (
     InteracaoTipo,
     FeedbackStatus,
     MAX_INTERACAO_MENSAGEM_LENGTH,
 )
-from apps.core.utils import get_client_ip, build_search_query
-from apps.core.sanitizers import sanitize_html_input
+from apps.core.utils import get_client_ip, build_search_query, get_current_tenant
+from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.pagination import StandardResultsSetPagination
 import logging
 
@@ -48,14 +48,14 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     serializer_class = FeedbackSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = StandardResultsSetPagination
-
+    
     def get_permissions(self):
         """Permite público apenas nos endpoints explícitos de protocolo."""
         if getattr(self, 'action', None) in ['create', 'consultar_protocolo', 'responder_protocolo']:
             return [permissions.AllowAny()]
         return [permission() for permission in self.permission_classes]
     
-    def get_queryset(self):  # type: ignore[override]
+    def get_queryset(self) -> QuerySet[Feedback]:  # type: ignore[override]
         """
         Retorna o queryset filtrado por tenant com otimizações.
         
@@ -67,7 +67,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         queryset = Feedback.objects.filter(client__isnull=False)
         
         # Sempre trazer client em uma única query
-        queryset = queryset.select_related('client')
+        queryset = queryset.select_related('client', 'autor')
         
         # Se for detail view, pré-carregar interações
         if getattr(self, 'action', None) in ['retrieve', 'adicionar_interacao']:
@@ -79,30 +79,43 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             )
         
         # Aplicar filtros de busca se fornecidos
-        search = self.request.query_params.get('search', '').strip()  # type: ignore[union-attr]
+        search = self.request.query_params.get('search', '').strip()  # type: ignore[attr-defined]
         if search:
             queryset = queryset.filter(
                 Q(protocolo__icontains=search) |
                 Q(titulo__icontains=search) |
-                Q(email__icontains=search)
+                Q(email_contato__icontains=search)
             )
         
         # Filtro por status
-        status_filter = self.request.query_params.get('status', '').strip()  # type: ignore[union-attr]
+        status_filter = self.request.query_params.get('status', '').strip()  # type: ignore[attr-defined]
         if status_filter:
             queryset = queryset.filter(status=status_filter)
         
         # Filtro por tipo
-        tipo_filter = self.request.query_params.get('tipo', '').strip()  # type: ignore[union-attr]
+        tipo_filter = self.request.query_params.get('tipo', '').strip()  # type: ignore[attr-defined]
         if tipo_filter:
             queryset = queryset.filter(tipo=tipo_filter)
         
         return queryset.order_by('-data_criacao')
-
-    def get_serializer_class(self):  # type: ignore[override]
+    
+    def get_serializer_class(self) -> type[FeedbackSerializer | FeedbackDetailSerializer]:  # type: ignore[override]
         if getattr(self, 'action', None) in ['retrieve']:
             return FeedbackDetailSerializer
         return super().get_serializer_class()
+    
+    def get_throttles(self):
+        """
+        Aplica throttle específico dependendo da action.
+        
+        - create: FeedbackCriacaoThrottle (10/hora)
+        - consultar_protocolo: ProtocoloConsultaThrottle (10/min por IP+Protocolo)
+        - responder_protocolo: ProtocoloConsultaThrottle (10/min por IP+Protocolo)
+        - outros: throttles padrão do DRF
+        """
+        if self.action == 'create':
+            return [FeedbackCriacaoThrottle()]
+        return super().get_throttles()
     
     def perform_create(self, serializer):
         """
@@ -279,21 +292,32 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         """
         Endpoint público para consultar o status de um feedback usando o protocolo.
         
+        ✅ CORREÇÃO DE SEGURANÇA (2026-01-27):
+        - Adicionada validação EXPLÍCITA de tenant
+        - Feedback agora é filtrado por tenant AND protocolo
+        - Previne vazamento de dados entre tenants
+        
         **⚠️ PROTEÇÃO CONTRA FORÇA BRUTA:**
         - Rate limit: 5 requisições por minuto por IP
         - Logs de tentativas excessivas
         - Erro 429 quando limite é excedido
         
+        **🔒 PROTEÇÃO CONTRA VAZAMENTO DE DADOS:**
+        - Requer identificação do tenant (header X-Tenant-ID ou subdomínio)
+        - Filtra explicitamente por tenant + protocolo
+        - Erro genérico 404 se não encontrar (não revela se protocolo existe)
+        
         **Uso:**
         GET /api/feedbacks/consultar-protocolo/?codigo=OUVY-XXXX-YYYY
+        Headers: X-Tenant-ID: 123
         
         **Parâmetros:**
         - codigo (required): Código do protocolo (ex: OUVY-A3B9-K7M2)
         
         **Observações:**
-        - Não requer autenticação
+        - Não requer autenticação (público para o tenant)
         - Não expõe dados sensíveis (email, descrição completa)
-        - Funciona independente do tenant (busca global por protocolo)
+        - Retorna apenas dados seguros via FeedbackConsultaSerializer
         """
         codigo = request.query_params.get('codigo', '').strip().upper()
         
@@ -310,42 +334,86 @@ class FeedbackViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        # ✅ CORREÇÃO CRÍTICA: Validar tenant antes de buscar feedback
+        tenant = get_current_tenant()
+        if not tenant:
+            client_ip = get_client_ip(request)
+            logger.error(
+                f"🚨 SEGURANÇA: Tentativa de consulta sem tenant identificado | "
+                f"Protocolo: {codigo} | IP: {client_ip}"
+            )
+            return Response(
+                {
+                    "error": "Tenant não identificado",
+                    "detail": "É necessário identificar o tenant através do subdomínio ou header X-Tenant-ID"
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Sanitizar input contra injeção
+        codigo = sanitize_protocol_code(codigo)
+        
         try:
-            # Buscar em TODOS os tenants com otimização
-            feedback = Feedback.objects.all_tenants().select_related('client').get(protocolo=codigo)  # type: ignore[attr-defined]
+            # ✅ CORREÇÃO CRÍTICA: Filtrar EXPLICITAMENTE por tenant + protocolo
+            # ANTES: Feedback.objects.all_tenants().get(protocolo=codigo)  # ❌ VULNERÁVEL
+            # AGORA: Filtra por tenant E protocolo
+            feedback = Feedback.objects.filter(
+                client=tenant,
+                protocolo=codigo
+            ).select_related('client').first()
+            
+            if not feedback:
+                # Log de tentativa com protocolo inválido ou de outro tenant
+                client_ip = get_client_ip(request)
+                logger.warning(
+                    f"⚠️ Protocolo não encontrado ou acesso negado | "
+                    f"Código: {codigo} | "
+                    f"Tenant: {tenant.nome} (ID: {tenant.pk}) | "
+                    f"IP: {client_ip}"
+                )
+                
+                # ✅ IMPORTANTE: Erro genérico para não revelar se protocolo existe
+                return Response(
+                    {
+                        "error": "Protocolo não encontrado",
+                        "codigo": codigo,
+                        "dica": "Verifique se o código foi digitado corretamente"
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
             
             # Log de consulta bem-sucedida
             client_ip = get_client_ip(request)
             logger.info(
-                f"🔍 Consulta de protocolo | "
+                f"🔍 Consulta de protocolo autorizada | "
                 f"Código: {codigo} | "
-                f"IP: {client_ip} | "
-                f"Tenant: {feedback.client.nome}"
+                f"Tenant: {tenant.nome} (ID: {tenant.pk}) | "
+                f"IP: {client_ip}"
             )
             
             # Serializar apenas dados públicos
             serializer = FeedbackConsultaSerializer(feedback)
-            
             return Response(serializer.data, status=status.HTTP_200_OK)
             
-        except Feedback.DoesNotExist:
-            # Log de tentativa com protocolo inválido
+        except Exception as e:
+            # Log de erro inesperado
             client_ip = get_client_ip(request)
-            logger.info(
-                f"❌ Protocolo não encontrado | "
+            logger.error(
+                f"❌ Erro ao consultar protocolo | "
                 f"Código: {codigo} | "
-                f"IP: {client_ip}"
+                f"Tenant: {tenant.nome if tenant else 'N/A'} | "
+                f"IP: {client_ip} | "
+                f"Erro: {str(e)}"
             )
             
             return Response(
                 {
-                    "error": "Protocolo não encontrado",
-                    "codigo": codigo,
-                    "dica": "Verifique se o código foi digitado corretamente"
+                    "error": "Erro ao processar requisição",
+                    "detail": "Ocorreu um erro inesperado. Por favor, tente novamente."
                 },
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
+    
     @action(
         detail=False,
         methods=['post'],
@@ -357,6 +425,9 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         """
         Endpoint público para o denunciante enviar uma resposta usando o protocolo.
         
+        ✅ CORREÇÃO DE SEGURANÇA (2026-01-27):
+        - Adicionada validação de tenant (mesma correção que consultar_protocolo)
+        
         Este é um endpoint PÚBLICO protegido apenas por rate limiting.
         Qualquer pessoa que possua um protocolo válido pode enviar mensagens.
         O autor será null (anônimo) e as mensagens são sempre do tipo MENSAGEM_PUBLICA.
@@ -364,16 +435,13 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         **Proteções:**
         - Rate limit: 5 requisições por minuto por IP (ProtocoloConsultaThrottle)
         - Validação: protocolo deve existir no banco de dados
+        - Validação: tenant deve estar identificado
         
         **Body esperado:**
         - protocolo: string (obrigatório) - Código OUVY-XXXX-YYYY
         - mensagem: string (obrigatório) - Texto da mensagem
 
         **Retorna:** A interação criada (serializada com FeedbackInteracaoSerializer)
-        
-        **Exemplo:**
-        POST /api/feedbacks/responder-protocolo/
-        {"protocolo": "OUVY-A3B9-K7M2", "mensagem": "Obrigado pela resposta!"}
         """
         protocolo = (request.data.get('protocolo') or '').strip().upper()
         mensagem = (request.data.get('mensagem') or '').strip()
@@ -383,33 +451,56 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         if not mensagem:
             return Response({"error": "Campo 'mensagem' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
 
+        # ✅ CORREÇÃO: Validar tenant
+        tenant = get_current_tenant()
+        if not tenant:
+            client_ip = get_client_ip(request)
+            logger.error(
+                f"🚨 SEGURANÇA: Tentativa de resposta sem tenant identificado | "
+                f"Protocolo: {protocolo} | IP: {client_ip}"
+            )
+            return Response(
+                {"error": "Tenant não identificado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         # Sanitizar inputs contra XSS
-        from apps.core.sanitizers import sanitize_protocol_code
         protocolo = sanitize_protocol_code(protocolo)
         mensagem = sanitize_html_input(mensagem, max_length=MAX_INTERACAO_MENSAGEM_LENGTH)
 
         try:
-            feedback = Feedback.objects.all_tenants().select_related('client').get(protocolo=protocolo)  # type: ignore[attr-defined]
-        except Feedback.DoesNotExist:
-            client_ip = get_client_ip(request)
-            logger.warning(
-                f"⚠️ Tentativa de resposta com protocolo inválido | "
-                f"Código: {protocolo} | IP: {client_ip}"
-            )
-            return Response({"error": "Protocolo não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+            # ✅ CORREÇÃO: Filtrar por tenant + protocolo
+            feedback = Feedback.objects.filter(
+                client=tenant,
+                protocolo=protocolo
+            ).select_related('client').first()
+            
+            if not feedback:
+                client_ip = get_client_ip(request)
+                logger.warning(
+                    f"⚠️ Tentativa de resposta com protocolo inválido | "
+                    f"Código: {protocolo} | Tenant: {tenant.nome} | IP: {client_ip}"
+                )
+                return Response({"error": "Protocolo não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Definir client explicitamente pois este endpoint é público
-        # (não há tenant no contexto da requisição)
+        except Exception as e:
+            logger.error(f"❌ Erro ao buscar protocolo: {str(e)}")
+            return Response(
+                {"error": "Erro ao processar requisição"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        # Criar interação pública
         interacao = FeedbackInteracao.objects.create(
             feedback=feedback,
-            client=feedback.client,  # Herdar do feedback original para manter isolamento
+            client=feedback.client,
             autor=None,  # Mensagem anônima do denunciante
             tipo='MENSAGEM_PUBLICA',
             mensagem=mensagem,
         )
 
         logger.info(
-            f"💬 Resposta pública adicionada | Protocolo: {protocolo} | Tenant: {feedback.client.nome}"
+            f"💬 Resposta pública adicionada | Protocolo: {protocolo} | Tenant: {tenant.nome}"
         )
 
         serializer = FeedbackInteracaoSerializer(interacao)

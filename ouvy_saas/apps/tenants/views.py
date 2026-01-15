@@ -10,9 +10,10 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
-from .serializers import ClientPublicSerializer, RegisterTenantSerializer, ClientSerializer, UserSerializer, TenantAdminSerializer
+from .serializers import ClientPublicSerializer, RegisterTenantSerializer, ClientSerializer, UserSerializer, TenantAdminSerializer, ClientBrandingSerializer
 from .models import Client
 from .services import StripeService
+from .upload_service import UploadService
 import logging
 import stripe
 
@@ -22,14 +23,22 @@ logger = logging.getLogger(__name__)
 class TenantInfoView(APIView):
     """
     Retorna os dados públicos da empresa atual baseada no subdomínio.
-    Acessível publicamente (não precisa de login).
+    Acessível publicamente (não precisa de login) para GET.
+    Requer autenticação para PATCH (atualização de branding).
+    
+    GET: Retorna informações públicas do tenant (cached)
+    PATCH: Atualiza configurações de white label (requer autenticação)
     
     O TenantMiddleware já identificou a empresa e injetou no request.
     Esta view apenas serializa e retorna essas informações.
     
     Cache: 5 minutos (informações públicas mudam raramente)
     """
-    permission_classes = [AllowAny]
+    def get_permissions(self):
+        """GET é público, PATCH requer autenticação"""
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
     @method_decorator(cache_page(60 * 5))  # Cache de 5 minutos
     def get(self, request):
@@ -48,6 +57,145 @@ class TenantInfoView(APIView):
         # Transforma o objeto Python em JSON seguro
         serializer = ClientPublicSerializer(tenant)
         return Response(serializer.data)
+    
+    def patch(self, request):
+        """
+        Atualiza configurações de white label do tenant.
+        Requer autenticação e que o usuário pertença ao tenant.
+        """
+        tenant = getattr(request, 'tenant', None)
+        
+        if not tenant:
+            return Response(
+                {
+                    "detail": "Nenhuma empresa identificada neste domínio.",
+                    "error": "tenant_not_found"
+                }, 
+                status=404
+            )
+        
+        # Verificar se o usuário pertence a este tenant
+        if hasattr(request.user, 'client') and request.user.client != tenant:
+            return Response(
+                {
+                    "detail": "Você não tem permissão para modificar este tenant.",
+                    "error": "permission_denied"
+                },
+                status=403
+            )
+        
+        # Atualizar apenas campos de branding
+        serializer = ClientBrandingSerializer(tenant, data=request.data, partial=True)
+        
+        if serializer.is_valid():
+            serializer.save()
+            
+            # Limpar cache após atualização
+            from django.core.cache import cache
+            cache_key = f'tenant_info_{tenant.subdominio}'
+            cache.delete(cache_key)
+            
+            # Retornar dados atualizados
+            return Response(
+                ClientPublicSerializer(tenant).data,
+                status=status.HTTP_200_OK
+            )
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UploadBrandingView(APIView):
+    """
+    Endpoint para upload de imagens de branding (logo e favicon).
+    
+    POST /api/upload-branding/
+    Content-Type: multipart/form-data
+    Headers: Authorization: Token <token>
+    Body:
+        - logo: arquivo de imagem (opcional)
+        - favicon: arquivo de imagem (opcional)
+    
+    Retorna URLs das imagens após upload no Cloudinary.
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        tenant = getattr(request, 'tenant', None)
+        
+        if not tenant:
+            return Response(
+                {
+                    "detail": "Nenhuma empresa identificada neste domínio.",
+                    "error": "tenant_not_found"
+                }, 
+                status=404
+            )
+        
+        # Verificar se o usuário pertence a este tenant
+        if hasattr(request.user, 'client') and request.user.client != tenant:
+            return Response(
+                {
+                    "detail": "Você não tem permissão para modificar este tenant.",
+                    "error": "permission_denied"
+                },
+                status=403
+            )
+        
+        logo_file = request.FILES.get('logo')
+        favicon_file = request.FILES.get('favicon')
+        
+        if not logo_file and not favicon_file:
+            return Response(
+                {
+                    "detail": "Nenhum arquivo enviado. Envie 'logo' ou 'favicon'.",
+                    "error": "no_file"
+                },
+                status=400
+            )
+        
+        result = {
+            "logo_url": None,
+            "favicon_url": None,
+            "errors": []
+        }
+        
+        # Upload da logo
+        if logo_file:
+            success, url, error = UploadService.upload_logo(logo_file, tenant.subdominio)
+            if success:
+                tenant.logo = url
+                result['logo_url'] = url
+            else:
+                result['errors'].append({"field": "logo", "message": error})
+        
+        # Upload do favicon
+        if favicon_file:
+            success, url, error = UploadService.upload_favicon(favicon_file, tenant.subdominio)
+            if success:
+                tenant.favicon = url
+                result['favicon_url'] = url
+            else:
+                result['errors'].append({"field": "favicon", "message": error})
+        
+        # Salvar alterações se houve sucesso em algum upload
+        if result['logo_url'] or result['favicon_url']:
+            tenant.save()
+            
+            # Limpar cache
+            from django.core.cache import cache
+            cache_key = f'tenant_info_{tenant.subdominio}'
+            cache.delete(cache_key)
+            
+            return Response(result, status=status.HTTP_200_OK)
+        
+        # Se chegou aqui, todos os uploads falharam
+        return Response(
+            {
+                "detail": "Falha no upload de todos os arquivos",
+                "errors": result['errors']
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 
 class RegisterTenantView(APIView):

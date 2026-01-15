@@ -334,11 +334,11 @@ export default function EnviarFeedbackPage() {
               <Lock className="w-3 h-3" />
               Criptografia SSL
             </Badge>
-            <Badge variant="default" className="flex items-center gap-1">
+            <Badge variant="primary" className="flex items-center gap-1">
               <Shield className="w-3 h-3" />
               LGPD Compliant
             </Badge>
-            <Badge variant="default" className="flex items-center gap-1">
+            <Badge variant="info" className="flex items-center gap-1">
               99.9% Uptime
             </Badge>
           </div>

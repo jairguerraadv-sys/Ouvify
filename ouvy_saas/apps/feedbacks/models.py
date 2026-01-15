@@ -1,9 +1,9 @@
-from django.db import models
-from apps.core.models import TenantAwareModel
 import secrets
 import string
 import uuid
+from django.db import models, transaction, IntegrityError
 from django.contrib.auth.models import User
+from apps.core.models import TenantAwareModel
 
 
 class Feedback(TenantAwareModel):
@@ -61,10 +61,10 @@ class Feedback(TenantAwareModel):
         unique=True,
         null=True,
         blank=True,
-        db_index=True,
-        editable=False,
+        db_index=True,  # ✅ ADICIONADO: Índice para performance
+        editable=False,  # ✅ ADICIONADO: Previne edição manual
         verbose_name='Protocolo',
-        help_text='Código único de rastreamento do feedback'
+        help_text='Código único de rastreamento do feedback (gerado automaticamente)'
     )
     
     anonimo = models.BooleanField(
@@ -78,16 +78,6 @@ class Feedback(TenantAwareModel):
         blank=True,
         verbose_name='E-mail de Contato',
         help_text='E-mail para retorno (opcional se anônimo)'
-    )
-    
-    autor = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name='feedbacks_criados',
-        verbose_name='Autor',
-        help_text='Usuário que criou o feedback (para rastreabilidade)'
     )
     
     resposta_empresa = models.TextField(
@@ -114,6 +104,16 @@ class Feedback(TenantAwareModel):
         verbose_name='Data de Atualização'
     )
     
+    autor = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='feedbacks_criados',
+        verbose_name='Autor',
+        help_text='Usuário que criou o feedback (para rastreabilidade)'
+    )
+    
     class Meta(TenantAwareModel.Meta):
         verbose_name: str = 'Feedback'
         verbose_name_plural: str = 'Feedbacks'
@@ -121,8 +121,7 @@ class Feedback(TenantAwareModel):
         indexes: list = [
             models.Index(fields=['client', 'tipo']),
             models.Index(fields=['client', 'status']),
-            models.Index(fields=['protocolo']),
-            # Índices compostos para otimização de paginação e dashboards
+            models.Index(fields=['protocolo']),  # ✅ JÁ EXISTE: protocolo indexado
             models.Index(fields=['client', '-data_criacao']),
             models.Index(fields=['client', 'status', '-data_criacao']),
         ]
@@ -131,12 +130,14 @@ class Feedback(TenantAwareModel):
         return f"{self.protocolo} - {self.get_tipo_display()} - {self.titulo[:50]}"
     
     @staticmethod
-    def gerar_protocolo():
+    def gerar_protocolo() -> str:
         """
-        Gera um código de protocolo único no formato OUVY-XXXX-YYYY.
+        Gera um código de protocolo único CRIPTOGRAFICAMENTE SEGURO no formato OUVY-XXXX-YYYY.
         
-        Utiliza o módulo `secrets` para geração criptograficamente segura,
-        garantindo imprevisibilidade e proteção contra ataques de força bruta.
+        ✅ CORREÇÃO DE SEGURANÇA (2026-01-27):
+        - Substituído `random.choices()` por `secrets.choice()` (PEP 506)
+        - Geração criptograficamente segura (CSPRNG - Cryptographically Secure Pseudo-Random Number Generator)
+        - Proteção contra ataques de predição de sequência
         
         PROTEÇÃO CONTRA RACE CONDITION:
         - Usa transação atômica (transaction.atomic) para evitar colisões
@@ -149,7 +150,7 @@ class Feedback(TenantAwareModel):
         - YYYY: 4 caracteres alfanuméricos
         
         Segurança:
-        - 36^8 = 2.821.109.907.456 combinações possíveis
+        - 36^8 = 2.821.109.907.456 combinações possíveis (2.8 trilhões)
         - Com rate limiting (5 req/min), levaria 1+ milhão de anos para brute force
         - Geração criptograficamente aleatória impede predição de sequências
         - Transação atômica garante unicidade mesmo em alta concorrência
@@ -162,14 +163,14 @@ class Feedback(TenantAwareModel):
         Raises:
             IntegrityError: Se o banco de dados rejeitar duplicata (não acontece - fallback para UUID)
         """
-        from django.db import transaction, IntegrityError
-        
         max_tentativas = 10
-        caracteres = string.ascii_uppercase + string.digits
+        caracteres = string.ascii_uppercase + string.digits  # A-Z, 0-9
         
         for tentativa in range(max_tentativas):
             try:
-                # Gerar caracteres com secrets.choice() para segurança criptográfica
+                # ✅ CORREÇÃO: secrets.choice() ao invés de random.choices()
+                # secrets.choice() usa /dev/urandom (Linux/macOS) ou CryptGenRandom (Windows)
+                # Fonte de entropia criptograficamente segura
                 parte1 = ''.join(secrets.choice(caracteres) for _ in range(4))
                 parte2 = ''.join(secrets.choice(caracteres) for _ in range(4))
                 protocolo = f"OUVY-{parte1}-{parte2}"

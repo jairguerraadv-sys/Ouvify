@@ -1,7 +1,11 @@
 from rest_framework import serializers
 from .models import Feedback, FeedbackInteracao
 from django.utils import timezone
-from apps.core.sanitizers import sanitize_html_input, sanitize_plain_text
+from apps.core.sanitizers import (
+    sanitize_html_input,        # Método atual (html.escape)
+    sanitize_plain_text,
+    sanitize_rich_text,          # ✅ NOVO: Método com bleach
+)
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
@@ -29,12 +33,33 @@ class FeedbackSerializer(serializers.ModelSerializer):
         read_only_fields = ['id', 'protocolo', 'data_criacao', 'data_atualizacao']
     
     def validate_titulo(self, value):
-        """Sanitiza o título contra XSS."""
+        """
+        Sanitiza o título contra XSS.
+        
+        ✅ MÉTODO: sanitize_plain_text()
+        - Remove TODAS as tags HTML
+        - Permite apenas caracteres alfanuméricos seguros
+        - Ideal para títulos (texto curto)
+        """
         return sanitize_plain_text(value, max_length=200)
     
     def validate_descricao(self, value):
-        """Sanitiza a descrição contra XSS."""
+        """
+        Sanitiza a descrição contra XSS.
+        
+        ⚙️ MÉTODO CONFIGURÁVEL:
+        - ATUAL: sanitize_html_input() - Escapa HTML (mais seguro)
+        - ALTERNATIVO: sanitize_rich_text() - Permite formatação (requer bleach)
+        
+        Para habilitar rich text:
+        1. Instalar: pip install bleach
+        2. Descomentar linha abaixo
+        """
+        # Método atual (padrão) - Escapa HTML
         return sanitize_html_input(value, max_length=5000)
+        
+        # Método alternativo (descomente se precisar rich text)
+        # return sanitize_rich_text(value, allow_links=False)
 
 
 class FeedbackInteracaoSerializer(serializers.ModelSerializer):
@@ -59,6 +84,15 @@ class FeedbackInteracaoSerializer(serializers.ModelSerializer):
     def get_data_formatada(self, obj):
         # Formatação legível (ex.: 11/01/2026 14:32)
         return timezone.localtime(obj.data).strftime('%d/%m/%Y %H:%M')
+    
+    def validate_mensagem(self, value):
+        """
+        Sanitiza mensagem de interação contra XSS.
+        
+        ⚙️ MÉTODO CONFIGURÁVEL (mesmo que validate_descricao)
+        """
+        return sanitize_html_input(value, max_length=2000)
+        # Ou: return sanitize_rich_text(value, allow_links=False)
 
 
 class FeedbackDetailSerializer(FeedbackSerializer):

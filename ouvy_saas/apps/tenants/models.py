@@ -58,6 +58,53 @@ class Client(models.Model):
         help_text='Cor primária da interface em hexadecimal'
     )
 
+    cor_secundaria = models.CharField(
+        max_length=7,
+        default='#10B981',
+        validators=[
+            RegexValidator(
+                regex=r'^#[0-9A-Fa-f]{6}$',
+                message='Cor deve estar no formato hexadecimal (ex: #10B981)'
+            )
+        ],
+        verbose_name='Cor Secundária',
+        help_text='Cor secundária da interface em hexadecimal',
+        null=True,
+        blank=True
+    )
+
+    cor_texto = models.CharField(
+        max_length=7,
+        default='#1F2937',
+        validators=[
+            RegexValidator(
+                regex=r'^#[0-9A-Fa-f]{6}$',
+                message='Cor deve estar no formato hexadecimal (ex: #1F2937)'
+            )
+        ],
+        verbose_name='Cor do Texto',
+        help_text='Cor principal do texto em hexadecimal',
+        null=True,
+        blank=True
+    )
+
+    fonte_customizada = models.CharField(
+        max_length=100,
+        default='Inter',
+        verbose_name='Fonte Customizada',
+        help_text='Nome da fonte do Google Fonts (ex: Inter, Roboto, Poppins)',
+        null=True,
+        blank=True
+    )
+
+    favicon = models.URLField(
+        max_length=500,
+        null=True,
+        blank=True,
+        verbose_name='Favicon',
+        help_text='URL do favicon da empresa (.ico ou .png)'
+    )
+
     ativo = models.BooleanField(
         default=True,
         verbose_name='Ativo',

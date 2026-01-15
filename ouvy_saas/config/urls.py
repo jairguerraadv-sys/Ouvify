@@ -25,6 +25,7 @@ from config.swagger import swagger_urlpatterns
 # Expor referências para Pylance
 FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]
 TenantInfoView = tenant_views.TenantInfoView  # type: ignore[attr-defined]
+UploadBrandingView = tenant_views.UploadBrandingView  # type: ignore[attr-defined]
 RegisterTenantView = tenant_views.RegisterTenantView  # type: ignore[attr-defined]
 CheckSubdominioView = tenant_views.CheckSubdominioView  # type: ignore[attr-defined]
 TenantAdminViewSet = tenant_views.TenantAdminViewSet  # type: ignore[attr-defined]
@@ -61,6 +62,9 @@ urlpatterns = [
     
     # Endpoint público para informações do tenant atual
     path('api/tenant-info/', TenantInfoView.as_view(), name='tenant-info'),
+    
+    # Endpoint para upload de imagens de branding (logo, favicon)
+    path('api/upload-branding/', UploadBrandingView.as_view(), name='upload-branding'),
     
     # Endpoint de registro de novo tenant (SaaS Signup)
     path('api/register-tenant/', RegisterTenantView.as_view(), name='register-tenant'),

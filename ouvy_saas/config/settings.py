@@ -347,7 +347,8 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/hour',  # Rate limit geral para usuários anônimos
         'user': '1000/hour',  # Rate limit para usuários autenticados
-        'protocolo_consulta': '5/minute',  # Rate limit específico para consulta de protocolo
+        'protocolo_consulta': '10/minute',  # ✅ ATUALIZADO: Rate limit para consulta de protocolo (IP + Protocolo)
+        'feedback_criacao': '10/hour',  # ✅ NOVO: Rate limit para criação de feedbacks
     },
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',  # Handler customizado
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination',  # Paginação padrão

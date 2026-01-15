@@ -13,7 +13,16 @@ class ClientPublicSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Client
-        fields = ['nome', 'subdominio', 'cor_primaria', 'logo']
+        fields = [
+            'nome', 
+            'subdominio', 
+            'cor_primaria', 
+            'cor_secundaria',
+            'cor_texto',
+            'logo',
+            'favicon',
+            'fonte_customizada'
+        ]
         # Todos os campos são apenas leitura (read-only)
 
 
@@ -116,8 +125,55 @@ class ClientSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Client
-        fields = ['id', 'nome', 'subdominio', 'logo', 'cor_primaria', 'data_criacao']
+        fields = ['id', 'nome', 'subdominio', 'logo', 'cor_primaria', 'cor_secundaria', 'cor_texto', 'favicon', 'fonte_customizada', 'data_criacao']
         read_only_fields = ['id', 'data_criacao']
+
+
+class ClientBrandingSerializer(serializers.ModelSerializer):
+    """
+    Serializer para atualização de branding do tenant.
+    Permite atualizar apenas campos de white label.
+    """
+    class Meta:
+        model = Client
+        fields = [
+            'logo',
+            'cor_primaria',
+            'cor_secundaria',
+            'cor_texto',
+            'fonte_customizada',
+            'favicon'
+        ]
+        
+    def validate_cor_primaria(self, value):
+        """Valida formato hexadecimal da cor primária."""
+        if value and not re.match(r'^#[0-9A-Fa-f]{6}$', value):
+            raise serializers.ValidationError("Cor deve estar no formato hexadecimal (ex: #3B82F6)")
+        return value
+    
+    def validate_cor_secundaria(self, value):
+        """Valida formato hexadecimal da cor secundária."""
+        if value and not re.match(r'^#[0-9A-Fa-f]{6}$', value):
+            raise serializers.ValidationError("Cor deve estar no formato hexadecimal (ex: #10B981)")
+        return value
+    
+    def validate_cor_texto(self, value):
+        """Valida formato hexadecimal da cor de texto."""
+        if value and not re.match(r'^#[0-9A-Fa-f]{6}$', value):
+            raise serializers.ValidationError("Cor deve estar no formato hexadecimal (ex: #1F2937)")
+        return value
+    
+    def validate_logo(self, value):
+        """Valida URL da logo."""
+        if value and not value.startswith(('http://', 'https://')):
+            raise serializers.ValidationError("URL da logo deve começar com http:// ou https://")
+        return value
+    
+    def validate_favicon(self, value):
+        """Valida URL do favicon."""
+        if value and not value.startswith(('http://', 'https://')):
+            raise serializers.ValidationError("URL do favicon deve começar com http:// ou https://")
+        return value
 
 
 class UserSerializer(serializers.ModelSerializer):

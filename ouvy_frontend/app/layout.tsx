@@ -74,9 +74,48 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
         <meta name="theme-color" content="#00BCD4" />
+        
+        {/* ✅ NOVO: Estilos globais para White Label */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              /* Classe para logo do tenant */
+              .logo-tenant {
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 100%;
+                height: 100%;
+              }
+              
+              /* Prevenir FOUC (Flash of Unstyled Content) */
+              html:not(.theme-ready) body {
+                visibility: hidden;
+              }
+              
+              html.theme-ready body {
+                visibility: visible;
+                animation: fadeIn 0.3s ease-in;
+              }
+              
+              @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+              }
+              
+              /* Transições suaves para mudanças de cor */
+              * {
+                transition: background-color 0.3s ease, 
+                            border-color 0.3s ease, 
+                            color 0.3s ease;
+              }
+            `,
+          }}
+        />
       </head>
       <body className={inter.className}>
         <AuthProvider>
+          <ThemeLoader />
           {children}
           <Toaster />
           <CookieBanner />
@@ -84,4 +123,42 @@ export default function RootLayout({
       </body>
     </html>
   );
+}
+
+/**
+ * Componente que carrega o tema e aplica a classe .theme-ready
+ * quando o tema estiver pronto
+ */
+function ThemeLoader() {
+  'use client';
+  
+  const { useTenantTheme, useThemeReady } = require('@/hooks/use-tenant-theme');
+  const theme = useTenantTheme();
+  const themeReady = useThemeReady();
+  
+  // Aplicar classe .theme-ready quando o tema estiver carregado
+  if (typeof document !== 'undefined' && themeReady) {
+    document.documentElement.classList.add('theme-ready');
+  }
+  
+  // Aplicar logo do tenant dinamicamente
+  if (typeof document !== 'undefined' && theme?.logo) {
+    // Criar uma tag style dinâmica com a logo
+    const styleId = 'tenant-logo-style';
+    let styleElement = document.getElementById(styleId) as HTMLStyleElement;
+    
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = styleId;
+      document.head.appendChild(styleElement);
+    }
+    
+    styleElement.textContent = `
+      .logo-tenant {
+        background-image: url('${theme.logo}');
+      }
+    `;
+  }
+  
+  return null; // Não renderiza nada visualmente
 }
