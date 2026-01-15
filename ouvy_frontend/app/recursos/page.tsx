@@ -268,15 +268,23 @@ export default function RecursosPage() {
         }
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
           <div className="text-center mb-16">
-            <Badge className="mb-4">Recursos Completos</Badge>
-            <H1 className="mb-6">
-              Tudo que Você Precisa para<br />Gestão de Feedbacks
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Recursos Completos</span>
+            </div>
+            <H1 className="mb-6 text-primary">
+              Tudo que Você Precisa para<br />
+              <span className="text-secondary">Gestão de Feedbacks</span>
             </H1>
-            <Paragraph className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <Paragraph className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Uma plataforma completa com recursos poderosos, fácil de usar e totalmente personalizável
             </Paragraph>
           </div>
@@ -284,23 +292,23 @@ export default function RecursosPage() {
           {/* Core Features */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <H2 className="mb-4">Recursos Principais</H2>
-              <Paragraph className="text-gray-600">
+              <H2 className="mb-4 text-secondary">Recursos Principais</H2>
+              <Paragraph className="text-muted-foreground">
                 As funcionalidades essenciais para sua operação
               </Paragraph>
             </div>
             
             <div className="grid md:grid-cols-2 gap-8">
               {CORE_FEATURES.map((feature, idx) => (
-                <Card key={idx} className="border-2 hover:border-blue-500 transition-all duration-300 hover:shadow-xl">
+                <Card key={idx} className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-xl bg-white">
                   <CardHeader>
                     <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                        <feature.icon className="w-6 h-6 text-blue-600" />
+                      <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <feature.icon className="w-6 h-6 text-primary" />
                       </div>
                       <div>
-                        <CardTitle className="text-xl mb-2">{feature.title}</CardTitle>
-                        <CardDescription>{feature.description}</CardDescription>
+                        <CardTitle className="text-xl mb-2 text-secondary">{feature.title}</CardTitle>
+                        <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
                       </div>
                     </div>
                   </CardHeader>
@@ -308,8 +316,8 @@ export default function RecursosPage() {
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-3 items-start">
-                          <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-1" />
-                          <span className="text-sm text-gray-700">{detail}</span>
+                          <CheckCircle className="w-4 h-4 text-success flex-shrink-0 mt-1" />
+                          <span className="text-sm text-secondary">{detail}</span>
                         </li>
                       ))}
                     </ul>
@@ -322,28 +330,28 @@ export default function RecursosPage() {
           {/* Advanced Features */}
           <div className="mb-20">
             <div className="text-center mb-12">
-              <H2 className="mb-4">Recursos Avançados</H2>
-              <Paragraph className="text-gray-600">
+              <H2 className="mb-4 text-secondary">Recursos Avançados</H2>
+              <Paragraph className="text-muted-foreground">
                 Funcionalidades para operações complexas
               </Paragraph>
             </div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {ADVANCED_FEATURES.map((feature, idx) => (
-                <Card key={idx} className="hover:shadow-lg transition-shadow">
+                <Card key={idx} className="hover:shadow-lg transition-shadow border-border bg-white">
                   <CardHeader>
-                    <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mb-3">
-                      <feature.icon className="w-5 h-5 text-purple-600" />
+                    <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center mb-3">
+                      <feature.icon className="w-5 h-5 text-secondary" />
                     </div>
-                    <CardTitle className="text-lg mb-2">{feature.title}</CardTitle>
-                    <CardDescription className="text-sm mb-4">{feature.description}</CardDescription>
+                    <CardTitle className="text-lg mb-2 text-secondary">{feature.title}</CardTitle>
+                    <CardDescription className="text-sm mb-4 text-muted-foreground">{feature.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
-                          <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-xs text-gray-600">{detail}</span>
+                          <CheckCircle className="w-3.5 h-3.5 text-success flex-shrink-0 mt-0.5" />
+                          <span className="text-xs text-muted-foreground">{detail}</span>
                         </li>
                       ))}
                     </ul>

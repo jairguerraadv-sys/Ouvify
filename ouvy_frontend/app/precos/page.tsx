@@ -244,36 +244,43 @@ export default function PrecosPage() {
         }
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
           <div className="text-center mb-12">
-            <Badge className="mb-4">Preços Transparentes</Badge>
-            <H1 className="mb-6">
-              Planos que Crescem com Você
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+              <Zap className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Preços Transparentes</span>
+            </div>
+            <H1 className="mb-6 text-primary">
+              Planos que Crescem <span className="text-secondary">com Você</span>
             </H1>
-            <Paragraph className="text-xl text-gray-600 max-w-3xl mx-auto mb-8">
+            <Paragraph className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
               Escolha o plano ideal para sua empresa. Sem surpresas, sem taxas ocultas.
             </Paragraph>
 
             {/* Billing Toggle */}
             <div className="flex items-center justify-center gap-4">
-              <span className={billingPeriod === 'monthly' ? 'font-semibold' : 'text-gray-500'}>
+              <span className={billingPeriod === 'monthly' ? 'font-semibold text-secondary' : 'text-muted-foreground'}>
                 Mensal
               </span>
               <button
                 onClick={() => setBillingPeriod(billingPeriod === 'monthly' ? 'yearly' : 'monthly')}
-                className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="relative inline-flex h-6 w-11 items-center rounded-full bg-border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform ${
                     billingPeriod === 'yearly' ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
               </button>
-              <span className={billingPeriod === 'yearly' ? 'font-semibold' : 'text-gray-500'}>
+              <span className={billingPeriod === 'yearly' ? 'font-semibold text-secondary' : 'text-muted-foreground'}>
                 Anual
-                <Badge className="ml-2 bg-green-100 text-green-700 border-green-200">
+                <Badge className="ml-2 bg-success/10 text-success border-success/20">
                   -20%
                 </Badge>
               </span>
@@ -292,8 +299,8 @@ export default function PrecosPage() {
                   key={plan.id}
                   className={`relative border-2 ${
                     plan.popular 
-                      ? 'border-blue-500 shadow-xl scale-105' 
-                      : 'border-gray-200 hover:border-blue-300'
+                      ? 'border-primary shadow-xl scale-105 bg-white' 
+                      : 'border-border hover:border-primary/50 bg-white'
                   } transition-all duration-300`}
                 >
                   {plan.popular && (

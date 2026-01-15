@@ -98,21 +98,25 @@ export default function DemoPage() {
           }
         />
         
-        <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex items-center justify-center px-4">
-          <Card className="max-w-2xl w-full text-center">
+        <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center px-4 relative overflow-hidden">
+          {/* Decorative elements */}
+          <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+          <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-success/10 rounded-full blur-3xl opacity-30" />
+          
+          <Card className="max-w-2xl w-full text-center border-border shadow-xl relative z-10">
             <CardHeader className="space-y-4">
-              <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-10 h-10 text-green-600" />
+              <div className="mx-auto w-20 h-20 bg-success/10 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-10 h-10 text-success" />
               </div>
-              <CardTitle className="text-3xl">Solicitação Enviada!</CardTitle>
-              <CardDescription className="text-lg">
+              <CardTitle className="text-3xl text-secondary">Solicitação Enviada!</CardTitle>
+              <CardDescription className="text-lg text-muted-foreground">
                 Obrigado pelo interesse! Nossa equipe entrará em contato em até 24 horas para agendar sua demonstração personalizada.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  📧 Enviamos um email de confirmação para <strong>{formData.email}</strong>
+              <div className="bg-primary/5 border border-primary/20 p-4 rounded-lg">
+                <p className="text-sm text-secondary">
+                  📧 Enviamos um email de confirmação para <strong className="text-primary">{formData.email}</strong>
                 </p>
               </div>
               <div className="flex gap-3 justify-center">
@@ -148,15 +152,22 @@ export default function DemoPage() {
         }
       />
 
-      <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
           <div className="text-center mb-12">
-            <Badge className="mb-4">Demonstração Gratuita</Badge>
-            <H1 className="mb-6">
-              Veja o Ouvy em Ação
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+              <Eye className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">Demonstração Gratuita</span>
+            </div>
+            <H1 className="mb-6 text-primary">
+              Veja o Ouvy <span className="text-secondary">em Ação</span>
             </H1>
-            <Paragraph className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <Paragraph className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Agende uma demonstração personalizada e descubra como o Ouvy pode transformar a gestão de feedbacks da sua empresa
             </Paragraph>
           </div>
@@ -164,13 +175,13 @@ export default function DemoPage() {
           {/* Features Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {demoFeatures.map((feature, idx) => (
-              <Card key={idx} className="border-2 hover:border-blue-500 transition-colors">
+              <Card key={idx} className="border-2 border-border hover:border-primary transition-colors bg-white">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
-                    <feature.icon className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-3">
+                    <feature.icon className="w-6 h-6 text-primary" />
                   </div>
-                  <CardTitle className="text-lg">{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
+                  <CardTitle className="text-lg text-secondary">{feature.title}</CardTitle>
+                  <CardDescription className="text-muted-foreground">{feature.description}</CardDescription>
                 </CardHeader>
               </Card>
             ))}
@@ -179,17 +190,17 @@ export default function DemoPage() {
           {/* Demo Request Form */}
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Form */}
-            <Card className="border-2">
+            <Card className="border-2 border-border bg-white shadow-lg">
               <CardHeader>
-                <CardTitle>Solicite uma Demonstração</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-secondary">Solicite uma Demonstração</CardTitle>
+                <CardDescription className="text-muted-foreground">
                   Preencha o formulário e nossa equipe entrará em contato
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="nome">Nome Completo *</Label>
+                    <Label htmlFor="nome" className="text-secondary">Nome Completo *</Label>
                     <Input
                       id="nome"
                       name="nome"
@@ -197,6 +208,7 @@ export default function DemoPage() {
                       onChange={handleChange}
                       placeholder="Seu nome"
                       required
+                      className="border-border"
                     />
                   </div>
 
