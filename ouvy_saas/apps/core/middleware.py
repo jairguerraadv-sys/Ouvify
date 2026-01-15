@@ -39,6 +39,7 @@ class TenantMiddleware:
         '/ready/',   # Readiness check
         '/api/password-reset/',  # Reset de senha
         '/api/feedbacks/consultar-protocolo/',  # Consulta pública de protocolo
+        '/api/tenants/webhook/',  # Webhook do Stripe (valida via signature)
     ]
     
     # URLs que permitem tenant via header mesmo sem subdomínio
