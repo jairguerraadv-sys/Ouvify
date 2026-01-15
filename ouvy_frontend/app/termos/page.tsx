@@ -28,12 +28,16 @@ export default function TermosPage() {
         }
       />
 
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
+        <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10">
           <div className="space-y-8">
             {/* Header */}
-            <div className="text-center space-y-4">
-              <h1 className="text-4xl font-bold text-secondary">
+            <div className="text-center space-y-4 bg-white rounded-2xl p-8 shadow-lg border border-border">
+              <h1 className="text-4xl font-bold text-primary">
                 Termos de Uso
               </h1>
               <p className="text-muted-foreground">
@@ -42,7 +46,7 @@ export default function TermosPage() {
             </div>
 
             {/* Conteúdo */}
-            <div className="prose prose-lg max-w-none space-y-8">
+            <div className="prose prose-lg max-w-none space-y-6 bg-white rounded-2xl p-8 shadow-lg border border-border">{
               {/* Seção 1 */}
               <section className="space-y-4">
                 <h2 className="text-2xl font-semibold text-secondary">

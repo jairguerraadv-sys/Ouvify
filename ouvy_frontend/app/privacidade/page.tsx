@@ -29,17 +29,21 @@ export default function PrivacidadePage() {
         }
       />
 
-      <main className="min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
+        <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10">
           <div className="space-y-8">
             {/* Header */}
-            <div className="text-center space-y-4">
+            <div className="text-center space-y-4 bg-white rounded-2xl p-8 shadow-lg border border-border">
               <div className="flex justify-center mb-4">
                 <div className="rounded-full bg-primary/10 p-4">
                   <Shield className="w-12 h-12 text-primary" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold text-secondary">
+              <h1 className="text-4xl font-bold text-primary">
                 Política de Privacidade
               </h1>
               <p className="text-muted-foreground">
@@ -53,25 +57,25 @@ export default function PrivacidadePage() {
 
             {/* Resumo Visual */}
             <div className="grid md:grid-cols-3 gap-4 my-8">
-              <div className="bg-primary/5 rounded-lg p-4 text-center space-y-2">
+              <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 text-center space-y-2">
                 <Lock className="w-8 h-8 text-primary mx-auto" />
                 <h3 className="font-semibold text-secondary">Dados Criptografados</h3>
                 <p className="text-xs text-muted-foreground">SSL/TLS em todas as conexões</p>
               </div>
-              <div className="bg-success/5 rounded-lg p-4 text-center space-y-2">
+              <div className="bg-success/5 border border-success/20 rounded-xl p-4 text-center space-y-2">
                 <UserCheck className="w-8 h-8 text-success mx-auto" />
                 <h3 className="font-semibold text-secondary">LGPD Compliant</h3>
                 <p className="text-xs text-muted-foreground">Conformidade total com a lei</p>
               </div>
-              <div className="bg-info/5 rounded-lg p-4 text-center space-y-2">
-                <Eye className="w-8 h-8 text-info mx-auto" />
+              <div className="bg-secondary/5 border border-secondary/20 rounded-xl p-4 text-center space-y-2">
+                <Eye className="w-8 h-8 text-secondary mx-auto" />
                 <h3 className="font-semibold text-secondary">Transparência</h3>
                 <p className="text-xs text-muted-foreground">Você controla seus dados</p>
               </div>
             </div>
 
             {/* Conteúdo */}
-            <div className="prose prose-lg max-w-none space-y-8">
+            <div className="prose prose-lg max-w-none space-y-6 bg-white rounded-2xl p-8 shadow-lg border border-border">
               {/* Seção 1 */}
               <section className="space-y-4">
                 <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
