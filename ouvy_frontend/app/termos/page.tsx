@@ -46,7 +46,7 @@ export default function TermosPage() {
             </div>
 
             {/* Conteúdo */}
-            <div className="prose prose-lg max-w-none space-y-6 bg-white rounded-2xl p-8 shadow-lg border border-border">{
+            <div className="prose prose-lg max-w-none space-y-6 bg-white rounded-2xl p-8 shadow-lg border border-border">
               {/* Seção 1 */}
               <section className="space-y-4">
                 <h2 className="text-2xl font-semibold text-secondary">

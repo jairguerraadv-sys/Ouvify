@@ -340,3 +340,195 @@ class StripeWebhookView(APIView):
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class UserMeView(APIView):
+    """
+    Retorna dados completos do usuário autenticado.
+    
+    GET /api/users/me/
+    Headers: Authorization: Token <auth_token>
+    
+    Response: {
+        "id": 1,
+        "name": "João Silva",
+        "email": "joao@empresa.com",
+        "first_name": "João",
+        "last_name": "Silva",
+        "data_cadastro": "2026-01-14T10:30:00Z",
+        "empresa": "Minha Empresa LTDA",
+        "tenant_id": 1,
+        "tenant_subdominio": "minhaempresa"
+    }
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        user = request.user
+        
+        # Buscar tenant do usuário
+        try:
+            tenant = Client.objects.get(owner=user)
+            tenant_data = {
+                'id': tenant.id,  # type: ignore[attr-defined]
+                'nome': tenant.nome,
+                'subdominio': tenant.subdominio,
+            }
+        except Client.DoesNotExist:
+            tenant_data = None
+        
+        return Response({
+            'id': user.id,
+            'name': user.get_full_name() or user.username,
+            'email': user.email,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
+            'username': user.username,
+            'data_cadastro': user.date_joined.isoformat(),
+            'empresa': tenant_data['nome'] if tenant_data else None,
+            'tenant_id': tenant_data['id'] if tenant_data else None,
+            'tenant_subdominio': tenant_data['subdominio'] if tenant_data else None,
+        }, status=status.HTTP_200_OK)
+    
+    def patch(self, request):
+        """
+        Atualiza dados do usuário.
+        
+        PATCH /api/users/me/
+        Body: {
+            "first_name": "João",
+            "last_name": "Silva",
+        }
+        """
+        user = request.user
+        
+        # Campos permitidos para atualização
+        allowed_fields = ['first_name', 'last_name']
+        
+        for field in allowed_fields:
+            if field in request.data:
+                setattr(user, field, request.data[field])
+        
+        user.save()
+        
+        logger.info(f"✅ Usuário atualizado | ID: {user.id} | Email: {user.email}")
+        
+        # Retornar dados atualizados
+        return self.get(request)
+
+
+class SubscriptionView(APIView):
+    """
+    Retorna informações da assinatura do tenant.
+    
+    GET /api/tenants/subscription/
+    Headers: Authorization: Token <auth_token>
+    
+    Response: {
+        "id": "sub_123abc",
+        "status": "active",  # active, canceled, past_due, trialing
+        "plan_name": "Pro",
+        "amount": 29900,  # em centavos (R$ 299,00)
+        "currency": "brl",
+        "current_period_start": "2026-01-01T00:00:00Z",
+        "current_period_end": "2026-02-01T00:00:00Z",
+        "cancel_at_period_end": false
+    }
+    """
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        try:
+            tenant = Client.objects.get(owner=request.user)
+        except Client.DoesNotExist:
+            return Response(
+                {"detail": "Tenant não encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Se tem stripe_subscription_id, buscar do Stripe
+        if tenant.stripe_subscription_id:
+            try:
+                subscription = stripe.Subscription.retrieve(tenant.stripe_subscription_id)
+                
+                # Mapear plano
+                plan_name = "Free"
+                if subscription.items and subscription.items.data:
+                    price_id = subscription.items.data[0].price.id
+                    if 'starter' in price_id.lower():
+                        plan_name = "Starter"
+                    elif 'pro' in price_id.lower():
+                        plan_name = "Pro"
+                
+                return Response({
+                    'id': subscription.id,
+                    'status': subscription.status,
+                    'plan_name': plan_name,
+                    'amount': subscription.items.data[0].price.unit_amount if subscription.items.data else 0,
+                    'currency': subscription.currency,
+                    'current_period_start': subscription.current_period_start,  # type: ignore[attr-defined]
+                    'current_period_end': subscription.current_period_end,  # type: ignore[attr-defined]
+                    'cancel_at_period_end': subscription.cancel_at_period_end,
+                    'canceled_at': subscription.canceled_at,
+                }, status=status.HTTP_200_OK)
+            
+            except stripe.error.StripeError as e:  # type: ignore[attr-defined]
+                logger.error(f"❌ Erro ao buscar assinatura do Stripe: {str(e)}")
+                # Fallback para dados locais se Stripe falhar
+                pass
+        
+        # Retornar plano Free por padrão
+        from datetime import datetime, timedelta
+        now = datetime.now()
+        
+        return Response({
+            'id': f'free_{tenant.id}',  # type: ignore[attr-defined]
+            'status': 'trialing',  # Período trial do plano Free
+            'plan_name': 'Free',
+            'amount': 0,
+            'currency': 'brl',
+            'current_period_start': tenant.data_criacao.isoformat() if hasattr(tenant, 'data_criacao') else now.isoformat(),
+            'current_period_end': (now + timedelta(days=30)).isoformat(),
+            'cancel_at_period_end': False,
+        }, status=status.HTTP_200_OK)
+    
+    def post(self, request):
+        """
+        Cancela a assinatura do tenant.
+        
+        POST /api/tenants/subscription/cancel/
+        """
+        try:
+            tenant = Client.objects.get(owner=request.user)
+        except Client.DoesNotExist:
+            return Response(
+                {"detail": "Tenant não encontrado"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        if not tenant.stripe_subscription_id:
+            return Response(
+                {"detail": "Nenhuma assinatura ativa para cancelar"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # Cancelar no final do período (não imediatamente)
+            subscription = stripe.Subscription.modify(
+                tenant.stripe_subscription_id,
+                cancel_at_period_end=True
+            )
+            
+            logger.info(f"✅ Assinatura cancelada | Tenant: {tenant.subdominio} | Sub ID: {tenant.stripe_subscription_id}")
+            
+            return Response({
+                'message': 'Assinatura cancelada com sucesso. Você terá acesso até o final do período pago.',
+                'current_period_end': subscription.current_period_end,  # type: ignore[attr-defined]
+            }, status=status.HTTP_200_OK)
+        
+        except stripe.error.StripeError as e:  # type: ignore[attr-defined]
+            logger.error(f"❌ Erro ao cancelar assinatura: {str(e)}")
+            return Response(
+                {"detail": "Erro ao cancelar assinatura", "error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

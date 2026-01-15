@@ -30,6 +30,8 @@ CheckSubdominioView = tenant_views.CheckSubdominioView  # type: ignore[attr-defi
 TenantAdminViewSet = tenant_views.TenantAdminViewSet  # type: ignore[attr-defined]
 CreateCheckoutSessionView = tenant_views.CreateCheckoutSessionView  # type: ignore[attr-defined]
 StripeWebhookView = tenant_views.StripeWebhookView  # type: ignore[attr-defined]
+UserMeView = tenant_views.UserMeView  # type: ignore[attr-defined]
+SubscriptionView = tenant_views.SubscriptionView  # type: ignore[attr-defined]
 
 
 
@@ -83,6 +85,9 @@ urlpatterns = [
     
     # Perfil do Usuário
     path('api/auth/me/', UserProfileUpdateView.as_view(), name='user-profile'),
+    
+    # Novo endpoint: Dados completos do usuário
+    path('api/users/me/', UserMeView.as_view(), name='user-me'),
     
     # Password Reset
     path('api/password-reset/request/', PasswordResetRequestView.as_view(), name='password-reset-request'),
