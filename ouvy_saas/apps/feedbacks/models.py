@@ -4,6 +4,7 @@ import uuid
 from django.db import models, transaction, IntegrityError
 from django.contrib.auth.models import User
 from apps.core.models import TenantAwareModel
+from .constants import InteracaoTipo
 
 
 class Feedback(TenantAwareModel):
@@ -213,11 +214,7 @@ class FeedbackInteracao(TenantAwareModel):
     Herda de TenantAwareModel para isolamento por tenant.
     """
 
-    TIPO_INTERACAO_CHOICES = [
-        ('MENSAGEM_PUBLICA', 'Mensagem Pública'),
-        ('NOTA_INTERNA', 'Nota Interna'),
-        ('MUDANCA_STATUS', 'Mudança de Status'),
-    ]
+    TIPO_INTERACAO_CHOICES = InteracaoTipo.choices()
 
     feedback = models.ForeignKey(
         'feedbacks.Feedback',
@@ -237,7 +234,7 @@ class FeedbackInteracao(TenantAwareModel):
     mensagem = models.TextField(verbose_name='Mensagem / Descrição')
 
     tipo = models.CharField(
-        max_length=20,
+        max_length=25,
         choices=TIPO_INTERACAO_CHOICES,
         verbose_name='Tipo de Interação'
     )

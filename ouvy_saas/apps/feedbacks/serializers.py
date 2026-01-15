@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Feedback, FeedbackInteracao
 from django.utils import timezone
+from .constants import InteracaoTipo
 from apps.core.sanitizers import (
     sanitize_html_input,        # Método atual (html.escape)
     sanitize_plain_text,
@@ -147,6 +148,6 @@ class FeedbackConsultaSerializer(serializers.ModelSerializer):
         ]
 
     def get_interacoes(self, obj):
-        # Apenas interações públicas: mensagens públicas e mudanças de status
-        qs = obj.interacoes.filter(tipo__in=['MENSAGEM_PUBLICA', 'MUDANCA_STATUS']).order_by('data')
+        allowed_public = InteracaoTipo.public_values()
+        qs = obj.interacoes.filter(tipo__in=allowed_public).order_by('data')
         return FeedbackInteracaoSerializer(qs, many=True).data

@@ -136,79 +136,100 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     @action(
         detail=True,
         methods=['post'],
-        permission_classes=[permissions.IsAuthenticated],
+        permission_classes=[permissions.AllowAny],
         url_path='adicionar-interacao'
     )
     def adicionar_interacao(self, request, pk=None):
         """
         Adiciona uma interação ao feedback.
 
-        Body esperado:
-        - mensagem: string (obrigatório)
-        - tipo: 'MENSAGEM_PUBLICA' | 'NOTA_INTERNA' | 'MUDANCA_STATUS' (obrigatório)
-        - novo_status: string (opcional, obrigatório se tipo='MUDANCA_STATUS')
+        - Empresa autenticada: cria PERGUNTA_EMPRESA (ou MUDANCA_STATUS / NOTA_INTERNA / MENSAGEM_AUTOMATICA).
+        - Denunciante anônimo: valida protocolo e cria RESPOSTA_USUARIO.
         """
-        try:
-            feedback = self.get_queryset().select_related('client').get(pk=pk)
-        except Feedback.DoesNotExist:
-            logger.warning(
-                f"⚠️ Tentativa de adicionar interação em feedback inexistente | "
-                f"ID: {pk} | IP: {get_client_ip(request)}"
-            )
-            return Response({"error": "Feedback não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        tenant = get_current_tenant()
+        if not tenant:
+            return Response({"error": "Tenant não identificado"}, status=status.HTTP_400_BAD_REQUEST)
 
         mensagem = (request.data.get('mensagem') or '').strip()
-        tipo = (request.data.get('tipo') or '').strip().upper()
-        novo_status = (request.data.get('novo_status') or request.data.get('status') or '').strip()
-
         if not mensagem:
             return Response({"error": "Campo 'mensagem' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # Sanitizar mensagem contra XSS
         mensagem = sanitize_html_input(mensagem, max_length=MAX_INTERACAO_MENSAGEM_LENGTH)
-        
-        # Validar tipo usando constantes do modelo
-        valid_tipos = InteracaoTipo.values()
-        if tipo not in valid_tipos:
-            return Response(
-                {"error": f"Tipo inválido. Use um de: {valid_tipos}"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
 
-        if tipo == InteracaoTipo.MUDANCA_STATUS:
-            if not novo_status:
+        is_company = bool(request.user and request.user.is_authenticated)
+        tipo_request = (request.data.get('tipo') or '').strip().upper()
+        novo_status = (request.data.get('novo_status') or request.data.get('status') or '').strip()
+
+        if is_company:
+            try:
+                feedback = self.get_queryset().select_related('client').get(pk=pk, client=tenant)
+            except Feedback.DoesNotExist:
+                logger.warning(
+                    f"⚠️ Tentativa de adicionar interação em feedback inexistente | "
+                    f"ID: {pk} | Tenant: {tenant.nome} | IP: {get_client_ip(request)}"
+                )
+                return Response({"error": "Feedback não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+            allowed_company_types = {
+                InteracaoTipo.MENSAGEM_PUBLICA,
+                InteracaoTipo.PERGUNTA_EMPRESA,
+                InteracaoTipo.MUDANCA_STATUS,
+                InteracaoTipo.NOTA_INTERNA,
+                InteracaoTipo.MENSAGEM_AUTOMATICA,
+            }
+            tipo = tipo_request or InteracaoTipo.PERGUNTA_EMPRESA
+            if tipo not in allowed_company_types:
                 return Response(
-                    {"error": "Campo 'novo_status' é obrigatório para mudanças de status"},
+                    {"error": f"Tipo inválido. Use um de: {sorted(allowed_company_types)}"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            # Validar novo_status usando constantes
-            valid_status = FeedbackStatus.values()
-            if novo_status not in valid_status:
-                return Response(
-                    {"error": f"Status inválido. Use um de: {valid_status}"},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
 
-        # Criar interação
+            if tipo == InteracaoTipo.MUDANCA_STATUS:
+                valid_status = FeedbackStatus.values()
+                if not novo_status or novo_status not in valid_status:
+                    return Response(
+                        {"error": f"Status inválido. Use um de: {valid_status}"},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+            autor = request.user
+        else:
+            protocolo = sanitize_protocol_code((request.data.get('protocolo') or '').strip().upper())
+            if not protocolo:
+                return Response({"error": "Campo 'protocolo' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
+
+            feedback = Feedback.objects.filter(client=tenant, protocolo=protocolo).select_related('client').first()
+            if not feedback:
+                logger.warning(
+                    f"⚠️ Protocolo não encontrado para resposta anônima | "
+                    f"Código: {protocolo} | Tenant: {tenant.nome} | IP: {get_client_ip(request)}"
+                )
+                return Response({"error": "Protocolo não encontrado"}, status=status.HTTP_404_NOT_FOUND)
+
+            tipo = InteracaoTipo.RESPOSTA_USUARIO
+            autor = None
+            novo_status = None
+
         interacao = FeedbackInteracao.objects.create(
             feedback=feedback,
-            autor=request.user if request.user and request.user.is_authenticated else None,
-            mensagem=mensagem,
+            client=feedback.client,
+            autor=autor,
             tipo=tipo,
+            mensagem=mensagem,
         )
 
-        # Atualizar status se necessário
-        if tipo == InteracaoTipo.MUDANCA_STATUS:
+        if is_company and tipo == InteracaoTipo.MUDANCA_STATUS and novo_status:
             feedback.status = novo_status
             feedback.save(update_fields=['status', 'data_atualizacao'])
 
         logger.info(
             f"🗨️ Interação adicionada | Feedback: {feedback.protocolo} | Tipo: {tipo} | Autor: "
-            f"{request.user.get_username() if request.user.is_authenticated else 'Anónimo'}"
+            f"{autor.get_username() if autor else 'Anônimo'}"
         )
 
-        # Retornar detalhes atualizados do feedback (inclui histórico)
-        serializer = FeedbackDetailSerializer(feedback)
+        if is_company:
+            serializer = FeedbackDetailSerializer(feedback)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        serializer = FeedbackInteracaoSerializer(interacao)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
     @action(

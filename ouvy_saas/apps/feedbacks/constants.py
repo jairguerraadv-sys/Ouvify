@@ -57,6 +57,9 @@ class InteracaoTipo:
     MENSAGEM_PUBLICA = 'MENSAGEM_PUBLICA'
     NOTA_INTERNA = 'NOTA_INTERNA'
     MUDANCA_STATUS = 'MUDANCA_STATUS'
+    PERGUNTA_EMPRESA = 'PERGUNTA_EMPRESA'
+    RESPOSTA_USUARIO = 'RESPOSTA_USUARIO'
+    MENSAGEM_AUTOMATICA = 'MENSAGEM_AUTOMATICA'
     
     @classmethod
     def choices(cls):
@@ -65,12 +68,33 @@ class InteracaoTipo:
             (cls.MENSAGEM_PUBLICA, 'Mensagem Pública'),
             (cls.NOTA_INTERNA, 'Nota Interna'),
             (cls.MUDANCA_STATUS, 'Mudança de Status'),
+            (cls.PERGUNTA_EMPRESA, 'Pergunta da Empresa'),
+            (cls.RESPOSTA_USUARIO, 'Resposta do Usuário'),
+            (cls.MENSAGEM_AUTOMATICA, 'Mensagem Automática'),
         ]
     
     @classmethod
     def values(cls):
         """Retorna lista de valores válidos."""
-        return [cls.MENSAGEM_PUBLICA, cls.NOTA_INTERNA, cls.MUDANCA_STATUS]
+        return [
+            cls.MENSAGEM_PUBLICA,
+            cls.NOTA_INTERNA,
+            cls.MUDANCA_STATUS,
+            cls.PERGUNTA_EMPRESA,
+            cls.RESPOSTA_USUARIO,
+            cls.MENSAGEM_AUTOMATICA,
+        ]
+
+    @classmethod
+    def public_values(cls):
+        """Tipos exibidos para o denunciante na tela pública."""
+        return [
+            cls.PERGUNTA_EMPRESA,
+            cls.RESPOSTA_USUARIO,
+            cls.MENSAGEM_AUTOMATICA,
+            cls.MUDANCA_STATUS,
+            cls.MENSAGEM_PUBLICA,
+        ]
 
 
 # Protocolo
