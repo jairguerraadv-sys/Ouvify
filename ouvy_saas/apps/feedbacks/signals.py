@@ -113,9 +113,8 @@ def notificar_resposta_feedback(sender, instance, created, **kwargs):
     try:
         # Envia notificação de resposta
         success = EmailService.send_feedback_response_notification(
-            tenant=feedback.client,
             feedback=feedback,
-            interacao=instance
+            response_message=instance.mensagem
         )
         
         if success:
@@ -193,12 +192,12 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
         return
     
     try:
-        # Envia notificação de mudança de status
-        success = EmailService.send_status_change_notification(
-            tenant=instance.client,
+        # TODO: Implementar send_status_change_notification no EmailService
+        # Por enquanto, usa send_feedback_response_notification
+        status_message = f"Status alterado de '{status_anterior}' para '{instance.status}'"
+        success = EmailService.send_feedback_response_notification(
             feedback=instance,
-            status_anterior=status_anterior,
-            status_novo=instance.status
+            response_message=status_message
         )
         
         if success:
