@@ -3,8 +3,14 @@
 import { useState, useCallback, useMemo, FormEvent, useEffect } from 'react';
 import { api, getErrorMessage } from '@/lib/api';
 import { Logo } from '@/components/ui/logo';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge-chip';
+import { H2, Paragraph } from '@/components/ui/typography';
 import { formatDate } from '@/lib/helpers';
 import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
+import { Search, Shield, Clock, CheckCircle, AlertCircle, Send, MessageSquare } from 'lucide-react';
+import Link from 'next/link';
 import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
 import { useDebounce } from '@/hooks/use-common';
 
@@ -152,79 +158,106 @@ export default function AcompanharPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background-secondary to-background py-12 px-4">
-      <div className="max-w-3xl mx-auto">
+    <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 py-12 px-4 relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+      
+      <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-6">
-            <Logo size="xl" linkTo="/" />
+        <div className="text-center mb-10 animate-fade-in">
+          <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
+            <Logo size="xl" />
+          </Link>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+            <Search className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-primary">
+              Consulta de Protocolo
+            </span>
           </div>
-          <h2 className="text-3xl font-bold text-secondary mb-2">
-            🔍 Acompanhar Feedback
-          </h2>
-          <p className="text-text-secondary">
-            Digite o código do protocolo para consultar o status
-          </p>
+          <H2 className="text-primary mb-3">
+            🔍 Acompanhar <span className="text-secondary">Feedback</span>
+          </H2>
+          <Paragraph className="text-muted-foreground">
+            Digite o código do protocolo para consultar o status da sua manifestação
+          </Paragraph>
         </div>
 
-        {/* Formulário de Busca */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <form onSubmit={buscarProtocolo} className="space-y-4">
-            <div>
-              <label 
-                htmlFor="protocolo" 
-                className="block text-sm font-medium text-secondary mb-2"
+        {/* Card de Busca */}
+        <Card className="mb-8 shadow-lg border-border">
+          <CardHeader className="bg-gradient-to-br from-primary/5 to-primary/10 border-b border-border">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                <Search className="w-6 h-6 text-primary" />
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-secondary">Buscar Protocolo</h3>
+                <p className="text-sm text-muted-foreground">Informe o código recebido</p>
+              </div>
+            </div>
+          </CardHeader>
+          
+          <CardContent className="p-6">
+            <form onSubmit={buscarProtocolo} className="space-y-4">
+              <div className="space-y-2">
+                <label 
+                  htmlFor="protocolo" 
+                  className="block text-sm font-semibold text-secondary"
+                >
+                  Código do Protocolo
+                </label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <input
+                    type="text"
+                    id="protocolo"
+                    value={protocolo}
+                    onChange={(e) => setProtocolo(e.target.value)}
+                    placeholder="Ex: OUVY-A3B9-K7M2"
+                    className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-secondary text-lg font-mono uppercase transition-all"
+                    maxLength={17}
+                  />
+                </div>
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Shield className="w-3 h-3" />
+                  O código foi enviado para você após o registro do feedback
+                </p>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full group shadow-md"
+                disabled={loading || cooldownMs > 0}
+                isLoading={loading}
               >
-                Código do Protocolo
-              </label>
-              <input
-                type="text"
-                id="protocolo"
-                value={protocolo}
-                onChange={(e) => setProtocolo(e.target.value)}
-                placeholder="Ex: OUVY-A3B9-K7M2"
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary text-lg font-mono uppercase"
-                maxLength={17}
-              />
-              <p className="mt-1 text-xs text-text-secondary">
-                O código foi enviado para você após o registro do feedback
-              </p>
-            </div>
+                {!loading && (
+                  <>
+                    <Search className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
+                    Consultar Protocolo
+                  </>
+                )}
+              </Button>
+            </form>
 
-            <button
-              type="submit"
-              disabled={loading || cooldownMs > 0}
-              className="w-full bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Consultando...
-                </span>
-              ) : (
-                'Consultar Protocolo'
-              )}
-            </button>
-          </form>
-
-          {/* Mensagem de Erro */}
+            {/* Mensagem de Erro */}
             {error && (
-            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-800 text-sm flex items-center">
-                <span className="mr-2">⚠️</span>
-                {error}
-              </p>
-            </div>
-          )}
-            {cooldownMs > 0 && (
-              <div className="mt-3 text-xs text-orange-700">
-                Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta.
+              <div className="mt-4 p-4 bg-error/10 border border-error/30 rounded-lg">
+                <p className="text-error text-sm flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{error}</span>
+                </p>
               </div>
             )}
-        </div>
+            
+            {cooldownMs > 0 && (
+              <div className="mt-3 flex items-center gap-2 text-warning text-sm">
+                <Clock className="w-4 h-4" />
+                <span>Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta</span>
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
         {/* Resultado da Consulta */}
         {feedback && (

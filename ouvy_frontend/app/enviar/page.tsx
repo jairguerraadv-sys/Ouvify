@@ -6,6 +6,12 @@ import { validateForm } from '@/lib/validation';
 import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
 import SuccessCard from '@/components/SuccessCard';
 import { Logo } from '@/components/ui/logo';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge-chip';
+import { H2, Paragraph } from '@/components/ui/typography';
+import { Shield, Lock, AlertCircle, MessageSquare, Send } from 'lucide-react';
+import Link from 'next/link';
 import type { FeedbackType } from '@/lib/types';
 
 interface FormData {
@@ -94,196 +100,247 @@ export default function EnviarFeedbackPage() {
 
   return (
     <>
-      <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-2xl w-full bg-white shadow-2xl rounded-2xl overflow-hidden">
+      <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 py-12 px-4 relative overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
+        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        
+        <div className="max-w-3xl mx-auto relative z-10">
           
           {/* Header */}
-          <div className="bg-primary text-white p-8 text-center">
-            <div className="flex justify-center mb-4">
-              <Logo size="lg" />
+          <div className="text-center mb-10 animate-fade-in">
+            <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
+              <Logo size="xl" />
+            </Link>
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+              <Shield className="w-4 h-4 text-primary" />
+              <span className="text-sm font-medium text-primary">
+                Canal Seguro e Confidencial
+              </span>
             </div>
-            <h2 className="text-2xl font-semibold mb-2">
-              📢 Canal de Ouvidoria
-            </h2>
-            <p className="text-white/90">
-              Sua voz importa. Compartilhe sua experiência de forma segura.
-            </p>
+            <H2 className="text-primary mb-3">
+              📢 Canal de <span className="text-secondary">Ouvidoria</span>
+            </H2>
+            <Paragraph className="text-muted-foreground">
+              Sua voz importa. Compartilhe sua experiência de forma segura e anônima.
+            </Paragraph>
           </div>
 
           {/* Alerta de Backend Offline */}
           {errors.submit && errors.submit.includes('conectar ao servidor') && (
-            <div className="bg-orange-50 border-l-4 border-orange-400 p-4 m-6">
-              <div className="flex items-start">
-                <span className="text-2xl mr-3">🔌</span>
-                <div className="flex-1">
-                  <p className="font-semibold text-orange-800 mb-1">
-                    Backend Offline
-                  </p>
-                  <p className="text-sm text-orange-700 mb-2">
-                    O servidor Django não está respondendo. Para testar o envio de feedbacks, inicie o backend:
-                  </p>
-                  <code className="block bg-orange-100 text-orange-900 p-2 rounded text-xs">
-                    cd ouvy_saas && bash run_server.sh
-                  </code>
+            <Card className="mb-6 border-warning/30 bg-warning/5">
+              <CardContent className="p-6">
+                <div className="flex items-start gap-3">
+                  <AlertCircle className="w-6 h-6 text-warning flex-shrink-0 mt-1" />
+                  <div className="flex-1">
+                    <p className="font-semibold text-secondary mb-2">
+                      Backend Offline
+                    </p>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      O servidor Django não está respondendo. Para testar o envio de feedbacks, inicie o backend:
+                    </p>
+                    <code className="block bg-muted text-secondary p-3 rounded-lg text-xs font-mono">
+                      cd ouvy_saas && bash run_server.sh
+                    </code>
+                  </div>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+            </Card>
           )}
 
-          {/* Formulário */}
-          <form onSubmit={handleSubmit} className="p-8 space-y-6">
-            {/* Tipo de Feedback */}
-            <div>
-              <label className="block text-sm font-medium text-secondary mb-2">
-                Tipo de Manifestação
-              </label>
-              <select
-                value={formData.tipo}
-                onChange={(e) => handleChange('tipo', e.target.value as FeedbackType)}
-                className="w-full px-4 py-3 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary"
-                required
-              >
-                <option value="denuncia">🚨 Denúncia</option>
-                <option value="sugestao">💡 Sugestão</option>
-                <option value="reclamacao">😞 Reclamação</option>
-                <option value="elogio">⭐ Elogio</option>
-              </select>
-            </div>
+          {/* Card Principal */}
+          <Card className="shadow-lg border-border">
+            <CardHeader className="bg-gradient-to-br from-primary/5 to-primary/10 border-b border-border">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                  <MessageSquare className="w-6 h-6 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-secondary">Formulário de Manifestação</h3>
+                  <p className="text-sm text-muted-foreground">Preencha os campos abaixo</p>
+                </div>
+              </div>
+            </CardHeader>
 
-            {/* Título */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Título
-              </label>
-              <input
-                type="text"
-                value={formData.titulo}
-                onChange={(e) => handleChange('titulo', e.target.value)}
-                placeholder="Resuma sua manifestação em poucas palavras"
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary ${
-                  errors.titulo ? 'border-error bg-error/5' : 'border-neutral-300'
-                }`}
-                required
-                maxLength={200}
-              />
-              {errors.titulo && (
-                <p className="text-error text-sm mt-1">{errors.titulo}</p>
-              )}
-            </div>
+            {/* Formulário */}
+            <form onSubmit={handleSubmit} className="p-6 sm:p-8 space-y-6">
+              {/* Tipo de Feedback */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-secondary">
+                  Tipo de Manifestação
+                </label>
+                <select
+                  value={formData.tipo}
+                  onChange={(e) => handleChange('tipo', e.target.value as FeedbackType)}
+                  className="w-full px-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-secondary transition-all"
+                  required
+                >
+                  <option value="denuncia">🚨 Denúncia</option>
+                  <option value="sugestao">💡 Sugestão</option>
+                  <option value="reclamacao">😞 Reclamação</option>
+                  <option value="elogio">⭐ Elogio</option>
+                </select>
+              </div>
 
-            {/* Descrição */}
-            <div>
-              <label className="block text-sm font-medium text-secondary mb-2">
-                Descrição
-              </label>
-              <textarea
-                value={formData.descricao}
-                onChange={(e) => handleChange('descricao', e.target.value)}
-                placeholder="Descreva sua manifestação com detalhes..."
-                rows={5}
-                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary resize-none ${
-                  errors.descricao ? 'border-error bg-error/5' : 'border-neutral-300'
-                }`}
-                required
-              />
-              {errors.descricao && (
-                <p className="text-error text-sm mt-1">{errors.descricao}</p>
-              )}
-            </div>
-
-            {/* Checkbox Anônimo */}
-            <div className="flex items-start">
-              <input
-                type="checkbox"
-                id="anonimo"
-                checked={formData.anonimo}
-                onChange={(e) => handleChange('anonimo', e.target.checked)}
-                className="mt-1 h-4 w-4 text-primary focus:ring-primary border-neutral-300 rounded"
-              />
-              <label htmlFor="anonimo" className="ml-3 text-sm text-secondary">
-                <span className="font-medium">Enviar anonimamente</span>
-                <p className="text-text-secondary mt-1">
-                  Sua identidade será protegida. Não será possível responder diretamente.
-                </p>
-              </label>
-            </div>
-
-            {/* Email (se não for anônimo) */}
-            {!formData.anonimo && (
-              <div>
-                <label className="block text-sm font-medium text-secondary mb-2">
-                  E-mail para Contato
+              {/* Título */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-secondary">
+                  Título
                 </label>
                 <input
-                  type="email"
-                  value={formData.email_contato}
-                  onChange={(e) => handleChange('email_contato', e.target.value)}
-                  placeholder="seu@email.com"
-                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent text-secondary ${
-                    errors.email_contato ? 'border-error bg-error/5' : 'border-neutral-300'
+                  type="text"
+                  value={formData.titulo}
+                  onChange={(e) => handleChange('titulo', e.target.value)}
+                  placeholder="Resuma sua manifestação em poucas palavras"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-secondary transition-all ${
+                    errors.titulo ? 'border-error bg-error/5' : 'border-border'
                   }`}
-                  required={!formData.anonimo}
+                  required
+                  maxLength={200}
                 />
-                {errors.email_contato && (
-                  <p className="text-error text-sm mt-1">{errors.email_contato}</p>
+                {errors.titulo && (
+                  <p className="text-error text-sm flex items-center gap-1 mt-1">
+                    <span className="w-1 h-1 bg-error rounded-full" />
+                    {errors.titulo}
+                  </p>
                 )}
-                <p className="mt-1 text-xs text-text-secondary">
-                  Usaremos apenas para enviar atualizações sobre sua manifestação
-                </p>
               </div>
-            )}
 
-            {/* Mensagem de Erro */}
-            {errors.submit && (
-              <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-800 text-sm flex items-center">
-                  <span className="mr-2">⚠️</span>
-                  {errors.submit}
-                </p>
+              {/* Descrição */}
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-secondary">
+                  Descrição
+                </label>
+                <textarea
+                  value={formData.descricao}
+                  onChange={(e) => handleChange('descricao', e.target.value)}
+                  placeholder="Descreva sua manifestação com detalhes..."
+                  rows={5}
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-secondary resize-none transition-all ${
+                    errors.descricao ? 'border-error bg-error/5' : 'border-border'
+                  }`}
+                  required
+                />
+                {errors.descricao && (
+                  <p className="text-error text-sm flex items-center gap-1 mt-1">
+                    <span className="w-1 h-1 bg-error rounded-full" />
+                    {errors.descricao}
+                  </p>
+                )}
               </div>
-            )}
 
-            {/* Botão de Envio */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-primary hover:opacity-90 text-white font-bold py-4 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Enviando...
-                </span>
-              ) : (
-                '📤 Enviar Manifestação'
+              {/* Checkbox Anônimo */}
+              <div className="flex items-start gap-3 p-4 bg-muted/50 rounded-lg border border-border">
+                <input
+                  type="checkbox"
+                  id="anonimo"
+                  checked={formData.anonimo}
+                  onChange={(e) => handleChange('anonimo', e.target.checked)}
+                  className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
+                />
+                <label htmlFor="anonimo" className="flex-1 cursor-pointer">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Lock className="w-4 h-4 text-primary" />
+                    <span className="font-semibold text-secondary text-sm">Enviar anonimamente</span>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Sua identidade será completamente protegida. Não será possível responder diretamente.
+                  </p>
+                </label>
+              </div>
+
+              {/* Email (se não for anônimo) */}
+              {!formData.anonimo && (
+                <div className="space-y-2">
+                  <label className="block text-sm font-semibold text-secondary">
+                    E-mail para Contato
+                  </label>
+                  <input
+                    type="email"
+                    value={formData.email_contato}
+                    onChange={(e) => handleChange('email_contato', e.target.value)}
+                    placeholder="seu@email.com"
+                    className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent bg-background text-secondary transition-all ${
+                      errors.email_contato ? 'border-error bg-error/5' : 'border-border'
+                    }`}
+                    required={!formData.anonimo}
+                  />
+                  {errors.email_contato && (
+                    <p className="text-error text-sm flex items-center gap-1 mt-1">
+                      <span className="w-1 h-1 bg-error rounded-full" />
+                      {errors.email_contato}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Shield className="w-3 h-3" />
+                    Usaremos apenas para enviar atualizações sobre sua manifestação
+                  </p>
+                </div>
               )}
-            </button>
 
-            {/* Link para Acompanhar */}
-            <div className="text-center pt-4 border-t border-neutral-200">
-              <p className="text-sm text-text-secondary mb-2">
-                Já enviou uma manifestação?
-              </p>
-              <a 
-                href="/acompanhar" 
-                className="text-primary hover:underline font-medium inline-flex items-center"
+              {/* Mensagem de Erro */}
+              {errors.submit && !errors.submit.includes('conectar ao servidor') && (
+                <div className="p-4 bg-error/10 border border-error/30 rounded-lg">
+                  <p className="text-error text-sm flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{errors.submit}</span>
+                  </p>
+                </div>
+              )}
+
+              {/* Botão de Envio */}
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full group shadow-lg"
+                disabled={loading}
+                isLoading={loading}
               >
-                🔍 Acompanhar Status do Protocolo
-              </a>
-            </div>
-          </form>
+                {!loading && (
+                  <>
+                    <Send className="w-5 h-5 mr-2 group-hover:translate-x-1 transition-transform" />
+                    Enviar Manifestação
+                  </>
+                )}
+              </Button>
 
-          {/* Footer */}
-          <div className="bg-background-secondary px-8 py-4 text-center border-t border-neutral-200">
-            <p className="text-xs text-text-secondary">
-              🔒 Suas informações são tratadas com total confidencialidade
-            </p>
-            <p className="text-xs text-neutral-500 mt-1">
-              Powered by Ouvy SaaS
-            </p>
+              {/* Link para Acompanhar */}
+              <div className="text-center pt-4 border-t border-border">
+                <p className="text-sm text-muted-foreground mb-2">
+                  Já enviou uma manifestação?
+                </p>
+                <Link 
+                  href="/acompanhar" 
+                  className="text-primary hover:text-primary-dark font-semibold inline-flex items-center gap-2 group transition-colors"
+                >
+                  <MessageSquare className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  Acompanhar Status do Protocolo
+                </Link>
+              </div>
+            </form>
+
+            {/* Footer do Card */}
+            <div className="bg-muted/30 px-6 py-4 border-t border-border flex items-center justify-center gap-2">
+              <Shield className="w-4 h-4 text-primary" />
+              <p className="text-xs text-muted-foreground">
+                Suas informações são tratadas com total <span className="font-semibold text-secondary">confidencialidade e segurança</span>
+              </p>
+            </div>
+          </Card>
+
+          {/* Trust Badges */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
+            <Badge variant="success" className="flex items-center gap-1">
+              <Lock className="w-3 h-3" />
+              Criptografia SSL
+            </Badge>
+            <Badge variant="primary" className="flex items-center gap-1">
+              <Shield className="w-3 h-3" />
+              LGPD Compliant
+            </Badge>
+            <Badge variant="default" className="flex items-center gap-1">
+              99.9% Uptime
+            </Badge>
           </div>
         </div>
       </main>
