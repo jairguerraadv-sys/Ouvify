@@ -334,7 +334,7 @@ export default function EnviarFeedbackPage() {
               <Lock className="w-3 h-3" />
               Criptografia SSL
             </Badge>
-            <Badge variant="primary" className="flex items-center gap-1">
+            <Badge variant="default" className="flex items-center gap-1">
               <Shield className="w-3 h-3" />
               LGPD Compliant
             </Badge>
