@@ -50,8 +50,8 @@ export async function uploadBrandingImages(
       },
     });
     
-    logger.log('Upload de branding realizado:', response.data);
-    return response.data;
+    logger.log('Upload de branding realizado:', response);
+    return response;
   } catch (error: any) {
     logger.error('Erro no upload de branding:', error);
     
@@ -75,8 +75,8 @@ export async function uploadBrandingImages(
 export async function updateBrandingSettings(data: UpdateBrandingData): Promise<any> {
   try {
     const response = await api.patch('/tenant-info/', data);
-    logger.log('Configurações de branding atualizadas:', response.data);
-    return response.data;
+    logger.log('Configurações de branding atualizadas:', response);
+    return response;
   } catch (error: any) {
     logger.error('Erro ao atualizar branding:', error);
     throw error;
