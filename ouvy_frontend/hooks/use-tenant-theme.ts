@@ -192,7 +192,7 @@ export function useTenantTheme() {
         }
       }
       
-      logger.info(`✅ Tema aplicado: ${theme.nome} (${theme.cor_primaria})`);
+      logger.log(`✅ Tema aplicado: ${theme.nome} (${theme.cor_primaria})`);
       
       // Armazenar no localStorage para persistência
       if (typeof window !== 'undefined') {
