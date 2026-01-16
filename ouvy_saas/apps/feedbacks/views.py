@@ -305,9 +305,11 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-        arquivo = serializer.validated_data['arquivo']
-        protocolo = serializer.validated_data.get('protocolo', '').strip().upper()
-        interno = serializer.validated_data.get('interno', False)
+        # Type hints para Pylance
+        validated_data = serializer.validated_data
+        arquivo = validated_data['arquivo']
+        protocolo = str(validated_data.get('protocolo', '')).strip().upper()
+        interno = bool(validated_data.get('interno', False))
         
         # Determinar se é empresa ou denunciante
         is_company = bool(request.user and request.user.is_authenticated)

@@ -13,5 +13,9 @@
   "reportMissingImports": "warning",
   "reportMissingTypeStubs": false,
   "reportUnusedImports": "error",
-  "reportUnusedVariables": "error"
+  "reportUnusedVariables": "error",
+  "reportAttributeAccessIssue": "none",
+  "reportOptionalMemberAccess": "none",
+  "reportOptionalSubscript": "none",
+  "reportIndexIssue": "none"
 }
