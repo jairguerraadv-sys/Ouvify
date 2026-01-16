@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Feedback, FeedbackInteracao
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo
 
 
 @admin.register(Feedback)
@@ -60,6 +60,42 @@ class FeedbackInteracaoAdmin(admin.ModelAdmin):
     list_per_page = 50
     
     def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if hasattr(qs.model.objects, 'all_tenants'):
+            return qs.model.objects.all_tenants()
+        return qs
+
+
+@admin.register(FeedbackArquivo)
+class FeedbackArquivoAdmin(admin.ModelAdmin):
+    """Admin para arquivos anexados."""
+    list_display = [
+        'nome_original',
+        'feedback',
+        'tipo_mime',
+        'tamanho_mb',
+        'interno',
+        'enviado_por',
+        'data_envio',
+    ]
+    list_filter = ['interno', 'tipo_mime', 'data_envio', 'client']
+    search_fields = ['nome_original', 'feedback__protocolo']
+    readonly_fields = ['client', 'data_envio', 'tamanho_bytes', 'tamanho_mb']
+    
+    fieldsets = (
+        ('Arquivo', {
+            'fields': ('arquivo', 'nome_original', 'tipo_mime', 'tamanho_bytes', 'tamanho_mb')
+        }),
+        ('Feedback', {
+            'fields': ('feedback', 'client')
+        }),
+        ('Controle', {
+            'fields': ('enviado_por', 'interno', 'data_envio')
+        }),
+    )
+    
+    def get_queryset(self, request):
+        """Sobrescreve para visualizar todos no admin."""
         qs = super().get_queryset(request)
         if hasattr(qs.model.objects, 'all_tenants'):
             return qs.model.objects.all_tenants()

@@ -5,6 +5,7 @@ from django.db import models, transaction, IntegrityError
 from django.contrib.auth.models import User
 from apps.core.models import TenantAwareModel
 from .constants import InteracaoTipo
+from cloudinary.models import CloudinaryField
 
 
 class Feedback(TenantAwareModel):
@@ -255,3 +256,96 @@ class FeedbackInteracao(TenantAwareModel):
         autor_nome = self.autor.get_username() if self.autor else 'Anónimo'
         tipo_display = dict(self.TIPO_INTERACAO_CHOICES).get(self.tipo, self.tipo)
         return f"[{tipo_display}] {autor_nome}: {self.mensagem[:50]}"
+
+
+class FeedbackArquivo(TenantAwareModel):
+    """
+    Arquivo anexado a um feedback (evidências, documentos).
+    
+    Suporta:
+    - Upload por denunciante (anônimo ou identificado)
+    - Upload por empresa (anexos internos)
+    - Armazenamento em Cloudinary
+    - Validação de tipo e tamanho
+    """
+    
+    feedback = models.ForeignKey(
+        Feedback,
+        on_delete=models.CASCADE,
+        related_name='arquivos',
+        verbose_name='Feedback',
+        help_text='Feedback ao qual este arquivo pertence'
+    )
+    
+    # Cloudinary field (automático se CLOUDINARY_URL configurado)
+    arquivo = CloudinaryField(
+        folder='ouvy/feedback_arquivos',
+        resource_type='auto',  # Aceita imagens, vídeos, documentos
+        verbose_name='Arquivo',
+        help_text='Arquivo anexado (imagem, PDF, documento)'
+    )
+    
+    nome_original = models.CharField(
+        max_length=255,
+        verbose_name='Nome Original',
+        help_text='Nome do arquivo no momento do upload'
+    )
+    
+    tipo_mime = models.CharField(
+        max_length=100,
+        verbose_name='Tipo MIME',
+        help_text='Tipo do arquivo (ex: image/png, application/pdf)'
+    )
+    
+    tamanho_bytes = models.PositiveIntegerField(
+        verbose_name='Tamanho (bytes)',
+        help_text='Tamanho do arquivo em bytes'
+    )
+    
+    enviado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='arquivos_enviados',
+        verbose_name='Enviado Por',
+        help_text='Usuário que enviou o arquivo (null se anônimo)'
+    )
+    
+    interno = models.BooleanField(
+        default=False,
+        verbose_name='Interno',
+        help_text='Arquivo visível apenas para a empresa (não para denunciante)'
+    )
+    
+    data_envio = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Data de Envio'
+    )
+    
+    class Meta(TenantAwareModel.Meta):
+        verbose_name = 'Arquivo de Feedback'
+        verbose_name_plural = 'Arquivos de Feedbacks'
+        ordering = ['-data_envio']
+        indexes = [
+            models.Index(fields=['client', 'feedback']),
+            models.Index(fields=['feedback', '-data_envio']),
+            models.Index(fields=['interno']),
+        ]
+    
+    def __str__(self):
+        tipo = 'Interno' if self.interno else 'Público'
+        enviado = self.enviado_por.get_username() if self.enviado_por else 'Anônimo'
+        return f"[{tipo}] {self.nome_original} | Enviado por: {enviado}"
+    
+    @property
+    def tamanho_mb(self) -> float:
+        """Retorna tamanho em MB."""
+        return round(self.tamanho_bytes / (1024 * 1024), 2)
+    
+    @property
+    def url_publica(self) -> str:
+        """Retorna URL pública do arquivo."""
+        if hasattr(self.arquivo, 'url'):
+            return self.arquivo.url
+        return ''

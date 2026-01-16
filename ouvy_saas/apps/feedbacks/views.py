@@ -1,16 +1,19 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from django.utils import timezone
 from django.db.models import Prefetch, Q, QuerySet
 from datetime import timedelta
 from typing import Any
-from .models import Feedback, FeedbackInteracao
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo
 from .serializers import (
     FeedbackSerializer,
     FeedbackConsultaSerializer,
     FeedbackDetailSerializer,
     FeedbackInteracaoSerializer,
+    FeedbackArquivoSerializer,
+    FeedbackArquivoUploadSerializer,
 )
 from .throttles import ProtocoloConsultaThrottle, FeedbackCriacaoThrottle
 from .constants import (
@@ -49,10 +52,11 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     serializer_class = FeedbackSerializer
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = StandardResultsSetPagination
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
     
     def get_permissions(self):
         """Permite público apenas nos endpoints explícitos de protocolo."""
-        if getattr(self, 'action', None) in ['create', 'consultar_protocolo', 'responder_protocolo']:
+        if getattr(self, 'action', None) in ['create', 'consultar_protocolo', 'responder_protocolo', 'upload_arquivo']:
             return [permissions.AllowAny()]
         return [permission() for permission in self.permission_classes]
     
@@ -241,6 +245,155 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
         serializer = FeedbackInteracaoSerializer(interacao)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+    @action(
+        detail=True,
+        methods=['post'],
+        permission_classes=[permissions.AllowAny],
+        parser_classes=[MultiPartParser, FormParser],
+        url_path='upload-arquivo'
+    )
+    def upload_arquivo(self, request, pk=None):
+        """
+        Upload de arquivo anexado a um feedback.
+        
+        🔒 FEATURE GATING: Requer plano PRO ou superior.
+        
+        **Permissões:**
+        - Empresa autenticada: valida `has_feature_attachments()`
+        - Denunciante anônimo: valida protocolo + feature do tenant
+        
+        **Body (multipart/form-data):**
+        - arquivo: File (obrigatório) - Arquivo a ser anexado
+        - protocolo: string (obrigatório se anônimo) - Código OUVY-XXXX-YYYY
+        - interno: boolean (opcional) - Se True, só empresa vê
+        
+        **Limites:**
+        - Tamanho máximo: 10MB
+        - Tipos permitidos: imagens, PDF, documentos Office
+        
+        **Retorna:**
+        - 201: Arquivo criado com URL
+        - 403: Feature bloqueada ou permissão negada
+        - 400: Validação falhou
+        """
+        tenant = get_current_tenant()
+        if not tenant:
+            return Response(
+                {"error": "Tenant não identificado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # ✅ VALIDAÇÃO CRÍTICA: Verificar se tenant tem feature de anexos
+        if not tenant.has_feature_attachments():
+            from apps.tenants.plans import PlanFeatures
+            upgrade_msg = PlanFeatures.get_upgrade_message(tenant.plano, 'allow_attachments')
+            
+            logger.warning(
+                f"🚫 Tentativa de upload sem feature | "
+                f"Tenant: {tenant.nome} | Plano: {tenant.plano}"
+            )
+            
+            raise FeatureNotAvailableError(
+                feature='allow_attachments',
+                plan=tenant.plano,
+                message=upgrade_msg
+            )
+        
+        # Validar input
+        serializer = FeedbackArquivoUploadSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        arquivo = serializer.validated_data['arquivo']
+        protocolo = serializer.validated_data.get('protocolo', '').strip().upper()
+        interno = serializer.validated_data.get('interno', False)
+        
+        # Determinar se é empresa ou denunciante
+        is_company = bool(request.user and request.user.is_authenticated)
+        
+        if is_company:
+            # Empresa autenticada: buscar feedback por ID
+            try:
+                feedback = self.get_queryset().select_related('client').get(pk=pk, client=tenant)
+            except Feedback.DoesNotExist:
+                logger.warning(
+                    f"⚠️ Tentativa de upload em feedback inexistente | "
+                    f"ID: {pk} | Tenant: {tenant.nome}"
+                )
+                return Response(
+                    {"error": "Feedback não encontrado"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            enviado_por = request.user
+            
+            # Empresa pode enviar arquivos internos
+            if interno and not tenant.has_feature_internal_notes():
+                return Response(
+                    {"error": "Seu plano não permite arquivos internos"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+        
+        else:
+            # Denunciante anônimo: validar protocolo
+            if not protocolo:
+                return Response(
+                    {"error": "Campo 'protocolo' é obrigatório para envio anônimo"},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            protocolo = sanitize_protocol_code(protocolo)
+            
+            feedback = Feedback.objects.filter(
+                client=tenant,
+                protocolo=protocolo
+            ).select_related('client').first()
+            
+            if not feedback:
+                logger.warning(
+                    f"⚠️ Protocolo não encontrado para upload | "
+                    f"Código: {protocolo} | Tenant: {tenant.nome}"
+                )
+                return Response(
+                    {"error": "Protocolo não encontrado"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            enviado_por = None
+            interno = False  # Denunciante não envia arquivos internos
+        
+        # Criar registro de arquivo
+        try:
+            feedback_arquivo = FeedbackArquivo.objects.create(
+                feedback=feedback,
+                client=feedback.client,
+                arquivo=arquivo,
+                nome_original=arquivo.name,
+                tipo_mime=arquivo.content_type,
+                tamanho_bytes=arquivo.size,
+                enviado_por=enviado_por,
+                interno=interno
+            )
+            
+            logger.info(
+                f"📎 Arquivo anexado | "
+                f"Feedback: {feedback.protocolo} | "
+                f"Arquivo: {arquivo.name} | "
+                f"Tamanho: {feedback_arquivo.tamanho_mb}MB | "
+                f"Enviado por: {enviado_por.get_username() if enviado_por else 'Anônimo'} | "
+                f"Interno: {interno}"
+            )
+            
+            serializer = FeedbackArquivoSerializer(feedback_arquivo)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            logger.error(f"❌ Erro ao fazer upload de arquivo: {str(e)}")
+            return Response(
+                {"error": "Erro ao processar upload. Tente novamente."},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     @action(
         detail=False,

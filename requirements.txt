@@ -10,5 +10,6 @@ drf-yasg==1.21.7
 setuptools>=65.0.0
 packaging>=20.0
 cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
 Pillow>=10.0.0
 bleach==6.1.0

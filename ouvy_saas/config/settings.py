@@ -262,8 +262,62 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# =============================================================================
+# MEDIA FILES E CLOUDINARY
+# =============================================================================
+
+# Configuração de Cloudinary (Upload de arquivos)
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL', '')
+
+if CLOUDINARY_URL:
+    # Se Cloudinary está configurado, usar ele como storage principal
+    import cloudinary
+    import cloudinary.uploader
+    import cloudinary.api
+    
+    # Parser do CLOUDINARY_URL: cloudinary://api_key:api_secret@cloud_name
+    from urllib.parse import urlparse
+    parsed = urlparse(CLOUDINARY_URL)
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': parsed.hostname,
+        'API_KEY': parsed.username,
+        'API_SECRET': parsed.password,
+    }
+    
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    
+    # Configurar biblioteca cloudinary
+    cloudinary.config(
+        cloud_name=CLOUDINARY_STORAGE['CLOUD_NAME'],
+        api_key=CLOUDINARY_STORAGE['API_KEY'],
+        api_secret=CLOUDINARY_STORAGE['API_SECRET'],
+        secure=True
+    )
+    
+    print(f"☁️  Cloudinary configurado: {CLOUDINARY_STORAGE['CLOUD_NAME']}")
+else:
+    # Fallback para armazenamento local (desenvolvimento)
+    MEDIA_URL = 'media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
+    print("⚠️ Cloudinary não configurado. Usando armazenamento local.")
+
+# Limites de upload
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = MAX_UPLOAD_SIZE
+
+# Tipos de arquivo permitidos
+ALLOWED_FILE_TYPES = [
+    'image/jpeg',
+    'image/png',
+    'image/gif',
+    'image/webp',
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.ms-excel',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]
 
 # =============================================================================
 # CONFIGURAÇÕES DE SEGURANÇA ADICIONAIS
