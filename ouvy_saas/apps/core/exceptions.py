@@ -21,6 +21,7 @@ def custom_exception_handler(exc, context):
     - Adds logging for debugging
     - Handles Django exceptions that DRF doesn't catch by default
     - Custom messages for throttling (429 errors)
+    - Handles feature gating errors (403 Forbidden)
     
     Error Response Format:
     {
@@ -29,7 +30,22 @@ def custom_exception_handler(exc, context):
         "code": "ERROR_CODE" (optional)
     }
     """
-    # Chamar o handler padrão do DRF primeiro
+    # Tratar FeatureNotAvailableError antes do DRF handler
+    if isinstance(exc, FeatureNotAvailableError):
+        _log_exception(exc, context, status.HTTP_403_FORBIDDEN)
+        
+        return Response(
+            {
+                'error': 'Recurso não disponível no seu plano',
+                'detail': exc.message,
+                'feature': exc.feature,
+                'current_plan': exc.plan,
+                'action': f'Faça upgrade do seu plano para acessar {exc.feature}'
+            },
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    # Chamar o handler padrão do DRF
     response = exception_handler(exc, context)
     
     # Se o DRF tratou a exceção
@@ -150,3 +166,25 @@ class InvalidProtocolError(Exception):
 class RateLimitExceededError(Exception):
     """Exceção levantada quando o rate limit é excedido."""
     pass
+
+
+class FeatureNotAvailableError(Exception):
+    """
+    Exceção levantada quando o cliente tenta usar uma feature não disponível no seu plano.
+    
+    Attributes:
+        feature (str): Nome da feature bloqueada (ex: 'allow_internal_notes')
+        plan (str): Plano atual do cliente (ex: 'free')
+        message (str): Mensagem customizada para o usuário
+    """
+    
+    def __init__(self, feature: str, plan: str, message: str = None):
+        self.feature = feature
+        self.plan = plan
+        
+        if message is None:
+            from apps.tenants.plans import PlanFeatures
+            message = PlanFeatures.get_upgrade_message(plan, feature)
+        
+        self.message = message
+        super().__init__(self.message)

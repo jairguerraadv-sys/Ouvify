@@ -21,6 +21,7 @@ from .constants import (
 from apps.core.utils import get_client_ip, build_search_query, get_current_tenant
 from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.pagination import StandardResultsSetPagination
+from apps.core.exceptions import FeatureNotAvailableError
 import logging
 
 logger = logging.getLogger(__name__)
@@ -182,6 +183,15 @@ class FeedbackViewSet(viewsets.ModelViewSet):
                     {"error": f"Tipo inválido. Use um de: {sorted(allowed_company_types)}"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+
+            # ✅ FEATURE GATING: Validar se o tenant pode criar notas internas
+            if tipo == InteracaoTipo.NOTA_INTERNA:
+                if not tenant.has_feature_internal_notes():
+                    raise FeatureNotAvailableError(
+                        feature='allow_internal_notes',
+                        plan=tenant.plano,
+                        message=tenant.get_upgrade_message('allow_internal_notes')
+                    )
 
             if tipo == InteracaoTipo.MUDANCA_STATUS:
                 valid_status = FeedbackStatus.values()

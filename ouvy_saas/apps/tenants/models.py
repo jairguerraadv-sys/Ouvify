@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from .plans import PlanFeatures
 
 
 class Client(models.Model):
@@ -183,3 +184,75 @@ class Client(models.Model):
     def is_premium(self) -> bool:
         """Retorna True se o cliente possuir plano diferente de 'free' e assinatura ativa/trial"""
         return self.plano != self.FREE and self.subscription_status in {'active', 'trialing'}
+
+    # ==============================
+    # FEATURE GATING
+    # ==============================
+    
+    def has_feature(self, feature: str) -> bool:
+        """
+        Verifica se o cliente tem acesso a uma feature específica.
+        
+        Args:
+            feature: Nome da feature (ex: 'allow_internal_notes')
+        
+        Returns:
+            True se o cliente tem acesso, False caso contrário
+        """
+        return PlanFeatures.has_feature(self.plano, feature)
+    
+    def has_feature_internal_notes(self) -> bool:
+        """Verifica se o cliente pode criar notas internas."""
+        return self.has_feature('allow_internal_notes')
+    
+    def has_feature_attachments(self) -> bool:
+        """Verifica se o cliente pode enviar anexos."""
+        return self.has_feature('allow_attachments')
+    
+    def has_feature_custom_branding(self) -> bool:
+        """Verifica se o cliente pode customizar a marca."""
+        return self.has_feature('allow_custom_branding')
+    
+    def has_feature_api_access(self) -> bool:
+        """Verifica se o cliente tem acesso à API REST."""
+        return self.has_feature('allow_api_access')
+    
+    def has_feature_webhooks(self) -> bool:
+        """Verifica se o cliente pode usar webhooks."""
+        return self.has_feature('allow_webhooks')
+    
+    def has_feature_integrations(self) -> bool:
+        """Verifica se o cliente pode usar integrações avançadas."""
+        return self.has_feature('allow_integrations')
+    
+    def get_storage_limit_gb(self) -> float:
+        """Retorna o limite de armazenamento em GB. None = ilimitado."""
+        features = PlanFeatures.get_plan_features(self.plano)
+        return features.get('storage_gb', 1)
+    
+    def get_max_feedbacks_per_month(self) -> int:
+        """Retorna o limite de feedbacks por mês. None = ilimitado."""
+        features = PlanFeatures.get_plan_features(self.plano)
+        return features.get('max_feedbacks_per_month', 50)
+    
+    def get_max_users(self) -> int:
+        """Retorna o limite de usuários. None = ilimitado."""
+        features = PlanFeatures.get_plan_features(self.plano)
+        return features.get('max_users', 1)
+    
+    def get_support_tier(self) -> str:
+        """Retorna o nível de suporte: 'community', 'email', 'priority', '24/7'."""
+        features = PlanFeatures.get_plan_features(self.plano)
+        return features.get('support_tier', 'community')
+    
+    def get_upgrade_message(self, feature: str) -> str:
+        """
+        Retorna mensagem customizada para upgrade.
+        
+        Args:
+            feature: Nome da feature bloqueada
+        
+        Returns:
+            Mensagem descritiva
+        """
+        return PlanFeatures.get_upgrade_message(self.plano, feature)
