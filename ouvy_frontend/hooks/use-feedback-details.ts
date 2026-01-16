@@ -1,10 +1,10 @@
 import useSWR from 'swr';
 import { apiClient, fetcher } from './use-dashboard';
-import { Feedback } from '@/lib/types';
+import { Feedback, FeedbackAnexo } from '@/lib/types';
 
 export interface FeedbackInteraction {
   id: number;
-  tipo: 'MENSAGEM_PUBLICA' | 'NOTA_INTERNA' | 'MUDANCA_STATUS';
+  tipo: 'MENSAGEM_PUBLICA' | 'PERGUNTA_EMPRESA' | 'RESPOSTA_USUARIO' | 'NOTA_INTERNA' | 'MUDANCA_STATUS' | 'MENSAGEM_AUTOMATICA';
   mensagem: string;
   data: string;
   data_formatada: string;
@@ -13,6 +13,7 @@ export interface FeedbackInteraction {
 
 export interface FeedbackDetails extends Feedback {
   interacoes: FeedbackInteraction[];
+  arquivos: FeedbackAnexo[];
 }
 
 export function useFeedbackDetails(protocolo?: string) {
@@ -53,5 +54,6 @@ export function useFeedbackDetails(protocolo?: string) {
     error: error || listError,
     enviarMensagem,
     atualizarStatus,
+    refresh: mutate,
   };
 }

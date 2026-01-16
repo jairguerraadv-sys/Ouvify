@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "sonner";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ThemeLoader } from "@/components/ThemeLoader";
 import "./globals.css"; // ✅ Import DEVE estar aqui, no topo
@@ -119,6 +120,12 @@ export default function RootLayout({
           <ThemeLoader />
           {children}
           <Toaster />
+          <Sonner 
+            position="top-right" 
+            richColors 
+            expand={true}
+            closeButton
+          />
           <CookieBanner />
         </AuthProvider>
       </body>

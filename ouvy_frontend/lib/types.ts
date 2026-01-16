@@ -18,16 +18,21 @@ export interface Feedback {
   resposta_empresa?: string | null;
   data_resposta?: string | null;
   anexos?: FeedbackAnexo[];
+  arquivos?: FeedbackAnexo[];  // Alias para anexos
   historico?: FeedbackHistorico[];
 }
 
 export interface FeedbackAnexo {
   id: number;
   arquivo: string;
-  nome: string;
-  tamanho: number;
-  tipo: string;
-  data_upload: string;
+  url: string;
+  nome_original: string;
+  tipo_mime: string;
+  tamanho_bytes: number;
+  tamanho_mb: number;
+  interno: boolean;
+  data_envio: string;
+  enviado_por_nome: string;
 }
 
 export interface FeedbackHistorico {
