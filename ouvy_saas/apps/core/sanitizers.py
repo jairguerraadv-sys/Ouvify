@@ -13,6 +13,7 @@ try:
     import bleach
     BLEACH_AVAILABLE = True
 except ImportError:
+    bleach = None
     BLEACH_AVAILABLE = False
 
 

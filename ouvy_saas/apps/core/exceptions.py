@@ -102,7 +102,7 @@ def custom_exception_handler(exc, context):
         return Response(
             {
                 'error': 'Recurso não encontrado',
-                'detail': str(exc) if str(exc) else 'O recurso solicitado não existe'
+                'detail': str(exc) if exc is not None and str(exc) else 'O recurso solicitado não existe'
             },
             status=status.HTTP_404_NOT_FOUND
         )
