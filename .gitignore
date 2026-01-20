@@ -6,10 +6,24 @@ __pycache__/
 venv/
 ENV/
 .env
+.env.local
+.env.production
+.env.production.local
+.env.vercel
 db.sqlite3
 *.log
 .DS_Store
+node_modules/
+*.bak
+coverage/
+.nyc_output/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
 
 # Arquivos sensíveis com credenciais
 SECURITY_NOTES.md
 COMMIT_MESSAGE.txt
+COMMIT_MESSAGE_DOCS.txt

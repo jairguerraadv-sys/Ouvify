@@ -691,3 +691,78 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
         serializer = FeedbackInteracaoSerializer(interacao)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path='export'
+    )
+    def export_feedbacks(self, request):
+        """
+        Exporta feedbacks do tenant em CSV ou JSON.
+        
+        GET /api/feedbacks/export/?format=csv&tipo=denuncia&status=pendente
+        
+        Parâmetros:
+        - format: csv ou json (padrão: csv)
+        - tipo: filtro por tipo (opcional)
+        - status: filtro por status (opcional)
+        - data_inicio: YYYY-MM-DD (opcional)
+        - data_fim: YYYY-MM-DD (opcional)
+        """
+        import csv
+        from django.http import HttpResponse
+        from datetime import datetime
+        
+        format_type = request.query_params.get('format', 'csv').lower()
+        tipo_filter = request.query_params.get('tipo')
+        status_filter = request.query_params.get('status')
+        data_inicio = request.query_params.get('data_inicio')
+        data_fim = request.query_params.get('data_fim')
+        
+        queryset = self.get_queryset()
+        
+        if tipo_filter:
+            queryset = queryset.filter(tipo=tipo_filter)
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        if data_inicio:
+            queryset = queryset.filter(data_criacao__date__gte=data_inicio)
+        if data_fim:
+            queryset = queryset.filter(data_criacao__date__lte=data_fim)
+        
+        if format_type == 'json':
+            data = list(queryset.values(
+                'protocolo', 'tipo', 'titulo', 'descricao', 'status', 
+                'anonimo', 'email_contato', 'data_criacao', 'data_atualizacao'
+            ))
+            response = HttpResponse(
+                json.dumps(data, default=str, ensure_ascii=False),
+                content_type='application/json'
+            )
+            response['Content-Disposition'] = f'attachment; filename="feedbacks_export_{datetime.now().strftime("%Y%m%d")}.json"'
+            return response
+        
+        # CSV export
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="feedbacks_export_{datetime.now().strftime("%Y%m%d")}.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['Protocolo', 'Tipo', 'Título', 'Descrição', 'Status', 'Anônimo', 'Email Contato', 'Data Criação', 'Data Atualização'])
+        
+        for feedback in queryset:
+            writer.writerow([
+                feedback.protocolo,
+                feedback.tipo,
+                feedback.titulo,
+                feedback.descricao,
+                feedback.status,
+                'Sim' if feedback.anonimo else 'Não',
+                feedback.email_contato or '',
+                feedback.data_criacao.strftime('%Y-%m-%d %H:%M:%S'),
+                feedback.data_atualizacao.strftime('%Y-%m-%d %H:%M:%S')
+            ])
+        
+        logger.info(f"📊 Export realizado | Tenant: {request.tenant.nome} | Formato: {format_type} | Registros: {queryset.count()}")
+        return response
