@@ -23,16 +23,16 @@ apiClient.interceptors.request.use(
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('auth_token');
       const tenantId = localStorage.getItem('tenant_id');
-      
+
       if (token) {
         config.headers.Authorization = `Token ${token}`;
       }
-      
+
       if (tenantId) {
         config.headers['X-Tenant-ID'] = tenantId;
       }
     }
-    
+
     return config;
   },
   (error) => {
@@ -45,20 +45,32 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
     // Log detalhado apenas em desenvolvimento
-    logger.error('API Error:', {
-      url: error.config?.url,
-      method: error.config?.method,
-      status: error.response?.status,
-      data: error.response?.data,
-    });
-    
+    if (process.env.NODE_ENV === 'development') {
+      logger.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        requestId: error.config?.headers?.['X-Request-ID'] || 'unknown',
+        data: error.response?.data,
+      });
+    } else {
+      // Em produção, log apenas informações essenciais
+      logger.error('API Error:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        status: error.response?.status,
+        requestId: error.config?.headers?.['X-Request-ID'] || 'unknown',
+      });
+    }
+
     if (error.response?.status === 401 && typeof window !== 'undefined') {
-      // Token inválido ou expirado
+      // Token inválido ou expirado - redirecionar para login
       localStorage.removeItem('auth_token');
       localStorage.removeItem('tenant_id');
       window.location.href = '/login';
     }
-    
+    // 403 não redireciona - apenas lança erro
+
     return Promise.reject(error);
   }
 );
@@ -73,11 +85,20 @@ export interface ApiResponse<T> {
 export function getErrorMessage(error: unknown): string {
   if (axios.isAxiosError(error)) {
     const apiError = error.response?.data as ApiError;
-    
+
+    // Tratamento específico por status code
+    if (error.response?.status === 403) {
+      return 'Sem permissão para acessar este recurso.';
+    }
+
+    if (error.response?.status === 404) {
+      return 'Recurso não encontrado (verifique se a rota existe e se você está no tenant correto).';
+    }
+
     if (apiError?.detail) return apiError.detail;
     if (apiError?.error) return apiError.error;
     if (apiError?.message) return apiError.message;
-    
+
     if (apiError?.errors) {
       // Erros de validação do Django (formato: { field: ["error message"] })
       if (typeof apiError.errors === 'object') {
@@ -92,11 +113,11 @@ export function getErrorMessage(error: unknown): string {
       const firstError = Object.values(apiError.errors)[0];
       return Array.isArray(firstError) ? firstError[0] : String(firstError || 'Dados inválidos');
     }
-    
+
     // Fallback para status code
     if (error.response?.status === 400) return 'Dados inválidos. Verifique os campos.';
     if (error.response?.status === 500) return 'Erro no servidor. Tente novamente.';
-    
+
     if (error.message) return error.message;
   }
   
