@@ -61,7 +61,7 @@ if DEBUG:
 # Para Railway: adicione todos os possíveis domínios e use suffix pattern
 allowed_hosts_str = os.getenv(
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,.local,.railway.app,.up.railway.app,ouvy-saas-production.up.railway.app'
+    'localhost,127.0.0.1,testserver,.local,.railway.app,.up.railway.app,ouvy-saas-production.up.railway.app'
 )
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(',') if h.strip()]
 
@@ -87,16 +87,20 @@ X_FRAME_OPTIONS = 'DENY'
 
 # Content Security Policy
 if not DEBUG:
+    # CSP_INCLUDE_NONCE_IN = ['script-src']  # Django 6.0+ native nonce support
     CSP_DEFAULT_SRC = ("'self'",)
-    CSP_SCRIPT_SRC = ("'self'", "'unsafe-inline'", "https://js.stripe.com")
-    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
-    CSP_IMG_SRC = ("'self'", "data:", "https:")
+    CSP_SCRIPT_SRC = ("'self'", "NONCE", "https://js.stripe.com", "'strict-dynamic'")
+    CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")  # Tailwind necessita unsafe-inline
+    CSP_IMG_SRC = ("'self'", "data:", "https:", "blob:")
     CSP_FONT_SRC = ("'self'", "data:")
     CSP_CONNECT_SRC = ("'self'", "https://api.stripe.com")
     CSP_FRAME_SRC = ("https://js.stripe.com", "https://hooks.stripe.com")
     CSP_OBJECT_SRC = ("'none'",)
     CSP_BASE_URI = ("'self'",)
     CSP_FORM_ACTION = ("'self'",)
+
+    # CSP Mode: 'enforce' (blocking) or 'report-only' (monitoring)
+    CSP_MODE = os.getenv('CSP_MODE', 'enforce')
     
 # Permissions Policy (antigamente Feature-Policy)
 PERMISSIONS_POLICY = {

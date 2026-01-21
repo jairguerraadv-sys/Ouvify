@@ -80,7 +80,8 @@ class FeedbackViewSet(viewsets.ModelViewSet):
                 Prefetch(
                     'interacoes',
                     queryset=FeedbackInteracao.objects.select_related('autor').order_by('data')
-                )
+                ),
+                'arquivos'  # ✅ OTIMIZAÇÃO: Pré-carregar arquivos anexados
             )
         
         # Aplicar filtros de busca se fornecidos
@@ -210,7 +211,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             if not protocolo:
                 return Response({"error": "Campo 'protocolo' é obrigatório"}, status=status.HTTP_400_BAD_REQUEST)
 
-            feedback = Feedback.objects.filter(client=tenant, protocolo=protocolo).select_related('client').first()
+            feedback = Feedback.objects.filter(client=tenant, protocolo=protocolo).select_related('client', 'autor').first()
             if not feedback:
                 logger.warning(
                     f"⚠️ Protocolo não encontrado para resposta anônima | "
@@ -350,7 +351,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             feedback = Feedback.objects.filter(
                 client=tenant,
                 protocolo=protocolo
-            ).select_related('client').first()
+            ).select_related('client', 'autor').first()
             
             if not feedback:
                 logger.warning(
@@ -467,6 +468,44 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             "taxa_resolucao": taxa_resolucao
         }, status=status.HTTP_200_OK)
     
+    def _set_tenant_from_request(self, request):
+        """
+        Define o tenant atual baseado no header X-Tenant-ID ou subdomínio.
+        Usado para endpoints exempt no middleware (como consultar-protocolo).
+        """
+        from apps.tenants.models import Client
+        from apps.core.utils import set_current_tenant
+        
+        # Tentar via header X-Tenant-ID primeiro
+        tenant_id = request.headers.get('X-Tenant-ID')
+        if tenant_id:
+            try:
+                tenant = Client.objects.get(id=tenant_id, ativo=True)
+                set_current_tenant(tenant)
+                request.tenant = tenant
+                return
+            except (Client.DoesNotExist, ValueError):
+                pass
+        
+        # Tentar via subdomínio
+        host = request.get_host()
+        host_without_port = host.split(':')[0]
+        parts = host_without_port.split('.')
+        
+        if len(parts) > 1:
+            subdomain = parts[0]
+            if subdomain not in ['www', 'api', 'admin']:
+                try:
+                    tenant = Client.objects.get(
+                        subdominio__iexact=subdomain,
+                        ativo=True
+                    )
+                    set_current_tenant(tenant)
+                    request.tenant = tenant
+                    return
+                except Client.DoesNotExist:
+                    pass
+    
     @action(
         detail=False, 
         methods=['get'], 
@@ -494,18 +533,23 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         - Erro genérico 404 se não encontrar (não revela se protocolo existe)
         
         **Uso:**
-        GET /api/feedbacks/consultar-protocolo/?codigo=OUVY-XXXX-YYYY
+        GET /api/feedbacks/consultar-protocolo/?protocolo=OUVY-XXXX-YYYY
         Headers: X-Tenant-ID: 123
         
         **Parâmetros:**
-        - codigo (required): Código do protocolo (ex: OUVY-A3B9-K7M2)
+        - protocolo (required): Código do protocolo (ex: OUVY-A3B9-K7M2)
         
         **Observações:**
         - Não requer autenticação (público para o tenant)
         - Não expõe dados sensíveis (email, descrição completa)
         - Retorna apenas dados seguros via FeedbackConsultaSerializer
         """
-        codigo = request.query_params.get('codigo', '').strip().upper()
+        # ✅ IMPORTANTE: Esta URL é exempt no middleware, então precisamos
+        # definir o tenant manualmente aqui
+        if not get_current_tenant():
+            self._set_tenant_from_request(request)
+        
+        codigo = request.query_params.get('protocolo', '').strip().upper()
         
         if not codigo:
             client_ip = get_client_ip(request)
@@ -514,8 +558,8 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             )
             return Response(
                 {
-                    "error": "Parâmetro 'codigo' é obrigatório",
-                    "exemplo": "/api/feedbacks/consultar-protocolo/?codigo=OUVY-XXXX-YYYY"
+                    "error": "Parâmetro 'protocolo' é obrigatório",
+                    "exemplo": "/api/feedbacks/consultar-protocolo/?protocolo=OUVY-XXXX-YYYY"
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
@@ -546,7 +590,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             feedback = Feedback.objects.filter(
                 client=tenant,
                 protocolo=codigo
-            ).select_related('client').first()
+            ).select_related('client', 'autor').first()
             
             if not feedback:
                 # Log de tentativa com protocolo inválido ou de outro tenant
@@ -659,7 +703,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             feedback = Feedback.objects.filter(
                 client=tenant,
                 protocolo=protocolo
-            ).select_related('client').first()
+            ).select_related('client', 'autor').first()
             
             if not feedback:
                 client_ip = get_client_ip(request)

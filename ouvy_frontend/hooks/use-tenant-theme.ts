@@ -75,12 +75,15 @@ export function useTenantTheme() {
   useEffect(() => {
     if (!theme) return;
 
+    // Criar uma cópia do tema para evitar modificar o objeto original
+    const validatedTheme = { ...theme };
+
     // Validar que cor_primaria é um hex válido
-    const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(theme.cor_primaria);
+    const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_primaria);
     
     if (!isValidHex) {
-      logger.error(`Cor primária inválida: ${theme.cor_primaria}, usando padrão #00BCD4`);
-      theme.cor_primaria = '#00BCD4';
+      logger.error(`Cor primária inválida: ${validatedTheme.cor_primaria}, usando padrão #00BCD4`);
+      validatedTheme.cor_primaria = '#00BCD4';
     }
 
     // Converter hex para HSL para uso nas CSS variables do Tailwind
@@ -126,7 +129,7 @@ export function useTenantTheme() {
     };
 
     try {
-      const hslColor = hexToHSL(theme.cor_primaria);
+      const hslColor = hexToHSL(validatedTheme.cor_primaria);
       
       // Aplicar cor primária
       document.documentElement.style.setProperty('--primary', hslColor);
@@ -141,10 +144,10 @@ export function useTenantTheme() {
       document.documentElement.style.setProperty('--primary-dark', `${h} ${s} ${darkLum}%`);
       
       // Aplicar cor secundária (se fornecida pelo backend)
-      if (theme.cor_secundaria) {
-        const isValidSecondary = /^#[0-9A-Fa-f]{6}$/.test(theme.cor_secundaria);
+      if (validatedTheme.cor_secundaria) {
+        const isValidSecondary = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_secundaria);
         if (isValidSecondary) {
-          const hslSecondary = hexToHSL(theme.cor_secundaria);
+          const hslSecondary = hexToHSL(validatedTheme.cor_secundaria);
           document.documentElement.style.setProperty('--secondary', hslSecondary);
         } else {
           logger.warn('Cor secundária inválida, usando padrão');
@@ -156,23 +159,23 @@ export function useTenantTheme() {
       }
       
       // Aplicar cor de texto (se fornecida)
-      if (theme.cor_texto) {
-        const isValidText = /^#[0-9A-Fa-f]{6}$/.test(theme.cor_texto);
+      if (validatedTheme.cor_texto) {
+        const isValidText = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_texto);
         if (isValidText) {
-          const hslText = hexToHSL(theme.cor_texto);
+          const hslText = hexToHSL(validatedTheme.cor_texto);
           document.documentElement.style.setProperty('--foreground', hslText);
         }
       }
       
       // Aplicar fonte customizada (se fornecida)
-      if (theme.fonte_customizada) {
+      if (validatedTheme.fonte_customizada) {
         // Carregar fonte do Google Fonts dinamicamente
         const fontLink = document.getElementById('tenant-font');
         if (!fontLink) {
           const link = document.createElement('link');
           link.id = 'tenant-font';
           link.rel = 'stylesheet';
-          link.href = `https://fonts.googleapis.com/css2?family=${theme.fonte_customizada.replace(' ', '+')}:wght@300;400;500;600;700&display=swap`;
+          link.href = `https://fonts.googleapis.com/css2?family=${validatedTheme.fonte_customizada.replace(' ', '+')}:wght@300;400;500;600;700&display=swap`;
           document.head.appendChild(link);
         }
         

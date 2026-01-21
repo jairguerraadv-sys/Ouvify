@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { headers } from "next/headers";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "sonner";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ThemeLoader } from "@/components/ThemeLoader";
+import { CSPNonceProvider } from "@/components/CSPNonceProvider";
 import "./globals.css"; // ✅ Import DEVE estar aqui, no topo
 
 const inter = Inter({
@@ -63,11 +65,15 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  // Get nonce from headers (set by middleware)
+  const headersList = await headers();
+  const nonce = headersList.get('x-nonce') || '';
+
   return (
     <html lang="pt-br" suppressHydrationWarning>
       <head>
@@ -76,6 +82,7 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
         <meta name="theme-color" content="#00BCD4" />
+        <meta name="csp-nonce" content={nonce} />
         
         {/* ✅ NOVO: Estilos globais para White Label */}
         <style
@@ -116,18 +123,20 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <AuthProvider>
-          <ThemeLoader />
-          {children}
-          <Toaster />
-          <Sonner 
-            position="top-right" 
-            richColors 
-            expand={true}
-            closeButton
-          />
-          <CookieBanner />
-        </AuthProvider>
+        <CSPNonceProvider nonce={nonce}>
+          <AuthProvider>
+            <ThemeLoader />
+            {children}
+            <Toaster />
+            <Sonner 
+              position="top-right" 
+              richColors 
+              expand={true}
+              closeButton
+            />
+            <CookieBanner />
+          </AuthProvider>
+        </CSPNonceProvider>
       </body>
     </html>
   );

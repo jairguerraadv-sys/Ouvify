@@ -1,3 +1,48 @@
+class TenantIsolationMiddleware:
+    """
+    Middleware para garantir isolamento de dados multi-tenant.
+    Bloqueia requisições autenticadas sem tenant e impede acesso cruzado entre tenants.
+    Deve ser inserido APÓS o TenantMiddleware na stack do Django.
+    """
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        # Permitir URLs públicas sem tenant
+        public_paths = getattr(TenantMiddleware, 'EXEMPT_URLS', [])
+        if any(request.path.startswith(url) for url in public_paths):
+            return self.get_response(request)
+
+        # Se a requisição for autenticada, o tenant DEVE estar presente
+        user = getattr(request, 'user', None)
+        tenant = getattr(request, 'tenant', None)
+        if user and user.is_authenticated:
+            if not tenant:
+                return JsonResponse({
+                    "error": "tenant_required",
+                    "detail": "Usuário autenticado sem tenant associado."
+                }, status=403)
+
+            # Se o usuário tiver campo tenant/cliente, garantir correspondência
+            if hasattr(user, 'tenant_id') and user.tenant_id != tenant.id:
+                return JsonResponse({
+                    "error": "tenant_mismatch",
+                    "detail": "Usuário não pertence ao tenant da requisição."
+                }, status=403)
+            if hasattr(user, 'client_id') and user.client_id != tenant.id:
+                return JsonResponse({
+                    "error": "tenant_mismatch",
+                    "detail": "Usuário não pertence ao tenant da requisição."
+                }, status=403)
+
+        # Opcional: bloquear requisições sem tenant para rotas privadas
+        if not tenant and not any(request.path.startswith(url) for url in public_paths):
+            return JsonResponse({
+                "error": "tenant_required",
+                "detail": "Tenant não identificado na requisição."
+            }, status=403)
+
+        return self.get_response(request)
 """
 Tenant Middleware for Ouvy SaaS application.
 Handles automatic tenant identification based on subdomain or headers.

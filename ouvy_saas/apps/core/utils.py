@@ -226,3 +226,29 @@ def build_search_query(search_term: str, fields: list[str]) -> Q:
         query |= Q(**{f'{field}__icontains': search_term})
     
     return query
+
+# ============================================================================
+# Context Managers
+# ============================================================================
+
+from contextlib import contextmanager
+
+@contextmanager
+def tenant_context(tenant):
+    """
+    Context manager para executar código com um tenant específico
+    
+    Uso:
+        with tenant_context(my_client):
+            feedback = Feedback.objects.create(...)
+    """
+    previous_tenant = get_current_tenant()
+    try:
+        set_current_tenant(tenant)
+        yield tenant
+    finally:
+        if previous_tenant:
+            set_current_tenant(previous_tenant)
+        else:
+            clear_current_tenant()
+

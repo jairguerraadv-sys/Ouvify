@@ -25,10 +25,18 @@ def test_protocolo_generation():
     print("🔐 TESTE 1: GERAÇÃO CRIPTOGRÁFICA DE PROTOCOLOS")
     print("="*80)
     
-    # Verificar se o código fonte usa secrets
+    # Verificar se o código fonte usa secrets (apenas em linhas de código executável)
     source = inspect.getsource(Feedback.gerar_protocolo)
-    uses_secrets = 'secrets.choice' in source
-    uses_random = 'random.choice' in source
+    
+    # Separar linhas e filtrar apenas código executável (não comentários)
+    lines = source.split('\n')
+    code_lines = [line.strip() for line in lines if line.strip() and not line.strip().startswith('#')]
+    
+    # Juntar linhas de código
+    executable_code = '\n'.join(code_lines)
+    
+    uses_secrets = 'secrets.choice' in executable_code
+    uses_random = 'random.choice' in executable_code
     
     print(f"\n✓ Usa secrets.choice(): {'✅ SIM' if uses_secrets else '❌ NÃO'}")
     print(f"✓ Usa random.choice(): {'❌ SIM (INSEGURO)' if uses_random else '✅ NÃO'}")

@@ -13,12 +13,13 @@ from rest_framework.routers import DefaultRouter
 from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
 from apps.tenants.subscription_management import ManageSubscriptionView, ReactivateSubscriptionView  # type: ignore[import-not-found]
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
-from apps.core.views import home
+from apps.core import views as core_views
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
 from apps.tenants.logout_views import LogoutView  # type: ignore[import-not-found]
 from apps.core.lgpd_views import AccountDeletionView, DataExportView  # type: ignore[import-not-found]
 from apps.core.profile_views import UserProfileUpdateView  # type: ignore[import-not-found]
+from apps.core.views.analytics import AnalyticsView  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
 
@@ -53,7 +54,7 @@ router.register(r'feedbacks', FeedbackViewSet, basename='feedback')
 router.register(r'admin/tenants', TenantAdminViewSet, basename='admin-tenants')
 
 urlpatterns = [
-    path('', home, name='home'),  # Rota raiz para teste de multi-tenancy
+    path('', core_views.home, name='home'),  # Rota raiz para teste de multi-tenancy
     path('health/', health_check_view, name='health-check'),  # Health check endpoint
     path('ready/', readiness_check, name='readiness-check'),  # Readiness check endpoint
     
@@ -80,6 +81,9 @@ urlpatterns = [
     path('api/tenants/subscription/', ManageSubscriptionView.as_view(), name='manage-subscription'),
     path('api/tenants/subscription/reactivate/', ReactivateSubscriptionView.as_view(), name='reactivate-subscription'),
     
+    # Analytics e Métricas
+    path('api/analytics/', AnalyticsView.as_view(), name='analytics'),
+    
     path('api/', include(router.urls)),  # API REST endpoints
     # Auth token (DRF authtoken)
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
@@ -100,6 +104,9 @@ urlpatterns = [
     # LGPD/GDPR - Exclusão e Exportação de Dados
     path('api/account/', AccountDeletionView.as_view(), name='account-deletion'),
     path('api/export-data/', DataExportView.as_view(), name='data-export'),
+    
+    # CSP Violation Reports
+    path('api/csp-report/', csp_report, name='csp-report'),
 ]
 
 # Adicionar URLs do Swagger

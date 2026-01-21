@@ -13,7 +13,7 @@ from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.core.cache import cache
 
-from apps.core.email_service import EmailService
+from apps.core.services import EmailService, WebhookService
 from .models import Feedback, FeedbackInteracao
 
 logger = logging.getLogger(__name__)
@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 def notificar_novo_feedback(sender, instance, created, **kwargs):
     """
     Notifica o tenant por email quando um novo feedback é criado.
-    
+
     Args:
         sender: Classe Feedback
         instance: Instância do feedback criado
@@ -37,45 +37,27 @@ def notificar_novo_feedback(sender, instance, created, **kwargs):
     # Só envia para novos feedbacks (created=True)
     if not created:
         return
-    
-    # Ignora se não tem tenant ou email
-    if not instance.client or not instance.client.owner:
+
+    # Ignora se não tem tenant
+    if not instance.client:
         logger.warning(
-            f"⚠️ Feedback {instance.protocolo} sem client/owner - "
+            f"⚠️ Feedback {instance.protocolo} sem client - "
             f"Notificação não enviada"
         )
         return
-    
-    # Verifica se email está configurado
-    owner_email = instance.client.owner.email
-    if not owner_email:
-        logger.warning(
-            f"⚠️ Owner do tenant {instance.client.nome} sem email - "
-            f"Notificação não enviada"
-        )
-        return
-    
+
     try:
         # Envia notificação usando EmailService
-        success = EmailService.send_new_feedback_notification(
-            tenant=instance.client,
-            feedback=instance
-        )
-        
-        if success:
-            logger.info(
-                f"✅ Notificação enviada para {owner_email} - "
-                f"Feedback {instance.protocolo}"
-            )
-        else:
-            logger.warning(
-                f"⚠️ Falha ao enviar notificação para {owner_email} - "
-                f"Feedback {instance.protocolo}"
-            )
-            
+        EmailService.send_feedback_notification(instance)
+
+        # Envia webhook se configurado
+        WebhookService.send_feedback_webhook(instance, 'feedback.created')
+
+        logger.info(f"✅ Notificações enviadas para feedback {instance.protocolo}")
+
     except Exception as e:
         logger.error(
-            f"❌ Erro ao processar notificação do feedback {instance.protocolo}: "
+            f"❌ Erro ao processar notificações do feedback {instance.protocolo}: "
             f"{str(e)}",
             exc_info=True
         )
@@ -162,26 +144,18 @@ def preparar_notificacao_status(sender, instance, **kwargs):
 def notificar_mudanca_status(sender, instance, created, **kwargs):
     """
     Notifica quando o status do feedback muda.
-    
+
     Implementa rate limiting para evitar spam de emails.
     """
     # Ignora se é criação (já notificado em notificar_novo_feedback)
     if created:
         return
-    
+
     # Verifica se status mudou
     status_anterior = getattr(instance, '_status_anterior', None)
     if not status_anterior or status_anterior == instance.status:
         return
-    
-    # Ignora se não tem tenant/email
-    if not instance.client or not instance.client.owner:
-        return
-    
-    owner_email = instance.client.owner.email
-    if not owner_email:
-        return
-    
+
     # Rate limiting: 1 notificação de status por feedback a cada 5 minutos
     cache_key = f"status_notification_{instance.pk}"
     if cache.get(cache_key):
@@ -190,29 +164,25 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
             f"feedback {instance.protocolo}"
         )
         return
-    
+
     try:
-        # TODO: Implementar send_status_change_notification no EmailService
-        # Por enquanto, usa send_feedback_response_notification
-        status_message = f"Status alterado de '{status_anterior}' para '{instance.status}'"
-        success = EmailService.send_feedback_response_notification(
-            feedback=instance,
-            response_message=status_message
+        # Envia notificação de mudança de status
+        EmailService.send_feedback_status_update(instance, status_anterior)
+
+        # Envia webhook se configurado
+        WebhookService.send_feedback_webhook(instance, 'feedback.updated')
+
+        # Define rate limit por 5 minutos
+        cache.set(cache_key, True, 300)
+
+        logger.info(f"✅ Notificação de status enviada para feedback {instance.protocolo}")
+
+    except Exception as e:
+        logger.error(
+            f"❌ Erro ao processar notificação de status do feedback {instance.protocolo}: "
+            f"{str(e)}",
+            exc_info=True
         )
-        
-        if success:
-            # Define cache por 5 minutos
-            cache.set(cache_key, True, 300)
-            
-            logger.info(
-                f"✅ Notificação de status enviada para {owner_email} - "
-                f"Feedback {instance.protocolo} ({status_anterior} → {instance.status})"
-            )
-        else:
-            logger.warning(
-                f"⚠️ Falha ao enviar notificação de status - "
-                f"Feedback {instance.protocolo}"
-            )
             
     except Exception as e:
         # Se método não existe ainda, só loga

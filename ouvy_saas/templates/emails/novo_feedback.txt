@@ -1,0 +1,33 @@
+NOVO FEEDBACK RECEBIDO - {{ tenant.nome }}
+==========================================
+
+Um cliente compartilhou seu feedback com você.
+
+PROTOCOLO: {{ protocolo }}
+TIPO: {{ tipo_display }}
+STATUS: {{ status_display }}
+DATA: {{ data_criacao }}
+
+TÍTULO: {{ feedback.titulo }}
+
+DESCRIÇÃO:
+{{ feedback.descricao }}
+
+{% if feedback.anonimo %}
+ENVIADO: Anônimo
+{% else %}
+EMAIL: {{ feedback.email_contato|default:"Não informado" }}
+{% endif %}
+
+VER NO DASHBOARD:
+{{ dashboard_url }}
+
+DICAS PARA RESPOSTA:
+- Responda o mais breve possível
+- Seja empático e profissional
+- Atualize o status conforme avança
+- Use o protocolo para referência
+
+--
+Este email foi enviado automaticamente pelo sistema Ouvy.
+Empresa: {{ tenant.nome }} | Domínio: {{ tenant.dominio }}

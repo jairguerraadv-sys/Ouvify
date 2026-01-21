@@ -209,20 +209,15 @@ function ConfiguracoesContent() {
                   className="hidden"
                   id="logo-upload"
                 />
-                <label htmlFor="logo-upload">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => logoInputRef.current?.click()}
-                    asChild
-                  >
-                    <span className="cursor-pointer">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Selecionar Logo
-                    </span>
-                  </Button>
-                </label>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => logoInputRef.current?.click()}
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Selecionar Logo
+                </Button>
                 <p className="text-xs text-muted-foreground mt-1">
                   Formatos: PNG, JPG, SVG, WebP | Máximo: 5MB
                 </p>
@@ -248,20 +243,15 @@ function ConfiguracoesContent() {
                   className="hidden"
                   id="favicon-upload"
                 />
-                <label htmlFor="favicon-upload">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
-                    size="sm"
-                    onClick={() => faviconInputRef.current?.click()}
-                    asChild
-                  >
-                    <span className="cursor-pointer">
-                      <Upload className="w-4 h-4 mr-2" />
-                      Selecionar Favicon
-                    </span>
-                  </Button>
-                </label>
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  size="sm"
+                  onClick={() => faviconInputRef.current?.click()}
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Selecionar Favicon
+                </Button>
                 <p className="text-xs text-muted-foreground mt-1">
                   Deve ser quadrado | Máximo: 1MB
                 </p>
