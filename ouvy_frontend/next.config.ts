@@ -5,7 +5,7 @@ import { withSentryConfig } from '@sentry/nextjs';
  * Configuração Next.js para produção
  * Otimizado para performance e segurança
  */
-const nextConfig: NextConfig = {
+let nextConfig: NextConfig = {
   // Turbopack (desenvolvimento)
   turbopack: {
     root: __dirname,
@@ -93,7 +93,19 @@ const nextConfig: NextConfig = {
       '@radix-ui/react-tooltip',
     ],
   },
+
+  // Output standalone para produção (reduz tamanho)
+  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
 };
+
+// Bundle Analyzer (apenas quando ANALYZE=true)
+if (process.env.ANALYZE === 'true') {
+  const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: true,
+    openAnalyzer: true,
+  });
+  nextConfig = withBundleAnalyzer(nextConfig);
+}
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:
