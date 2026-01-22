@@ -22,6 +22,7 @@ from .constants import (
     MAX_INTERACAO_MENSAGEM_LENGTH,
 )
 from apps.core.utils import get_client_ip, build_search_query, get_current_tenant
+from apps.core.utils.privacy import anonymize_ip
 from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.pagination import StandardResultsSetPagination
 from apps.core.exceptions import FeatureNotAvailableError
@@ -187,7 +188,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             except Feedback.DoesNotExist:
                 logger.warning(
                     f"⚠️ Tentativa de adicionar interação em feedback inexistente | "
-                    f"ID: {pk} | Tenant: {tenant.nome} | IP: {get_client_ip(request)}"
+                    f"ID: {pk} | Tenant: {tenant.nome} | IP: {anonymize_ip(get_client_ip(request))}"
                 )
                 return Response({"error": "Feedback não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
@@ -231,7 +232,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
             if not feedback:
                 logger.warning(
                     f"⚠️ Protocolo não encontrado para resposta anônima | "
-                    f"Código: {protocolo} | Tenant: {tenant.nome} | IP: {get_client_ip(request)}"
+                    f"Código: {protocolo} | Tenant: {tenant.nome} | IP: {anonymize_ip(get_client_ip(request))}"
                 )
                 return Response({"error": "Protocolo não encontrado"}, status=status.HTTP_404_NOT_FOUND)
 
