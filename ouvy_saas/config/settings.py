@@ -32,6 +32,12 @@ sys.path.insert(0, str(BASE_DIR / 'apps'))
 # Carregar variáveis de ambiente do arquivo .env (no diretório pai)
 load_dotenv(BASE_DIR.parent / '.env')
 
+# Detectar modo de teste e carregar configurações específicas
+if os.getenv('TESTING', 'False').lower() in ('true', '1', 'yes'):
+    TESTING_MODE = True
+else:
+    TESTING_MODE = False
+
 # =============================================================================
 # CONFIGURAÇÕES DE SEGURANÇA
 # =============================================================================
@@ -142,7 +148,8 @@ INSTALLED_APPS = [
     
     # Bibliotecas de Terceiros
     'rest_framework',      # Para criar a API
-    'rest_framework.authtoken',  # Para autenticação via token
+    'rest_framework.authtoken',  # Para autenticação via token (legacy)
+    'rest_framework_simplejwt.token_blacklist',  # JWT com blacklist
     'corsheaders',         # Para o frontend conectar (Next.js)
     'drf_yasg',            # Swagger/OpenAPI documentation
 
@@ -155,9 +162,9 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware', # Adicionado para API
-    # 'django.middleware.common.CommonMiddleware',  # Desabilitado: Railway usa proxy reverse
-    # 'django.middleware.csrf.CsrfViewMiddleware',  # Desabilitado: API usa token auth, não cookie CSRF
+    'corsheaders.middleware.CorsMiddleware',  # CORS para API
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # ✅ RE-HABILITADO: JWT não usa cookies mas mantemos para Django Admin
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -400,6 +407,25 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 ]
 
 # =============================================================================
+# CSRF (Cross-Site Request Forgery) Protection
+# =============================================================================
+
+# Origens confiáveis para CSRF (mesmas do CORS)
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'https://ouvy.vercel.app',
+    'https://ouvy-frontend-jairguerraadv-sys-projects.vercel.app',
+]
+
+# Em produção, remover localhost
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = [
+        origin for origin in CSRF_TRUSTED_ORIGINS 
+        if not origin.startswith('http://localhost') and not origin.startswith('http://127.0.0.1')
+    ]
+
+# =============================================================================
 # DJANGO REST FRAMEWORK
 # =============================================================================
 
@@ -408,8 +434,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT como principal
+        'rest_framework.authentication.TokenAuthentication',  # Token legacy (backward compatibility)
+        'rest_framework.authentication.SessionAuthentication',  # Para Django Admin
     ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
@@ -417,15 +444,60 @@ REST_FRAMEWORK = {
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'apps.core.throttling.TenantRateThrottle',  # ✅ Rate limiting por tenant
+    ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/hour',  # Rate limit geral para usuários anônimos
-        'user': '1000/hour',  # Rate limit para usuários autenticados
-        'protocolo_consulta': '10/minute',  # ✅ ATUALIZADO: Rate limit para consulta de protocolo (IP + Protocolo)
+        'user': '1000/hour',  # Rate limit para usuários autenticados (fallback)
+        'tenant': '5000/hour',  # ✅ NOVO: Rate limit por tenant (evita abuso de múltiplos usuários)
+        'tenant_burst': '100/minute',  # ✅ NOVO: Burst limit por tenant
+        'protocolo_consulta': '10/minute',  # Rate limit para consulta de protocolo (IP + Protocolo)
         'feedback_criacao': '10/hour',  # ✅ NOVO: Rate limit para criação de feedbacks
     },
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',  # Handler customizado
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination',  # Paginação padrão
     'PAGE_SIZE': 20,  # 20 itens por página
+}
+
+# =============================================================================
+# JWT (JSON Web Tokens) - djangorestframework-simplejwt
+# =============================================================================
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    # Tokens expiráveis para segurança
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),  # Access token expira em 15 minutos
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Refresh token expira em 7 dias
+    
+    # Rotacionar refresh tokens após uso (blacklist anterior)
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': True,
+    
+    # Algoritmo e chave de assinatura
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    
+    # Headers de autorização
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    
+    # Classes de token
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    
+    # Sliding tokens (opcional, não usado)
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
 # =============================================================================
@@ -549,3 +621,72 @@ else:
     print("=" * 80)
     print("⚠️  Certifique-se de que todas as variáveis de ambiente estão configuradas!")
     print("=" * 80)
+
+# ============================================
+# OVERRIDES PARA MODO DE TESTE
+# ============================================
+
+if TESTING_MODE:
+    print("🧪 Aplicando configurações de teste E2E...")
+    
+    # Desabilitar rate limiting
+    REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
+        'anon': '100000/minute',
+        'user': '100000/minute', 
+        'protocolo_consulta': '100000/minute',
+        'feedback_criacao': '100000/minute',
+    }
+    
+    # Desabilitar CSRF
+    MIDDLEWARE = [m for m in MIDDLEWARE if 'CsrfViewMiddleware' not in m]
+    
+    # Permitir todos os hosts
+    ALLOWED_HOSTS = ['*']
+    
+    # Logs verbosos
+    LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'verbose': {
+                'format': '[{levelname}] {asctime} {module} {message}',
+                'style': '{',
+            },
+        },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'verbose',
+            },
+        },
+        'root': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'WARNING',
+                'propagate': False,
+            },
+            'apps': {
+                'handlers': ['console'],
+                'level': 'DEBUG',
+                'propagate': False,
+            },
+        },
+    }
+    
+    # Outras configurações de teste
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'test-cache',
+        }
+    }
+    PASSWORD_HASHERS = [
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    ]
+    
+    print("⚙️  Rate limiting DESABILITADO para testes E2E")

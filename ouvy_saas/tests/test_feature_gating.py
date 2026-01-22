@@ -259,26 +259,46 @@ class FeedbackViewSetFeatureGatingTestCase(APITestCase):
             plano='starter'
         )
         
-        self.feedback_free = Feedback.objects.create(
-            client=self.client_free,
-            protocolo='OUVY-FREE-TEST',
-            titulo='Free Feedback',
-            descricao='Test feedback para plano free'
-        )
+        # Criar feedbacks com contexto de tenant
+        from apps.core.utils import tenant_context
+        with tenant_context(self.client_free):
+            self.feedback_free = Feedback.objects.create(
+                client=self.client_free,
+                protocolo='OUVY-FREE-TEST',
+                titulo='Free Feedback',
+                descricao='Test feedback para plano free'
+            )
         
-        self.feedback_starter = Feedback.objects.create(
-            client=self.client_starter,
-            protocolo='OUVY-STAR-TEST',
-            titulo='Starter Feedback',
-            descricao='Test feedback para plano starter'
-        )
+        with tenant_context(self.client_starter):
+            self.feedback_starter = Feedback.objects.create(
+                client=self.client_starter,
+                protocolo='OUVY-STAR-TEST',
+                titulo='Starter Feedback',
+                descricao='Test feedback para plano starter'
+            )
         
         self.api_client = APIClient()
     
+        super().tearDownClass()
+    
     def test_free_plan_cannot_create_internal_notes(self):
         """Plano free não pode criar NOTA_INTERNA."""
+        # Configurar ALLOWED_HOSTS para este teste
+        from django.conf import settings
+        if 'empresa-free.localhost' not in settings.ALLOWED_HOSTS:
+            settings.ALLOWED_HOSTS.append('empresa-free.localhost')
+        
         self.api_client.force_authenticate(user=self.user_empresa)
         self.api_client.defaults['HTTP_X_TENANT_ID'] = str(self.client_free.id)
+        
+        response = self.api_client.post(
+            f'/api/feedbacks/{self.feedback_free.id}/adicionar-interacao/',
+            {
+                'mensagem': 'Esta é uma nota interna',
+                'tipo': 'NOTA_INTERNA'
+            },
+            format='json'
+        )
         
         response = self.api_client.post(
             f'/api/feedbacks/{self.feedback_free.id}/adicionar-interacao/',
@@ -294,6 +314,11 @@ class FeedbackViewSetFeatureGatingTestCase(APITestCase):
     
     def test_starter_plan_can_create_internal_notes(self):
         """Plano starter pode criar NOTA_INTERNA."""
+        # Configurar ALLOWED_HOSTS para este teste
+        from django.conf import settings
+        if 'empresa-starter.localhost' not in settings.ALLOWED_HOSTS:
+            settings.ALLOWED_HOSTS.append('empresa-starter.localhost')
+        
         user_starter = self.client_starter.owner
         self.api_client.force_authenticate(user=user_starter)
         self.api_client.defaults['HTTP_X_TENANT_ID'] = str(self.client_starter.id)
@@ -310,16 +335,23 @@ class FeedbackViewSetFeatureGatingTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
         # Verificar que a interação foi criada
-        interacao = FeedbackInteracao.objects.get(feedback=self.feedback_starter, tipo=InteracaoTipo.NOTA_INTERNA)
+        interacao = FeedbackInteracao.objects.all_tenants().get(feedback=self.feedback_starter, tipo=InteracaoTipo.NOTA_INTERNA)
         self.assertEqual(interacao.mensagem, 'Esta é uma nota interna')
     
     def test_public_responses_not_blocked_by_feature_gating(self):
         """Respostas anônimas (RESPOSTA_USUARIO) não são bloqueadas por feature gating."""
+        # Configurar ALLOWED_HOSTS para este teste
+        from django.conf import settings
+        if 'empresa-free.localhost' not in settings.ALLOWED_HOSTS:
+            settings.ALLOWED_HOSTS.append('empresa-free.localhost')
+        
+        self.api_client.defaults['HTTP_X_TENANT_ID'] = str(self.client_free.id)
+        
         response = self.api_client.post(
-            f'/api/feedbacks/{self.feedback_free.id}/adicionar-interacao/',
+            '/api/feedbacks/responder-protocolo/',
             {
                 'mensagem': 'Resposta do denunciante',
-                'protocolo': 'OUVY-FREE-TEST'
+                'protocolo': self.feedback_free.protocolo
             },
             format='json'
         )

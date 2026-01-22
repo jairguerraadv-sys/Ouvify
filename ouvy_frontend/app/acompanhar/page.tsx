@@ -69,7 +69,7 @@ export default function AcompanharPage() {
 
     try {
       const response = await api.get<FeedbackStatusResponse>('/api/feedbacks/consultar-protocolo/', {
-        params: { codigo: debouncedProtocolo.toUpperCase().trim() }
+        params: { protocolo: debouncedProtocolo.toUpperCase().trim() }
       });
 
       setFeedback(response);

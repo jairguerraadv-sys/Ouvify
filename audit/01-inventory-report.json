@@ -1,531 +1,764 @@
 {
-  "generated_at": "2026-01-20T00:00:00Z",
+  "metadata": {
+    "generated_at": "2026-01-22T00:00:00Z",
+    "audit_phase": "FASE 1 - MAPEAMENTO E INVENTÁRIO",
+    "project_name": "Ouvy SaaS - White Label Feedback Platform",
+    "technology_stack": {
+      "backend": "Python/Django 6.0.1",
+      "frontend": "Next.js 16.1.1 / React 19.2.3 / TypeScript",
+      "database": "PostgreSQL (Production) / SQLite (Dev)",
+      "deployment": {
+        "backend": "Railway",
+        "frontend": "Vercel"
+      }
+    }
+  },
+  
   "backend_endpoints": {
-    "public_endpoints": [
+    "authentication": [
+      {
+        "method": "POST",
+        "path": "/api-token-auth/",
+        "description": "Obter token de autenticação",
+        "authentication": "AllowAny",
+        "view": "obtain_auth_token (DRF)",
+        "frontend_usage": "✅ USADO - app/login/page.tsx:65"
+      },
+      {
+        "method": "POST",
+        "path": "/api/logout/",
+        "description": "Logout com invalidação de token",
+        "authentication": "IsAuthenticated",
+        "view": "LogoutView",
+        "frontend_usage": "✅ USADO - contexts/AuthContext.tsx:114"
+      },
+      {
+        "method": "GET,PATCH",
+        "path": "/api/auth/me/",
+        "description": "Perfil do usuário",
+        "authentication": "IsAuthenticated",
+        "view": "UserProfileUpdateView",
+        "frontend_usage": "✅ USADO - contexts/AuthContext.tsx:178"
+      },
+      {
+        "method": "GET",
+        "path": "/api/users/me/",
+        "description": "Dados completos do usuário",
+        "authentication": "IsAuthenticated",
+        "view": "UserMeView",
+        "frontend_usage": "⚠️ PARCIAL - endpoint existe, uso limitado"
+      },
+      {
+        "method": "POST",
+        "path": "/api/password-reset/request/",
+        "description": "Solicitar reset de senha",
+        "authentication": "AllowAny",
+        "view": "PasswordResetRequestView",
+        "frontend_usage": "✅ USADO - app/recuperar-senha/page.tsx:30"
+      },
+      {
+        "method": "POST",
+        "path": "/api/password-reset/confirm/",
+        "description": "Confirmar reset de senha",
+        "authentication": "AllowAny",
+        "view": "PasswordResetConfirmView",
+        "frontend_usage": "✅ USADO - app/recuperar-senha/confirmar/page.tsx:50"
+      }
+    ],
+    
+    "tenant_management": [
+      {
+        "method": "GET,PATCH",
+        "path": "/api/tenant-info/",
+        "description": "Informações públicas do tenant (GET) / Atualizar branding (PATCH)",
+        "authentication": "GET=AllowAny, PATCH=IsAuthenticated",
+        "view": "TenantInfoView",
+        "frontend_usage": "✅ USADO - app/login/page.tsx:75",
+        "cache": "5 minutos"
+      },
+      {
+        "method": "POST",
+        "path": "/api/register-tenant/",
+        "description": "Registro de novo tenant (SaaS Signup)",
+        "authentication": "AllowAny",
+        "view": "RegisterTenantView",
+        "frontend_usage": "✅ USADO - app/cadastro/page.tsx:178"
+      },
+      {
+        "method": "GET",
+        "path": "/api/check-subdominio/",
+        "description": "Verificar disponibilidade de subdomínio",
+        "authentication": "AllowAny",
+        "view": "CheckSubdominioView",
+        "frontend_usage": "✅ USADO - app/cadastro/page.tsx:57"
+      },
+      {
+        "method": "POST",
+        "path": "/api/upload-branding/",
+        "description": "Upload de logo/favicon (Cloudinary)",
+        "authentication": "IsAuthenticated",
+        "view": "UploadBrandingView",
+        "frontend_usage": "✅ USADO - lib/branding-upload.ts"
+      },
+      {
+        "method": "GET,PATCH",
+        "path": "/api/admin/tenants/",
+        "description": "Gestão administrativa de tenants (superuser)",
+        "authentication": "IsAdminUser",
+        "view": "TenantAdminViewSet",
+        "frontend_usage": "✅ USADO - app/admin/page.tsx:35,55"
+      }
+    ],
+    
+    "subscription_payment": [
+      {
+        "method": "POST",
+        "path": "/api/tenants/subscribe/",
+        "description": "Criar sessão de checkout Stripe",
+        "authentication": "IsAuthenticated",
+        "view": "CreateCheckoutSessionView",
+        "frontend_usage": "✅ USADO - app/precos/page.tsx:204"
+      },
+      {
+        "method": "POST",
+        "path": "/api/tenants/webhook/",
+        "description": "Webhook Stripe para eventos de assinatura",
+        "authentication": "AllowAny (verificado por signature)",
+        "view": "StripeWebhookView",
+        "frontend_usage": "❌ NÃO USADO - chamado externamente pelo Stripe"
+      },
+      {
+        "method": "GET,POST",
+        "path": "/api/tenants/subscription/",
+        "description": "Consultar/Gerenciar assinatura (cancelar)",
+        "authentication": "IsAuthenticated",
+        "view": "ManageSubscriptionView",
+        "frontend_usage": "✅ USADO - app/dashboard/assinatura/page.tsx:51,74"
+      },
+      {
+        "method": "POST",
+        "path": "/api/tenants/subscription/reactivate/",
+        "description": "Reativar assinatura cancelada",
+        "authentication": "IsAuthenticated",
+        "view": "ReactivateSubscriptionView",
+        "frontend_usage": "✅ USADO - app/dashboard/assinatura/page.tsx:89"
+      }
+    ],
+    
+    "feedbacks": [
+      {
+        "method": "GET",
+        "path": "/api/feedbacks/",
+        "description": "Listar feedbacks do tenant (paginado)",
+        "authentication": "IsAuthenticated",
+        "view": "FeedbackViewSet.list",
+        "frontend_usage": "✅ USADO - hooks/use-dashboard.ts (useFeedbacks)",
+        "pagination": "20 itens/página (max 100)"
+      },
+      {
+        "method": "POST",
+        "path": "/api/feedbacks/",
+        "description": "Criar novo feedback (retorna protocolo)",
+        "authentication": "AllowAny",
+        "view": "FeedbackViewSet.create",
+        "frontend_usage": "✅ USADO - app/enviar/page.tsx:69",
+        "throttle": "10 req/hora por IP"
+      },
+      {
+        "method": "GET",
+        "path": "/api/feedbacks/{id}/",
+        "description": "Detalhes de um feedback",
+        "authentication": "IsAuthenticated",
+        "view": "FeedbackViewSet.retrieve",
+        "frontend_usage": "⚠️ INDIRETO - usado via protocolo"
+      },
+      {
+        "method": "PUT,PATCH",
+        "path": "/api/feedbacks/{id}/",
+        "description": "Atualizar feedback",
+        "authentication": "IsAuthenticated",
+        "view": "FeedbackViewSet.update",
+        "frontend_usage": "❌ NÃO IMPLEMENTADO no frontend"
+      },
+      {
+        "method": "GET",
+        "path": "/api/feedbacks/consultar-protocolo/",
+        "description": "Consulta pública de feedback via protocolo",
+        "authentication": "AllowAny",
+        "view": "FeedbackViewSet.consultar_protocolo",
+        "frontend_usage": "✅ USADO - app/acompanhar/page.tsx:71",
+        "throttle": "5 req/min por IP+Protocolo",
+        "security": "✅ Filtrado por tenant + protocolo (correção 2026-01-27)"
+      },
+      {
+        "method": "POST",
+        "path": "/api/feedbacks/responder-protocolo/",
+        "description": "Resposta pública via protocolo (denunciante anônimo)",
+        "authentication": "AllowAny",
+        "view": "FeedbackViewSet.responder_protocolo",
+        "frontend_usage": "✅ USADO - app/acompanhar/page.tsx:114",
+        "throttle": "5 req/min por IP"
+      },
+      {
+        "method": "POST",
+        "path": "/api/feedbacks/{id}/adicionar-interacao/",
+        "description": "Adicionar interação ao feedback",
+        "authentication": "AllowAny (valida protocolo se anônimo)",
+        "view": "FeedbackViewSet.adicionar_interacao",
+        "frontend_usage": "✅ USADO - app/dashboard/feedbacks/[protocolo]/page.tsx",
+        "feature_gating": "allow_internal_notes para NOTA_INTERNA"
+      },
+      {
+        "method": "POST",
+        "path": "/api/feedbacks/{id}/upload-arquivo/",
+        "description": "Upload de arquivo anexo (Cloudinary)",
+        "authentication": "AllowAny (valida protocolo se anônimo)",
+        "view": "FeedbackViewSet.upload_arquivo",
+        "frontend_usage": "✅ USADO - app/dashboard/feedbacks/[protocolo]/page.tsx:188",
+        "feature_gating": "allow_attachments (plano PRO)",
+        "limits": "10MB, tipos: imagens/PDF/Office"
+      },
+      {
+        "method": "GET",
+        "path": "/api/feedbacks/dashboard-stats/",
+        "description": "Estatísticas do dashboard (KPIs)",
+        "authentication": "IsAuthenticated",
+        "view": "FeedbackViewSet.dashboard_stats",
+        "frontend_usage": "✅ USADO - hooks/use-dashboard.ts (useDashboardStats)"
+      },
+      {
+        "method": "GET",
+        "path": "/api/feedbacks/export/",
+        "description": "Exportar feedbacks em CSV ou JSON",
+        "authentication": "IsAuthenticated",
+        "view": "FeedbackViewSet.export_feedbacks",
+        "frontend_usage": "❌ NÃO IMPLEMENTADO no frontend",
+        "filters": "format, tipo, status, data_inicio, data_fim"
+      }
+    ],
+    
+    "analytics_lgpd": [
+      {
+        "method": "GET",
+        "path": "/api/analytics/",
+        "description": "Analytics e métricas do tenant",
+        "authentication": "IsAuthenticated",
+        "view": "AnalyticsView",
+        "frontend_usage": "❌ NÃO USADO - endpoint existe mas frontend não consome"
+      },
+      {
+        "method": "GET",
+        "path": "/api/export-data/",
+        "description": "Exportar dados pessoais (LGPD)",
+        "authentication": "IsAuthenticated",
+        "view": "DataExportView",
+        "frontend_usage": "✅ USADO - app/dashboard/perfil/page.tsx:53"
+      },
+      {
+        "method": "DELETE",
+        "path": "/api/account/",
+        "description": "Deletar conta (LGPD)",
+        "authentication": "IsAuthenticated",
+        "view": "AccountDeletionView",
+        "frontend_usage": "✅ USADO - app/dashboard/perfil/page.tsx:106"
+      }
+    ],
+    
+    "monitoring": [
+      {
+        "method": "GET",
+        "path": "/health/",
+        "description": "Health check básico (DB connection)",
+        "authentication": "AllowAny",
+        "view": "health_check",
+        "frontend_usage": "❌ NÃO USADO - endpoint para infra"
+      },
+      {
+        "method": "GET",
+        "path": "/ready/",
+        "description": "Readiness check para K8s/Railway",
+        "authentication": "AllowAny",
+        "view": "readiness_check",
+        "frontend_usage": "❌ NÃO USADO - endpoint para infra"
+      },
+      {
+        "method": "POST",
+        "path": "/api/csp-report/",
+        "description": "Receber reports de violação CSP",
+        "authentication": "AllowAny (rate limited)",
+        "view": "csp_report",
+        "frontend_usage": "❌ NÃO USADO - chamado pelo navegador"
+      }
+    ],
+    
+    "admin_obscured": [
+      {
+        "method": "GET,POST",
+        "path": "/painel-admin-ouvy-2026/",
+        "description": "Django Admin (URL obscurecida para segurança)",
+        "authentication": "Django Admin Auth",
+        "view": "admin.site.urls",
+        "frontend_usage": "❌ NÃO USADO - acesso direto via navegador"
+      }
+    ]
+  },
+  
+  "frontend_pages": {
+    "public": [
       {
         "path": "/",
-        "methods": ["GET"],
-        "description": "Home page",
-        "used_in_frontend": false
+        "file": "app/page.tsx",
+        "description": "Landing page principal",
+        "api_calls": ["GET /api/tenant-info/"]
       },
       {
-        "path": "/health/",
-        "methods": ["GET"],
-        "description": "Health check",
-        "used_in_frontend": false
+        "path": "/login",
+        "file": "app/login/page.tsx",
+        "description": "Login de usuários",
+        "api_calls": [
+          "POST /api-token-auth/",
+          "GET /api/tenant-info/"
+        ]
       },
       {
-        "path": "/ready/",
-        "methods": ["GET"],
-        "description": "Readiness check",
-        "used_in_frontend": false
+        "path": "/cadastro",
+        "file": "app/cadastro/page.tsx",
+        "description": "Registro de novo tenant",
+        "api_calls": [
+          "GET /api/check-subdominio/",
+          "POST /api/register-tenant/"
+        ]
       },
       {
-        "path": "/api/tenant-info/",
-        "methods": ["GET"],
-        "description": "Tenant information",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-tenant-theme.ts"]
+        "path": "/enviar",
+        "file": "app/enviar/page.tsx",
+        "description": "Formulário público de feedback",
+        "api_calls": ["POST /api/feedbacks/"]
       },
       {
-        "path": "/api/upload-branding/",
-        "methods": ["POST"],
-        "description": "Upload branding images",
-        "used_in_frontend": true,
-        "frontend_usage": ["branding-upload.ts"]
+        "path": "/acompanhar",
+        "file": "app/acompanhar/page.tsx",
+        "description": "Rastreamento público via protocolo",
+        "api_calls": [
+          "GET /api/feedbacks/consultar-protocolo/",
+          "POST /api/feedbacks/responder-protocolo/"
+        ]
       },
       {
-        "path": "/api/register-tenant/",
-        "methods": ["POST"],
-        "description": "Register new tenant",
-        "used_in_frontend": true,
-        "frontend_usage": ["cadastro/page.tsx"]
+        "path": "/recursos",
+        "file": "app/recursos/page.tsx",
+        "description": "Página de recursos/features",
+        "api_calls": []
       },
       {
-        "path": "/api/check-subdominio/",
-        "methods": ["GET"],
-        "description": "Check subdomain availability",
-        "used_in_frontend": true,
-        "frontend_usage": ["cadastro/page.tsx"]
+        "path": "/precos",
+        "file": "app/precos/page.tsx",
+        "description": "Planos e preços",
+        "api_calls": ["POST /api/tenants/subscribe/"]
       },
       {
-        "path": "/api/feedbacks/consultar-protocolo/",
-        "methods": ["GET"],
-        "description": "Public protocol consultation",
-        "used_in_frontend": true,
-        "frontend_usage": ["acompanhar/page.tsx"]
+        "path": "/termos",
+        "file": "app/termos/page.tsx",
+        "description": "Termos de uso",
+        "api_calls": []
       },
       {
-        "path": "/api/feedbacks/responder-protocolo/",
-        "methods": ["POST"],
-        "description": "Public protocol response",
-        "used_in_frontend": true,
-        "frontend_usage": ["acompanhar/page.tsx"]
+        "path": "/privacidade",
+        "file": "app/privacidade/page.tsx",
+        "description": "Política de privacidade (LGPD)",
+        "api_calls": []
+      },
+      {
+        "path": "/recuperar-senha",
+        "file": "app/recuperar-senha/page.tsx",
+        "description": "Solicitar reset de senha",
+        "api_calls": ["POST /api/password-reset/request/"]
+      },
+      {
+        "path": "/recuperar-senha/confirmar",
+        "file": "app/recuperar-senha/confirmar/page.tsx",
+        "description": "Confirmar reset de senha",
+        "api_calls": ["POST /api/password-reset/confirm/"]
+      },
+      {
+        "path": "/demo",
+        "file": "app/demo/page.tsx",
+        "description": "Demonstração da plataforma",
+        "api_calls": []
       }
     ],
-    "authenticated_endpoints": [
+    
+    "authenticated": [
       {
-        "path": "/api/feedbacks/",
-        "methods": ["GET", "POST"],
-        "description": "Feedback list and creation",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-dashboard.ts", "enviar/page.tsx"]
+        "path": "/dashboard",
+        "file": "app/dashboard/page.tsx",
+        "description": "Dashboard principal (visão geral)",
+        "api_calls": ["GET /api/feedbacks/dashboard-stats/"],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/feedbacks/{id}/",
-        "methods": ["GET", "PATCH"],
-        "description": "Feedback detail and update",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-dashboard.ts", "dashboard/feedbacks/[protocolo]/page.tsx"]
+        "path": "/dashboard/feedbacks",
+        "file": "app/dashboard/feedbacks/page.tsx",
+        "description": "Lista de feedbacks (paginada)",
+        "api_calls": ["GET /api/feedbacks/"],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/feedbacks/dashboard-stats/",
-        "methods": ["GET"],
-        "description": "Dashboard statistics",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-dashboard.ts"]
+        "path": "/dashboard/feedbacks/[protocolo]",
+        "file": "app/dashboard/feedbacks/[protocolo]/page.tsx",
+        "description": "Detalhes de um feedback específico",
+        "api_calls": [
+          "GET /api/feedbacks/consultar-protocolo/",
+          "POST /api/feedbacks/{id}/adicionar-interacao/",
+          "POST /api/feedbacks/{id}/upload-arquivo/"
+        ],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/feedbacks/{id}/adicionar-interacao/",
-        "methods": ["POST"],
-        "description": "Add feedback interaction",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-dashboard.ts"]
+        "path": "/dashboard/relatorios",
+        "file": "app/dashboard/relatorios/page.tsx",
+        "description": "Relatórios e análises",
+        "api_calls": [],
+        "protection": "ProtectedRoute",
+        "status": "⚠️ PLACEHOLDER - funcionalidade não implementada"
       },
       {
-        "path": "/api/tenants/subscribe/",
-        "methods": ["POST"],
-        "description": "Create checkout session",
-        "used_in_frontend": true,
-        "frontend_usage": ["precos/page.tsx"]
+        "path": "/dashboard/configuracoes",
+        "file": "app/dashboard/configuracoes/page.tsx",
+        "description": "Configurações do tenant (branding)",
+        "api_calls": [
+          "GET /api/tenant-info/",
+          "PATCH /api/tenant-info/",
+          "POST /api/upload-branding/"
+        ],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/tenants/webhook/",
-        "methods": ["POST"],
-        "description": "Stripe webhook",
-        "used_in_frontend": false
+        "path": "/dashboard/assinatura",
+        "file": "app/dashboard/assinatura/page.tsx",
+        "description": "Gestão de assinatura Stripe",
+        "api_calls": [
+          "GET /api/tenants/subscription/",
+          "POST /api/tenants/subscription/",
+          "POST /api/tenants/subscription/reactivate/"
+        ],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/tenants/subscription/",
-        "methods": ["GET"],
-        "description": "Subscription management",
-        "used_in_frontend": true,
-        "frontend_usage": ["dashboard/assinatura/page.tsx"]
+        "path": "/dashboard/perfil",
+        "file": "app/dashboard/perfil/page.tsx",
+        "description": "Perfil do usuário e LGPD",
+        "api_calls": [
+          "GET /api/export-data/",
+          "DELETE /api/account/"
+        ],
+        "protection": "ProtectedRoute"
       },
       {
-        "path": "/api/tenants/subscription/reactivate/",
-        "methods": ["PATCH"],
-        "description": "Reactivate subscription",
-        "used_in_frontend": true,
-        "frontend_usage": ["dashboard/assinatura/page.tsx"]
-      },
-      {
-        "path": "/api/analytics/",
-        "methods": ["GET"],
-        "description": "Analytics data",
-        "used_in_frontend": true,
-        "frontend_usage": ["use-dashboard.ts"]
-      },
-      {
-        "path": "/api-token-auth/",
-        "methods": ["POST"],
-        "description": "Token authentication",
-        "used_in_frontend": true,
-        "frontend_usage": ["login/page.tsx"]
-      },
-      {
-        "path": "/api/logout/",
-        "methods": ["POST"],
-        "description": "Logout",
-        "used_in_frontend": true,
-        "frontend_usage": ["AuthContext.tsx"]
-      },
-      {
-        "path": "/api/auth/me/",
-        "methods": ["GET"],
-        "description": "User profile",
-        "used_in_frontend": true,
-        "frontend_usage": ["dashboard/perfil/page.tsx"]
-      },
-      {
-        "path": "/api/users/me/",
-        "methods": ["GET"],
-        "description": "User details",
-        "used_in_frontend": false
-      },
-      {
-        "path": "/api/password-reset/request/",
-        "methods": ["POST"],
-        "description": "Password reset request",
-        "used_in_frontend": true,
-        "frontend_usage": ["recuperar-senha/page.tsx"]
-      },
-      {
-        "path": "/api/password-reset/confirm/",
-        "methods": ["POST"],
-        "description": "Password reset confirm",
-        "used_in_frontend": true,
-        "frontend_usage": ["recuperar-senha/confirmar/page.tsx"]
-      },
-      {
-        "path": "/api/account/",
-        "methods": ["DELETE"],
-        "description": "Account deletion",
-        "used_in_frontend": false
-      },
-      {
-        "path": "/api/export-data/",
-        "methods": ["GET"],
-        "description": "Data export",
-        "used_in_frontend": false
-      }
-    ],
-    "admin_endpoints": [
-      {
-        "path": "/painel-admin-ouvy-2026/",
-        "methods": ["GET", "POST"],
-        "description": "Django admin",
-        "used_in_frontend": false
-      },
-      {
-        "path": "/api/admin/tenants/",
-        "methods": ["GET", "PATCH"],
-        "description": "Admin tenant management",
-        "used_in_frontend": true,
-        "frontend_usage": ["admin/page.tsx"]
+        "path": "/admin",
+        "file": "app/admin/page.tsx",
+        "description": "Painel superusuário (gestão de tenants)",
+        "api_calls": [
+          "GET /api/admin/tenants/",
+          "PATCH /api/admin/tenants/{id}/"
+        ],
+        "protection": "ProtectedRoute + SuperUser check"
       }
     ]
   },
-  "frontend_pages": [
-    {
-      "path": "/",
-      "description": "Landing page",
-      "file": "app/page.tsx"
-    },
-    {
-      "path": "/acompanhar",
-      "description": "Track feedback",
-      "file": "app/acompanhar/page.tsx"
-    },
-    {
-      "path": "/admin",
-      "description": "Admin panel",
-      "file": "app/admin/page.tsx"
-    },
-    {
-      "path": "/cadastro",
-      "description": "Tenant registration",
-      "file": "app/cadastro/page.tsx"
-    },
-    {
-      "path": "/dashboard",
-      "description": "Dashboard",
-      "file": "app/dashboard/page.tsx"
-    },
-    {
-      "path": "/demo",
-      "description": "Demo page",
-      "file": "app/demo/page.tsx"
-    },
-    {
-      "path": "/enviar",
-      "description": "Send feedback",
-      "file": "app/enviar/page.tsx"
-    },
-    {
-      "path": "/login",
-      "description": "Login",
-      "file": "app/login/page.tsx"
-    },
-    {
-      "path": "/precos",
-      "description": "Pricing",
-      "file": "app/precos/page.tsx"
-    },
-    {
-      "path": "/privacidade",
-      "description": "Privacy policy",
-      "file": "app/privacidade/page.tsx"
-    },
-    {
-      "path": "/recuperar-senha",
-      "description": "Password recovery",
-      "file": "app/recuperar-senha/page.tsx"
-    },
-    {
-      "path": "/recursos",
-      "description": "Resources",
-      "file": "app/recursos/page.tsx"
-    },
-    {
-      "path": "/termos",
-      "description": "Terms of service",
-      "file": "app/termos/page.tsx"
-    },
-    {
-      "path": "/error",
-      "description": "Error page",
-      "file": "app/error.tsx"
-    },
-    {
-      "path": "/not-found",
-      "description": "404 page",
-      "file": "app/not-found.tsx"
-    }
-  ],
-  "frontend_components": [
-    {
-      "name": "CookieBanner",
-      "file": "components/CookieBanner.tsx",
-      "description": "Cookie consent banner"
-    },
-    {
-      "name": "ErrorBoundary",
-      "file": "components/ErrorBoundary.tsx",
-      "description": "Error boundary component"
-    },
-    {
-      "name": "ProtectedRoute",
-      "file": "components/ProtectedRoute.tsx",
-      "description": "Route protection component"
-    },
-    {
-      "name": "SafeText",
-      "file": "components/SafeText.tsx",
-      "description": "Safe text rendering component"
-    },
-    {
-      "name": "StructuredData",
-      "file": "components/StructuredData.tsx",
-      "description": "SEO structured data component"
-    },
-    {
-      "name": "SuccessCard",
-      "file": "components/SuccessCard.tsx",
-      "description": "Success feedback card"
-    },
-    {
-      "name": "TenantBanner",
-      "file": "components/TenantBanner.tsx",
-      "description": "Tenant branding banner"
-    },
-    {
-      "name": "ThemeLoader",
-      "file": "components/ThemeLoader.tsx",
-      "description": "Theme loading component"
-    }
-  ],
-  "config_files": [
-    ".env",
-    ".env.example",
-    ".env.production",
-    ".env.staging",
-    "pyrightconfig.json",
-    "pytest.ini",
-    "package.json",
-    "tsconfig.json",
-    "next.config.ts",
-    "tailwind.config.ts",
-    "eslint.config.mjs",
-    "jest.config.ts"
-  ],
-  "data_models": [
-    {
-      "name": "Feedback",
-      "app": "feedbacks",
-      "fields": ["protocolo", "tipo", "titulo", "descricao", "status", "tenant", "email_contato", "anonimo", "data_criacao", "data_atualizacao"]
-    },
-    {
-      "name": "FeedbackInteracao",
-      "app": "feedbacks",
-      "fields": ["feedback", "tipo", "mensagem", "autor", "data"]
-    },
-    {
-      "name": "FeedbackArquivo",
-      "app": "feedbacks",
-      "fields": ["feedback", "arquivo", "nome_original", "tipo", "tamanho"]
-    },
-    {
-      "name": "Client",
-      "app": "tenants",
-      "fields": ["nome", "subdominio", "email", "telefone", "plano", "ativo", "data_criacao"]
-    },
-    {
-      "name": "TenantAwareModel",
-      "app": "core",
-      "fields": ["client", "Meta"]
-    }
-  ],
-  "db_schemas": [
-    {
-      "table": "feedbacks_feedback",
-      "description": "Main feedback table with tenant isolation"
-    },
-    {
-      "table": "feedbacks_feedbackinteracao",
-      "description": "Feedback interactions and responses"
-    },
-    {
-      "table": "feedbacks_feedbackarquivo",
-      "description": "Feedback attachments"
-    },
-    {
-      "table": "tenants_client",
-      "description": "Tenant/client information"
-    }
-  ],
-  "test_files": [
-    "test_analytics.py",
-    "test_email_notifications.py",
-    "test_manual_feature_gating.py",
-    "test_server_manager.py",
-    "test_sanitization.py",
-    "test_security_fixes.py",
-    "validate_notifications.py",
-    "validate_notifications_simple.py",
-    "setup_test_data.py",
-    "run_load_tests.py",
-    "tests/test_api.py",
-    "tests/test_api_tenant_isolation.py",
-    "tests/test_diagnostico.py",
-    "tests/test_isolamento.py",
-    "tests/test_protocolo.py",
-    "tests/test_protocolo_seguranca.py",
-    "tests/test_protocolo_shell.py",
-    "tests/test_protocolo_throttle_improved.py",
-    "tests/test_rate_limiting.py",
-    "tests/test_tenant_info.py",
-    "tests/test_tenant_isolation.py",
-    "tests/test_throttle_config.py",
-    "ouvy_saas/tests/test_api_tenant_isolation.py",
-    "ouvy_saas/tests/test_feature_gating.py",
-    "ouvy_saas/tests/test_integration.py",
-    "ouvy_saas/tests/test_tenant_isolation.py",
-    "ouvy_frontend/__tests__/Badge.test.tsx",
-    "ouvy_frontend/__tests__/Button.test.tsx",
-    "ouvy_frontend/__tests__/Logo.test.tsx",
-    "ouvy_frontend/__tests__/seo.test.ts",
-    "ouvy_frontend/__tests__/validation.test.ts"
-  ],
-  "python_dependencies": [
-    "Django==6.0.1",
-    "djangorestframework==3.15.2",
-    "djangorestframework-simplejwt==5.3.1",
-    "django-cors-headers==4.6.0",
-    "stripe==14.2.0",
-    "cloudinary==1.41.0",
-    "psycopg2-binary==2.9.11",
-    "redis==7.1.0",
-    "sentry-sdk==2.20.0",
-    "python-dotenv==1.2.1",
-    "gunicorn==23.0.0",
-    "dj-database-url==3.1.0",
-    "drf-yasg==1.21.12",
-    "Pillow",
-    "bleach==6.1.0",
-    "django-otp==1.7.0",
-    "qrcode==7.4.2"
-  ],
-  "js_dependencies": [
-    "next==16.1.1",
-    "react==19.2.3",
-    "react-dom==19.2.3",
-    "axios==1.13.2",
-    "swr==2.3.8",
-    "@sentry/nextjs==10.35.0",
-    "tailwindcss==3.4.19",
-    "lucide-react==0.562.0",
-    "isomorphic-dompurify==2.35.0",
-    "class-variance-authority==0.7.1",
-    "clsx==2.1.1",
-    "sonner==2.0.7",
-    "tailwind-merge==3.4.0",
-    "tailwindcss-animate==1.0.7",
-    "@radix-ui/react-avatar==1.1.11",
-    "@radix-ui/react-dialog==1.1.15",
-    "@radix-ui/react-dropdown-menu==2.1.16",
-    "@radix-ui/react-label==2.1.8",
-    "@radix-ui/react-separator==1.1.8",
-    "@radix-ui/react-slot==1.2.4",
-    "@radix-ui/react-toast==1.2.15"
-  ],
-  "outdated_dependencies": [],
-  "unused_dependencies": [],
-  "backend_frontend_matrix": [
-    {
-      "endpoint": "/api/feedbacks/",
-      "method": "GET",
-      "frontend_usage": "dashboard/feedbacks list",
-      "payload_structure": "Query params: page, tipo, status, search"
-    },
-    {
-      "endpoint": "/api/feedbacks/",
-      "method": "POST",
-      "frontend_usage": "enviar/page.tsx form submission",
-      "payload_structure": "JSON: titulo, descricao, tipo, email_contato, anonimo"
-    },
-    {
-      "endpoint": "/api/feedbacks/consultar-protocolo/",
-      "method": "GET",
-      "frontend_usage": "acompanhar/page.tsx protocol lookup",
-      "payload_structure": "Query param: protocolo"
-    },
-    {
-      "endpoint": "/api/feedbacks/responder-protocolo/",
-      "method": "POST",
-      "frontend_usage": "acompanhar/page.tsx response submission",
-      "payload_structure": "JSON: protocolo, mensagem, email"
-    },
-    {
-      "endpoint": "/api/tenant-info/",
-      "method": "GET",
-      "frontend_usage": "use-tenant-theme.ts branding loading",
-      "payload_structure": "No payload"
-    },
-    {
-      "endpoint": "/api-token-auth/",
-      "method": "POST",
-      "frontend_usage": "login/page.tsx authentication",
-      "payload_structure": "JSON: username, password"
-    }
-  ],
-  "orphan_endpoints": [
-    "/health/",
-    "/ready/",
-    "/painel-admin-ouvy-2026/",
-    "/api/tenants/webhook/",
-    "/api/users/me/",
-    "/api/account/",
-    "/api/export-data/"
-  ],
-  "frontend_calls_to_missing_endpoints": [],
-  "http_method_mismatches": [],
-  "payload_structure_issues": [],
-  "statistics": {
-    "python_lines_of_code": 8500,
-    "javascript_lines_of_code": 12000,
-    "total_endpoints": 25,
-    "mapped_endpoints": 20,
-    "frontend_pages": 15,
-    "frontend_components": 8,
-    "data_models": 5,
-    "test_files": 25,
-    "python_tests": 18,
-    "js_tests": 5,
-    "python_version": "3.11+",
-    "node_version": "18+"
-  },
-  "audit_summary": {
-    "status": "COMPLETED",
-    "completion_date": "2026-01-20",
-    "overall_security_rating": "HIGH",
-    "overall_score": "8.7/10",
-    "production_readiness": "APPROVED_WITH_FIXES",
-    "critical_issues": 3,
-    "recommendations": [
-      "Fix 17 JavaScript vulnerabilities",
-      "Correct N+1 query in feedback listing",
-      "Review CSP policy for production"
+  
+  "backend_frontend_mapping": {
+    "fully_integrated": [
+      "/api-token-auth/ ↔ app/login/page.tsx",
+      "/api/tenant-info/ ↔ múltiplas páginas (GET/PATCH)",
+      "/api/register-tenant/ ↔ app/cadastro/page.tsx",
+      "/api/check-subdominio/ ↔ app/cadastro/page.tsx",
+      "/api/feedbacks/ (POST) ↔ app/enviar/page.tsx",
+      "/api/feedbacks/ (GET) ↔ app/dashboard/feedbacks/page.tsx",
+      "/api/feedbacks/consultar-protocolo/ ↔ app/acompanhar/page.tsx",
+      "/api/feedbacks/responder-protocolo/ ↔ app/acompanhar/page.tsx",
+      "/api/feedbacks/{id}/adicionar-interacao/ ↔ app/dashboard/feedbacks/[protocolo]/page.tsx",
+      "/api/feedbacks/{id}/upload-arquivo/ ↔ app/dashboard/feedbacks/[protocolo]/page.tsx",
+      "/api/feedbacks/dashboard-stats/ ↔ app/dashboard/page.tsx",
+      "/api/tenants/subscribe/ ↔ app/precos/page.tsx",
+      "/api/tenants/subscription/ ↔ app/dashboard/assinatura/page.tsx",
+      "/api/tenants/subscription/reactivate/ ↔ app/dashboard/assinatura/page.tsx",
+      "/api/admin/tenants/ ↔ app/admin/page.tsx",
+      "/api/logout/ ↔ contexts/AuthContext.tsx",
+      "/api/auth/me/ ↔ contexts/AuthContext.tsx",
+      "/api/password-reset/request/ ↔ app/recuperar-senha/page.tsx",
+      "/api/password-reset/confirm/ ↔ app/recuperar-senha/confirmar/page.tsx",
+      "/api/export-data/ ↔ app/dashboard/perfil/page.tsx",
+      "/api/account/ ↔ app/dashboard/perfil/page.tsx",
+      "/api/upload-branding/ ↔ app/dashboard/configuracoes/page.tsx"
+    ],
+    
+    "partially_integrated": [
+      "/api/users/me/ - endpoint existe mas uso limitado",
+      "/api/feedbacks/{id}/ (GET detail) - usado indiretamente via protocolo"
+    ],
+    
+    "orphaned_backend": [
+      "/api/feedbacks/{id}/ (PUT/PATCH) - atualização não implementada no frontend",
+      "/api/feedbacks/export/ - exportação CSV/JSON não usada (deveria estar em /dashboard/relatorios)",
+      "/api/analytics/ - endpoint existe mas frontend não consome"
+    ],
+    
+    "missing_backend": [
+      "Não foram identificados endpoints faltantes - frontend usa apenas endpoints existentes"
+    ],
+    
+    "infrastructure_only": [
+      "/health/ - monitoramento de infra",
+      "/ready/ - readiness check K8s/Railway",
+      "/api/csp-report/ - chamado pelo navegador",
+      "/api/tenants/webhook/ - chamado externamente pelo Stripe",
+      "/painel-admin-ouvy-2026/ - Django Admin direto"
     ]
+  },
+  
+  "database_models": {
+    "Client (tenants.Client)": {
+      "description": "Modelo de Tenant (empresa cliente)",
+      "fields": [
+        "id (PK)",
+        "owner (FK User)",
+        "nome",
+        "subdominio (unique)",
+        "logo (URL Cloudinary)",
+        "cor_primaria",
+        "cor_secundaria",
+        "cor_texto",
+        "fonte_customizada",
+        "favicon (URL Cloudinary)",
+        "ativo (boolean)",
+        "plano (choices: free/starter/pro)",
+        "stripe_customer_id (unique)",
+        "stripe_subscription_id",
+        "subscription_status",
+        "data_fim_assinatura",
+        "data_criacao",
+        "data_atualizacao"
+      ],
+      "indexes": [
+        "subdominio (unique)",
+        "stripe_customer_id (unique)"
+      ],
+      "relationships": [
+        "OneToMany → Feedback",
+        "OneToMany → FeedbackInteracao",
+        "OneToMany → FeedbackArquivo",
+        "OneToMany → CSPViolation"
+      ]
+    },
+    
+    "Feedback (feedbacks.Feedback)": {
+      "description": "Feedback de usuário (TenantAwareModel)",
+      "fields": [
+        "id (PK)",
+        "client (FK Client) - isolamento multi-tenant",
+        "tipo (choices: denuncia/sugestao/elogio/reclamacao)",
+        "titulo",
+        "descricao",
+        "status (choices: pendente/em_analise/resolvido/fechado)",
+        "protocolo (unique, indexed) - gerado automaticamente",
+        "anonimo (boolean)",
+        "email_contato",
+        "resposta_empresa",
+        "data_resposta",
+        "data_criacao",
+        "data_atualizacao",
+        "autor (FK User, nullable)"
+      ],
+      "indexes": [
+        "protocolo (unique)",
+        "(client, tipo)",
+        "(client, status)",
+        "(client, -data_criacao)",
+        "(client, status, -data_criacao)"
+      ],
+      "relationships": [
+        "ManyToOne → Client",
+        "OneToMany → FeedbackInteracao",
+        "OneToMany → FeedbackArquivo"
+      ],
+      "security": "✅ Protocolo usa secrets.choice() (CSPRNG) - correção 2026-01-27"
+    },
+    
+    "FeedbackInteracao (feedbacks.FeedbackInteracao)": {
+      "description": "Interações/comentários em feedbacks (TenantAwareModel)",
+      "fields": [
+        "id (PK)",
+        "client (FK Client)",
+        "feedback (FK Feedback)",
+        "autor (FK User, nullable)",
+        "tipo (choices: MENSAGEM_PUBLICA/PERGUNTA_EMPRESA/RESPOSTA_USUARIO/MUDANCA_STATUS/NOTA_INTERNA/MENSAGEM_AUTOMATICA)",
+        "mensagem",
+        "data"
+      ],
+      "indexes": [
+        "(client, feedback, data)",
+        "(feedback, tipo)"
+      ],
+      "relationships": [
+        "ManyToOne → Client",
+        "ManyToOne → Feedback",
+        "ManyToOne → User"
+      ],
+      "feature_gating": "NOTA_INTERNA requer allow_internal_notes"
+    },
+    
+    "FeedbackArquivo (feedbacks.FeedbackArquivo)": {
+      "description": "Arquivos anexados a feedbacks (TenantAwareModel)",
+      "fields": [
+        "id (PK)",
+        "client (FK Client)",
+        "feedback (FK Feedback)",
+        "arquivo (CloudinaryField)",
+        "nome_original",
+        "tipo_mime",
+        "tamanho_bytes",
+        "enviado_por (FK User, nullable)",
+        "interno (boolean)",
+        "data_upload"
+      ],
+      "indexes": [
+        "(client, feedback)",
+        "(feedback, interno)"
+      ],
+      "relationships": [
+        "ManyToOne → Client",
+        "ManyToOne → Feedback",
+        "ManyToOne → User"
+      ],
+      "feature_gating": "allow_attachments (plano PRO)",
+      "limits": "10MB máximo, tipos: imagens/PDF/Office"
+    },
+    
+    "CSPViolation (core.CSPViolation)": {
+      "description": "Registros de violação CSP para monitoramento",
+      "fields": [
+        "id (PK)",
+        "client (FK Client)",
+        "document_uri",
+        "violated_directive",
+        "effective_directive",
+        "original_policy",
+        "blocked_uri",
+        "source_file",
+        "line_number",
+        "user_agent",
+        "ip_address",
+        "created_at"
+      ],
+      "indexes": [
+        "(client, created_at)",
+        "violated_directive",
+        "ip_address"
+      ],
+      "security": "URIs sanitizadas (sem query params), rate limited"
+    }
+  },
+  
+  "dependencies": {
+    "backend_python": {
+      "framework": "Django==6.0.1",
+      "api": "djangorestframework==3.15.2",
+      "auth": "djangorestframework-simplejwt==5.3.1",
+      "database": "psycopg2-binary==2.9.11",
+      "storage": "cloudinary==1.41.0, django-cloudinary-storage==0.3.0",
+      "payment": "stripe==14.2.0",
+      "cors": "django-cors-headers==4.6.0",
+      "cache": "django-redis==6.0.0, redis==7.1.0",
+      "monitoring": "sentry-sdk==2.20.0",
+      "security": "bleach==6.1.0, cryptography==46.0.3",
+      "docs": "drf-yasg==1.21.12",
+      "server": "gunicorn==23.0.0, whitenoise==6.11.0",
+      "testing": "pytest==9.0.2, pytest-django==4.11.1, pytest-cov==7.0.0",
+      "linting": "bandit==1.9.3, safety==3.7.0",
+      "total_packages": 83
+    },
+    
+    "frontend_javascript": {
+      "framework": "next==16.1.1, react==19.2.3, react-dom==19.2.3",
+      "http": "axios==1.13.2, swr==2.3.8",
+      "ui": "@radix-ui/* (11 packages), lucide-react==0.562.0",
+      "styling": "tailwindcss==3.4.19, tailwindcss-animate==1.0.7, clsx==2.1.1, tailwind-merge==3.4.0",
+      "security": "isomorphic-dompurify==2.35.0",
+      "monitoring": "@sentry/nextjs==10.35.0",
+      "notifications": "sonner==2.0.7",
+      "testing": "jest==30.2.0, @testing-library/react==16.3.1, @playwright/test==1.57.0",
+      "typescript": "typescript==5.x, @types/* (5 packages)",
+      "total_packages": 45
+    }
+  },
+  
+  "configuration_files": {
+    "backend": [
+      "ouvy_saas/config/settings.py - Configuração principal Django",
+      "ouvy_saas/config/urls.py - Roteamento de URLs",
+      "ouvy_saas/manage.py - CLI Django",
+      "requirements.txt - Dependências Python (83 pacotes)",
+      "Procfile - Configuração Gunicorn para Railway",
+      "pytest.ini - Configuração de testes",
+      "pyrightconfig.json - Type checking Python",
+      ".env.example - Template de variáveis de ambiente"
+    ],
+    
+    "frontend": [
+      "ouvy_frontend/next.config.ts - Configuração Next.js",
+      "ouvy_frontend/package.json - Dependências JavaScript",
+      "ouvy_frontend/tsconfig.json - Configuração TypeScript",
+      "ouvy_frontend/tailwind.config.ts - Configuração Tailwind CSS",
+      "ouvy_frontend/jest.config.ts - Configuração de testes unitários",
+      "ouvy_frontend/playwright.config.ts - Configuração de testes E2E",
+      "ouvy_frontend/middleware.ts - Middleware Next.js",
+      "ouvy_frontend/components.json - Configuração shadcn/ui",
+      "ouvy_frontend/vercel.json - Configuração Vercel"
+    ],
+    
+    "infrastructure": [
+      "railway.json - Configuração Railway (backend)",
+      "vercel.json - Configuração Vercel (frontend)",
+      "deploy.sh - Script de deploy",
+      "deploy_staging.sh - Script de deploy staging"
+    ]
+  },
+  
+  "test_coverage": {
+    "backend_tests": [
+      "ouvy_saas/tests/test_tenant_isolation.py - Isolamento multi-tenant",
+      "ouvy_saas/tests/test_api_tenant_isolation.py - Isolamento em API",
+      "ouvy_saas/tests/test_integration.py - Testes de integração",
+      "ouvy_saas/tests/test_feature_gating.py - Feature gating por plano",
+      "ouvy_saas/apps/feedbacks/tests/test_performance.py - Performance de queries",
+      "ouvy_saas/test_security_fixes.py - Segurança (secrets.choice)",
+      "ouvy_saas/test_sanitization.py - Sanitização de inputs",
+      "tests/test_protocolo_seguranca.py - Segurança de protocolos",
+      "tests/test_rate_limiting.py - Rate limiting",
+      "tests/test_isolamento.py - Isolamento adicional"
+    ],
+    
+    "frontend_tests": [
+      "ouvy_frontend/__tests__/ - Testes unitários Jest",
+      "ouvy_frontend/e2e/ - Testes E2E Playwright",
+      "ouvy_frontend/tests/ - Testes adicionais"
+    ],
+    
+    "coverage_estimate": "~60-70% (backend), ~40% (frontend)"
+  },
+  
+  "summary": {
+    "total_backend_endpoints": 38,
+    "total_frontend_pages": 20,
+    "fully_integrated_routes": 22,
+    "partially_integrated_routes": 2,
+    "orphaned_backend_endpoints": 3,
+    "missing_backend_endpoints": 0,
+    "infrastructure_only_endpoints": 5,
+    "database_models": 5,
+    "backend_dependencies": 83,
+    "frontend_dependencies": 45,
+    "test_files": 20
   }
 }

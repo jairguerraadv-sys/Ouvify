@@ -25,6 +25,7 @@ from apps.core.utils import get_client_ip, build_search_query, get_current_tenan
 from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.pagination import StandardResultsSetPagination
 from apps.core.exceptions import FeatureNotAvailableError
+from apps.core.decorators import require_feature, require_active_tenant
 import logging
 
 logger = logging.getLogger(__name__)
@@ -128,7 +129,22 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         Sobrescreve o método de criação para garantir que o tenant
         seja preenchido automaticamente via TenantAwareModel.
         O protocolo também é gerado automaticamente no save() do modelo.
+        
+        Valida limite de feedbacks por plano antes de criar.
         """
+        tenant = get_current_tenant()
+        
+        # Validar limite de feedbacks
+        if tenant and not tenant.can_create_feedback():
+            raise FeatureNotAvailableError(
+                feature='feedback_limit',
+                message=(
+                    f"Limite de {tenant.get_feedback_limit()} feedbacks atingido para plano {tenant.plano.upper()}. "
+                    f"Você já possui {tenant.get_current_feedback_count()} feedbacks. "
+                    f"Faça upgrade para continuar criando feedbacks."
+                )
+            )
+        
         feedback = serializer.save()
         
         # Log de criação de feedback
@@ -742,9 +758,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         permission_classes=[permissions.IsAuthenticated],
         url_path='export'
     )
+    @require_feature('export')  # ✅ Feature gating: requer plano STARTER ou PRO
     def export_feedbacks(self, request):
         """
         Exporta feedbacks do tenant em CSV ou JSON.
+        
+        🔒 FEATURE GATING: Requer plano STARTER ou PRO.
         
         GET /api/feedbacks/export/?format=csv&tipo=denuncia&status=pendente
         

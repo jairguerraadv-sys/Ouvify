@@ -17,18 +17,18 @@ export const apiClient: AxiosInstance = axios.create({
   timeout: 30000, // 30 segundos (aumentado para evitar timeouts em cold starts)
 });
 
-// Interceptor de request - adicionar auth token
+// Interceptor de request - adicionar auth token JWT
 apiClient.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token');
+      const accessToken = localStorage.getItem('access_token');
       const tenantId = localStorage.getItem('tenant_id');
 
-      if (token) {
-        config.headers.Authorization = `Token ${token}`;
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      if (tenantId) {
+      if (tenantId && !config.url?.includes('consultar-protocolo')) {
         config.headers['X-Tenant-ID'] = tenantId;
       }
     }
@@ -40,10 +40,12 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Interceptor de response - tratar erros globalmente
+// Interceptor de response - tratar erros globalmente e auto-refresh JWT
 apiClient.interceptors.response.use(
   (response) => response,
-  (error: AxiosError) => {
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
+
     // Log detalhado apenas em desenvolvimento
     if (process.env.NODE_ENV === 'development') {
       logger.error('API Error:', {
@@ -63,14 +65,41 @@ apiClient.interceptors.response.use(
       });
     }
 
-    if (error.response?.status === 401 && typeof window !== 'undefined') {
-      // Token inválido ou expirado - redirecionar para login
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('tenant_id');
-      window.location.href = '/login';
-    }
-    // 403 não redireciona - apenas lança erro
+    // Auto-refresh JWT em caso de 401 (token expirado)
+    if (error.response?.status === 401 && !originalRequest._retry && typeof window !== 'undefined') {
+      originalRequest._retry = true;
 
+      try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) {
+          throw new Error('No refresh token');
+        }
+
+        // Tentar renovar o access token
+        const response = await axios.post(`${API_URL}/api/token/refresh/`, {
+          refresh: refreshToken,
+        });
+
+        const { access } = response.data;
+        localStorage.setItem('access_token', access);
+
+        // Retry da requisição original com novo token
+        if (originalRequest.headers) {
+          originalRequest.headers.Authorization = `Bearer ${access}`;
+        }
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        // Refresh falhou - limpar tudo e redirecionar para login
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('tenant_id');
+        window.location.href = '/login';
+        return Promise.reject(refreshError);
+      }
+    }
+
+    // 403 não redireciona - apenas lança erro
     return Promise.reject(error);
   }
 );

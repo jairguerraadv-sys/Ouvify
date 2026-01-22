@@ -92,7 +92,7 @@ class CSPViolation(models.Model):
     Dados são normalizados para evitar vazamento de PII.
     """
     client = models.ForeignKey(
-        'Tenant',
+        'tenants.Client',
         on_delete=models.CASCADE,
         related_name='csp_violations',
         help_text="Tenant que reportou a violação"

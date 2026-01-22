@@ -256,3 +256,74 @@ class Client(models.Model):
             Mensagem descritiva
         """
         return PlanFeatures.get_upgrade_message(self.plano, feature)
+    
+    # Métodos adicionais de feature gating
+    
+    def has_feature_export(self) -> bool:
+        """Verifica se o cliente pode exportar dados (CSV/JSON)."""
+        return self.plano in ['starter', 'pro']
+    
+    def has_feature_analytics(self) -> bool:
+        """Verifica se o cliente tem acesso a analytics avançado."""
+        return self.plano == 'pro'
+    
+    def can_create_feedback(self) -> bool:
+        """
+        Valida se o cliente pode criar mais feedbacks baseado no limite do plano.
+        
+        Returns:
+            True se ainda há espaço para criar feedback, False se limite atingido
+        """
+        # Import aqui para evitar circular import
+        from apps.feedbacks.models import Feedback
+        
+        limits = {
+            'free': 100,
+            'starter': 1000,
+            'pro': float('inf'),  # Ilimitado
+        }
+        
+        current_count = Feedback.objects.filter(client=self).count()
+        limit = limits.get(self.plano, 100)
+        
+        return current_count < limit
+    
+    def get_feedback_limit(self) -> int:
+        """
+        Retorna o limite total de feedbacks do plano.
+        
+        Returns:
+            Número máximo de feedbacks permitidos
+        """
+        limits = {
+            'free': 100,
+            'starter': 1000,
+            'pro': 999999,  # "Ilimitado" (representado como número grande)
+        }
+        return limits.get(self.plano, 100)
+    
+    def get_current_feedback_count(self) -> int:
+        """
+        Retorna o número atual de feedbacks do tenant.
+        
+        Returns:
+            Quantidade de feedbacks criados
+        """
+        from apps.feedbacks.models import Feedback
+        return Feedback.objects.filter(client=self).count()
+    
+    def get_feedback_usage_percentage(self) -> float:
+        """
+        Retorna a porcentagem de uso do limite de feedbacks.
+        
+        Returns:
+            Porcentagem de 0 a 100 (ou None se ilimitado)
+        """
+        if self.plano == 'pro':
+            return 0  # Ilimitado, sempre 0% de uso
+        
+        limit = self.get_feedback_limit()
+        current = self.get_current_feedback_count()
+        
+        return (current / limit * 100) if limit > 0 else 0
+

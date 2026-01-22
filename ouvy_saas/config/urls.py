@@ -14,6 +14,7 @@ from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
 from apps.tenants.subscription_management import ManageSubscriptionView, ReactivateSubscriptionView  # type: ignore[import-not-found]
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
 from apps.core import views as core_views
+from apps.core.views.csp import csp_report
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
 from apps.tenants.logout_views import LogoutView  # type: ignore[import-not-found]
@@ -22,6 +23,10 @@ from apps.core.profile_views import UserProfileUpdateView  # type: ignore[import
 from apps.core.views.analytics import AnalyticsView  # type: ignore[import-not-found]
 from rest_framework.authtoken.views import obtain_auth_token
 from config.swagger import swagger_urlpatterns
+
+# JWT Views
+from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+from apps.tenants.jwt_views import CustomTokenObtainPairView
 
 # Expor referências para Pylance
 FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]
@@ -85,7 +90,13 @@ urlpatterns = [
     path('api/analytics/', AnalyticsView.as_view(), name='analytics'),
     
     path('api/', include(router.urls)),  # API REST endpoints
-    # Auth token (DRF authtoken)
+    
+    # JWT Authentication (Principal)
+    path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
+    
+    # Auth token (DRF authtoken) - LEGACY - manter para backward compatibility
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     
     # Logout com invalidação de token

@@ -44,17 +44,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Verificar token ao carregar
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('auth_token');
+      const accessToken = localStorage.getItem('access_token');
+      const refreshToken = localStorage.getItem('refresh_token');
       const storedUser = localStorage.getItem('user');
 
-      if (token && storedUser) {
+      if (accessToken && refreshToken && storedUser) {
         try {
           setUser(JSON.parse(storedUser));
-          // Configurar header de autenticação
-          apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
+          // Configurar header de autenticação JWT
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         } catch (err) {
           // Token inválido ou erro ao parsear, limpar
-          localStorage.removeItem('auth_token');
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
           localStorage.removeItem('tenant_id');
           setUser(null);
@@ -71,27 +73,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setError(null);
 
     try {
-      // Django obtém_auth_token espera username e password
-      const response = await apiClient.post('/api-token-auth/', {
-        username: email, // Django usa email como username
+      // JWT Authentication - novo endpoint
+      const response = await apiClient.post<{
+        access: string;
+        refresh: string;
+        user: {
+          id: number;
+          email: string;
+          username: string;
+          is_staff: boolean;
+          is_superuser: boolean;
+        };
+        tenant?: {
+          id: number;
+          nome: string;
+          subdominio: string;
+          plano: string;
+          ativo: boolean;
+          logo: string | null;
+          cor_primaria: string;
+        };
+      }>('/api/token/', {
+        username: email,
         password,
       });
 
-      const { token } = response.data;
+      const { access, refresh, user: userResponse, tenant } = response.data;
 
-      // Buscar dados do usuário após login
-      apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
-      
-      // Criar objeto user básico (adaptar conforme resposta do backend)
-      const userData = {
-        id: email,
-        name: email.split('@')[0],
-        email: email,
+      // Criar objeto user do formato esperado
+      const userData: User = {
+        id: userResponse.id.toString(),
+        name: userResponse.username || userResponse.email.split('@')[0],
+        email: userResponse.email,
+        tenant_id: tenant?.id?.toString(),
+        empresa: tenant?.nome,
       };
 
-      // Salvar no localStorage
-      localStorage.setItem('auth_token', token);
+      // Salvar tokens JWT no localStorage
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
       localStorage.setItem('user', JSON.stringify(userData));
+      if (tenant?.id) {
+        localStorage.setItem('tenant_id', tenant.id.toString());
+      }
+
+      // Configurar header de autenticação JWT
+      apiClient.defaults.headers.common['Authorization'] = `Bearer ${access}`;
 
       setUser(userData);
       router.push('/dashboard');
@@ -116,12 +143,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.error('Erro ao invalidar token no servidor:', error);
       // Continua o logout mesmo se houver erro no servidor
     } finally {
-      // Limpar dados locais
-      localStorage.removeItem('auth_token');
+      // Limpar dados locais (JWT)
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       localStorage.removeItem('user');
       localStorage.removeItem('tenant_id');
       localStorage.removeItem('tenant_subdominio');
       setUser(null);
+      delete apiClient.defaults.headers.common['Authorization'];
       router.push('/login');
     }
   }, [router]);

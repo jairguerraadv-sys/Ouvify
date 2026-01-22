@@ -1,0 +1,93 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - main [ref=e2]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - link "Ouvy Logo" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Ouvy Logo" [ref=e9]
+        - generic [ref=e10]:
+          - img [ref=e11]
+          - generic [ref=e13]: Canal Seguro e Confidencial
+        - heading "📢 Canal de Ouvidoria" [level=2] [ref=e14]
+        - paragraph [ref=e15]: Sua voz importa. Compartilhe sua experiência de forma segura e anônima.
+      - region [ref=e16]:
+        - generic [ref=e18]:
+          - img [ref=e19]
+          - generic [ref=e23]:
+            - paragraph [ref=e24]: Backend Offline
+            - paragraph [ref=e25]: "O servidor Django não está respondendo. Para testar o envio de feedbacks, inicie o backend:"
+            - code [ref=e26]: cd ouvy_saas && bash run_server.sh
+      - region [ref=e27]:
+        - generic [ref=e29]:
+          - img [ref=e31]
+          - generic [ref=e33]:
+            - heading "Formulário de Manifestação" [level=3] [ref=e34]
+            - paragraph [ref=e35]: Preencha os campos abaixo
+        - generic [ref=e36]:
+          - generic [ref=e37]:
+            - generic [ref=e38]: Tipo de Manifestação
+            - combobox [ref=e39]:
+              - option "🚨 Denúncia"
+              - option "💡 Sugestão" [selected]
+              - option "😞 Reclamação"
+              - option "⭐ Elogio"
+          - generic [ref=e40]:
+            - generic [ref=e41]: Título
+            - textbox "Resuma sua manifestação em poucas palavras" [ref=e42]: Teste E2E - Sugestão
+          - generic [ref=e43]:
+            - generic [ref=e44]: Descrição
+            - textbox "Descreva sua manifestação com detalhes..." [ref=e45]: Este é um teste automatizado do fluxo de envio de feedback.
+          - generic [ref=e46]:
+            - checkbox "Enviar anonimamente Sua identidade será completamente protegida. Não será possível responder diretamente." [checked] [ref=e47]
+            - generic [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]:
+                - img [ref=e50]
+                - generic [ref=e53]: Enviar anonimamente
+              - paragraph [ref=e54]: Sua identidade será completamente protegida. Não será possível responder diretamente.
+          - button "Enviar Manifestação" [ref=e55] [cursor=pointer]:
+            - img
+            - text: Enviar Manifestação
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: Já enviou uma manifestação?
+            - link "Acompanhar Status do Protocolo" [ref=e58] [cursor=pointer]:
+              - /url: /acompanhar
+              - img [ref=e59]
+              - text: Acompanhar Status do Protocolo
+        - generic [ref=e61]:
+          - img [ref=e62]
+          - paragraph [ref=e64]: Suas informações são tratadas com total confidencialidade e segurança
+      - generic [ref=e65]:
+        - status [ref=e66]:
+          - img [ref=e67]
+          - text: Criptografia SSL
+        - status [ref=e70]:
+          - img [ref=e71]
+          - text: LGPD Compliant
+        - status [ref=e73]: 99.9% Uptime
+  - region "Notifications (F8)":
+    - list [ref=e74]
+  - region "Notifications alt+T"
+  - alert [ref=e75]
+  - dialog "Sua privacidade importa" [ref=e76]:
+    - generic [ref=e78]:
+      - generic [ref=e79]:
+        - img [ref=e81]
+        - generic [ref=e88]:
+          - heading "Sua privacidade importa" [level=3] [ref=e89]
+          - paragraph [ref=e90]:
+            - text: Utilizamos cookies essenciais e opcionais para melhorar sua experiência. Você pode escolher quais aceitar. Consulte nossa
+            - link "Política de Privacidade" [ref=e91] [cursor=pointer]:
+              - /url: /privacidade
+            - text: .
+      - generic [ref=e92]:
+        - button "Personalizar" [ref=e93] [cursor=pointer]:
+          - img
+          - text: Personalizar
+        - button "Apenas Essenciais" [ref=e94] [cursor=pointer]
+        - button "Aceitar Todos" [ref=e95] [cursor=pointer]:
+          - img
+          - text: Aceitar Todos
+```
