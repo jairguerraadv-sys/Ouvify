@@ -635,6 +635,8 @@ if TESTING_MODE:
         'user': '100000/minute', 
         'protocolo_consulta': '100000/minute',
         'feedback_criacao': '100000/minute',
+        'tenant': '100000/minute',  # ✅ Adicionar para testes JWT
+        'tenant_burst': '100000/minute',
     }
     
     # Desabilitar CSRF
