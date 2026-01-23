@@ -366,12 +366,12 @@ function FeedbackTicketContent() {
           disabled={!!alterandoStatus}
         >
           <option value="pendente">Pendente</option>
-          <option value="em_analise">Em Análise</option>
-            <option value="resolvido">Resolvido</option>
-            <option value="fechado">Fechado</option>
-          </select>
-        </div>
+          <option value="em_analise">Em Analise</option>
+          <option value="resolvido">Resolvido</option>
+          <option value="fechado">Fechado</option>
+        </select>
       </div>
+    </div>
 
       <div className="grid grid-cols-3 gap-6">
         {/* Coluna principal */}

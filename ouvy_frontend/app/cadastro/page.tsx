@@ -483,13 +483,13 @@ export default function CadastroPage() {
               )}
             </div>
 
-            {/* Submit */
+            {/* Submit */}
             <Button 
               type="submit" 
               variant="default"
               size="lg"
               className="w-full shadow-elegant group" 
-              isLoading={loading}
+              disabled={loading}
             >
               {loading ? "Criando conta..." : "Criar Conta Grátis"}
               {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
