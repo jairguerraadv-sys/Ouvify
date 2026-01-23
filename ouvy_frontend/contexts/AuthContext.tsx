@@ -14,8 +14,21 @@ interface User {
   avatar?: string;
 }
 
+interface Tenant {
+  id: number;
+  nome: string;
+  subdominio: string;
+  plano: string;
+  ativo: boolean;
+  logo?: string;
+  cor_primaria?: string;
+  cor_secundaria?: string;
+  cor_texto?: string;
+}
+
 interface AuthContextType {
   user: User | null;
+  tenant: Tenant | null;
   loading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;
@@ -37,6 +50,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [tenant, setTenant] = useState<Tenant | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -47,10 +61,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const accessToken = localStorage.getItem('access_token');
       const refreshToken = localStorage.getItem('refresh_token');
       const storedUser = localStorage.getItem('user');
+      const storedTenant = localStorage.getItem('tenant');
 
       if (accessToken && refreshToken && storedUser) {
         try {
           setUser(JSON.parse(storedUser));
+          if (storedTenant) {
+            setTenant(JSON.parse(storedTenant));
+          }
           // Configurar header de autenticação JWT
           apiClient.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         } catch (err) {
@@ -59,7 +77,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.removeItem('refresh_token');
           localStorage.removeItem('user');
           localStorage.removeItem('tenant_id');
+          localStorage.removeItem('tenant');
           setUser(null);
+          setTenant(null);
         }
       }
       setLoading(false);
@@ -98,29 +118,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         password,
       });
 
-      const { access, refresh, user: userResponse, tenant } = response.data;
+      const { access, refresh, user: userResponse, tenant: tenantResponse } = response.data;
 
       // Criar objeto user do formato esperado
       const userData: User = {
         id: userResponse.id.toString(),
         name: userResponse.username || userResponse.email.split('@')[0],
         email: userResponse.email,
-        tenant_id: tenant?.id?.toString(),
-        empresa: tenant?.nome,
+        tenant_id: tenantResponse?.id?.toString(),
+        empresa: tenantResponse?.nome,
       };
+
+      // Criar objeto tenant do formato esperado
+      const tenantData: Tenant | null = tenantResponse ? {
+        id: tenantResponse.id,
+        nome: tenantResponse.nome,
+        subdominio: tenantResponse.subdominio,
+        plano: tenantResponse.plano,
+        ativo: tenantResponse.ativo,
+        logo: tenantResponse.logo || undefined,
+        cor_primaria: tenantResponse.cor_primaria || undefined,
+        cor_secundaria: undefined,
+        cor_texto: undefined,
+      } : null;
 
       // Salvar tokens JWT no localStorage
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
       localStorage.setItem('user', JSON.stringify(userData));
-      if (tenant?.id) {
-        localStorage.setItem('tenant_id', tenant.id.toString());
+      if (tenantResponse?.id) {
+        localStorage.setItem('tenant_id', tenantResponse.id.toString());
+        localStorage.setItem('tenant', JSON.stringify(tenantData));
       }
 
       // Configurar header de autenticação JWT
       apiClient.defaults.headers.common['Authorization'] = `Bearer ${access}`;
 
       setUser(userData);
+      setTenant(tenantData);
       router.push('/dashboard');
     } catch (err: unknown) {
       const error = err as AxiosError<{detail?: string; non_field_errors?: string[]; error?: string}>;
@@ -149,7 +184,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       localStorage.removeItem('user');
       localStorage.removeItem('tenant_id');
       localStorage.removeItem('tenant_subdominio');
+      localStorage.removeItem('tenant');
       setUser(null);
+      setTenant(null);
       delete apiClient.defaults.headers.common['Authorization'];
       router.push('/login');
     }
@@ -163,28 +200,43 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // O RegisterData já vem no formato correto do formulário
       const response = await apiClient.post('/api/register-tenant/', data);
 
-      const { token, user: userResponse, tenant } = response.data;
+      const { token, user: userResponse, tenant: tenantResponse } = response.data;
 
       // Criar objeto user do formato esperado
       const userData = {
         id: userResponse.id?.toString() || userResponse.email,
         name: userResponse.username || userResponse.first_name || data.email.split('@')[0],
         email: userResponse.email,
-        tenant_id: tenant?.id?.toString(),
-        empresa: tenant?.nome,
+        tenant_id: tenantResponse?.id?.toString(),
+        empresa: tenantResponse?.nome,
       };
+
+      // Criar objeto tenant do formato esperado
+      const tenantData: Tenant | null = tenantResponse ? {
+        id: tenantResponse.id,
+        nome: tenantResponse.nome,
+        subdominio: tenantResponse.subdominio,
+        plano: tenantResponse.plano || 'FREE',
+        ativo: tenantResponse.ativo !== false,
+        logo: tenantResponse.logo || undefined,
+        cor_primaria: tenantResponse.cor_primaria || undefined,
+        cor_secundaria: undefined,
+        cor_texto: undefined,
+      } : null;
 
       // Salvar no localStorage
       localStorage.setItem('auth_token', token);
       localStorage.setItem('user', JSON.stringify(userData));
-      if (tenant?.id) {
-        localStorage.setItem('tenant_id', tenant.id.toString());
+      if (tenantResponse?.id) {
+        localStorage.setItem('tenant_id', tenantResponse.id.toString());
+        localStorage.setItem('tenant', JSON.stringify(tenantData));
       }
 
       // Configurar header de autenticação
       apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
 
       setUser(userData);
+      setTenant(tenantData);
       router.push('/dashboard');
     } catch (err: unknown) {
       const error = err as AxiosError<{detail?: string; errors?: Record<string, string[]>; error?: string}>;
@@ -221,6 +273,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     user,
+    tenant,
     loading,
     error,
     login,
