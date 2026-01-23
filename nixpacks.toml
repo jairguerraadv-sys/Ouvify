@@ -12,4 +12,4 @@ cmds = [
 cmds = ['cd apps/backend && /opt/venv/bin/python manage.py collectstatic --noinput']
 
 [start]
-cmd = 'cd apps/backend && /opt/venv/bin/python manage.py migrate --noinput && /opt/venv/bin/python manage.py collectstatic --noinput && /opt/venv/bin/gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120'
+cmd = 'bash /app/start.sh'
