@@ -1,7 +1,7 @@
 {
-  "buildCommand": "cd ouvy_frontend && npm install && npm run build",
-  "outputDirectory": "ouvy_frontend/.next",
-  "installCommand": "npm install --prefix ouvy_frontend",
+  "buildCommand": "cd apps/frontend && npm install && npm run build",
+  "outputDirectory": "apps/frontend/.next",
+  "installCommand": "npm install --prefix apps/frontend",
   "framework": "nextjs",
   "headers": [
     {
