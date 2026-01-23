@@ -1,154 +1,206 @@
-# 📡 Inventário de Chamadas de API do Frontend
+# 📋 Inventário de Chamadas de API do Frontend
 
-**Data:** 22 de janeiro de 2026  
+**Data da Auditoria:** 2026-01-23  
 **Projeto:** Ouvy SaaS  
-**Ambiente:** Next.js 16.1.1 + React 19 + TypeScript
+**Frontend:** Next.js 16.1.1 + React 19 + TypeScript
 
 ---
 
-## 📊 RESUMO EXECUTIVO
+## 📊 Resumo Executivo
 
-- **Total de Chamadas de API:** 28
-- **Endpoints Únicos:** 20
-- **Páginas com API:** 15
-- **Status Geral:** ✅ Todas as chamadas têm backend correspondente
-
----
-
-## 🔍 DETALHAMENTO POR ENDPOINT
-
-### 1. Autenticação e Gestão de Usuários
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 1 | `app/login/page.tsx` | `/api-token-auth/` | POST | `{username, password}` | ✅ Existe |
-| 2 | `app/login/page.tsx` | `/api/tenant-info/` | GET | - | ✅ Existe |
-| 3 | `app/cadastro/page.tsx` | `/api/check-subdominio/` | GET | `?subdominio=xxx` | ✅ Existe |
-| 4 | `app/cadastro/page.tsx` | `/api/register-tenant/` | POST | `{nome, email, senha, subdominio}` | ✅ Existe |
-| 5 | `app/recuperar-senha/page.tsx` | `/api/password-reset/request/` | POST | `{email}` | ✅ Existe |
-| 6 | `app/recuperar-senha/confirmar/page.tsx` | `/api/password-reset/confirm/` | POST | `{token, password}` | ✅ Existe |
-| 7 | `lib/api.ts` | `/api/token/refresh/` | POST | `{refresh}` | ✅ Existe (auto-refresh) |
-
-### 2. Feedbacks (CRUD Completo)
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 8 | `app/enviar/page.tsx` | `/api/feedbacks/` | POST | `{tipo, titulo, descricao, email_contato}` | ✅ Existe |
-| 9 | `app/acompanhar/page.tsx` | `/api/feedbacks/consultar-protocolo/` | GET | `?codigo=OUVY-XXX` | ✅ Existe |
-| 10 | `app/acompanhar/page.tsx` | `/api/feedbacks/responder-protocolo/` | POST | `{protocolo, mensagem}` | ✅ Existe |
-| 11 | `app/dashboard/feedbacks/page.tsx` | `/api/feedbacks/` | GET | `?page=1&search=&status=&tipo=` | ✅ Existe (hook) |
-| 12 | `app/dashboard/feedbacks/[protocolo]/page.tsx` | `/api/feedbacks/consultar-protocolo/` | GET | `?codigo=OUVY-XXX` | ✅ Existe (hook) |
-| 13 | `app/dashboard/feedbacks/[protocolo]/page.tsx` | `/api/feedbacks/{id}/adicionar-interacao/` | POST | `{mensagem, tipo, status}` | ✅ Existe |
-| 14 | `hooks/use-dashboard.ts` | `/api/feedbacks/{protocolo}/` | PATCH | `{status, titulo, descricao}` | ✅ Existe |
-| 15 | `hooks/use-dashboard.ts` | `/api/feedbacks/` | POST | `{tipo, titulo, descricao}` | ✅ Existe |
-| 16 | `components/dashboard/OnboardingChecklist.tsx` | `/api/feedbacks/` | GET | - | ✅ Existe |
-
-### 3. Dashboard e Analytics
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 17 | `hooks/use-dashboard.ts` | `/api/feedbacks/dashboard-stats/` | GET | - | ✅ Existe |
-| 18 | `app/dashboard/relatorios/page.tsx` | `/api/feedbacks/export/` | GET | `?format=csv&tipo=&status=&data_inicio=&data_fim=` | ✅ Existe |
-
-### 4. Configurações e Branding
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 19 | `hooks/use-tenant-theme.ts` | `/api/tenant-info/` | GET | - | ✅ Existe |
-| 20 | `lib/branding-upload.ts` | `/api/upload-branding/` | POST | `FormData(logo, favicon)` | ✅ Existe |
-| 21 | `lib/branding-upload.ts` | `/api/tenant-info/` | PATCH | `{nome, cor_primaria, cor_secundaria}` | ✅ Existe |
-
-### 5. Assinaturas e Pagamentos
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 22 | `app/precos/page.tsx` | `/api/tenants/subscribe/` | POST | `{price_id}` | ✅ Existe |
-| 23 | `app/dashboard/assinatura/page.tsx` | `/api/tenants/subscription/` | GET | - | ✅ Existe |
-| 24 | `app/dashboard/assinatura/page.tsx` | `/api/tenants/subscription/` | POST | `{action: 'cancel'}` | ✅ Existe |
-| 25 | `app/dashboard/assinatura/page.tsx` | `/api/tenants/subscription/reactivate/` | POST | - | ✅ Existe |
-
-### 6. LGPD e Privacidade
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 26 | `app/dashboard/perfil/page.tsx` | `/api/export-data/` | GET | - | ✅ Existe |
-| 27 | `app/dashboard/perfil/page.tsx` | `/api/account/` | DELETE | - | ✅ Existe |
-
-### 7. Administração (Super User)
-
-| # | Arquivo | Endpoint | Método | Payload | Status Backend |
-|---|---------|----------|--------|---------|----------------|
-| 28 | `app/admin/page.tsx` | `/api/admin/tenants/` | GET | - | ✅ Existe |
-| 29 | `app/admin/page.tsx` | `/api/admin/tenants/{id}/` | PATCH | `{ativo}` | ✅ Existe |
+| Métrica | Valor |
+|---------|-------|
+| **Total de Chamadas de API** | 31 |
+| **Arquivos com Chamadas** | 18 |
+| **Endpoints Únicos** | 24 |
+| **Métodos GET** | 11 |
+| **Métodos POST** | 12 |
+| **Métodos PATCH** | 5 |
+| **Métodos DELETE** | 2 |
 
 ---
 
-## 🎯 ANÁLISE DE COBERTURA
+## 📁 Chamadas de API por Arquivo
 
-### ✅ Endpoints Totalmente Integrados: 29/29 (100%)
+### 1. **lib/api.ts** (Core)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 1 | `/api/token/refresh/` | POST | Refresh de JWT token |
 
-Todos os endpoints chamados pelo frontend possuem implementação correspondente no backend.
+### 2. **lib/auth.ts** (Autenticação)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 2 | `/api/logout/` | POST | Logout e invalidação de token |
 
-### 📊 Distribuição por Módulo
+### 3. **lib/branding-upload.ts** (White-label)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 3 | `/api/upload-branding/` | POST | Upload de logo/favicon |
+| 4 | `/api/tenant-info/` | PATCH | Atualização de branding |
 
-| Módulo | Chamadas | % do Total |
-|--------|----------|------------|
-| Feedbacks | 9 | 31% |
-| Autenticação | 7 | 24% |
-| Assinaturas | 4 | 14% |
-| Configurações | 3 | 10% |
-| Dashboard | 2 | 7% |
-| LGPD | 2 | 7% |
-| Admin | 2 | 7% |
+### 4. **contexts/AuthContext.tsx** (Autenticação)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 5 | `/api/token/` | POST | Login (obter JWT) |
+| 6 | `/api/logout/` | POST | Logout |
+| 7 | `/api/register-tenant/` | POST | Registro de novo tenant |
+| 8 | `/api/auth/me/` | PATCH | Atualização do perfil |
 
-### 📈 Padrões de Uso
+### 5. **hooks/use-dashboard.ts** (Dashboard)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 9 | `/api/feedbacks/dashboard-stats/` | GET | Estatísticas do dashboard |
+| 10 | `/api/feedbacks/` | GET | Listar feedbacks (paginado) |
+| 11 | `/api/feedbacks/{protocolo}/` | GET | Detalhes de feedback |
+| 12 | `/api/feedbacks/{protocolo}/` | PATCH | Atualizar feedback |
+| 13 | `/api/feedbacks/` | POST | Criar feedback |
+| 14 | `/api/feedbacks/categorias/` | GET | Listar categorias |
+| 15 | `/api/feedbacks/consultar-protocolo/` | GET | Consulta por protocolo |
+| 16 | `/api/feedbacks/{id}/` | DELETE | Excluir feedback |
 
-**Páginas com mais chamadas de API:**
-1. `app/dashboard/feedbacks/[protocolo]/page.tsx` - 2 endpoints
-2. `app/dashboard/assinatura/page.tsx` - 3 endpoints
-3. `app/cadastro/page.tsx` - 2 endpoints
-4. `app/acompanhar/page.tsx` - 2 endpoints
+### 6. **hooks/use-feedback-details.ts** (Detalhes)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 17 | `/api/feedbacks/` | GET | Listar para busca |
+| 18 | `/api/feedbacks/{id}/` | GET | Detalhes do feedback |
+| 19 | `/api/feedbacks/{id}/adicionar-interacao/` | POST | Adicionar interação |
 
-**Métodos HTTP:**
-- GET: 13 (45%)
-- POST: 13 (45%)
-- PATCH: 2 (7%)
-- DELETE: 1 (3%)
+### 7. **hooks/use-tenant-theme.ts** (Multi-tenant)
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 20 | `/api/tenant-info/` | GET | Informações do tenant |
+
+### 8. **app/login/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 21 | `/api-token-auth/` | POST | Login (legacy authtoken) |
+| 22 | `/api/tenant-info/` | GET | Info do tenant após login |
+
+### 9. **app/cadastro/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 23 | `/api/check-subdominio/` | GET | Verificar disponibilidade |
+| 24 | `/api/register-tenant/` | POST | Registrar novo tenant |
+
+### 10. **app/enviar/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 25 | `/api/feedbacks/` | POST | Enviar novo feedback |
+
+### 11. **app/acompanhar/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 26 | `/api/feedbacks/consultar-protocolo/` | GET | Consultar status |
+| 27 | `/api/feedbacks/responder-protocolo/` | POST | Responder feedback |
+
+### 12. **app/precos/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 28 | `/api/tenants/subscribe/` | POST | Iniciar checkout Stripe |
+
+### 13. **app/dashboard/assinatura/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 29 | `/api/tenants/subscription/` | GET | Status da assinatura |
+| 30 | `/api/tenants/subscription/` | POST | Cancelar assinatura |
+| 31 | `/api/tenants/subscription/reactivate/` | POST | Reativar assinatura |
+
+### 14. **app/dashboard/relatorios/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 32 | `/api/feedbacks/export/` | GET | Exportar CSV/JSON |
+
+### 15. **app/dashboard/feedbacks/[protocolo]/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 33 | `/api/feedbacks/{id}/upload-arquivo/` | POST | Upload de arquivo |
+
+### 16. **app/dashboard/feedbacks/[protocolo]/edit/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 34 | `/api/feedbacks/consultar-protocolo/` | GET | Buscar para editar |
+| 35 | `/api/feedbacks/{id}/` | PATCH | Salvar edições |
+
+### 17. **app/dashboard/perfil/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 36 | `/api/export-data/` | GET | Exportar dados (LGPD) |
+| 37 | `/api/account/` | DELETE | Excluir conta (LGPD) |
+
+### 18. **app/admin/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 38 | `/api/admin/tenants/` | GET | Listar tenants |
+| 39 | `/api/admin/tenants/{id}/` | PATCH | Ativar/desativar tenant |
+
+### 19. **app/recuperar-senha/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 40 | `/api/password-reset/request/` | POST | Solicitar reset |
+
+### 20. **app/recuperar-senha/confirmar/page.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 41 | `/api/password-reset/confirm/` | POST | Confirmar reset |
+
+### 21. **components/dashboard/OnboardingChecklist.tsx**
+| # | Endpoint | Método | Descrição |
+|---|----------|--------|-----------|
+| 42 | `/api/feedbacks/` | GET (fetch) | Verificar feedbacks |
 
 ---
 
-## 🚨 OBSERVAÇÕES IMPORTANTES
+## 🔍 Endpoints Únicos Consolidados
 
-### 1. Auto-Refresh de Token JWT ✅
-O `lib/api.ts` implementa interceptor que automaticamente renova tokens expirados usando `/api/token/refresh/`, evitando logout forçado.
-
-### 2. Multi-Tenant Headers ✅
-Todas as requisições autenticadas incluem:
-- `Authorization: Bearer {access_token}`
-- `X-Tenant-ID: {tenant_id}` (exceto em `consultar-protocolo`)
-
-### 3. Tratamento de Erros ✅
-O interceptor de resposta do Axios loga erros detalhadamente em desenvolvimento e de forma resumida em produção.
-
-### 4. Paginação ✅
-A listagem de feedbacks usa paginação via query params (`?page=1&page_size=20`).
-
-### 5. Filtros e Busca ✅
-A listagem de feedbacks suporta:
-- `?search=termo` - Busca em protocolo, título e email
-- `?status=pendente` - Filtro por status
-- `?tipo=sugestao` - Filtro por tipo
+| # | Endpoint | Métodos Usados | Status |
+|---|----------|----------------|--------|
+| 1 | `/api/token/` | POST | ✅ Verificar |
+| 2 | `/api/token/refresh/` | POST | ✅ Verificar |
+| 3 | `/api-token-auth/` | POST | ✅ Verificar (Legacy) |
+| 4 | `/api/logout/` | POST | ✅ Verificar |
+| 5 | `/api/register-tenant/` | POST | ✅ Verificar |
+| 6 | `/api/check-subdominio/` | GET | ✅ Verificar |
+| 7 | `/api/tenant-info/` | GET, PATCH | ✅ Verificar |
+| 8 | `/api/upload-branding/` | POST | ✅ Verificar |
+| 9 | `/api/auth/me/` | PATCH | ✅ Verificar |
+| 10 | `/api/users/me/` | GET | ❓ Verificar uso |
+| 11 | `/api/feedbacks/` | GET, POST | ✅ Verificar |
+| 12 | `/api/feedbacks/{id}/` | GET, PATCH, DELETE | ✅ Verificar |
+| 13 | `/api/feedbacks/dashboard-stats/` | GET | ✅ Verificar |
+| 14 | `/api/feedbacks/consultar-protocolo/` | GET | ✅ Verificar |
+| 15 | `/api/feedbacks/responder-protocolo/` | POST | ✅ Verificar |
+| 16 | `/api/feedbacks/{id}/adicionar-interacao/` | POST | ✅ Verificar |
+| 17 | `/api/feedbacks/{id}/upload-arquivo/` | POST | ✅ Verificar |
+| 18 | `/api/feedbacks/export/` | GET | ✅ Verificar |
+| 19 | `/api/feedbacks/categorias/` | GET | ❓ Verificar se existe |
+| 20 | `/api/tenants/subscribe/` | POST | ✅ Verificar |
+| 21 | `/api/tenants/subscription/` | GET, POST | ✅ Verificar |
+| 22 | `/api/tenants/subscription/reactivate/` | POST | ✅ Verificar |
+| 23 | `/api/admin/tenants/` | GET | ✅ Verificar |
+| 24 | `/api/admin/tenants/{id}/` | PATCH | ✅ Verificar |
+| 25 | `/api/password-reset/request/` | POST | ✅ Verificar |
+| 26 | `/api/password-reset/confirm/` | POST | ✅ Verificar |
+| 27 | `/api/export-data/` | GET | ✅ Verificar |
+| 28 | `/api/account/` | DELETE | ✅ Verificar |
+| 29 | `/api/analytics/` | GET | ❌ **NÃO USADO** |
 
 ---
 
-## ✅ CONCLUSÃO
+## 🚨 Observações Importantes
 
-**Score de Correspondência Frontend → Backend: 100%**
+### ⚠️ Endpoints com Potenciais Issues
 
-Todos os 29 endpoints chamados pelo frontend possuem implementação correspondente e funcional no backend. Não foram encontradas chamadas órfãs ou endpoints inexistentes.
+1. **`/api/feedbacks/categorias/`** - Precisa verificar se existe no backend
+2. **`/api/users/me/`** - Endpoint existe mas uso no frontend precisa ser confirmado
+3. **`/api/analytics/`** - **ENDPOINT BACKEND EXISTE MAS FRONTEND NÃO USA**
 
-A arquitetura de API está consistente, bem documentada e segue padrões RESTful adequados.
+### ✅ Boas Práticas Identificadas
+
+- Uso consistente de `api.get()`, `api.post()`, `api.patch()`, `api.delete()`
+- Interceptor de refresh token configurado
+- Headers de autenticação configurados automaticamente
+- Tratamento de erros centralizado
 
 ---
 
-**Próximo Passo:** Validar se existem endpoints no backend que NÃO estão sendo usados pelo frontend (endpoints órfãos).
+*Auditoria gerada em 2026-01-23*

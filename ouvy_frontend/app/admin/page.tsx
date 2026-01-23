@@ -163,6 +163,12 @@ function AdminContent() {
                       Ativo
                     </label>
                     <a
+                      href={`/admin/tenants/${t.id}`}
+                      className="text-blue-400 hover:text-blue-300 text-sm"
+                    >
+                      Ver Detalhes
+                    </a>
+                    <a
                       href={`http://${t.subdominio}.localhost:3000/dashboard`}
                       target="_blank"
                       rel="noreferrer"

@@ -10,7 +10,8 @@ import {
   LogOut,
   Sparkles,
   Shield,
-  CreditCard
+  CreditCard,
+  TrendingUp
 } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
@@ -31,6 +32,7 @@ interface SidebarProps {
 const navigation = [
   { name: 'Visão Geral', href: '/dashboard', icon: Home, tourId: '' },
   { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare, tourId: 'feedbacks' },
+  { name: 'Analytics', href: '/dashboard/analytics', icon: TrendingUp, tourId: 'analytics' },
   { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3, tourId: 'relatorios' },
   { name: 'Assinatura', href: '/dashboard/assinatura', icon: CreditCard, tourId: 'assinatura' },
   { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings, tourId: 'configuracoes' },

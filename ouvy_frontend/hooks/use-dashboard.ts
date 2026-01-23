@@ -115,22 +115,46 @@ export function useCreateFeedback() {
   return { createFeedback };
 }
 
-// Hook para categorias
-export function useCategorias() {
-  const { data, error, isLoading } = useSWR<string[]>(
-    '/api/feedbacks/categorias/',
-    fetcher,
-    {
-      revalidateOnMount: true,
-      revalidateOnFocus: false,
+/**
+ * Hook para atualização completa de feedback (PUT)
+ * 
+ * Diferença entre PUT e PATCH:
+ * - PUT: Atualização COMPLETA - requer todos os campos obrigatórios
+ * - PATCH: Atualização PARCIAL - apenas campos fornecidos são atualizados
+ * 
+ * Use PUT quando precisar garantir que todos os campos sejam definidos.
+ * Use PATCH (mais comum) para atualizações parciais.
+ */
+export function useFullUpdateFeedback() {
+  /**
+   * Atualização completa do feedback (PUT)
+   * Todos os campos obrigatórios devem ser fornecidos
+   */
+  const fullUpdate = async (
+    feedbackId: number,
+    data: {
+      tipo: string;
+      titulo: string;
+      descricao: string;
+      status: string;
+      email_contato?: string;
+      anonimo?: boolean;
     }
-  );
-
-  return {
-    categorias: data || [],
-    isLoading,
-    error: error?.message,
+  ): Promise<Feedback> => {
+    return api.put<Feedback>(`/api/feedbacks/${feedbackId}/`, data);
   };
+
+  /**
+   * Atualização parcial do feedback (PATCH) - mais comum
+   */
+  const partialUpdate = async (
+    feedbackId: number,
+    data: Partial<Feedback>
+  ): Promise<Feedback> => {
+    return api.patch<Feedback>(`/api/feedbacks/${feedbackId}/`, data);
+  };
+
+  return { fullUpdate, partialUpdate };
 }
 
 // Função auxiliar para consultar protocolo público
