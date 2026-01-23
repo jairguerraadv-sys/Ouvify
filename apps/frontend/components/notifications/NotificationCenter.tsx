@@ -34,8 +34,8 @@ interface UnreadCountResponse {
   unread_count: number;
 }
 
-const fetcher = async (url: string) => {
-  const response = await apiRequest(url);
+const fetcher = async <T,>(url: string): Promise<T> => {
+  const response = await apiRequest<T>({ url, method: 'GET' });
   return response;
 };
 
@@ -106,7 +106,7 @@ export function NotificationCenter() {
 
   const handleMarkAsRead = useCallback(async (id: number) => {
     try {
-      await apiRequest(`/push/notifications/${id}/mark_read/`, { method: 'POST' });
+      await apiRequest({ url: `/push/notifications/${id}/mark_read/`, method: 'POST' });
       mutateNotifications();
       mutateUnread();
     } catch (error) {
@@ -116,7 +116,7 @@ export function NotificationCenter() {
 
   const handleMarkAllRead = useCallback(async () => {
     try {
-      await apiRequest('/push/notifications/mark_all_read/', { method: 'POST' });
+      await apiRequest({ url: '/push/notifications/mark_all_read/', method: 'POST' });
       mutateNotifications();
       mutateUnread();
     } catch (error) {

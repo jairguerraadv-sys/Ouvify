@@ -86,9 +86,10 @@ export function NotificationPermissionPrompt() {
       // 4. Enviar para o backend
       const subscriptionData = extractSubscriptionData(subscription);
       
-      await apiRequest('/push/subscriptions/subscribe/', {
+      await apiRequest({
+        url: '/push/subscriptions/subscribe/',
         method: 'POST',
-        body: JSON.stringify(subscriptionData),
+        data: subscriptionData,
       });
 
       console.log('[Notifications] Notificações ativadas com sucesso!');

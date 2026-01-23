@@ -236,7 +236,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                   cx="50%"
                   cy="50%"
                   outerRadius={100}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) => `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`}
                 >
                   {analytics.severity_breakdown.map((entry, index) => (
                     <Cell
