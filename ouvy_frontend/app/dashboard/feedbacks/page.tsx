@@ -53,7 +53,10 @@ export default function FeedbacksPage() {
 function FeedbacksContent() {
   const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState<FeedbackStatus | 'todos'>('todos');
-  const { user, tenant } = useAuth();
+  const { user } = useAuth();
+  
+  // Get tenant subdomain from localStorage
+  const tenantSubdominio = typeof window !== 'undefined' ? localStorage.getItem('tenant_subdomain') : null;
   
   // Debounce do termo de busca para otimizar performance (500ms delay)
   const searchTerm = useDebounce(searchInput, 500);
@@ -223,9 +226,9 @@ function FeedbacksContent() {
                   title="Nenhum feedback recebido ainda"
                   description="Compartilhe o link da sua página pública com seus clientes para começar a receber feedbacks, sugestões e elogios."
                   actionLabel="Abrir Página Pública"
-                  actionHref={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  actionHref={`https://${tenantSubdominio}.ouvy.com/enviar`}
                   actionExternal
-                  copyText={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  copyText={`https://${tenantSubdominio}.ouvy.com/enviar`}
                   secondaryActionLabel="Ver Tutorial"
                   secondaryActionHref="/dashboard?tour=restart"
                 />
