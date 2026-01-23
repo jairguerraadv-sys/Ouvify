@@ -122,7 +122,7 @@ function FeedbacksContent() {
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar */}
-      <Sidebar user={user} />
+      <Sidebar user={user ?? undefined} />
 
       {/* Main Content */}
       <main className="flex-1 p-6 lg:p-8">
