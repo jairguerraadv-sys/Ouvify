@@ -5,7 +5,7 @@ nixPkgs = ['python312', 'postgresql']
 cmds = [
   'python3 -m venv /opt/venv',
   '/opt/venv/bin/pip install --upgrade pip setuptools wheel',
-  '/opt/venv/bin/pip install -r apps/backend/requirements.txt'
+  '/opt/venv/bin/pip install -r requirements.txt'
 ]
 
 [phases.build]
