@@ -1,3 +1,6 @@
+# Nixpacks configuration for Railway deployment
+# This file configures the build process for the monorepo
+
 [phases.setup]
 nixPkgs = ['python312', 'postgresql']
 
@@ -9,7 +12,9 @@ cmds = [
 ]
 
 [phases.build]
-cmds = ['cd apps/backend && /opt/venv/bin/python manage.py collectstatic --noinput']
+cmds = [
+  'cd /app/apps/backend && /opt/venv/bin/python manage.py collectstatic --noinput'
+]
 
 [start]
-cmd = 'bash /app/start.sh'
+cmd = 'cd /app/apps/backend && /opt/venv/bin/python manage.py migrate --noinput && /opt/venv/bin/gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120'
