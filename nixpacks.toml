@@ -1,8 +1,9 @@
 [phases.setup]
 nixPkgs = ['python312', 'postgresql']
+nixLibs = ['python312Packages.pip', 'python312Packages.setuptools', 'python312Packages.wheel']
 
 [phases.install]
-cmds = ['cd ouvy_saas && pip install -r requirements.txt']
+cmds = ['cd ouvy_saas && python -m pip install --upgrade pip', 'cd ouvy_saas && python -m pip install -r requirements.txt']
 
 [phases.build]
 cmds = ['cd ouvy_saas && python manage.py collectstatic --noinput']
