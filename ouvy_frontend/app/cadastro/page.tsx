@@ -493,7 +493,6 @@ export default function CadastroPage() {
               {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
             </Button>
 
-            {/* Login Link */}
             <p className="text-center text-secondary-600 text-sm">
               Já tem conta?{' '}
               <Link href="/login" className="text-primary-500 font-semibold hover:text-primary-600 transition-colors">
