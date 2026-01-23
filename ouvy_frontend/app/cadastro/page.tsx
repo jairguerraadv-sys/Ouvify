@@ -8,6 +8,7 @@ import { Logo } from '@/components/ui/logo';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge-chip';
+import { TooltipFormField } from '@/components/ui/Tooltip';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm, validateSubdomain } from '@/lib/validation';
 import { stripHtml } from '@/lib/sanitize';
@@ -410,10 +411,11 @@ export default function CadastroPage() {
             </div>
 
             {/* Subdomínio */}
-            <div className="space-y-2">
-              <label className="block text-sm font-semibold text-secondary-900">
-                Seu Subdomínio
-              </label>
+            <TooltipFormField
+              label="Seu Subdomínio"
+              tooltip="Este será o endereço público onde seus clientes poderão enviar feedbacks. Exemplo: minhaempresa.ouvy.com/enviar"
+              required
+            >
               <div className="flex items-center rounded-lg overflow-hidden border border-secondary-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all duration-200">
                 <input
                   type="text"
@@ -431,6 +433,7 @@ export default function CadastroPage() {
                   .ouvy.com
                 </div>
               </div>
+            </TooltipFormField>
               
               {/* Preview do subdomínio */}
               {formData.subdominio_desejado && subdominioStatus === 'available' && (

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Download, FileText, Calendar, Filter, AlertCircle } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { EmptyState } from '@/components/ui/EmptyState';
 import api from '@/lib/api';
 import { AxiosResponse } from 'axios';
 

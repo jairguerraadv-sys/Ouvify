@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { TenantBanner } from "@/components/TenantBanner";
+import { BrandingPreview } from "@/components/BrandingPreview";
 import { useTenantTheme } from "@/hooks/use-tenant-theme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useEffect, useRef } from "react";
@@ -150,43 +151,46 @@ function ConfiguracoesContent() {
         {/* ✅ Banner com preview do White Label */}
         <TenantBanner />
 
-        <div className="grid gap-6 max-w-2xl">
-          {/* Informações da Empresa */}
-          <Card className="p-6">
-            <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
-              <Building2 className="w-5 h-5" />
-              Informações da Empresa
-            </h3>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">Nome da Empresa</label>
-                <Input 
-                  defaultValue={theme?.nome || tenant?.nome_empresa || "Minha Empresa"} 
-                  disabled
-                  className="bg-muted"
-                />
+        {/* Layout de duas colunas: Formulário + Preview */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Coluna Esquerda: Formulários */}
+          <div className="space-y-6">
+            {/* Informações da Empresa */}
+            <Card className="p-6">
+              <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                <Building2 className="w-5 h-5" />
+                Informações da Empresa
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Nome da Empresa</label>
+                  <Input 
+                    defaultValue={theme?.nome || tenant?.nome_empresa || "Minha Empresa"} 
+                    disabled
+                    className="bg-muted"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Subdomínio</label>
+                  <Input 
+                    defaultValue={theme?.subdominio || tenant?.subdominio || "minhaempresa"} 
+                    disabled
+                    className="bg-muted font-mono"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Seu subdomínio não pode ser alterado após o cadastro
+                  </p>
+                </div>
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">Subdomínio</label>
-                <Input 
-                  defaultValue={theme?.subdominio || tenant?.subdominio || "minhaempresa"} 
-                  disabled
-                  className="bg-muted font-mono"
-                />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Seu subdomínio não pode ser alterado após o cadastro
-                </p>
-              </div>
-            </div>
-          </Card>
+            </Card>
 
-          {/* White Label */}
-          <Card className="p-6">
-            <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
-              <Palette className="w-5 h-5" />
-              White Label
-            </h3>
-            <div className="space-y-6">
+            {/* White Label */}
+            <Card className="p-6">
+              <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+                <Palette className="w-5 h-5" />
+                White Label
+              </h3>
+              <div className="space-y-6">
               {/* Logo Upload */}
               <div>
                 <label className="block text-sm font-medium mb-2 flex items-center gap-2">
@@ -446,7 +450,16 @@ function ConfiguracoesContent() {
             <Button variant="destructive">Desativar Conta</Button>
           </Card>
         </div>
-      </main>
-    </div>
-  );
-}
+
+        {/* Coluna Direita: Preview em Tempo Real */}
+        <div className="hidden lg:block">
+          <BrandingPreview 
+            corPrimaria={corPrimaria}
+            corSecundaria={corSecundaria}
+            logoUrl={logoPreview || theme?.logo || ''}
+          />
+        </div>
+      </div>
+    </main>
+  </div>
+);

@@ -3,12 +3,14 @@
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
+import { EmptyState } from '@/components/ui/EmptyState';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useFeedbacks } from '@/hooks/use-dashboard';
 import { useDebounce } from '@/hooks/use-common';
+import { useAuth } from '@/contexts/AuthContext';
 import { formatDate } from '@/lib/helpers';
 import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
 import {
@@ -51,6 +53,7 @@ export default function FeedbacksPage() {
 function FeedbacksContent() {
   const [searchInput, setSearchInput] = useState('');
   const [statusFilter, setStatusFilter] = useState<FeedbackStatus | 'todos'>('todos');
+  const { user, tenant } = useAuth();
   
   // Debounce do termo de busca para otimizar performance (500ms delay)
   const searchTerm = useDebounce(searchInput, 500);
@@ -210,17 +213,28 @@ function FeedbacksContent() {
                 <p className="text-slate-500">{error}</p>
               </div>
             ) : filteredFeedbacks.length === 0 ? (
-              <div className="text-center py-12">
-                <FileText className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-700 mb-2">
-                  Nenhum feedback encontrado
-                </h3>
-                <p className="text-sm text-slate-500">
-                  {searchTerm || statusFilter !== 'todos'
-                    ? 'Tente ajustar os filtros de busca'
-                    : 'Tudo limpo por aqui! 🎉'}
-                </p>
-              </div>
+              // Empty state diferente se é filtro ou se realmente não tem feedbacks
+              searchTerm || statusFilter !== 'todos' ? (
+                <EmptyState
+                  icon={Search}
+                  title="Nenhum feedback encontrado"
+                  description="Tente ajustar os filtros ou termos de busca para encontrar o que procura."
+                  actionLabel="Limpar Filtros"
+                  actionHref="/dashboard/feedbacks"
+                />
+              ) : (
+                <EmptyState
+                  icon={FileText}
+                  title="Nenhum feedback recebido ainda"
+                  description="Compartilhe o link da sua página pública com seus clientes para começar a receber feedbacks, sugestões e elogios."
+                  actionLabel="Abrir Página Pública"
+                  actionHref={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  actionExternal
+                  copyText={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  secondaryActionLabel="Ver Tutorial"
+                  secondaryActionHref="/dashboard?tour=restart"
+                />
+              )
             ) : (
               <div className="rounded-lg border border-slate-200 overflow-hidden">
                 <Table>
