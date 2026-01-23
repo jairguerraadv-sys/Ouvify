@@ -73,14 +73,14 @@ function EditFeedbackContent() {
         params: { protocolo }
       });
 
-      const feedbackData = response.data;
-      setFeedback(feedbackData);
+      // response já é do tipo Feedback (api.get retorna T diretamente)
+      setFeedback(response);
       
       // Preencher form
-      setTipo(feedbackData.tipo);
-      setTitulo(feedbackData.titulo);
-      setDescricao(feedbackData.descricao);
-      setStatus(feedbackData.status);
+      setTipo(response.tipo);
+      setTitulo(response.titulo);
+      setDescricao(response.descricao);
+      setStatus(response.status);
     } catch (error) {
       console.error('Erro ao carregar feedback:', error);
       toast.error('Erro ao carregar feedback');
