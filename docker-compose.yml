@@ -68,11 +68,11 @@ services:
   # ============================================
   backend:
     build:
-      context: ./ouvy_saas
+      context: ./apps/backend
       dockerfile: Dockerfile.dev
     container_name: ouvy_backend
     volumes:
-      - ./ouvy_saas:/app
+      - ./apps/backend:/app
       - backend_media:/app/media
       - backend_static:/app/staticfiles
     ports:
@@ -109,11 +109,11 @@ services:
   # ============================================
   frontend:
     build:
-      context: ./ouvy_frontend
+      context: ./apps/frontend
       dockerfile: Dockerfile.dev
     container_name: ouvy_frontend
     volumes:
-      - ./ouvy_frontend:/app
+      - ./apps/frontend:/app
       - /app/node_modules
       - /app/.next
     ports:
@@ -133,11 +133,11 @@ services:
   # ============================================
   celery:
     build:
-      context: ./ouvy_saas
+      context: ./apps/backend
       dockerfile: Dockerfile.dev
     container_name: ouvy_celery_worker
     volumes:
-      - ./ouvy_saas:/app
+      - ./apps/backend:/app
     environment:
       - DEBUG=True
       - DATABASE_URL=postgresql://ouvy:ouvy_dev_pass@postgres:5432/ouvy_dev
@@ -159,11 +159,11 @@ services:
   # ============================================
   celery-beat:
     build:
-      context: ./ouvy_saas
+      context: ./apps/backend
       dockerfile: Dockerfile.dev
     container_name: ouvy_celery_beat
     volumes:
-      - ./ouvy_saas:/app
+      - ./apps/backend:/app
     environment:
       - DEBUG=True
       - DATABASE_URL=postgresql://ouvy:ouvy_dev_pass@postgres:5432/ouvy_dev

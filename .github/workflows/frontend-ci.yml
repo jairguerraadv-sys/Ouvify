@@ -4,12 +4,12 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'ouvy_frontend/**'
+      - 'apps/frontend/**'
       - '.github/workflows/frontend-ci.yml'
   pull_request:
     branches: [main, develop]
     paths:
-      - 'ouvy_frontend/**'
+      - 'apps/frontend/**'
 
 env:
   NODE_VERSION: '22'
@@ -29,18 +29,18 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: './ouvy_frontend/package-lock.json'
+          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm ci
         
       - name: Run ESLint
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm run lint || true
         
       - name: TypeScript Type Check
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npx tsc --noEmit || true
 
   # ============================================
@@ -58,7 +58,7 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           
       - name: Run npm audit
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm audit --audit-level=high || true
 
   # ============================================
@@ -75,20 +75,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: './ouvy_frontend/package-lock.json'
+          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm ci
         
       - name: Run Tests with Coverage
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm test -- --coverage --watchAll=false || true
           
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          files: ./ouvy_frontend/coverage/coverage-final.json
+          files: ./apps/frontend/coverage/coverage-final.json
           flags: frontend
           name: frontend-coverage
           fail_ci_if_error: false
@@ -108,14 +108,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: './ouvy_frontend/package-lock.json'
+          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm ci
         
       - name: Build
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.ouvy.com.br' }}
         run: npm run build
@@ -137,18 +137,18 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
-          cache-dependency-path: './ouvy_frontend/package-lock.json'
+          cache-dependency-path: './apps/frontend/package-lock.json'
       
       - name: Install dependencies
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npm ci
       
       - name: Install Playwright Browsers
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npx playwright install --with-deps
         
       - name: Run Playwright Tests
-        working-directory: ./ouvy_frontend
+        working-directory: ./apps/frontend
         run: npx playwright test || true
         
       - name: Upload Playwright Report
@@ -156,5 +156,5 @@ jobs:
         if: always()
         with:
           name: playwright-report
-          path: ./ouvy_frontend/playwright-report/
+          path: ./apps/frontend/playwright-report/
           retention-days: 30

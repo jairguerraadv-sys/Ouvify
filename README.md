@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Ouvy Logo](ouvy_frontend/public/logo.svg)
+![Ouvy Logo](apps/frontend/public/logo.svg)
 
 **Plataforma SaaS White Label para Canais de Feedback**
 
@@ -134,7 +134,7 @@ Cada empresa cliente (tenant) possui:
 ### Apps Django
 
 ```
-ouvy_saas/apps/
+apps/backend/apps/
 ├── core/          # Middlewares, utils, validações, exceptions
 ├── tenants/       # Gestão de clientes (white-label, Stripe)
 └── feedbacks/     # Sistema de feedbacks e protocolos
