@@ -27,3 +27,22 @@ coverage/
 SECURITY_NOTES.md
 COMMIT_MESSAGE.txt
 COMMIT_MESSAGE_DOCS.txt
+
+# ============================================
+# Consolidação Monorepo (Auto-added)
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+.pytest_cache/
+venv/
+.venv/
+ENV/
+node_modules/
+.next/
+.turbo/
+dist/
+build/
+*.log
+backup-*.tar.gz
