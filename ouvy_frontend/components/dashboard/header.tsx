@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Bell, Settings, User, LogOut, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import { logout } from '@/lib/auth';
 
 interface HeaderProps {
   title: string;
@@ -89,7 +90,14 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="text-red-600 cursor-pointer">
+              <DropdownMenuItem 
+                className="text-red-600 cursor-pointer"
+                onClick={async () => {
+                  if (confirm('Deseja realmente sair?')) {
+                    await logout();
+                  }
+                }}
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sair
               </DropdownMenuItem>

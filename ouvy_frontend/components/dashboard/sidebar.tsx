@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { logout } from '@/lib/auth';
 
 interface SidebarProps {
   user?: {
@@ -115,7 +116,17 @@ export function Sidebar({ user }: SidebarProps) {
               {user?.email || 'email@example.com'}
             </p>
           </div>
-          <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-slate-600">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 text-slate-400 hover:text-slate-600"
+            onClick={async () => {
+              if (confirm('Deseja realmente sair?')) {
+                await logout();
+              }
+            }}
+            aria-label="Sair da conta"
+          >
             <LogOut className="h-4 w-4" />
           </Button>
         </div>

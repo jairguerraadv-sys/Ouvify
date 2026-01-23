@@ -19,11 +19,14 @@ import {
   Download,
   X,
   AlertCircle,
-  Loader2
+  Loader2,
+  Edit,
+  Trash2
 } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { toast } from "sonner";
 import Link from "next/link";
+import { deleteFeedback } from "@/hooks/use-dashboard";
 
 function StatusBadge({ status }: { status: string }) {
   const variants: Record<string, { bg: string; text: string; label: string }> = {
@@ -69,6 +72,31 @@ function FeedbackTicketContent() {
   
   // Estados para notas internas
   const [isInternalNote, setIsInternalNote] = useState(false);
+
+  // Estado para exclusão
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Handler para exclusão
+  const handleDelete = async () => {
+    if (!data) return;
+
+    const confirmText = `Tem certeza que deseja excluir o feedback #${data.protocolo}?\n\nEsta ação não pode ser desfeita.`;
+    
+    if (!confirm(confirmText)) return;
+
+    setIsDeleting(true);
+
+    try {
+      await deleteFeedback(data.id);
+      toast.success('Feedback excluído com sucesso');
+      router.push('/dashboard/feedbacks');
+    } catch (error) {
+      console.error('Erro ao excluir feedback:', error);
+      toast.error('Erro ao excluir feedback. Tente novamente.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   if (isLoading) {
     return (
@@ -286,18 +314,59 @@ function FeedbackTicketContent() {
           <Button variant="secondary" onClick={() => router.back()}>
             ← Voltar
           </Button>
-          <h1 className="text-2xl font-semibold">{data.titulo}</h1>
+          <div>
+            <h1 className="text-2xl font-semibold">{data.titulo}</h1>
+            <p className="text-sm text-slate-600 mt-1">
+              Protocolo: {data.protocolo} • Criado em {new Date(data.data_criacao).toLocaleDateString('pt-BR')}
+            </p>
+          </div>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <StatusBadge status={data.status} />
-          <select
-            className="border rounded px-3 py-2 text-sm bg-white"
-            value={alterandoStatus ?? data.status}
-            onChange={(e) => onChangeStatus(e.target.value)}
-            disabled={!!alterandoStatus}
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push(`/dashboard/feedbacks/${data.protocolo}/edit`)}
+            aria-label="Editar feedback"
           >
-            <option value="pendente">Pendente</option>
-            <option value="em_analise">Em Análise</option>
+            <Edit className="h-4 w-4 mr-2" />
+            Editar
+          </Button>
+          
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            aria-label="Excluir feedback"
+          >
+            {isDeleting ? (
+              <>
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                Excluindo...
+              </>
+            ) : (
+              <>
+                <Trash2 className="h-4 w-4 mr-2" />
+                Excluir
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
+      
+      {/* Alterar Status */}
+      <div className="flex items-center gap-3">
+        <label className="text-sm font-medium text-slate-700">Alterar Status:</label>
+        <select
+          className="border rounded px-3 py-2 text-sm bg-white"
+          value={alterandoStatus ?? data.status}
+          onChange={(e) => onChangeStatus(e.target.value)}
+          disabled={!!alterandoStatus}
+        >
+          <option value="pendente">Pendente</option>
+          <option value="em_analise">Em Análise</option>
             <option value="resolvido">Resolvido</option>
             <option value="fechado">Fechado</option>
           </select>

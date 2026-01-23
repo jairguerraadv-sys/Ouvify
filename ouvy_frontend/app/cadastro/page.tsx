@@ -435,51 +435,53 @@ export default function CadastroPage() {
               </div>
             </TooltipFormField>
             
-            {/* Preview do subdomínio */}
-            {formData.subdominio_desejado && subdominioStatus === 'available' && (
-              <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-900 mb-1 font-medium">
-                    ✨ Seu link público será:
-                  </p>
-                  <code className="text-sm text-blue-700 bg-white px-2 py-1 rounded border border-blue-300">
-                    https://{formData.subdominio_desejado}.ouvy.com/enviar
-                  </code>
+            <div>
+              {/* Preview do subdomínio */}
+              {formData.subdominio_desejado && subdominioStatus === 'available' && (
+                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-sm text-blue-900 mb-1 font-medium">
+                      ✨ Seu link público será:
+                    </p>
+                    <code className="text-sm text-blue-700 bg-white px-2 py-1 rounded border border-blue-300">
+                      https://{formData.subdominio_desejado}.ouvy.com/enviar
+                    </code>
+                  </div>
+                )}
+                
+                <div className="mt-2 flex items-center justify-between">
+                  {subdominioStatus === 'checking' && (
+                    <span className="text-sm text-secondary-500 flex items-center gap-2 font-medium">
+                      <Loader className="w-4 h-4 animate-spin" />
+                      Verificando...
+                    </span>
+                  )}
+                  {subdominioStatus === 'available' && (
+                    <span className="text-sm text-success flex items-center gap-2 font-semibold">
+                      <CheckCircle className="w-4 h-4" />
+                      Disponível!
+                    </span>
+                  )}
+                  {subdominioStatus === 'taken' && (
+                    <span className="text-sm text-error flex items-center gap-2 font-semibold">
+                      <XCircle className="w-4 h-4" />
+                      Já está em uso
+                    </span>
+                  )}
+                  {subdominioStatus === 'invalid' && (
+                    <span className="text-sm text-warning flex items-center gap-2 font-semibold">
+                      <AlertCircle className="w-4 h-4" />
+                      Mínimo 3 caracteres válidos
+                    </span>
+                  )}
                 </div>
-              )}
-              
-              <div className="mt-2 flex items-center justify-between">
-                {subdominioStatus === 'checking' && (
-                  <span className="text-sm text-secondary-500 flex items-center gap-2 font-medium">
-                    <Loader className="w-4 h-4 animate-spin" />
-                    Verificando...
-                  </span>
-                )}
-                {subdominioStatus === 'available' && (
-                  <span className="text-sm text-success flex items-center gap-2 font-semibold">
-                    <CheckCircle className="w-4 h-4" />
-                    Disponível!
-                  </span>
-                )}
-                {subdominioStatus === 'taken' && (
-                  <span className="text-sm text-error flex items-center gap-2 font-semibold">
-                    <XCircle className="w-4 h-4" />
-                    Já está em uso
-                  </span>
-                )}
-                {subdominioStatus === 'invalid' && (
-                  <span className="text-sm text-warning flex items-center gap-2 font-semibold">
-                    <AlertCircle className="w-4 h-4" />
-                    Mínimo 3 caracteres válidos
-                  </span>
-                )}
-              </div>
 
-            {errors.subdominio_desejado && (
-              <p className="text-error text-sm mt-1 flex items-center gap-1">
-                <span className="w-1 h-1 bg-error rounded-full" />
-                {errors.subdominio_desejado}
-              </p>
-            )}
+              {errors.subdominio_desejado && (
+                <p className="text-error text-sm mt-1 flex items-center gap-1">
+                  <span className="w-1 h-1 bg-error rounded-full" />
+                  {errors.subdominio_desejado}
+                </p>
+              )}
+            </div>
 
             {/* Submit */
             <Button 

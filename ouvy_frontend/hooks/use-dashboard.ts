@@ -137,3 +137,8 @@ export function useCategorias() {
 export async function consultarProtocolo(codigo: string): Promise<Feedback> {
   return api.get<Feedback>(`/api/feedbacks/consultar-protocolo/?codigo=${codigo}`);
 }
+
+// Função para excluir feedback
+export async function deleteFeedback(id: number): Promise<void> {
+  return api.delete(`/api/feedbacks/${id}/`);
+}
