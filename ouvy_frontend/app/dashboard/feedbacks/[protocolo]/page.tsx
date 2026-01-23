@@ -317,7 +317,7 @@ function FeedbackTicketContent() {
           <div>
             <h1 className="text-2xl font-semibold">{data.titulo}</h1>
             <p className="text-sm text-slate-600 mt-1">
-              Protocolo: {data.protocolo} • Criado em {new Date(data.data_criacao).toLocaleDateString('pt-BR')}
+              Protocolo: {data.protocolo} | Criado em {new Date(data.data_criacao).toLocaleDateString('pt-BR')}
             </p>
           </div>
         </div>

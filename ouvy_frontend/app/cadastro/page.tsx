@@ -496,7 +496,7 @@ export default function CadastroPage() {
             </Button>
 
             <p className="text-center text-secondary-600 text-sm">
-              Já tem conta?{' '}
+              Ja tem conta?{' '}
               <Link href="/login" className="text-primary-500 font-semibold hover:text-primary-600 transition-colors">
                 Entre aqui
               </Link>
