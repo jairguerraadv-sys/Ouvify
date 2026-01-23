@@ -239,18 +239,3 @@ export default function RelatoriosPage() {
     </ProtectedRoute>
   );
 }
-
-            Download completo em CSV ou Excel
-          </p>
-          <Button variant="secondary">Exportar</Button>
-        </Card>
-      </div>
-
-      <Card className="p-6 bg-primary/10 border-primary/20">
-        <p className="text-sm text-primary">
-          <strong>💡 Em breve:</strong> Gráficos interativos, dashboards customizáveis e agendamento de relatórios automáticos.
-        </p>
-      </Card>
-    </main>
-  );
-}
