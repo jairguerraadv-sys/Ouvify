@@ -43,15 +43,15 @@ export function Footer({
             <ul className="space-y-3 text-sm text-secondary-foreground/80">
               <li>
                 <a 
-                  href="#" 
+                  href="/precos" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
-                  Planos
+                  Preços
                 </a>
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/recursos#seguranca" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Segurança
@@ -59,7 +59,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/recursos" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Recursos
@@ -74,7 +74,7 @@ export function Footer({
             <ul className="space-y-3 text-sm text-secondary-foreground/80">
               <li>
                 <a 
-                  href="#" 
+                  href="/recursos#docs" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Documentação
@@ -82,7 +82,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/recursos#faq" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   FAQ
@@ -90,7 +90,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="mailto:contato@ouvy.com" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Contato
@@ -105,7 +105,7 @@ export function Footer({
             <ul className="space-y-3 text-sm text-secondary-foreground/80">
               <li>
                 <a 
-                  href="#" 
+                  href="/privacidade" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Privacidade
@@ -113,7 +113,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/termos" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Termos
@@ -121,7 +121,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="#" 
+                  href="/privacidade#lgpd" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   LGPD
@@ -136,21 +136,27 @@ export function Footer({
           <p>&copy; {currentYear} Ouvy. Todos os direitos reservados.</p>
           <div className="flex gap-6">
             <a 
-              href="#" 
+              href="https://twitter.com/ouvy" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               aria-label="Twitter"
             >
               Twitter
             </a>
             <a 
-              href="#" 
+              href="https://linkedin.com/company/ouvy" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               aria-label="LinkedIn"
             >
               LinkedIn
             </a>
             <a 
-              href="#" 
+              href="https://github.com/ouvy" 
+              target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-primary transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
               aria-label="GitHub"
             >
