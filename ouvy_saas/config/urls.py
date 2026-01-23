@@ -89,6 +89,18 @@ urlpatterns = [
     # Analytics e Métricas
     path('api/analytics/', AnalyticsView.as_view(), name='analytics'),
     
+    # Busca Global (ElasticSearch)
+    path('api/', include('apps.core.search_urls')),
+    
+    # Two-Factor Authentication (2FA)
+    path('api/auth/', include('apps.core.two_factor_urls')),
+    
+    # Push Notifications
+    path('api/push/', include('apps.notifications.urls')),
+    
+    # Audit Log & Analytics
+    path('api/auditlog/', include('apps.auditlog.urls')),
+    
     path('api/', include(router.urls)),  # API REST endpoints
     
     # JWT Authentication (Principal)

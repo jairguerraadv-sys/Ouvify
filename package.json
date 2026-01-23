@@ -1,17 +1,50 @@
 {
   "name": "ouvy-saas-monorepo",
   "private": true,
+  "workspaces": [
+    "ouvy_frontend",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "cd ouvy_frontend && npm run dev",
-    "build": "cd ouvy_frontend && npm run build",
-    "start": "cd ouvy_frontend && npm run start",
-    "lint": "cd ouvy_frontend && npm run lint",
+    "dev": "turbo run dev",
+    "dev:frontend": "turbo run dev --filter=ouvy_frontend",
+    "dev:backend": "cd ouvy_saas && python manage.py runserver",
+    "build": "turbo run build",
+    "build:frontend": "turbo run build --filter=ouvy_frontend",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
+    "type-check": "turbo run type-check",
+    "test": "turbo run test",
+    "test:frontend": "turbo run test --filter=ouvy_frontend",
+    "test:e2e": "turbo run test:e2e",
+    "test:backend": "cd ouvy_saas && python -m pytest",
+    "format": "turbo run format",
+    "clean": "turbo run clean && rm -rf node_modules .turbo",
+    "prepare": "husky",
     "postinstall": "cd ouvy_frontend && npm install"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.57.0"
+    "@playwright/test": "^1.57.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "turbo": "^2.0.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.py": [
+      "black",
+      "isort"
+    ]
   }
 }

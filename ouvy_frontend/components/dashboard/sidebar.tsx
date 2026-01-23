@@ -11,7 +11,8 @@ import {
   Sparkles,
   Shield,
   CreditCard,
-  TrendingUp
+  TrendingUp,
+  HelpCircle
 } from 'lucide-react';
 import { Logo } from '@/components/ui/logo';
 import { Button } from '@/components/ui/button';
@@ -36,6 +37,7 @@ const navigation = [
   { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3, tourId: 'relatorios' },
   { name: 'Assinatura', href: '/dashboard/assinatura', icon: CreditCard, tourId: 'assinatura' },
   { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings, tourId: 'configuracoes' },
+  { name: 'Ajuda', href: '/dashboard/ajuda', icon: HelpCircle, tourId: 'ajuda' },
 ];
 
 export function Sidebar({ user }: SidebarProps) {

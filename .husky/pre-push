@@ -1,0 +1,51 @@
+#!/bin/sh
+# Husky pre-push hook
+# Executa testes antes de push para branches protegidas
+
+# Branch atual
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+# Branches protegidas que exigem testes
+protected_branches="main master develop staging production"
+
+# Verifica se é uma branch protegida
+is_protected=false
+for protected in $protected_branches; do
+    if [ "$branch" = "$protected" ]; then
+        is_protected=true
+        break
+    fi
+done
+
+if [ "$is_protected" = true ]; then
+    echo "🔍 Branch protegida detectada: $branch"
+    echo "🧪 Executando testes antes do push..."
+    echo ""
+    
+    # Executa type-check
+    echo "📝 Verificando tipos TypeScript..."
+    npm run type-check
+    if [ $? -ne 0 ]; then
+        echo "❌ Type-check falhou. Push abortado."
+        exit 1
+    fi
+    
+    # Executa lint
+    echo "🔍 Executando lint..."
+    npm run lint
+    if [ $? -ne 0 ]; then
+        echo "❌ Lint falhou. Push abortado."
+        exit 1
+    fi
+    
+    # Executa testes
+    echo "🧪 Executando testes..."
+    npm run test:frontend -- --passWithNoTests
+    if [ $? -ne 0 ]; then
+        echo "❌ Testes falharam. Push abortado."
+        exit 1
+    fi
+    
+    echo ""
+    echo "✅ Todas as verificações passaram!"
+fi

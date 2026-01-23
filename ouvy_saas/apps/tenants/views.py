@@ -348,21 +348,242 @@ class CheckSubdominioView(APIView):
 class TenantAdminViewSet(viewsets.ModelViewSet):
     """
     Gestão administrativa de tenants (somente superusuários).
-    Permite listar, detalhar e atualizar status.
+    Permite listar, detalhar, atualizar status e plano.
+    
+    Endpoints:
+    - GET /api/admin/tenants/ - Listar todos (com filtros)
+    - GET /api/admin/tenants/{id}/ - Detalhes
+    - PATCH /api/admin/tenants/{id}/ - Atualizar (ativo, plano)
+    - GET /api/admin/tenants/metrics/ - Métricas gerais (MRR real)
+    - POST /api/admin/tenants/{id}/impersonate/ - Gerar token de impersonation
     """
 
-    queryset = Client.objects.all()
+    queryset = Client.objects.all().select_related('owner').order_by('-data_criacao')
     serializer_class = TenantAdminSerializer
     permission_classes = [IsAdminUser]
 
-    http_method_names = ['get', 'head', 'options', 'patch', 'put']
+    http_method_names = ['get', 'head', 'options', 'patch', 'put', 'post']
+    
+    def get_queryset(self):
+        """Aplica filtros de busca e ordenação."""
+        queryset = super().get_queryset()
+        
+        # Busca por nome ou subdomínio
+        search = self.request.query_params.get('search', '').strip()
+        if search:
+            from django.db.models import Q
+            queryset = queryset.filter(
+                Q(nome__icontains=search) | Q(subdominio__icontains=search)
+            )
+        
+        # Filtro por status ativo
+        ativo = self.request.query_params.get('ativo')
+        if ativo is not None:
+            queryset = queryset.filter(ativo=ativo.lower() == 'true')
+        
+        # Filtro por plano
+        plano = self.request.query_params.get('plano', '').strip()
+        if plano:
+            queryset = queryset.filter(plano=plano)
+        
+        # Ordenação
+        ordering = self.request.query_params.get('ordering', '-data_criacao')
+        allowed_orderings = ['nome', '-nome', 'data_criacao', '-data_criacao', 'plano', '-plano']
+        if ordering in allowed_orderings:
+            queryset = queryset.order_by(ordering)
+        
+        return queryset
 
     def perform_update(self, serializer):
-        # Apenas log simples; regras extras podem ser adicionadas aqui
+        """Log de alterações e atualização de plano no Stripe se necessário."""
+        old_instance = self.get_object()
+        old_plano = old_instance.plano
+        old_ativo = old_instance.ativo
+        
         instance = serializer.save()
+        
+        # Log detalhado
+        changes = []
+        if old_plano != instance.plano:
+            changes.append(f"plano: {old_plano} → {instance.plano}")
+        if old_ativo != instance.ativo:
+            changes.append(f"ativo: {old_ativo} → {instance.ativo}")
+        
+        change_str = ", ".join(changes) if changes else "sem alterações"
         logger.info(
-            f"🔒 Tenant atualizado pelo superadmin | Tenant: {instance.subdominio} | Ativo: {instance.ativo}"
+            f"🔒 Tenant atualizado pelo superadmin | "
+            f"Tenant: {instance.subdominio} | "
+            f"Admin: {self.request.user.username} | "
+            f"Alterações: {change_str}"
         )
+    
+    @action(detail=False, methods=['get'], url_path='metrics')
+    def metrics(self, request):
+        """
+        Retorna métricas agregadas de todos os tenants.
+        Inclui MRR real do Stripe quando disponível.
+        """
+        from django.db.models import Count, Q
+        from datetime import datetime, timedelta
+        
+        tenants = Client.objects.all()
+        now = datetime.now()
+        inicio_mes = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        
+        # Agregações
+        stats = tenants.aggregate(
+            total=Count('id'),
+            ativos=Count('id', filter=Q(ativo=True)),
+            inativos=Count('id', filter=Q(ativo=False)),
+            free=Count('id', filter=Q(plano='free')),
+            starter=Count('id', filter=Q(plano='starter')),
+            pro=Count('id', filter=Q(plano='pro')),
+            enterprise=Count('id', filter=Q(plano='enterprise')),
+            novos_mes=Count('id', filter=Q(data_criacao__gte=inicio_mes)),
+        )
+        
+        # Calcular MRR real baseado nos planos
+        PLAN_PRICES_BRL = {
+            'free': 0,
+            'starter': 99,
+            'pro': 299,
+            'enterprise': 999,
+        }
+        
+        mrr = 0
+        for plano, preco in PLAN_PRICES_BRL.items():
+            count = tenants.filter(plano=plano, ativo=True, subscription_status='active').count()
+            mrr += count * preco
+        
+        # Tentar obter MRR do Stripe (se configurado)
+        stripe_mrr = None
+        try:
+            subscriptions = stripe.Subscription.list(status='active', limit=100)
+            stripe_mrr = sum(
+                sub.items.data[0].price.unit_amount / 100 
+                for sub in subscriptions.auto_paging_iter()
+                if sub.items.data
+            )
+        except Exception as e:
+            logger.warning(f"Não foi possível obter MRR do Stripe: {e}")
+        
+        # Calcular churn (cancelamentos no último mês)
+        churn_count = tenants.filter(
+            subscription_status='canceled',
+            data_atualizacao__gte=inicio_mes
+        ).count()
+        
+        total_inicio_mes = tenants.filter(data_criacao__lt=inicio_mes).count()
+        churn_rate = (churn_count / total_inicio_mes * 100) if total_inicio_mes > 0 else 0
+        
+        return Response({
+            'total_tenants': stats['total'],
+            'tenants_ativos': stats['ativos'],
+            'tenants_inativos': stats['inativos'],
+            'novos_mes': stats['novos_mes'],
+            'distribuicao_planos': {
+                'free': stats['free'],
+                'starter': stats['starter'],
+                'pro': stats['pro'],
+                'enterprise': stats['enterprise'],
+            },
+            'mrr': mrr,
+            'mrr_stripe': stripe_mrr,
+            'churn_rate': round(churn_rate, 2),
+            'churn_count': churn_count,
+        })
+    
+    @action(detail=True, methods=['post'], url_path='impersonate')
+    def impersonate(self, request, pk=None):
+        """
+        Gera um token temporário para o admin acessar o painel do tenant.
+        Token válido por 1 hora.
+        """
+        tenant = self.get_object()
+        
+        if not tenant.owner:
+            return Response(
+                {"error": "Tenant não possui owner associado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Gerar token JWT temporário para o owner do tenant
+        from rest_framework_simplejwt.tokens import RefreshToken
+        
+        refresh = RefreshToken.for_user(tenant.owner)
+        # Adicionar claim customizado para identificar impersonation
+        refresh['impersonation'] = True
+        refresh['impersonated_by'] = request.user.id
+        refresh['tenant_id'] = tenant.id
+        
+        # Definir expiração curta (1 hora)
+        refresh.set_exp(lifetime=timedelta(hours=1))
+        
+        logger.warning(
+            f"⚠️ IMPERSONATION | Admin: {request.user.username} | "
+            f"Tenant: {tenant.subdominio} | Owner: {tenant.owner.username}"
+        )
+        
+        return Response({
+            'access_token': str(refresh.access_token),
+            'refresh_token': str(refresh),
+            'tenant': {
+                'id': tenant.id,
+                'nome': tenant.nome,
+                'subdominio': tenant.subdominio,
+            },
+            'expires_in': 3600,
+            'warning': 'Este token é para impersonation. Use com responsabilidade.'
+        })
+    
+    @action(detail=True, methods=['get'], url_path='activity-logs')
+    def activity_logs(self, request, pk=None):
+        """
+        Retorna histórico de atividades do tenant.
+        """
+        tenant = self.get_object()
+        
+        # Buscar feedbacks recentes como proxy de atividade
+        from apps.feedbacks.models import Feedback, FeedbackInteracao
+        
+        activities = []
+        
+        # Feedbacks criados
+        feedbacks = Feedback.objects.filter(client=tenant).order_by('-data_criacao')[:20]
+        for fb in feedbacks:
+            activities.append({
+                'id': fb.id,
+                'acao': 'feedback_criado',
+                'descricao': f"Feedback #{fb.protocolo} criado: {fb.titulo[:50]}",
+                'data': fb.data_criacao.isoformat(),
+                'autor': fb.email_contato if not fb.anonimo else 'Anônimo',
+                'ip_address': None,
+            })
+        
+        # Interações recentes
+        interacoes = FeedbackInteracao.objects.filter(
+            feedback__client=tenant
+        ).select_related('feedback', 'autor').order_by('-data')[:20]
+        
+        for inter in interacoes:
+            activities.append({
+                'id': inter.id,
+                'acao': f'interacao_{inter.tipo.lower()}',
+                'descricao': f"Interação em #{inter.feedback.protocolo}: {inter.mensagem[:50]}...",
+                'data': inter.data.isoformat(),
+                'autor': inter.autor.username if inter.autor else 'Sistema',
+                'ip_address': None,
+            })
+        
+        # Ordenar por data
+        activities.sort(key=lambda x: x['data'], reverse=True)
+        
+        return Response({
+            'tenant_id': tenant.id,
+            'tenant_nome': tenant.nome,
+            'activities': activities[:50],
+            'total': len(activities),
+        })
 
 
 class CreateCheckoutSessionView(APIView):

@@ -151,12 +151,14 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',  # Para autenticação via token (legacy)
     'rest_framework_simplejwt.token_blacklist',  # JWT com blacklist
     'corsheaders',         # Para o frontend conectar (Next.js)
-    'drf_yasg',            # Swagger/OpenAPI documentation
+    'drf_spectacular',     # OpenAPI 3.0 documentation
 
     # Nossos Apps (Ouvy)
     'apps.core',
     'apps.tenants',
     'apps.feedbacks',
+    'apps.notifications',  # Push Notifications
+    'apps.auditlog',       # Audit Log & Analytics
 ]
 
 MIDDLEWARE = [
@@ -459,6 +461,81 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',  # Handler customizado
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination',  # Paginação padrão
     'PAGE_SIZE': 20,  # 20 itens por página
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',  # Para documentação OpenAPI
+}
+
+# =============================================================================
+# DRF-SPECTACULAR (OpenAPI Documentation)
+# =============================================================================
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Ouvy SaaS API',
+    'DESCRIPTION': '''
+## API do Sistema Ouvy SaaS
+
+O Ouvy é uma plataforma SaaS multi-tenant para canais de ética, ouvidoria e gestão de feedbacks anônimos.
+
+### Autenticação
+
+A API utiliza **JWT (JSON Web Tokens)** para autenticação. Para obter um token:
+
+1. Faça POST em `/api/token/` com `email` e `password`
+2. Use o `access` token no header: `Authorization: Bearer <token>`
+3. Renove tokens expirados com `/api/token/refresh/`
+
+### Multi-tenancy
+
+Cada requisição é automaticamente filtrada pelo tenant do usuário autenticado.
+Não é possível acessar dados de outros tenants.
+
+### Rate Limiting
+
+- Anônimos: 100 req/hora
+- Autenticados: 1000 req/hora
+- Por tenant: 5000 req/hora
+
+### Códigos de Status
+
+- `200 OK`: Sucesso
+- `201 Created`: Recurso criado
+- `400 Bad Request`: Dados inválidos
+- `401 Unauthorized`: Token inválido ou expirado
+- `403 Forbidden`: Sem permissão
+- `404 Not Found`: Recurso não encontrado
+- `429 Too Many Requests`: Rate limit excedido
+- `500 Internal Server Error`: Erro no servidor
+    ''',
+    'VERSION': '2.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': False,
+        'filter': True,
+    },
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SORT_OPERATIONS': False,
+    'TAGS': [
+        {'name': 'Authentication', 'description': 'Endpoints de autenticação e JWT'},
+        {'name': 'Feedbacks', 'description': 'Gerenciamento de denúncias, sugestões e feedbacks'},
+        {'name': 'Tenants', 'description': 'Configurações e dados do tenant'},
+        {'name': 'Users', 'description': 'Gerenciamento de usuários'},
+        {'name': 'Notifications', 'description': 'Notificações push e in-app'},
+        {'name': 'Audit Log', 'description': 'Logs de auditoria e analytics'},
+        {'name': 'Search', 'description': 'Busca full-text (ElasticSearch)'},
+        {'name': '2FA', 'description': 'Two-Factor Authentication (TOTP)'},
+    ],
+    'EXTERNAL_DOCS': {
+        'description': 'Documentação Completa',
+        'url': 'https://docs.ouvy.com.br',
+    },
+    'CONTACT': {
+        'name': 'Suporte Ouvy',
+        'email': 'suporte@ouvy.com.br',
+    },
+    'LICENSE': {
+        'name': 'Proprietary',
+    },
 }
 
 # =============================================================================
@@ -690,5 +767,24 @@ if TESTING_MODE:
     PASSWORD_HASHERS = [
         'django.contrib.auth.hashers.MD5PasswordHasher',
     ]
-    
+
+
+# =============================================================================
+# WEB PUSH NOTIFICATIONS (VAPID)
+# =============================================================================
+# Gere as keys com: python manage.py generate_vapid_keys
+# Adicione ao .env ou variáveis de ambiente do Railway
+
+VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY')
+VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY')
+VAPID_ADMIN_EMAIL = os.getenv('VAPID_ADMIN_EMAIL', 'admin@ouvy.app')
+
+# Verificar VAPID em produção (opcional - apenas warning)
+if not DEBUG and not VAPID_PRIVATE_KEY:
+    import warnings
+    warnings.warn(
+        "VAPID_PRIVATE_KEY não configurada. Push notifications não funcionarão. "
+        "Execute: python manage.py generate_vapid_keys"
+    )
+
     print("⚙️  Rate limiting DESABILITADO para testes E2E")

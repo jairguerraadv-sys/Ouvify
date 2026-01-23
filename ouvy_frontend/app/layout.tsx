@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { OnboardingProvider } from "@/components/OnboardingTour";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "sonner";
 import { CookieBanner } from "@/components/CookieBanner";
 import { ThemeLoader } from "@/components/ThemeLoader";
+import { ThemeProvider } from "@/components/theme";
 import { CSPNonceProvider } from "@/components/CSPNonceProvider";
 import "./globals.css"; // ✅ Import DEVE estar aqui, no topo
 
@@ -124,18 +126,22 @@ export default async function RootLayout({
       </head>
       <body className={inter.className}>
         <CSPNonceProvider nonce={nonce}>
-          <AuthProvider>
-            <ThemeLoader />
-            {children}
-            <Toaster />
-            <Sonner 
-              position="top-right" 
-              richColors 
-              expand={true}
-              closeButton
-            />
-            <CookieBanner />
-          </AuthProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <OnboardingProvider>
+                <ThemeLoader />
+                {children}
+                <Toaster />
+                <Sonner 
+                  position="top-right" 
+                  richColors 
+                  expand={true}
+                  closeButton
+                />
+                <CookieBanner />
+              </OnboardingProvider>
+            </AuthProvider>
+          </ThemeProvider>
         </CSPNonceProvider>
       </body>
     </html>

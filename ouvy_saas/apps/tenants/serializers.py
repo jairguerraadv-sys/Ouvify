@@ -186,6 +186,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TenantAdminSerializer(serializers.ModelSerializer):
+    """Serializer completo para administração de tenants."""
+    
+    # Campos calculados
+    owner_email = serializers.SerializerMethodField()
+    total_feedbacks = serializers.SerializerMethodField()
+    total_users = serializers.SerializerMethodField()
+    ultimo_login = serializers.SerializerMethodField()
+    
     class Meta:
         model = Client
         fields = [
@@ -193,7 +201,53 @@ class TenantAdminSerializer(serializers.ModelSerializer):
             'nome',
             'subdominio',
             'ativo',
+            'plano',
+            'subscription_status',
+            'stripe_customer_id',
+            'stripe_subscription_id',
             'data_criacao',
+            'data_atualizacao',
+            'data_fim_assinatura',
+            'logo',
+            'cor_primaria',
+            'cor_secundaria',
+            'owner_email',
+            'total_feedbacks',
+            'total_users',
+            'ultimo_login',
         ]
-        read_only_fields = ['id', 'data_criacao']
+        read_only_fields = ['id', 'data_criacao', 'data_atualizacao', 'stripe_customer_id', 'stripe_subscription_id']
+    
+    def get_owner_email(self, obj):
+        """Retorna email do proprietário do tenant."""
+        if obj.owner:
+            return obj.owner.email
+        return None
+    
+    def get_total_feedbacks(self, obj):
+        """Retorna total de feedbacks do tenant."""
+        from apps.feedbacks.models import Feedback
+        return Feedback.objects.filter(client=obj).count()
+    
+    def get_total_users(self, obj):
+        """Retorna total de usuários associados ao tenant."""
+        from django.contrib.auth.models import User
+        # Contar usuários que têm o owner como referência ou estão no tenant
+        return User.objects.filter(tenants_owned=obj).count() or 1
+    
+    def get_ultimo_login(self, obj):
+        """Retorna data do último login do owner."""
+        if obj.owner and obj.owner.last_login:
+            return obj.owner.last_login.isoformat()
+        return None
+
+
+class TenantActivityLogSerializer(serializers.Serializer):
+    """Serializer para logs de atividade do tenant."""
+    id = serializers.IntegerField()
+    acao = serializers.CharField()
+    descricao = serializers.CharField()
+    data = serializers.DateTimeField()
+    autor = serializers.CharField(allow_null=True)
+    ip_address = serializers.CharField(allow_null=True)
 

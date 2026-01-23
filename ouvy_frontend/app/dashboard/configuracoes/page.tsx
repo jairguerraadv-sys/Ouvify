@@ -10,8 +10,9 @@ import { TenantBanner } from "@/components/TenantBanner";
 import { BrandingPreview } from "@/components/BrandingPreview";
 import { useTenantTheme } from "@/hooks/use-tenant-theme";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOnboarding } from "@/components/OnboardingTour";
 import { useState, useEffect, useRef } from "react";
-import { Save, Upload, Building2, Palette, Settings, Image as ImageIcon, Loader2 } from "lucide-react";
+import { Save, Upload, Building2, Palette, Settings, Image as ImageIcon, Loader2, HelpCircle, PlayCircle, BookOpen, MessageCircle } from "lucide-react";
 import { uploadBrandingImages, updateBrandingSettings, validateImageFile, createImagePreview, revokeImagePreview } from "@/lib/branding-upload";
 import { toast } from "sonner";
 
@@ -26,6 +27,7 @@ export default function ConfiguracoesPage() {
 function ConfiguracoesContent() {
   const { user } = useAuth();
   const theme = useTenantTheme();
+  const { restartTour } = useOnboarding();
   const [tenant, setTenant] = useState<any>(null);
   const [corPrimaria, setCorPrimaria] = useState('#00BCD4');
   const [corSecundaria, setCorSecundaria] = useState('#10B981');
@@ -438,6 +440,50 @@ function ConfiguracoesContent() {
                 <input type="checkbox" className="accent-primary" />
                 <span className="text-sm">Relatórios semanais</span>
               </label>
+            </div>
+          </Card>
+
+          {/* Ajuda & Tour */}
+          <Card className="p-6">
+            <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+              <HelpCircle className="w-5 h-5" />
+              Ajuda & Tour
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Precisa de ajuda? Refaça o tour guiado ou acesse nossa central de ajuda.
+            </p>
+            <div className="space-y-3">
+              <Button 
+                variant="outline" 
+                className="w-full justify-start gap-2"
+                onClick={() => {
+                  restartTour();
+                  toast.success('Tour reiniciado! Navegue pelo dashboard para ver as dicas.');
+                }}
+              >
+                <PlayCircle className="w-4 h-4" />
+                Refazer Tour Guiado
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start gap-2"
+                asChild
+              >
+                <a href="https://docs.ouvy.com" target="_blank" rel="noopener noreferrer">
+                  <BookOpen className="w-4 h-4" />
+                  Central de Ajuda
+                </a>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="w-full justify-start gap-2"
+                asChild
+              >
+                <a href="mailto:suporte@ouvy.com">
+                  <MessageCircle className="w-4 h-4" />
+                  Contato com Suporte
+                </a>
+              </Button>
             </div>
           </Card>
 

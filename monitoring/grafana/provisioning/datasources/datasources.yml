@@ -1,0 +1,40 @@
+# Grafana Provisioning - Datasources
+# ===================================
+# Configuração automática de datasources do Grafana
+
+apiVersion: 1
+
+datasources:
+  # Prometheus - Métricas
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: "15s"
+      httpMethod: POST
+
+  # PostgreSQL - Dados do banco
+  - name: PostgreSQL
+    type: postgres
+    url: ${POSTGRES_HOST:-postgres}:5432
+    user: ${POSTGRES_USER:-ouvy}
+    secureJsonData:
+      password: ${POSTGRES_PASSWORD}
+    jsonData:
+      database: ${POSTGRES_DB:-ouvy_db}
+      sslmode: 'disable'
+      maxOpenConns: 5
+      maxIdleConns: 2
+      connMaxLifetime: 14400
+
+  # Loki - Logs (opcional)
+  - name: Loki
+    type: loki
+    access: proxy
+    url: http://loki:3100
+    editable: false
+    jsonData:
+      maxLines: 1000

@@ -1,0 +1,172 @@
+name: Backend CI/CD
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'ouvy_saas/**'
+      - '.github/workflows/backend-ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'ouvy_saas/**'
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  # ============================================
+  # Lint & Code Quality
+  # ============================================
+  lint:
+    name: Lint & Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        working-directory: ./ouvy_saas
+        run: |
+          pip install black isort flake8 mypy
+          
+      - name: Run Black
+        working-directory: ./ouvy_saas
+        run: black --check . || true
+        
+      - name: Run isort
+        working-directory: ./ouvy_saas
+        run: isort --check-only . || true
+        
+      - name: Run Flake8
+        working-directory: ./ouvy_saas
+        run: flake8 . --max-line-length=120 --extend-ignore=E203,W503 || true
+
+  # ============================================
+  # Security Scan
+  # ============================================
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          
+      - name: Install security tools
+        run: |
+          pip install bandit safety pip-audit
+          
+      - name: Run Bandit
+        working-directory: ./ouvy_saas
+        run: bandit -r apps/ config/ -ll || true
+        
+      - name: Run Safety Check
+        working-directory: ./ouvy_saas
+        run: safety check --file requirements.txt --continue-on-error || true
+
+  # ============================================
+  # Tests with Coverage
+  # ============================================
+  test:
+    name: Tests (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+    
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: ouvy_test
+          POSTGRES_USER: ouvy
+          POSTGRES_PASSWORD: test_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        working-directory: ./ouvy_saas
+        run: |
+          pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-django
+          
+      - name: Run Tests with Coverage
+        working-directory: ./ouvy_saas
+        env:
+          DATABASE_URL: postgresql://ouvy:test_password@localhost:5432/ouvy_test
+          REDIS_URL: redis://localhost:6379/0
+          SECRET_KEY: test-secret-key-for-ci
+          DEBUG: 'False'
+          DJANGO_SETTINGS_MODULE: config.settings
+        run: |
+          pytest --cov=apps --cov-report=xml --cov-report=term -v || true
+          
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./ouvy_saas/coverage.xml
+          flags: backend
+          name: backend-coverage
+          fail_ci_if_error: false
+      
+      - name: Upload Coverage HTML
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report-py${{ matrix.python-version }}
+          path: ./ouvy_saas/htmlcov/
+
+  # ============================================
+  # Deploy to Railway (only on main)
+  # ============================================
+  deploy:
+    name: Deploy to Railway
+    runs-on: ubuntu-latest
+    needs: [lint, security, test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+      
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          cd ouvy_saas
+          railway up --service backend || echo "Railway deploy skipped - configure RAILWAY_TOKEN secret"

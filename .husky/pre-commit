@@ -1,0 +1,12 @@
+#!/bin/sh
+# Husky pre-commit hook
+# Executa lint-staged para validar arquivos antes do commit
+
+# Verifica se lint-staged está disponível
+if command -v npx &> /dev/null; then
+    npx lint-staged
+else
+    echo "⚠️  npx não encontrado. Instalando dependências..."
+    npm install
+    npx lint-staged
+fi

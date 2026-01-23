@@ -1,0 +1,165 @@
+# Prometheus Alert Rules
+# ======================
+# Regras de alerta para o Ouvy SaaS
+
+groups:
+  - name: ouvy_availability
+    interval: 30s
+    rules:
+      # API está down
+      - alert: APIDown
+        expr: up{job="django"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: backend
+        annotations:
+          summary: "API Django está offline"
+          description: "A API Django não está respondendo há mais de 1 minuto."
+
+      # Frontend está down
+      - alert: FrontendDown
+        expr: up{job="nextjs"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: frontend
+        annotations:
+          summary: "Frontend Next.js está offline"
+          description: "O Frontend não está respondendo há mais de 1 minuto."
+
+  - name: ouvy_performance
+    interval: 30s
+    rules:
+      # Latência alta na API
+      - alert: HighAPILatency
+        expr: histogram_quantile(0.95, sum(rate(django_http_requests_latency_seconds_bucket[5m])) by (le, view)) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: backend
+        annotations:
+          summary: "Alta latência na API"
+          description: "95% das requisições estão levando mais de 2s (view: {{ $labels.view }})"
+
+      # Taxa de erro alta
+      - alert: HighErrorRate
+        expr: sum(rate(django_http_responses_total_by_status_total{status=~"5.."}[5m])) / sum(rate(django_http_responses_total_by_status_total[5m])) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: backend
+        annotations:
+          summary: "Alta taxa de erros HTTP 5xx"
+          description: "Mais de 5% das requisições estão retornando erro 500."
+
+      # Muitas requisições
+      - alert: HighRequestRate
+        expr: sum(rate(django_http_requests_total[1m])) > 1000
+        for: 2m
+        labels:
+          severity: warning
+          service: backend
+        annotations:
+          summary: "Alto volume de requisições"
+          description: "Mais de 1000 req/min na API. Possível ataque DDoS."
+
+  - name: ouvy_database
+    interval: 30s
+    rules:
+      # Conexões PostgreSQL altas
+      - alert: HighDatabaseConnections
+        expr: pg_stat_activity_count > 80
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Muitas conexões no PostgreSQL"
+          description: "Há {{ $value }} conexões ativas no banco de dados."
+
+      # Queries lentas
+      - alert: SlowQueries
+        expr: rate(pg_stat_statements_seconds_total[5m]) > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Queries lentas detectadas"
+          description: "Queries estão levando mais de 5s em média."
+
+  - name: ouvy_celery
+    interval: 30s
+    rules:
+      # Fila de tasks grande
+      - alert: CeleryQueueBacklog
+        expr: celery_queue_length > 100
+        for: 5m
+        labels:
+          severity: warning
+          service: celery
+        annotations:
+          summary: "Fila de tasks Celery crescendo"
+          description: "Há {{ $value }} tasks aguardando processamento."
+
+      # Workers offline
+      - alert: CeleryWorkersDown
+        expr: celery_workers == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: celery
+        annotations:
+          summary: "Nenhum Celery worker ativo"
+          description: "Todos os workers Celery estão offline."
+
+  - name: ouvy_redis
+    interval: 30s
+    rules:
+      # Memória Redis alta
+      - alert: RedisHighMemory
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: redis
+        annotations:
+          summary: "Redis usando muita memória"
+          description: "Redis está usando {{ $value | humanizePercentage }} da memória disponível."
+
+      # Redis down
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: redis
+        annotations:
+          summary: "Redis está offline"
+          description: "O serviço Redis não está respondendo."
+
+  - name: ouvy_security
+    interval: 60s
+    rules:
+      # Muitas falhas de login
+      - alert: BruteForceAttempt
+        expr: sum(rate(django_auth_login_failed_total[5m])) > 10
+        for: 2m
+        labels:
+          severity: critical
+          service: security
+        annotations:
+          summary: "Possível ataque de força bruta"
+          description: "Mais de 10 falhas de login por minuto detectadas."
+
+      # Acessos negados
+      - alert: HighAccessDenied
+        expr: sum(rate(django_http_responses_total_by_status_total{status="403"}[5m])) > 50
+        for: 5m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "Muitos acessos negados (403)"
+          description: "Mais de 50 requisições 403 nos últimos 5 minutos."
