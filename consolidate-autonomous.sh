@@ -600,6 +600,11 @@ test-results/
 EOF
 log "✓ .gitignore consolidado"
 
+# Calcular duração antes do commit
+PHASE5_END=$(date +%s)
+PHASE5_DURATION=$((PHASE5_END - PHASE5_START))
+TOTAL_DURATION=$((PHASE5_END - PHASE1_START))
+
 # Commit final
 git add -A
 git commit -m "refactor(phase5): finalize monorepo consolidation
@@ -612,14 +617,12 @@ git commit -m "refactor(phase5): finalize monorepo consolidation
 BREAKING CHANGE: All paths updated to new monorepo structure
 
 Automated by: consolidate-autonomous.sh
-Total duration: $((PHASE5_END - PHASE1_START))s" || log_warning "Nothing to commit"
+Total duration: ${TOTAL_DURATION}s" || log_warning "Nothing to commit"
 
 # Push final
 log "Pushing to remote..."
 git push origin consolidate-monorepo 2>&1 | tee -a "$LOG_FILE" || log_warning "Push failed (may need manual push)"
 
-PHASE5_END=$(date +%s)
-PHASE5_DURATION=$((PHASE5_END - PHASE5_START))
 log "✅ FASE 5 COMPLETA (${PHASE5_DURATION}s)"
 echo ""
 

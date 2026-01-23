@@ -1,48 +1,71 @@
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-ENV/
-.env
-.env.local
-.env.production
-.env.production.local
-.env.vercel
-db.sqlite3
-*.log
-.DS_Store
+# ============================================
+# Node.js
+# ============================================
 node_modules/
-*.bak
-coverage/
-.nyc_output/
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Arquivos sensíveis com credenciais
-SECURITY_NOTES.md
-COMMIT_MESSAGE.txt
-COMMIT_MESSAGE_DOCS.txt
+npm-debug.log*
+.pnpm-debug.log*
 
 # ============================================
-# Consolidação Monorepo (Auto-added)
+# Next.js
+# ============================================
+.next/
+out/
+build/
+dist/
+.vercel/
+.turbo/
+
+# ============================================
+# Python
 # ============================================
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
-.pytest_cache/
+.Python
 venv/
 .venv/
 ENV/
-node_modules/
-.next/
-.turbo/
-dist/
-build/
+*.egg
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ============================================
+# Django
+# ============================================
 *.log
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# ============================================
+# Environment
+# ============================================
+.env
+.env.local
+.env.*.local
+
+# ============================================
+# IDEs
+# ============================================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# ============================================
+# Backups
+# ============================================
 backup-*.tar.gz
+*.bak
+
+# ============================================
+# Test Coverage
+# ============================================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
