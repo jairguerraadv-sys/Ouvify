@@ -1,0 +1,40 @@
+# Backend (não fazer deploy pelo Vercel)
+apps/backend
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Node
+node_modules/
+.turbo/
+
+# Build
+.next/
+dist/
+
+# Outros
+.git/
+.github/
+.DS_Store
+*.log
+
+# Testes
+tests/
+__tests__/
+coverage/
+test-results/
+
+# Docs
+docs/
+*.md
+!README.md
+
+# Config files (mantém apenas os necessários)
+docker-compose.yml
+Makefile
+pyrightconfig.json
+pytest.ini

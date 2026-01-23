@@ -203,7 +203,9 @@ class AuditLog(models.Model):
     )
     user_agent = models.TextField(
         'User Agent',
-        blank=True
+        blank=True,
+        null=True,
+        default=''
     )
     metadata = models.JSONField(
         'Metadados',

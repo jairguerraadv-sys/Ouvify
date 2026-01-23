@@ -172,7 +172,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                 <YAxis className="text-xs" />
                 <Tooltip
                   labelFormatter={(value) => new Date(value).toLocaleDateString('pt-BR')}
-                  formatter={(value: number) => [value.toLocaleString(), 'Eventos']}
+                  formatter={(value) => [String(value ?? 0), 'Eventos']}
                   contentStyle={{
                     backgroundColor: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',
@@ -208,7 +208,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                   className="text-xs"
                 />
                 <Tooltip
-                  formatter={(value: number) => [value.toLocaleString(), 'Eventos']}
+                  formatter={(value) => [String(value ?? 0), 'Eventos']}
                   contentStyle={{
                     backgroundColor: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',
@@ -236,7 +236,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                   cx="50%"
                   cy="50%"
                   outerRadius={100}
-                  label={({ severity_display, percentage }) => `${severity_display}: ${percentage}%`}
+                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                 >
                   {analytics.severity_breakdown.map((entry, index) => (
                     <Cell
@@ -246,7 +246,7 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number, name: string) => [value.toLocaleString(), name]}
+                  formatter={(value) => [String(value ?? 0), '']}
                   contentStyle={{
                     backgroundColor: 'hsl(var(--card))',
                     border: '1px solid hsl(var(--border))',

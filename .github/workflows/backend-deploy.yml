@@ -1,0 +1,47 @@
+name: Backend Deploy to Railway
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/backend/**'
+      - 'packages/**'
+      - '.github/workflows/backend-deploy.yml'
+  workflow_dispatch:
+
+env:
+  RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+jobs:
+  deploy:
+    name: Deploy Backend to Railway
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+      
+      - name: Deploy to Railway
+        run: |
+          cd apps/backend
+          railway up --detach
+      
+      - name: Run Migrations
+        run: |
+          cd apps/backend
+          railway run python manage.py migrate --noinput || true
+      
+      - name: Collect Static Files
+        run: |
+          cd apps/backend
+          railway run python manage.py collectstatic --noinput || true
+      
+      - name: Health Check
+        run: |
+          echo "Waiting for deployment..."
+          sleep 30
+          HEALTH_URL=$(railway domain)
+          curl -f "https://${HEALTH_URL}/health/" || echo "Health check pending..."

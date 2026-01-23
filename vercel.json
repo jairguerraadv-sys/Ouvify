@@ -1,8 +1,17 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "version": 2,
+  "name": "ouvy-frontend",
   "buildCommand": "cd apps/frontend && npm install && npm run build",
   "outputDirectory": "apps/frontend/.next",
   "installCommand": "npm install --prefix apps/frontend",
   "framework": "nextjs",
+  "regions": ["gru1"],
+  "github": {
+    "enabled": true,
+    "autoAlias": true,
+    "silent": false
+  },
   "headers": [
     {
       "source": "/(.*)",
@@ -32,6 +41,12 @@
           "value": "max-age=31536000; includeSubDomains; preload"
         }
       ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/backend/:path*",
+      "destination": "https://ouvy-saas-production.up.railway.app/api/:path*"
     }
   ]
 }

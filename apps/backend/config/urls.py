@@ -9,7 +9,7 @@ from django.urls import path, include
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.routers import DefaultRouter
+from rest_framework.routers import SimpleRouter
 from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
 from apps.tenants.subscription_management import ManageSubscriptionView, ReactivateSubscriptionView  # type: ignore[import-not-found]
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
@@ -43,7 +43,7 @@ SubscriptionView = tenant_views.SubscriptionView  # type: ignore[attr-defined]
 
 
 # Router DRF - Gera automaticamente rotas REST + actions customizadas
-router = DefaultRouter()
+router = SimpleRouter()
 
 # FeedbackViewSet gera as seguintes rotas:
 # - GET/POST    /api/feedbacks/                          (list, create)
