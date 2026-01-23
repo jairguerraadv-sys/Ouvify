@@ -44,7 +44,7 @@ export async function uploadBrandingImages(
       throw new Error('Nenhum arquivo fornecido para upload');
     }
     
-    const response = await api.post<UploadBrandingResponse>('/upload-branding/', formData, {
+    const response = await api.post<UploadBrandingResponse>('/api/upload-branding/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -74,7 +74,7 @@ export async function uploadBrandingImages(
  */
 export async function updateBrandingSettings(data: UpdateBrandingData): Promise<any> {
   try {
-    const response = await api.patch('/tenant-info/', data);
+    const response = await api.patch('/api/tenant-info/', data);
     logger.log('Configurações de branding atualizadas:', response);
     return response;
   } catch (error: any) {

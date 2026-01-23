@@ -37,7 +37,9 @@ export function middleware(request: NextRequest) {
     cspHeader = `
       default-src 'self';
       script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com;
-      style-src 'self';
+      style-src 'self' 'unsafe-inline';
+      style-src-attr 'unsafe-inline';
+      style-src-elem 'self' 'unsafe-inline';
       img-src 'self' data: https: blob:;
       font-src 'self' data:;
       connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || 'https://api.ouvy.com.br'} https://api.stripe.com;
