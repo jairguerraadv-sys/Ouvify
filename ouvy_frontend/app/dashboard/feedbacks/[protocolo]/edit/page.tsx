@@ -69,11 +69,11 @@ function EditFeedbackContent() {
 
   const fetchFeedback = async () => {
     try {
-      const response = await api.get(`/api/feedbacks/consultar-protocolo/`, {
+      const response = await api.get<Feedback>(`/api/feedbacks/consultar-protocolo/`, {
         params: { protocolo }
       });
 
-      const feedbackData = response.data as Feedback;
+      const feedbackData = response.data;
       setFeedback(feedbackData);
       
       // Preencher form

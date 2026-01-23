@@ -371,7 +371,6 @@ function FeedbackTicketContent() {
           <option value="fechado">Fechado</option>
         </select>
       </div>
-    </div>
 
       <div className="grid grid-cols-3 gap-6">
         {/* Coluna principal */}
