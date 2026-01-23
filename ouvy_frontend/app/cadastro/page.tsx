@@ -473,7 +473,6 @@ export default function CadastroPage() {
                   </span>
                 )}
               </div>
-            </div>
 
             {errors.subdominio_desejado && (
               <p className="text-error text-sm mt-1 flex items-center gap-1">
