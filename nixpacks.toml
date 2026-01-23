@@ -1,12 +1,16 @@
 [phases.setup]
 nixPkgs = ['python312', 'postgresql']
-nixLibs = ['python312Packages.pip', 'python312Packages.setuptools', 'python312Packages.wheel']
 
 [phases.install]
-cmds = ['cd ouvy_saas && python -m pip install --upgrade pip', 'cd ouvy_saas && python -m pip install -r requirements.txt']
+cmds = [
+  'cd ouvy_saas',
+  'python3 -m ensurepip --upgrade',
+  'python3 -m pip install --upgrade pip setuptools wheel',
+  'python3 -m pip install -r requirements.txt'
+]
 
 [phases.build]
-cmds = ['cd ouvy_saas && python manage.py collectstatic --noinput']
+cmds = ['cd ouvy_saas && python3 manage.py collectstatic --noinput']
 
 [start]
-cmd = 'cd ouvy_saas && python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120'
+cmd = 'cd ouvy_saas && python3 manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120'
