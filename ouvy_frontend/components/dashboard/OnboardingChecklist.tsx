@@ -15,10 +15,15 @@ interface ChecklistItem {
 }
 
 export function OnboardingChecklist() {
-  const { tenant } = useAuth();
+  const { user } = useAuth();
   const [items, setItems] = useState<ChecklistItem[]>([]);
   const [visible, setVisible] = useState(true);
   const [feedbackCount, setFeedbackCount] = useState(0);
+  
+  // Pegar tenant do localStorage
+  const tenant = typeof window !== 'undefined'
+    ? JSON.parse(localStorage.getItem('tenant_data') || '{}')
+    : null;
 
   useEffect(() => {
     if (!tenant) return;

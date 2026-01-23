@@ -63,11 +63,6 @@ function FeedbacksContent() {
     statusFilter !== 'todos' ? { status: statusFilter } : undefined
   );
 
-  const user = {
-    name: 'João Silva',
-    email: 'joao@empresa.com'
-  };
-
   // Filtrar feedbacks baseado no termo de busca
   const filteredFeedbacks = useMemo(() => {
     if (!feedbacks) return [];

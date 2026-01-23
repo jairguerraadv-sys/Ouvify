@@ -434,10 +434,10 @@ export default function CadastroPage() {
                 </div>
               </div>
             </TooltipFormField>
-              
-              {/* Preview do subdomínio */}
-              {formData.subdominio_desejado && subdominioStatus === 'available' && (
-                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+            
+            {/* Preview do subdomínio */}
+            {formData.subdominio_desejado && subdominioStatus === 'available' && (
+              <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
                   <p className="text-sm text-blue-900 mb-1 font-medium">
                     ✨ Seu link público será:
                   </p>
@@ -473,15 +473,16 @@ export default function CadastroPage() {
                   </span>
                 )}
               </div>
-              {errors.subdominio_desejado && (
-                <p className="text-error text-sm mt-1 flex items-center gap-1">
-                  <span className="w-1 h-1 bg-error rounded-full" />
-                  {errors.subdominio_desejado}
-                </p>
-              )}
             </div>
 
-            {/* Submit */}
+            {errors.subdominio_desejado && (
+              <p className="text-error text-sm mt-1 flex items-center gap-1">
+                <span className="w-1 h-1 bg-error rounded-full" />
+                {errors.subdominio_desejado}
+              </p>
+            )}
+
+            {/* Submit */
             <Button 
               type="submit" 
               variant="default"

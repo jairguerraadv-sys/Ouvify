@@ -462,4 +462,5 @@ function ConfiguracoesContent() {
       </div>
     </main>
   </div>
-);
+  );
+}

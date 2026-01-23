@@ -6,8 +6,13 @@ import 'driver.js/dist/driver.css';
 import { useAuth } from '@/contexts/AuthContext';
 
 export function OnboardingTour() {
-  const { user, tenant } = useAuth();
+  const { user } = useAuth();
   const [hasRun, setHasRun] = useState(false);
+  
+  // Pegar tenant do localStorage
+  const tenant = typeof window !== 'undefined'
+    ? JSON.parse(localStorage.getItem('tenant_data') || '{}')
+    : null;
 
   useEffect(() => {
     // Só executa se usuário está logado e tenant existe
@@ -43,8 +48,6 @@ export function OnboardingTour() {
           popover: {
             title: '🎉 Bem-vindo ao Ouvy!',
             description: `Olá ${user?.name || 'Visitante'}! Vamos fazer um tour rápido de 2 minutos para você conhecer as principais funcionalidades da plataforma.`,
-            side: 'center',
-            align: 'center',
           },
         },
         {
@@ -100,8 +103,6 @@ export function OnboardingTour() {
               📧 Email: <a href="mailto:suporte@ouvy.com" style="color: #4F46E5;">suporte@ouvy.com</a><br>
               💬 Chat: Disponível no canto inferior direito<br>
               📚 Documentação: <a href="https://docs.ouvy.com" target="_blank" style="color: #4F46E5;">docs.ouvy.com</a>`,
-            side: 'center',
-            align: 'center',
           },
         },
       ],

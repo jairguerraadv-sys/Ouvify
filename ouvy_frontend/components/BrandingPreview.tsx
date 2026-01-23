@@ -20,7 +20,12 @@ export function BrandingPreview({
   corSecundaria = '#1E40AF',
   logoUrl = '',
 }: BrandingPreviewProps) {
-  const { tenant } = useAuth();
+  const { user } = useAuth();
+  
+  // Pegar tenant do localStorage
+  const tenant = typeof window !== 'undefined' 
+    ? JSON.parse(localStorage.getItem('tenant_data') || '{}')
+    : {};
   
   const publicUrl = tenant?.subdominio
     ? `https://${tenant.subdominio}.ouvy.com/enviar`
@@ -138,9 +143,6 @@ export function BrandingPreview({
                 <textarea
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-offset-0 transition-shadow"
-                  style={{ 
-                    focusRing: `2px solid ${corPrimaria}`,
-                  }}
                   placeholder="Descreva seu feedback..."
                   disabled
                 />
