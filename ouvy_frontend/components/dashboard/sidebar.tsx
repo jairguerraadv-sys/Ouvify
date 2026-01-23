@@ -28,11 +28,11 @@ interface SidebarProps {
 }
 
 const navigation = [
-  { name: 'Visão Geral', href: '/dashboard', icon: Home },
-  { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare },
-  { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3 },
-  { name: 'Assinatura', href: '/dashboard/assinatura', icon: CreditCard },
-  { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings },
+  { name: 'Visão Geral', href: '/dashboard', icon: Home, tourId: '' },
+  { name: 'Feedbacks', href: '/dashboard/feedbacks', icon: MessageSquare, tourId: 'feedbacks' },
+  { name: 'Relatórios', href: '/dashboard/relatorios', icon: BarChart3, tourId: 'relatorios' },
+  { name: 'Assinatura', href: '/dashboard/assinatura', icon: CreditCard, tourId: 'assinatura' },
+  { name: 'Configurações', href: '/dashboard/configuracoes', icon: Settings, tourId: 'configuracoes' },
 ];
 
 export function Sidebar({ user }: SidebarProps) {
@@ -55,6 +55,7 @@ export function Sidebar({ user }: SidebarProps) {
             <Link
               key={item.name}
               href={item.href}
+              data-tour={item.tourId}
               className={cn(
                 'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
                 isActive

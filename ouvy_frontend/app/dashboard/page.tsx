@@ -2,6 +2,8 @@
 
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/dashboard/sidebar';
+import { OnboardingTour } from '@/components/OnboardingTour';
+import { OnboardingChecklist } from '@/components/dashboard/OnboardingChecklist';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -105,6 +107,9 @@ function DashboardContent() {
       {/* Sidebar */}
       <Sidebar user={user || undefined} />
 
+      {/* Onboarding Components */}
+      <OnboardingTour />
+
       {/* Main Content */}
       <main className="flex-1 p-6 lg:p-8">
         {/* Header */}
@@ -124,6 +129,9 @@ function DashboardContent() {
             </Button>
           </div>
         </div>
+
+        {/* Onboarding Checklist */}
+        <OnboardingChecklist />
 
         {/* KPIs Grid */}
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
