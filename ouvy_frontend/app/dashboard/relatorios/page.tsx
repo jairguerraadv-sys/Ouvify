@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Download, FileText, Calendar, Filter, AlertCircle } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import api from '@/lib/api';
+import { AxiosResponse } from 'axios';
 
 export default function RelatoriosPage() {
   const [loading, setLoading] = useState(false);
@@ -27,12 +28,12 @@ export default function RelatoriosPage() {
       if (filters.data_inicio) params.append('data_inicio', filters.data_inicio);
       if (filters.data_fim) params.append('data_fim', filters.data_fim);
       
-      const response = await api.get(`/api/feedbacks/export/?${params.toString()}`, {
+      const response: AxiosResponse<Blob> = await api.get(`/api/feedbacks/export/?${params.toString()}`, {
         responseType: 'blob',
       });
       
       // Criar download
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(response.data);
       const link = document.createElement('a');
       link.href = url;
       

@@ -6,11 +6,6 @@ import { withSentryConfig } from '@sentry/nextjs';
  * Otimizado para performance e segurança
  */
 let nextConfig: NextConfig = {
-  // Turbopack (desenvolvimento)
-  turbopack: {
-    root: __dirname,
-  },
-
   // Otimizações de imagem
   images: {
     remotePatterns: [
