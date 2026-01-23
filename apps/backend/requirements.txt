@@ -23,6 +23,7 @@ django-redis==6.0.0
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 dparse==0.6.4
+drf-spectacular==0.28.0
 drf-yasg==1.21.12
 filelock==3.20.3
 gunicorn==23.0.0
