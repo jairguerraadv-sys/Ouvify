@@ -101,6 +101,9 @@ urlpatterns = [
     # Audit Log & Analytics
     path('api/auditlog/', include('apps.auditlog.urls')),
     
+    # LGPD Consent Management
+    path('api/consent/', include('apps.consent.urls')),
+    
     path('api/', include(router.urls)),  # API REST endpoints
     
     # JWT Authentication (Principal)

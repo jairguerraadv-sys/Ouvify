@@ -159,6 +159,7 @@ INSTALLED_APPS = [
     'apps.feedbacks',
     'apps.notifications',  # Push Notifications
     'apps.auditlog',       # Audit Log & Analytics
+    'apps.consent',        # LGPD Consent Management
 ]
 
 MIDDLEWARE = [
