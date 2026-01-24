@@ -51,7 +51,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="/recursos#seguranca" 
+                  href="/recursos/seguranca" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Segurança
@@ -74,7 +74,7 @@ export function Footer({
             <ul className="space-y-3 text-sm text-secondary-foreground/80">
               <li>
                 <a 
-                  href="/recursos#docs" 
+                  href="/recursos/documentacao" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   Documentação
@@ -82,7 +82,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="/recursos#faq" 
+                  href="/recursos/faq" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   FAQ
@@ -121,7 +121,7 @@ export function Footer({
               </li>
               <li>
                 <a 
-                  href="/privacidade#lgpd" 
+                  href="/lgpd" 
                   className="hover:text-primary hover:underline transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                 >
                   LGPD
