@@ -36,8 +36,13 @@ htmlcov/
 # Django
 # ============================================
 *.log
+!docs/logs/.gitkeep
+logs/
+*.log.*
 db.sqlite3
 db.sqlite3-journal
+*.db
+*.sqlite
 staticfiles/
 media/
 
@@ -57,10 +62,19 @@ media/
 .DS_Store
 
 # ============================================
-# Backups
+# Backups (NUNCA commitar)
 # ============================================
-backup-*.tar.gz
+*.tar.gz
+*.zip
+*.backup
 *.bak
+*.old
+.backups/
+backup-*/
+*_backup
+*_old
+consolidation-*.log
+migration-*.log
 
 # ============================================
 # Test Coverage

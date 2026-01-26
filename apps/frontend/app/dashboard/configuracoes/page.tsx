@@ -210,7 +210,7 @@ function ConfiguracoesContent() {
                 <input
                   ref={logoInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/webp"
                   onChange={handleLogoChange}
                   className="hidden"
                   id="logo-upload"
@@ -225,7 +225,9 @@ function ConfiguracoesContent() {
                   Selecionar Logo
                 </Button>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Formatos: PNG, JPG, SVG, WebP | Máximo: 5MB
+                  Formatos: PNG, JPG, WebP | Máximo: 2MB
+                  <br />
+                  Recomendado: PNG com fundo transparente (500x200px)
                 </p>
               </div>
 
@@ -244,7 +246,7 @@ function ConfiguracoesContent() {
                 <input
                   ref={faviconInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/webp"
                   onChange={handleFaviconChange}
                   className="hidden"
                   id="favicon-upload"

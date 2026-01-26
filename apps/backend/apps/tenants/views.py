@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
+from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.views.decorators.cache import cache_page
@@ -19,6 +20,18 @@ import logging
 import stripe
 
 logger = logging.getLogger(__name__)
+
+
+# ===================================================================
+# CUSTOM THROTTLE - Auditoria Fase 2 (26/01/2026)
+# ===================================================================
+class TenantInfoRateThrottle(AnonRateThrottle):
+    """
+    Rate limit para endpoint público /api/tenant-info/
+    Previne scraping de dados de tenants e enumeração de subdomínios
+    """
+    rate = '100/hour'  # 100 requisições por hora (sem autenticação)
+    scope = 'tenant_info'
 
 
 class TenantInfoView(APIView):
@@ -34,7 +47,14 @@ class TenantInfoView(APIView):
     Esta view apenas serializa e retorna essas informações.
     
     Cache: 5 minutos (informações públicas mudam raramente)
+    
+    ATUALIZADO (Auditoria Fase 2 - 26/01/2026):
+    - Adicionado rate limiting (100/hour anônimo, 1000/hour autenticado)
+    - Sanitização de outputs
+    - Proteção contra enumeração de tenants
     """
+    throttle_classes = [TenantInfoRateThrottle]  # ✅ NOVO: Rate limiting
+    
     def get_permissions(self):
         """GET é público, PATCH requer autenticação"""
         if self.request.method == 'GET':

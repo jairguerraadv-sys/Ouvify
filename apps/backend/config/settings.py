@@ -202,20 +202,56 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # BANCO DE DADOS
 # =============================================================================
 
-# Suporte para DATABASE_URL (Railway, Heroku, etc.)
-DATABASE_URL = os.getenv('DATABASE_URL')
+# Preferir DATABASE_PRIVATE_URL do Railway (melhor performance)
+# Fallback para DATABASE_URL se não estiver disponível
+DATABASE_PRIVATE_URL = os.getenv('DATABASE_PRIVATE_URL')  # Railway private network
+DATABASE_URL = os.getenv('DATABASE_URL')  # Railway public / Heroku
 
-if DATABASE_URL:
-    # Produção: usar DATABASE_URL (Railway, Heroku, etc.)
+if DATABASE_PRIVATE_URL:
+    # Railway Private URL (recomendado para produção)
+    # Usa rede privada interna do Railway para conexão mais rápida
+    import dj_database_url
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_PRIVATE_URL,
+            conn_max_age=600,  # Pool de conexões persistentes
+            conn_health_checks=True,  # Health checks automáticos
+            ssl_require=False,  # Railway private network não precisa SSL
+        )
+    }
+    
+    # Configurações adicionais de performance
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'options': '-c statement_timeout=30000',  # 30s timeout
+    }
+    
+    # Configuração do pool de conexões (se usar pgbouncer)
+    if os.getenv('DATABASE_POOL_MODE'):
+        DATABASES['default']['DISABLE_SERVER_SIDE_CURSORS'] = True
+    
+    print("✅ Usando DATABASE_PRIVATE_URL (Railway Private Network)")
+
+elif DATABASE_URL:
+    # Fallback para DATABASE_URL público
     import dj_database_url
     DATABASES = {
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
             conn_health_checks=True,
+            ssl_require=True,  # Public URL exige SSL
         )
     }
-    print("✅ Banco de dados configurado via DATABASE_URL")
+    
+    # Configurações adicionais de performance
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'options': '-c statement_timeout=30000',  # 30s timeout
+    }
+    
+    print("⚠️ Usando DATABASE_URL (Public Network) - Configure DATABASE_PRIVATE_URL para melhor performance")
+
 else:
     # Desenvolvimento: suportar configuração manual ou SQLite
     DB_ENGINE = os.getenv('DB_ENGINE', 'sqlite').lower()
@@ -241,7 +277,7 @@ else:
         if not DEBUG and not os.getenv('DB_PASSWORD'):
             raise ValueError(
                 "🔴 ERRO: DB_PASSWORD não configurada!\n"
-                "Configure em Railway: DATABASE_URL ou DB_PASSWORD"
+                "Configure em Railway: DATABASE_PRIVATE_URL, DATABASE_URL ou DB_PASSWORD"
             )
     else:
         # SQLite para desenvolvimento (fallback)
@@ -253,10 +289,10 @@ else:
         }
         
         if not DEBUG:
-            print(
-                "⚠️ AVISO: Usando SQLite em modo de produção. "
-                "Configure DATABASE_URL no .env para usar PostgreSQL."
+            raise ImproperlyConfigured(
+                "DATABASE_URL ou DATABASE_PRIVATE_URL deve estar configurada em produção"
             )
+        print("⚠️ Usando SQLite (apenas desenvolvimento)")
 
 
 # Password validation
@@ -454,10 +490,11 @@ REST_FRAMEWORK = {
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/hour',  # Rate limit geral para usuários anônimos
         'user': '1000/hour',  # Rate limit para usuários autenticados (fallback)
-        'tenant': '5000/hour',  # ✅ NOVO: Rate limit por tenant (evita abuso de múltiplos usuários)
-        'tenant_burst': '100/minute',  # ✅ NOVO: Burst limit por tenant
+        'tenant': '5000/hour',  # ✅ Rate limit por tenant (evita abuso de múltiplos usuários)
+        'tenant_burst': '100/minute',  # ✅ Burst limit por tenant
+        'tenant_info': '100/hour',  # ✅ NOVO (Auditoria Fase 2): Endpoint público tenant-info
         'protocolo_consulta': '10/minute',  # Rate limit para consulta de protocolo (IP + Protocolo)
-        'feedback_criacao': '10/hour',  # ✅ NOVO: Rate limit para criação de feedbacks
+        'feedback_criacao': '10/hour',  # ✅ Rate limit para criação de feedbacks
     },
     'EXCEPTION_HANDLER': 'apps.core.exceptions.custom_exception_handler',  # Handler customizado
     'DEFAULT_PAGINATION_CLASS': 'apps.core.pagination.StandardResultsSetPagination',  # Paginação padrão
@@ -715,6 +752,7 @@ if TESTING_MODE:
         'feedback_criacao': '100000/minute',
         'tenant': '100000/minute',  # ✅ Adicionar para testes JWT
         'tenant_burst': '100000/minute',
+        'tenant_info': '100000/minute',  # ✅ Endpoint público tenant-info
     }
     
     # Desabilitar CSRF
