@@ -335,8 +335,6 @@ function AjudaContent() {
                   Ver Documentação
                 </Button>
               </a>
-                </a>
-              </Button>
             </div>
           </div>
         </Card>
