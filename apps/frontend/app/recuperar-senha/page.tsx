@@ -37,7 +37,7 @@ export default function RecuperarSenhaPage() {
   }, [email]);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Back to Login */}
         <Link 

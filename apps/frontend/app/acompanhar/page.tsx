@@ -158,7 +158,7 @@ export default function AcompanharPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 py-12 px-4 relative overflow-hidden">
+    <main className="min-h-screen bg-white py-12 px-4 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
       <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
@@ -263,7 +263,7 @@ export default function AcompanharPage() {
         {feedback && (
           <div className="bg-white rounded-lg shadow-xl overflow-hidden animate-fade-in">
             {/* Header do Card */}
-            <div className="bg-gradient-to-r from-primary to-primary-600 p-6 text-white">
+            <div className="bg-gradient-to-r from-primary to-primary-600 p-6 text-gray-900">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm opacity-90 mb-1">Protocolo</p>
@@ -450,7 +450,7 @@ export default function AcompanharPage() {
                       <button
                         onClick={handleEnviarResposta}
                         disabled={isSending || !publicMsg.trim()}
-                        className="bg-primary text-white font-semibold px-4 py-2 rounded disabled:opacity-50"
+                        className="bg-primary text-gray-900 font-semibold px-4 py-2 rounded disabled:opacity-50"
                       >
                         {isSending ? 'Enviando...' : 'Enviar Mensagem'}
                       </button>

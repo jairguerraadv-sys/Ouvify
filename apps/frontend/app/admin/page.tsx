@@ -203,7 +203,7 @@ function AdminContent() {
   // Handle 403
   if (error?.response?.status === 403) {
     return (
-      <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <main className="min-h-screen bg-slate-950 text-gray-900 flex items-center justify-center">
         <Card className="bg-white border-gray-200 p-8">
           <h1 className="text-2xl font-semibold mb-2">Acesso Negado</h1>
           <p className="text-neutral-300">Área restrita a Super Admins.</p>
@@ -223,7 +223,7 @@ function AdminContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-gray-900">
       <div className="flex">
         {/* Sidebar */}
         <aside className="w-64 bg-white border-r border-gray-200 p-6 min-h-screen sticky top-0">
@@ -233,15 +233,15 @@ function AdminContent() {
           </div>
           
           <nav className="space-y-1">
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white text-white">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white text-gray-900">
               <BarChart3 className="w-4 h-4" />
               <span className="text-sm font-medium">Visão Geral</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/50 transition-colors">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-gray-900 hover:bg-white/50 transition-colors">
               <DollarSign className="w-4 h-4" />
               <span className="text-sm">Financeiro</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/50 transition-colors">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-gray-900 hover:bg-white/50 transition-colors">
               <Activity className="w-4 h-4" />
               <span className="text-sm">Logs de Atividade</span>
             </Link>
@@ -270,7 +270,7 @@ function AdminContent() {
                 variant="secondary" 
                 size="sm"
                 onClick={handleExportCSV}
-                className="bg-white text-white border-slate-700"
+                className="bg-white text-gray-900 border-slate-700"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Exportar CSV
@@ -385,13 +385,13 @@ function AdminContent() {
                     placeholder="Buscar por nome ou subdomínio..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-9 bg-white border-slate-700 text-white placeholder:text-slate-500"
+                    className="pl-9 bg-white border-slate-700 text-gray-900 placeholder:text-slate-500"
                   />
                 </div>
 
                 {/* Filter by Plano */}
                 <Select value={filterPlano} onValueChange={setFilterPlano}>
-                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-white">
+                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-gray-900">
                     <SelectValue placeholder="Plano" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-slate-700">
@@ -405,7 +405,7 @@ function AdminContent() {
 
                 {/* Filter by Status */}
                 <Select value={filterAtivo} onValueChange={setFilterAtivo}>
-                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-white">
+                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-gray-900">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-slate-700">
@@ -417,7 +417,7 @@ function AdminContent() {
 
                 {/* Ordering */}
                 <Select value={ordering} onValueChange={setOrdering}>
-                  <SelectTrigger className="w-[160px] bg-white border-slate-700 text-white">
+                  <SelectTrigger className="w-[160px] bg-white border-slate-700 text-gray-900">
                     <SelectValue placeholder="Ordenar" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-slate-700">
@@ -476,7 +476,7 @@ function AdminContent() {
                             )}
                           </div>
                           <div>
-                            <p className="text-white font-medium">{tenant.nome}</p>
+                            <p className="text-gray-900 font-medium">{tenant.nome}</p>
                             <p className="text-xs text-slate-500">{tenant.owner_email || "Sem email"}</p>
                           </div>
                         </div>
@@ -521,7 +521,7 @@ function AdminContent() {
                       <TableCell className="text-right">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-white">
+                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-slate-400 hover:text-gray-900">
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>

@@ -244,7 +244,7 @@ export default function CadastroPage() {
         <Card variant="elevated" className="w-full max-w-md text-center relative z-10 animate-scale-in shadow-elegant">
           <CardHeader>
             <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
-              <CheckCircle className="w-12 h-12 text-white" />
+              <CheckCircle className="w-12 h-12 text-gray-900" />
             </div>
             <h2 className="text-3xl font-bold text-secondary-900 mb-2">
               Conta Criada!

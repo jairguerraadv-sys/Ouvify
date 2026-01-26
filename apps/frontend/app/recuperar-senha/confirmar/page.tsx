@@ -68,7 +68,7 @@ function ConfirmarRecuperacaoContent() {
 
   if (!uid || !token) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+      <main className="min-h-screen bg-white flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <Card variant="elevated">
             <CardContent className="pt-6">
@@ -96,7 +96,7 @@ function ConfirmarRecuperacaoContent() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <Link 
           href="/login" 
@@ -208,7 +208,7 @@ function ConfirmarRecuperacaoContent() {
 
 function LoadingFallback() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-white flex items-center justify-center p-4">
       <div className="flex flex-col items-center gap-4">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
         <p className="text-muted-foreground">Carregando...</p>

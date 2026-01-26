@@ -142,11 +142,11 @@ function PerfilContent() {
                   <div className="relative group">
                     <Avatar className="w-32 h-32 border-4 border-primary/10">
                       <AvatarImage src={userData.avatar} alt={userData.name} />
-                      <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary-dark text-white">
+                      <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary-dark text-gray-900">
                         {userData.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
-                    <button className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark text-white rounded-full p-2 shadow-lg transition-colors opacity-0 group-hover:opacity-100">
+                    <button className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark text-gray-900 rounded-full p-2 shadow-lg transition-colors opacity-0 group-hover:opacity-100">
                       <Camera className="w-4 h-4" />
                     </button>
                   </div>

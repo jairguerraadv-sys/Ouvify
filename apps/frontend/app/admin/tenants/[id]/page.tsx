@@ -115,7 +115,7 @@ function TenantDetailsContent() {
 
   if (!tenant) {
     return (
-      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+      <div className="min-h-screen bg-slate-950 text-gray-900 flex items-center justify-center">
         <Card className="bg-white border-gray-200 p-8 text-center">
           <h2 className="text-xl font-semibold mb-2">Tenant não encontrado</h2>
           <p className="text-slate-400 mb-4">O tenant solicitado não existe ou foi removido.</p>
@@ -129,7 +129,7 @@ function TenantDetailsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-gray-900">
       {/* Header */}
       <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
@@ -139,7 +139,7 @@ function TenantDetailsContent() {
               <span className="text-slate-400">/</span>
               <span className="text-slate-400">Admin</span>
               <span className="text-slate-400">/</span>
-              <span className="text-white font-medium">Tenant #{tenant.id}</span>
+              <span className="text-gray-900 font-medium">Tenant #{tenant.id}</span>
             </div>
             <Button variant="outline" onClick={() => router.push('/admin')}>
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -171,7 +171,7 @@ function TenantDetailsContent() {
 
                 {/* Info Principal */}
                 <div>
-                  <h1 className="text-2xl font-bold text-white mb-1">{tenant.nome}</h1>
+                  <h1 className="text-2xl font-bold text-gray-900 mb-1">{tenant.nome}</h1>
                   <p className="text-slate-400 flex items-center gap-2">
                     <Globe className="w-4 h-4" />
                     {tenant.subdominio}.ouvy.com
@@ -381,7 +381,7 @@ function InfoRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm text-slate-400">{label}</span>
-      <span className="text-sm font-medium text-white">{value}</span>
+      <span className="text-sm font-medium text-gray-900">{value}</span>
     </div>
   );
 }
@@ -412,7 +412,7 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
           </div>
           <div>
             <p className="text-sm text-slate-400">{label}</p>
-            <p className="text-2xl font-bold text-white">{value}</p>
+            <p className="text-2xl font-bold text-gray-900">{value}</p>
           </div>
         </div>
       </CardContent>
@@ -423,7 +423,7 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
 // Loading Skeleton
 function TenantDetailsSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-950 text-white">
+    <div className="min-h-screen bg-slate-950 text-gray-900">
       <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <Skeleton className="h-8 w-64 bg-white" />

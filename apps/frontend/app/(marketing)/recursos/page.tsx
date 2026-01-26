@@ -245,7 +245,7 @@ const INTEGRATION_FEATURES: Feature[] = [
 
 export default function RecursosPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
         <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
@@ -408,7 +408,7 @@ export default function RecursosPage() {
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-white text-white py-20">
+        <section className="bg-white text-gray-900 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Por Que Escolher o Ouvy?</h2>
@@ -418,10 +418,10 @@ export default function RecursosPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-white/10 border-white/20 text-white">
+              <Card className="bg-white/10 border-white/20 text-gray-900">
                 <CardHeader>
                   <TrendingUp className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-white">+85% de Eficiência</CardTitle>
+                  <CardTitle className="text-gray-900">+85% de Eficiência</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">
@@ -430,10 +430,10 @@ export default function RecursosPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 border-white/20 text-white">
+              <Card className="bg-white/10 border-white/20 text-gray-900">
                 <CardHeader>
                   <Eye className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-white">100% de Transparência</CardTitle>
+                  <CardTitle className="text-gray-900">100% de Transparência</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">
@@ -442,10 +442,10 @@ export default function RecursosPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 border-white/20 text-white">
+              <Card className="bg-white/10 border-white/20 text-gray-900">
                 <CardHeader>
                   <Shield className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-white">Conformidade LGPD</CardTitle>
+                  <CardTitle className="text-gray-900">Conformidade LGPD</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">

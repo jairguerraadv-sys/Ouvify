@@ -98,7 +98,7 @@ export default function DemoPage() {
           }
         />
         
-        <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 flex items-center justify-center px-4 relative overflow-hidden">
+        <div className="min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
           <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-success/10 rounded-full blur-3xl opacity-30" />
@@ -152,7 +152,7 @@ export default function DemoPage() {
         }
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+      <div className="min-h-screen bg-white relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
         <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
@@ -349,7 +349,7 @@ export default function DemoPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-white text-white py-16">
+        <section className="bg-white text-gray-900 py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">
               Prefere começar agora?
@@ -364,7 +364,7 @@ export default function DemoPage() {
                 </Button>
               </Link>
               <Link href="/precos">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="bg-transparent border-white text-gray-900 hover:bg-white/10">
                   Ver Planos e Preços
                 </Button>
               </Link>

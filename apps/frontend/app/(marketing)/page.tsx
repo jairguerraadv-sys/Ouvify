@@ -57,7 +57,7 @@ export default function LandingPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
+      <section className="relative bg-white overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50 -z-10" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30 -z-10" />
@@ -113,7 +113,7 @@ export default function LandingPage() {
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
-                      <BarChart3 className="w-5 h-5 text-white" />
+                      <BarChart3 className="w-5 h-5 text-gray-900" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-secondary">Dashboard</p>
@@ -208,7 +208,7 @@ export default function LandingPage() {
                 <Card key={`feature-${idx}`} variant="elevated" className="group hover:-translate-y-1 transition-all">
                   <CardContent className="pt-6">
                     <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6 text-white" />
+                      <Icon className="w-6 h-6 text-gray-900" />
                     </div>
                     <h3 className="text-lg font-bold text-secondary mb-2">
                       {feature.title}
@@ -225,7 +225,7 @@ export default function LandingPage() {
       </section>
 
       {/* Benefits Section */}
-      <section id="seguranca" className="py-20 lg:py-32 bg-secondary text-white">
+      <section id="seguranca" className="py-20 lg:py-32 bg-secondary text-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Visual Card */}
@@ -236,7 +236,7 @@ export default function LandingPage() {
                 <CardHeader>
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-gradient-to-br from-success to-success rounded-lg flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-white" />
+                      <Shield className="w-6 h-6 text-gray-900" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-secondary-foreground">Certificações</h3>
@@ -281,7 +281,7 @@ export default function LandingPage() {
                 </span>
               </div>
 
-              <h2 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                 Proteção e conformidade
                 <span className="block text-primary">em primeiro lugar</span>
               </h2>
@@ -297,7 +297,7 @@ export default function LandingPage() {
                     <div className="w-6 h-6 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                       <CheckCircle className="w-4 h-4 text-primary" />
                     </div>
-                    <p className="font-medium text-white">{benefit}</p>
+                    <p className="font-medium text-gray-900">{benefit}</p>
                   </div>
                 ))}
               </div>
@@ -316,13 +316,13 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section id="precos" className="relative bg-gradient-secondary text-white py-20 lg:py-32 overflow-hidden">
+      <section id="precos" className="relative bg-gray-50 text-gray-900 py-20 lg:py-32 overflow-hidden border-t border-b border-gray-200">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary rounded-full blur-3xl opacity-20 -z-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary rounded-full blur-3xl opacity-10 -z-10" />
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50 -z-10" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30 -z-10" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-full backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm">"
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
             <span className="text-sm font-medium">
               Teste grátis por 14 dias, sem cartão de crédito
@@ -352,7 +352,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-secondary rounded-full px-8"
+                className="border-2 border-white text-gray-900 hover:bg-white hover:text-secondary rounded-full px-8"
               >
                 Agendar Demo
               </Button>

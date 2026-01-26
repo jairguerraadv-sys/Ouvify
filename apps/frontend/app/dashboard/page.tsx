@@ -123,7 +123,7 @@ function DashboardContent() {
                 Bem-vindo de volta, {user?.name?.split(' ')[0] || 'Usuário'}!
               </p>
             </div>
-            <Button className="bg-primary-500 hover:bg-primary-600 text-white">
+            <Button className="bg-primary-500 hover:bg-primary-600 text-gray-900">
               <Plus className="mr-2 h-4 w-4" />
               Novo Relatório
             </Button>

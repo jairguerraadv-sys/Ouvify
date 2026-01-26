@@ -221,7 +221,7 @@ export default function PrecosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+    <div className="min-h-screen bg-white relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
         <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
@@ -282,7 +282,7 @@ export default function PrecosPage() {
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary-600 text-white">Mais Popular</Badge>
+                      <Badge className="bg-primary-600 text-gray-900">Mais Popular</Badge>
                     </div>
                   )}
                   
@@ -480,7 +480,7 @@ export default function PrecosPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-white text-white py-16">
+        <section className="bg-white text-gray-900 py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <Zap className="w-12 h-12 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">
@@ -496,7 +496,7 @@ export default function PrecosPage() {
                 </Button>
               </Link>
               <Link href="/demo">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
+                <Button size="lg" variant="outline" className="bg-transparent border-white text-gray-900 hover:bg-white/10">
                   Agendar Demo
                 </Button>
               </Link>
