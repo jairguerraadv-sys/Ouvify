@@ -181,7 +181,7 @@ function DashboardContent() {
               <CardDescription>Histórico dos últimos 6 meses</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="h-64 bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg flex items-center justify-center border border-slate-200">
+              <div className="h-64 bg-white rounded-lg flex items-center justify-center border border-slate-200">
                 <div className="text-center text-slate-500">
                   <TrendingUp className="h-12 w-12 mx-auto mb-2 opacity-50" />
                   <p className="text-sm">Gráfico Recharts aqui</p>

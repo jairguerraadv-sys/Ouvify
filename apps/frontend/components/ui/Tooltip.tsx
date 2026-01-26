@@ -28,7 +28,7 @@ export function Tooltip({
           <TooltipPrimitive.Content
             side={side}
             align={align}
-            className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm max-w-xs shadow-lg z-50 animate-in fade-in-0 zoom-in-95"
+            className="bg-white text-gray-900 px-3 py-2 rounded-md text-sm max-w-xs shadow-lg z-50 animate-in fade-in-0 zoom-in-95"
             sideOffset={5}
           >
             {content}

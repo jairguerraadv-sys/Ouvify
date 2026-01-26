@@ -261,7 +261,7 @@ export default function LandingPage() {
                     <span className="text-xs">Ativo</span>
                   </Badge>
 
-                  <div className="flex items-center justify-between p-4 bg-gradient-to-r from-slate-50 to-slate-100/50 rounded-xl border border-slate-200">
+                  <div className="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-slate-200">
                     <div className="flex items-center gap-3">
                       <Shield className="w-5 h-5 text-slate-600" />
                       <span className="font-semibold text-secondary-600">Backup Automático</span>

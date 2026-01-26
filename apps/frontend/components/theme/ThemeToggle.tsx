@@ -30,7 +30,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
     return (
       <button
         className={cn(
-          "p-2 rounded-lg bg-gray-100 dark:bg-gray-800",
+          "p-2 rounded-lg bg-gray-100 dark:bg-white",
           className
         )}
         aria-label="Carregando tema"
@@ -60,7 +60,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
         onClick={toggleTheme}
         className={cn(
           "p-2 rounded-lg transition-colors",
-          "hover:bg-gray-100 dark:hover:bg-gray-800",
+          "hover:bg-gray-100 dark:hover:bg-white",
           "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
           "dark:focus:ring-offset-gray-900",
           className
@@ -75,7 +75,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
   // Menu dropdown com todas as opções
   return (
     <div className={cn("relative inline-block", className)}>
-      <div className="flex items-center gap-1 p-1 bg-gray-100 dark:bg-gray-800 rounded-lg">
+      <div className="flex items-center gap-1 p-1 bg-gray-100 dark:bg-white rounded-lg">
         <ThemeButton
           active={theme === 'light'}
           onClick={() => setTheme('light')}

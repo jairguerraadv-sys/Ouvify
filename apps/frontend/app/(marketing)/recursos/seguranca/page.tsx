@@ -22,7 +22,7 @@ export default function SegurancaPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
+      <section className="bg-white text-gray-900 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">🔒</span>
@@ -179,28 +179,28 @@ export default function SegurancaPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Certificações e Compliance</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 border border-primary-200">
+            <div className="bg-white rounded-xl p-6 border border-primary-200">
               <h3 className="text-lg font-semibold text-primary-900 mb-3">🇧🇷 LGPD Compliant</h3>
               <p className="text-primary-800">
                 100% em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018).
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-6 border border-secondary-200">
+            <div className="bg-white rounded-xl p-6 border border-secondary-200">
               <h3 className="text-lg font-semibold text-secondary-900 mb-3">🇪🇺 GDPR Compliant</h3>
               <p className="text-secondary-800">
                 Conformidade com o Regulamento Geral de Proteção de Dados da União Europeia.
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-6 border border-green-200">
+            <div className="bg-white rounded-xl p-6 border border-green-200">
               <h3 className="text-lg font-semibold text-green-900 mb-3">🛡️ ISO 27001 (em processo)</h3>
               <p className="text-green-800">
                 Certificação internacional de gestão de segurança da informação em andamento.
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-6 border border-red-200">
+            <div className="bg-white rounded-xl p-6 border border-red-200">
               <h3 className="text-lg font-semibold text-red-900 mb-3">💳 PCI DSS Level 1</h3>
               <p className="text-red-800">
                 Conformidade com padrões de segurança da indústria de cartões de pagamento.
@@ -213,7 +213,7 @@ export default function SegurancaPage() {
         <section className="mb-16">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Monitoramento 24/7</h2>
           
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-xl p-8">
+          <div className="bg-white text-gray-900 rounded-xl p-8">
             <p className="text-lg mb-6">
               Nossa equipe de segurança monitora continuamente todos os sistemas para 
               detectar e responder a ameaças em tempo real.
@@ -248,7 +248,7 @@ export default function SegurancaPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-primary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+              className="bg-primary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
             >
               Falar com Especialista
             </Link>

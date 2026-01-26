@@ -193,7 +193,7 @@ export function PricingCard({
       {/* Badge */}
       {badge && highlighted && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <span className="bg-gradient-to-r from-primary to-accent text-white px-4 py-1 rounded-full text-sm font-bold">
+          <span className="bg-gradient-to-r from-primary to-accent text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
             {badge}
           </span>
         </div>
@@ -226,7 +226,7 @@ export function PricingCard({
             className={cn(
               'w-full py-3 px-4 rounded-lg font-semibold transition-all duration-200',
               highlighted
-                ? 'bg-gradient-to-r from-primary to-accent text-white hover:shadow-lg'
+                ? 'bg-gradient-to-r from-primary to-accent text-gray-900 hover:shadow-lg'
                 : 'bg-neutral-100 text-secondary hover:bg-neutral-200'
             )}
           >

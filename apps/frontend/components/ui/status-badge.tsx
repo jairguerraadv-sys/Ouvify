@@ -40,7 +40,7 @@ const StatusBadge = React.forwardRef<HTMLDivElement, StatusBadgeProps>(
     const sizeStyles = sizeConfig[size];
     
     const variantStyles = {
-      filled: `${config.bg} text-white`,
+      filled: `${config.bg} text-gray-900`,
       outline: `border border-current ${config.color} bg-transparent`,
       soft: `${config.light} ${config.color}`,
     };

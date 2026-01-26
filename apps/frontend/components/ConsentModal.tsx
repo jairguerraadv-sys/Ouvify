@@ -142,7 +142,7 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
               <button
                 onClick={handleAccept}
                 disabled={loading || !consents.terms || !consents.privacy || !consents.lgpd}
-                className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary-600 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Salvando...' : 'Aceitar e Continuar'}
               </button>

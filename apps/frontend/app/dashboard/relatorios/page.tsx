@@ -187,7 +187,7 @@ export default function RelatoriosPage() {
               <button
                 onClick={() => handleExport('csv')}
                 disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
+                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-gray-900 font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {loading ? 'Exportando...' : 'Exportar CSV'}
@@ -210,7 +210,7 @@ export default function RelatoriosPage() {
               <button
                 onClick={() => handleExport('json')}
                 disabled={loading}
-                className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
+                className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-gray-900 font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {loading ? 'Exportando...' : 'Exportar JSON'}

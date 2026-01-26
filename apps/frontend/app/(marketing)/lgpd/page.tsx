@@ -48,7 +48,7 @@ export default function LGPDPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-primary-900 to-secondary-900 text-white py-20">
+      <section className="bg-white text-gray-900 py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">🇧🇷</span>
@@ -93,7 +93,7 @@ export default function LGPDPage() {
           <h2 className="text-4xl font-bold text-gray-900 mb-8">Como Exercer Seus Direitos</h2>
           
           <div className="space-y-6">
-            <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl p-8 border-l-4 border-primary-600">
+            <div className="bg-white rounded-xl p-8 border-l-4 border-primary-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>📧</span>
                 Por Email
@@ -103,7 +103,7 @@ export default function LGPDPage() {
               </p>
               <a
                 href="mailto:privacidade@ouvy.com"
-                className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+                className="inline-block bg-primary-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
               >
                 privacidade@ouvy.com
               </a>
@@ -112,7 +112,7 @@ export default function LGPDPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-secondary-50 to-secondary-100 rounded-xl p-8 border-l-4 border-secondary-600">
+            <div className="bg-white rounded-xl p-8 border-l-4 border-secondary-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>🌐</span>
                 Portal de Solicitação
@@ -122,7 +122,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/lgpd/solicitacao"
-                className="inline-block bg-secondary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+                className="inline-block bg-secondary-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
               >
                 Acessar Portal LGPD
               </Link>
@@ -131,7 +131,7 @@ export default function LGPDPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-8 border-l-4 border-green-600">
+            <div className="bg-white rounded-xl p-8 border-l-4 border-green-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>⚙️</span>
                 Painel de Configurações
@@ -141,7 +141,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/settings/privacy"
-                className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition"
+                className="inline-block bg-green-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition"
               >
                 Ir para Configurações
               </Link>
@@ -235,7 +235,7 @@ export default function LGPDPage() {
         </section>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-xl p-8 text-center">
+        <div className="bg-white text-gray-900 rounded-xl p-8 text-center">
           <h3 className="text-3xl font-bold mb-4">Exercer Seus Direitos é Simples</h3>
           <p className="text-xl text-primary-100 mb-8">
             Respondemos todas as solicitações em até 15 dias úteis, conforme previsto na LGPD.
@@ -249,7 +249,7 @@ export default function LGPDPage() {
             </Link>
             <Link
               href="/privacidade"
-              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-primary-600 transition text-lg"
+              className="bg-transparent border-2 border-white text-gray-900 px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-primary-600 transition text-lg"
             >
               Ler Política Completa
             </Link>

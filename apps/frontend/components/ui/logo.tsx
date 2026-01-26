@@ -35,7 +35,7 @@ export function Logo({
 
   const textColors = {
     default: 'text-secondary',
-    white: 'text-white',
+    white: 'text-gray-900',
     dark: 'text-secondary-dark',
   };
 

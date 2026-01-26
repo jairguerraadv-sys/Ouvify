@@ -204,7 +204,7 @@ function AdminContent() {
   if (error?.response?.status === 403) {
     return (
       <main className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <Card className="bg-slate-900 border-slate-800 p-8">
+        <Card className="bg-white border-gray-200 p-8">
           <h1 className="text-2xl font-semibold mb-2">Acesso Negado</h1>
           <p className="text-neutral-300">Área restrita a Super Admins.</p>
         </Card>
@@ -226,22 +226,22 @@ function AdminContent() {
     <div className="min-h-screen bg-slate-950 text-white">
       <div className="flex">
         {/* Sidebar */}
-        <aside className="w-64 bg-slate-900 border-r border-slate-800 p-6 min-h-screen sticky top-0">
+        <aside className="w-64 bg-white border-r border-gray-200 p-6 min-h-screen sticky top-0">
           <div className="mb-8">
             <Logo size="md" />
             <p className="text-xs text-neutral-400 mt-2">Torre de Controle Admin</p>
           </div>
           
           <nav className="space-y-1">
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-slate-800 text-white">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white text-white">
               <BarChart3 className="w-4 h-4" />
               <span className="text-sm font-medium">Visão Geral</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/50 transition-colors">
               <DollarSign className="w-4 h-4" />
               <span className="text-sm">Financeiro</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800/50 transition-colors">
+            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-400 hover:text-white hover:bg-white/50 transition-colors">
               <Activity className="w-4 h-4" />
               <span className="text-sm">Logs de Atividade</span>
             </Link>
@@ -261,7 +261,7 @@ function AdminContent() {
                 variant="outline" 
                 size="sm"
                 onClick={() => mutate()}
-                className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                className="border-slate-700 text-slate-300 hover:bg-white"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 Atualizar
@@ -270,7 +270,7 @@ function AdminContent() {
                 variant="secondary" 
                 size="sm"
                 onClick={handleExportCSV}
-                className="bg-slate-800 text-white border-slate-700"
+                className="bg-white text-white border-slate-700"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Exportar CSV
@@ -328,7 +328,7 @@ function AdminContent() {
 
           {/* Distribuição de Planos */}
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-slate-900 border-slate-800 p-4">
+            <Card className="bg-white border-gray-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Free</p>
@@ -339,7 +339,7 @@ function AdminContent() {
                 </div>
               </div>
             </Card>
-            <Card className="bg-slate-900 border-slate-800 p-4">
+            <Card className="bg-white border-gray-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Starter</p>
@@ -350,7 +350,7 @@ function AdminContent() {
                 </div>
               </div>
             </Card>
-            <Card className="bg-slate-900 border-slate-800 p-4">
+            <Card className="bg-white border-gray-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Pro</p>
@@ -361,7 +361,7 @@ function AdminContent() {
                 </div>
               </div>
             </Card>
-            <Card className="bg-slate-900 border-slate-800 p-4">
+            <Card className="bg-white border-gray-200 p-4">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Enterprise</p>
@@ -375,7 +375,7 @@ function AdminContent() {
           </div>
 
           {/* Filters */}
-          <Card className="bg-slate-900 border-slate-800 mb-6">
+          <Card className="bg-white border-gray-200 mb-6">
             <CardContent className="p-4">
               <div className="flex flex-wrap items-center gap-4">
                 {/* Search */}
@@ -385,16 +385,16 @@ function AdminContent() {
                     placeholder="Buscar por nome ou subdomínio..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="pl-9 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                    className="pl-9 bg-white border-slate-700 text-white placeholder:text-slate-500"
                   />
                 </div>
 
                 {/* Filter by Plano */}
                 <Select value={filterPlano} onValueChange={setFilterPlano}>
-                  <SelectTrigger className="w-[140px] bg-slate-800 border-slate-700 text-white">
+                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-white">
                     <SelectValue placeholder="Plano" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent className="bg-white border-slate-700">
                     <SelectItem value="all">Todos Planos</SelectItem>
                     <SelectItem value="free">Free</SelectItem>
                     <SelectItem value="starter">Starter</SelectItem>
@@ -405,10 +405,10 @@ function AdminContent() {
 
                 {/* Filter by Status */}
                 <Select value={filterAtivo} onValueChange={setFilterAtivo}>
-                  <SelectTrigger className="w-[140px] bg-slate-800 border-slate-700 text-white">
+                  <SelectTrigger className="w-[140px] bg-white border-slate-700 text-white">
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent className="bg-white border-slate-700">
                     <SelectItem value="all">Todos Status</SelectItem>
                     <SelectItem value="true">Ativos</SelectItem>
                     <SelectItem value="false">Inativos</SelectItem>
@@ -417,10 +417,10 @@ function AdminContent() {
 
                 {/* Ordering */}
                 <Select value={ordering} onValueChange={setOrdering}>
-                  <SelectTrigger className="w-[160px] bg-slate-800 border-slate-700 text-white">
+                  <SelectTrigger className="w-[160px] bg-white border-slate-700 text-white">
                     <SelectValue placeholder="Ordenar" />
                   </SelectTrigger>
-                  <SelectContent className="bg-slate-800 border-slate-700">
+                  <SelectContent className="bg-white border-slate-700">
                     <SelectItem value="-data_criacao">Mais recentes</SelectItem>
                     <SelectItem value="data_criacao">Mais antigos</SelectItem>
                     <SelectItem value="nome">Nome A-Z</SelectItem>
@@ -434,13 +434,13 @@ function AdminContent() {
           </Card>
 
           {/* Tenants Table */}
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-white border-gray-200">
             <Table>
               <TableCaption className="text-slate-500">
                 {isLoading ? "Carregando..." : `${tenants?.length || 0} tenants encontrados`}
               </TableCaption>
               <TableHeader>
-                <TableRow className="border-slate-800 hover:bg-transparent">
+                <TableRow className="border-gray-200 hover:bg-transparent">
                   <TableHead className="text-slate-400">Empresa</TableHead>
                   <TableHead className="text-slate-400">Subdomínio</TableHead>
                   <TableHead className="text-slate-400">Plano</TableHead>
@@ -453,19 +453,19 @@ function AdminContent() {
               <TableBody>
                 {isLoading ? (
                   Array.from({ length: 5 }).map((_, i) => (
-                    <TableRow key={i} className="border-slate-800">
-                      <TableCell><Skeleton className="h-4 w-32 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-12 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16 bg-slate-800" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-20 bg-slate-800" /></TableCell>
+                    <TableRow key={i} className="border-gray-200">
+                      <TableCell><Skeleton className="h-4 w-32 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-24 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-16 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-12 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-24 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-16 bg-white" /></TableCell>
+                      <TableCell><Skeleton className="h-4 w-20 bg-white" /></TableCell>
                     </TableRow>
                   ))
                 ) : (
                   (tenants || []).map((tenant) => (
-                    <TableRow key={tenant.id} className="border-slate-800 hover:bg-slate-800/50">
+                    <TableRow key={tenant.id} className="border-gray-200 hover:bg-white/50">
                       <TableCell>
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center overflow-hidden">
@@ -499,7 +499,7 @@ function AdminContent() {
                           <SelectTrigger className={`w-[100px] h-7 text-xs ${getPlanoBadgeColor(tenant.plano || "free")} border-0`}>
                             <SelectValue />
                           </SelectTrigger>
-                          <SelectContent className="bg-slate-800 border-slate-700">
+                          <SelectContent className="bg-white border-slate-700">
                             <SelectItem value="free">Free</SelectItem>
                             <SelectItem value="starter">Starter</SelectItem>
                             <SelectItem value="pro">Pro</SelectItem>
@@ -525,7 +525,7 @@ function AdminContent() {
                               <MoreHorizontal className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
+                          <DropdownMenuContent align="end" className="bg-white border-slate-700">
                             <DropdownMenuLabel className="text-slate-400">Ações</DropdownMenuLabel>
                             <DropdownMenuSeparator className="bg-slate-700" />
                             <DropdownMenuItem className="text-slate-200 hover:bg-slate-700 cursor-pointer">
@@ -622,18 +622,18 @@ function KPICard({ title, value, icon: Icon, color = "text-white", format = "num
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-800">
+    <Card className="bg-white border-gray-200">
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div>
             <p className="text-slate-400 text-xs uppercase tracking-wide">{title}</p>
             {loading ? (
-              <Skeleton className="h-8 w-16 mt-1 bg-slate-800" />
+              <Skeleton className="h-8 w-16 mt-1 bg-white" />
             ) : (
               <p className={`text-2xl font-bold ${color}`}>{formatValue(value)}</p>
             )}
           </div>
-          <div className={`w-10 h-10 rounded-lg bg-slate-800 flex items-center justify-center ${color}`}>
+          <div className={`w-10 h-10 rounded-lg bg-white flex items-center justify-center ${color}`}>
             <Icon className="w-5 h-5" />
           </div>
         </div>

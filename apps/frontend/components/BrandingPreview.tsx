@@ -85,17 +85,17 @@ export function BrandingPreview({
                 />
               ) : (
                 <div className="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
-                  <span className="text-white text-xl font-bold">
+                  <span className="text-gray-900 text-xl font-bold">
                     {tenant?.empresa?.[0]?.toUpperCase() || 'L'}
                   </span>
                 </div>
               )}
             </div>
             
-            <h1 className="text-2xl font-bold text-white text-center mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
               {tenant?.empresa || 'Sua Empresa'}
             </h1>
-            <p className="text-white/90 text-center text-sm">
+            <p className="text-gray-900/90 text-center text-sm">
               Envie seu feedback, sugestão ou elogio
             </p>
           </div>
@@ -164,7 +164,7 @@ export function BrandingPreview({
               {/* Botão de envio */}
               <button
                 type="button"
-                className="w-full py-3 text-white font-medium rounded-md transition-all duration-300 hover:shadow-lg"
+                className="w-full py-3 text-gray-900 font-medium rounded-md transition-all duration-300 hover:shadow-lg"
                 style={{
                   backgroundColor: corPrimaria,
                 }}

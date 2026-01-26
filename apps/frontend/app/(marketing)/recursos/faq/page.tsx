@@ -101,7 +101,7 @@ export default function FAQPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-green-600 to-green-800 text-white py-16">
+      <section className="bg-white text-gray-900 py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">❓</span>
@@ -176,7 +176,7 @@ export default function FAQPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-green-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition"
+              className="bg-green-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition"
             >
               Entrar em Contato
             </Link>

@@ -300,7 +300,7 @@ function AnalyticsContent() {
               {data.top_tenants.map((tenant, index) => (
                 <div 
                   key={tenant.client__nome} 
-                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-800"
+                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-white"
                 >
                   <div className="flex items-center gap-3">
                     <span className={`
@@ -341,10 +341,10 @@ interface KPICardProps {
 
 function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardProps) {
   const colorClasses = {
-    blue: 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400',
+    blue: 'bg-primary-50 text-primary-600 dark:bg-white/30 dark:text-primary-400',
     green: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400',
     orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
-    purple: 'bg-secondary-50 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400',
+    purple: 'bg-secondary-50 text-secondary-600 dark:bg-white/30 dark:text-secondary-400',
     yellow: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
   };
 
@@ -393,7 +393,7 @@ function MetricBar({ label, value, total, color }: MetricBarProps) {
           {value} ({percentage.toFixed(1)}%)
         </span>
       </div>
-      <div className="h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+      <div className="h-2 bg-slate-100 dark:bg-white rounded-full overflow-hidden">
         <div 
           className={`h-full ${color} rounded-full transition-all duration-500`}
           style={{ width: `${percentage}%` }}

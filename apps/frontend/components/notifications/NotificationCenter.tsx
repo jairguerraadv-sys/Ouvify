@@ -162,8 +162,8 @@ export function NotificationCenter() {
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "relative p-2 rounded-lg transition-colors",
-          "hover:bg-gray-100 dark:hover:bg-gray-800",
-          isOpen && "bg-gray-100 dark:bg-gray-800"
+          "hover:bg-gray-100 dark:hover:bg-white",
+          isOpen && "bg-gray-100 dark:bg-white"
         )}
         aria-label={`Notificações${unreadCount > 0 ? ` (${unreadCount} não lidas)` : ''}`}
         aria-expanded={isOpen}
@@ -173,7 +173,7 @@ export function NotificationCenter() {
         
         {/* Badge de não lidas */}
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-white bg-red-500 rounded-full">
+          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-gray-900 bg-red-500 rounded-full">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -181,10 +181,10 @@ export function NotificationCenter() {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 max-h-[32rem] bg-white dark:bg-gray-900 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-96 max-h-[32rem] bg-white dark:bg-white rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="font-semibold text-gray-900 dark:text-white">
+            <h2 className="font-semibold text-gray-900 dark:text-gray-900">
               Notificações
             </h2>
             {unreadCount > 0 && (
@@ -217,8 +217,8 @@ export function NotificationCenter() {
                     <button
                       onClick={() => handleNotificationClick(notification)}
                       className={cn(
-                        "w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors",
-                        !notification.is_read && "bg-primary-50/50 dark:bg-primary-900/10"
+                        "w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-white/50 transition-colors",
+                        !notification.is_read && "bg-primary-50/50 dark:bg-white/10"
                       )}
                     >
                       <div className="flex gap-3">
@@ -233,7 +233,7 @@ export function NotificationCenter() {
                             <p className={cn(
                               "text-sm",
                               !notification.is_read 
-                                ? "font-semibold text-gray-900 dark:text-white" 
+                                ? "font-semibold text-gray-900 dark:text-gray-900" 
                                 : "font-medium text-gray-700 dark:text-gray-300"
                             )}>
                               {notification.title}
@@ -272,7 +272,7 @@ export function NotificationCenter() {
             <div className="border-t border-gray-200 dark:border-gray-700 p-2">
               <a
                 href="/notifications"
-                className="block w-full py-2 text-sm text-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                className="block w-full py-2 text-sm text-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-gray-50 dark:hover:bg-white rounded-lg transition-colors"
               >
                 Ver todas as notificações
               </a>

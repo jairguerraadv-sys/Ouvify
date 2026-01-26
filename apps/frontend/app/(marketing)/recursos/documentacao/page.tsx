@@ -41,7 +41,7 @@ export default function DocumentacaoPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-secondary-600 to-secondary-800 text-white py-16">
+      <section className="bg-white text-gray-900 py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">📚</span>
@@ -103,7 +103,7 @@ export default function DocumentacaoPage() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-gradient-to-br from-secondary-400 to-pink-400 flex items-center justify-center">
+              <div className="aspect-video bg-white flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">
@@ -116,7 +116,7 @@ export default function DocumentacaoPage() {
             </div>
 
             <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-gradient-to-br from-primary-400 to-secondary-400 flex items-center justify-center">
+              <div className="aspect-video bg-white flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">
@@ -134,18 +134,18 @@ export default function DocumentacaoPage() {
         <section className="mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">⚙️ Referência da API</h2>
           
-          <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-xl p-8">
+          <div className="bg-white text-gray-900 rounded-xl p-8">
             <h3 className="text-2xl font-bold mb-4">REST API v1.0</h3>
             <p className="text-gray-300 mb-6">
               Documentação técnica completa com exemplos de código em Python, JavaScript, PHP e mais.
             </p>
             
             <div className="grid md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-gray-800 rounded-lg p-4">
+              <div className="bg-white rounded-lg p-4">
                 <div className="text-sm text-gray-400 mb-1">Base URL</div>
                 <code className="text-green-400">https://api.ouvy.com/v1</code>
               </div>
-              <div className="bg-gray-800 rounded-lg p-4">
+              <div className="bg-white rounded-lg p-4">
                 <div className="text-sm text-gray-400 mb-1">Autenticação</div>
                 <code className="text-primary-400">Bearer Token (JWT)</code>
               </div>
@@ -153,7 +153,7 @@ export default function DocumentacaoPage() {
 
             <Link
               href="/docs/api"
-              className="inline-block bg-secondary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+              className="inline-block bg-secondary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
             >
               Ver Documentação da API →
             </Link>
@@ -188,7 +188,7 @@ export default function DocumentacaoPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-secondary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+              className="bg-secondary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
             >
               Falar com Suporte
             </Link>

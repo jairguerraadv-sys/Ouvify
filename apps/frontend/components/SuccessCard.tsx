@@ -20,7 +20,7 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fade-in">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-slide-up">
         {/* Header com gradiente */}
-        <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-white text-center">
+        <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-6 text-gray-900 text-center">
           <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-4xl">✅</span>
           </div>
@@ -47,7 +47,7 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
           {/* Botão de Copiar */}
           <button
             onClick={copiarProtocolo}
-            className="w-full bg-primary hover:opacity-90 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+            className="w-full bg-primary hover:opacity-90 text-gray-900 font-bold py-3 px-6 rounded-lg transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
           >
             {copied ? (
               <>
@@ -82,7 +82,7 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
           <div className="space-y-3">
             <a
               href="/acompanhar"
-              className="block w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
+              className="block w-full bg-primary hover:bg-primary-dark text-gray-900 font-bold py-3 px-6 rounded-lg transition-all duration-300 text-center"
             >
               🔍 Acompanhar Status Agora
             </a>

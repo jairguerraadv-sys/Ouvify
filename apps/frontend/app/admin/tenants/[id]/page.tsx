@@ -116,7 +116,7 @@ function TenantDetailsContent() {
   if (!tenant) {
     return (
       <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
-        <Card className="bg-slate-900 border-slate-800 p-8 text-center">
+        <Card className="bg-white border-gray-200 p-8 text-center">
           <h2 className="text-xl font-semibold mb-2">Tenant não encontrado</h2>
           <p className="text-slate-400 mb-4">O tenant solicitado não existe ou foi removido.</p>
           <Button onClick={() => router.push('/admin')}>
@@ -131,7 +131,7 @@ function TenantDetailsContent() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
       {/* Header */}
-      <div className="border-b border-slate-800">
+      <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -152,12 +152,12 @@ function TenantDetailsContent() {
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Tenant Header Card */}
-        <Card className="bg-slate-900 border-slate-800 mb-8">
+        <Card className="bg-white border-gray-200 mb-8">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-6">
                 {/* Logo ou Avatar */}
-                <div className="w-20 h-20 rounded-xl bg-slate-800 flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-xl bg-white flex items-center justify-center overflow-hidden">
                   {tenant.logo ? (
                     <img 
                       src={tenant.logo} 
@@ -205,7 +205,7 @@ function TenantDetailsContent() {
                 <Button
                   variant="outline"
                   onClick={() => window.open(`https://${tenant.subdominio}.ouvy.com/enviar`, '_blank')}
-                  className="border-slate-700 text-slate-300 hover:bg-slate-800"
+                  className="border-slate-700 text-slate-300 hover:bg-white"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Ver Página Pública
@@ -230,7 +230,7 @@ function TenantDetailsContent() {
         {/* Grid de Informações */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {/* Informações de Contato */}
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Mail className="w-5 h-5 text-primary-400" />
@@ -245,7 +245,7 @@ function TenantDetailsContent() {
           </Card>
 
           {/* Informações de Conta */}
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-green-400" />
@@ -274,7 +274,7 @@ function TenantDetailsContent() {
           </Card>
 
           {/* Informações de Pagamento */}
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-secondary-400" />
@@ -327,7 +327,7 @@ function TenantDetailsContent() {
 
         {/* White-label Preview */}
         {(tenant.cor_primaria || tenant.cor_secundaria) && (
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Palette className="w-5 h-5 text-pink-400" />
@@ -404,7 +404,7 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-800">
+    <Card className="bg-white border-gray-200">
       <CardContent className="p-6">
         <div className="flex items-center gap-4">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
@@ -424,23 +424,23 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
 function TenantDetailsSkeleton() {
   return (
     <div className="min-h-screen bg-slate-950 text-white">
-      <div className="border-b border-slate-800">
+      <div className="border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <Skeleton className="h-8 w-64 bg-slate-800" />
+          <Skeleton className="h-8 w-64 bg-white" />
         </div>
       </div>
       
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <Card className="bg-slate-900 border-slate-800 mb-8">
+        <Card className="bg-white border-gray-200 mb-8">
           <CardContent className="p-6">
             <div className="flex items-center gap-6">
-              <Skeleton className="w-20 h-20 rounded-xl bg-slate-800" />
+              <Skeleton className="w-20 h-20 rounded-xl bg-white" />
               <div className="space-y-2">
-                <Skeleton className="h-8 w-48 bg-slate-800" />
-                <Skeleton className="h-4 w-32 bg-slate-800" />
+                <Skeleton className="h-8 w-48 bg-white" />
+                <Skeleton className="h-4 w-32 bg-white" />
                 <div className="flex gap-2">
-                  <Skeleton className="h-6 w-16 bg-slate-800" />
-                  <Skeleton className="h-6 w-16 bg-slate-800" />
+                  <Skeleton className="h-6 w-16 bg-white" />
+                  <Skeleton className="h-6 w-16 bg-white" />
                 </div>
               </div>
             </div>
@@ -449,14 +449,14 @@ function TenantDetailsSkeleton() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="bg-slate-900 border-slate-800">
+            <Card key={i} className="bg-white border-gray-200">
               <CardHeader>
-                <Skeleton className="h-6 w-24 bg-slate-800" />
+                <Skeleton className="h-6 w-24 bg-white" />
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <Skeleton className="h-4 w-full bg-slate-800" />
-                  <Skeleton className="h-4 w-full bg-slate-800" />
+                  <Skeleton className="h-4 w-full bg-white" />
+                  <Skeleton className="h-4 w-full bg-white" />
                 </div>
               </CardContent>
             </Card>
