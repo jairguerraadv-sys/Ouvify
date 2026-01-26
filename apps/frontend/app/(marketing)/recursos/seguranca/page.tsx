@@ -83,7 +83,7 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 2 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-purple-600">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-secondary-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">💾</span>
                 <div>
@@ -186,7 +186,7 @@ export default function SegurancaPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-secondary-200">
+            <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 rounded-xl p-6 border border-secondary-200">
               <h3 className="text-lg font-semibold text-secondary-900 mb-3">🇪🇺 GDPR Compliant</h3>
               <p className="text-secondary-800">
                 Conformidade com o Regulamento Geral de Proteção de Dados da União Europeia.

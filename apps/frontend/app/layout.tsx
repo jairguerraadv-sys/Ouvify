@@ -48,22 +48,22 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: "https://ouvy.com",
     siteName: "Ouvy",
-    title: "Ouvy - Canal de Ética",
-    description: "Seu canal seguro de feedback e denúncias",
+    title: "Ouvy - Canal de Ética Profissional",
+    description: "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos.",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Ouvy - Canal de Ética",
+        alt: "Ouvy - Canal de Ética Profissional",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ouvy",
-    description: "Canal seguro de feedback",
-    images: ["/logo.png"],
+    title: "Ouvy - Canal de Ética Profissional",
+    description: "Plataforma SaaS completa para gerenciar denúncias e feedbacks anônimos.",
+    images: ["/og-image.png"],
   },
 };
 

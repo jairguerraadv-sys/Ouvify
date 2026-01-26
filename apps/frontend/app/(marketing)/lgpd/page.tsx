@@ -112,7 +112,7 @@ export default function LGPDPage() {
               </p>
             </div>
 
-            <div className="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-8 border-l-4 border-purple-600">
+            <div className="bg-gradient-to-r from-secondary-50 to-secondary-100 rounded-xl p-8 border-l-4 border-secondary-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>🌐</span>
                 Portal de Solicitação
@@ -235,7 +235,7 @@ export default function LGPDPage() {
         </section>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl p-8 text-center">
+        <div className="bg-gradient-to-r from-primary-600 to-secondary-600 text-white rounded-xl p-8 text-center">
           <h3 className="text-3xl font-bold mb-4">Exercer Seus Direitos é Simples</h3>
           <p className="text-xl text-primary-100 mb-8">
             Respondemos todas as solicitações em até 15 dias úteis, conforme previsto na LGPD.

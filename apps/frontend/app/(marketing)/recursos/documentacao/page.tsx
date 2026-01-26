@@ -103,7 +103,7 @@ export default function DocumentacaoPage() {
           
           <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+              <div className="aspect-video bg-gradient-to-br from-secondary-400 to-pink-400 flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">
@@ -194,7 +194,7 @@ export default function DocumentacaoPage() {
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-secondary-600 px-8 py-3 rounded-lg font-medium border-2 border-purple-600 hover:bg-secondary-50 transition"
+              className="bg-white text-secondary-600 px-8 py-3 rounded-lg font-medium border-2 border-secondary-600 hover:bg-secondary-50 transition"
             >
               ← Voltar para Recursos
             </Link>
