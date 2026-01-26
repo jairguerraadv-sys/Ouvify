@@ -14,7 +14,7 @@ const Card = React.memo(React.forwardRef<
   const variantStyles = {
     default: 'rounded-xl border border-gray-200 bg-white text-gray-900 shadow-md',
     elevated: 'rounded-xl bg-white text-gray-900 shadow-lg border border-gray-100',
-    outlined: 'rounded-xl border-2 border-brand-primary-200 bg-white text-gray-900',
+    outlined: 'rounded-xl border-2 border-primary-200 bg-white text-gray-900',
     ghost: 'rounded-xl border border-gray-100 bg-transparent text-gray-900',
   };
 

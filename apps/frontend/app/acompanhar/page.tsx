@@ -263,7 +263,7 @@ export default function AcompanharPage() {
         {feedback && (
           <div className="bg-white rounded-lg shadow-xl overflow-hidden animate-fade-in">
             {/* Header do Card */}
-            <div className="bg-gradient-to-r from-primary to-blue-600 p-6 text-white">
+            <div className="bg-gradient-to-r from-primary to-primary-600 p-6 text-white">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm opacity-90 mb-1">Protocolo</p>
@@ -341,17 +341,17 @@ export default function AcompanharPage() {
                   {/* Evento: Resposta da Empresa */}
                   {feedback.resposta_empresa && (
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-purple-500 border-2 border-white animate-pulse"></div>
-                      <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-500">
+                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-secondary-500 border-2 border-white animate-pulse"></div>
+                      <div className="bg-secondary-50 rounded-lg p-4 border-l-4 border-secondary-500">
                         <div className="flex items-center mb-2">
                           <span className="text-lg mr-2">💬</span>
-                          <p className="font-semibold text-purple-800">Resposta da Empresa</p>
+                          <p className="font-semibold text-secondary-800">Resposta da Empresa</p>
                         </div>
                         <p className="text-gray-700 whitespace-pre-wrap mt-2">
                           {feedback.resposta_empresa}
                         </p>
                         {feedback.data_resposta && (
-                          <p className="text-sm text-purple-600 mt-2">
+                          <p className="text-sm text-secondary-600 mt-2">
                             Respondido em: {formatDate(feedback.data_resposta, 'long')}
                           </p>
                         )}

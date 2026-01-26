@@ -97,8 +97,8 @@ function DashboardContent() {
     const tipoLower = tipo?.toLowerCase() || '';
     if (tipoLower.includes('denúncia') || tipoLower.includes('denuncia')) return 'bg-red-100 text-red-600';
     if (tipoLower.includes('sugestão') || tipoLower.includes('sugestao')) return 'bg-green-100 text-green-600';
-    if (tipoLower.includes('elogio')) return 'bg-purple-100 text-purple-600';
-    if (tipoLower.includes('dúvida') || tipoLower.includes('duvida')) return 'bg-blue-100 text-blue-600';
+    if (tipoLower.includes('elogio')) return 'bg-secondary-100 text-secondary-600';
+    if (tipoLower.includes('dúvida') || tipoLower.includes('duvida')) return 'bg-primary-100 text-primary-600';
     return 'bg-gray-100 text-gray-600';
   };
 
@@ -301,7 +301,7 @@ function DashboardContent() {
                             feedback.status === 'resolvido'
                               ? 'bg-green-100 text-green-700'
                               : feedback.status === 'em_analise'
-                              ? 'bg-blue-100 text-blue-700'
+                              ? 'bg-primary-100 text-primary-700'
                               : ''
                           }
                         >

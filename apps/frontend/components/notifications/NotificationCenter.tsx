@@ -190,7 +190,7 @@ export function NotificationCenter() {
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
+                className="flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 transition-colors"
               >
                 <CheckCheck className="w-4 h-4" />
                 Marcar todas
@@ -218,7 +218,7 @@ export function NotificationCenter() {
                       onClick={() => handleNotificationClick(notification)}
                       className={cn(
                         "w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors",
-                        !notification.is_read && "bg-blue-50/50 dark:bg-blue-900/10"
+                        !notification.is_read && "bg-primary-50/50 dark:bg-primary-900/10"
                       )}
                     >
                       <div className="flex gap-3">
@@ -241,7 +241,7 @@ export function NotificationCenter() {
                             
                             {/* Indicador de não lida */}
                             {!notification.is_read && (
-                              <span className="flex-shrink-0 w-2 h-2 mt-1.5 bg-blue-600 rounded-full" />
+                              <span className="flex-shrink-0 w-2 h-2 mt-1.5 bg-primary-600 rounded-full" />
                             )}
                           </div>
                           
@@ -272,7 +272,7 @@ export function NotificationCenter() {
             <div className="border-t border-gray-200 dark:border-gray-700 p-2">
               <a
                 href="/notifications"
-                className="block w-full py-2 text-sm text-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
+                className="block w-full py-2 text-sm text-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg transition-colors"
               >
                 Ver todas as notificações
               </a>

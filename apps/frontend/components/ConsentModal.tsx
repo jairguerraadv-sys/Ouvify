@@ -118,13 +118,13 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
             </p>
 
             {/* Lista de termos atualizados */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-              <h3 className="font-semibold text-blue-900 mb-2">
+            <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 mb-6">
+              <h3 className="font-semibold text-primary-900 mb-2">
                 Documentos Atualizados:
               </h3>
               <ul className="space-y-1">
                 {pendingConsents.map((consent) => (
-                  <li key={consent.document_type} className="text-blue-800">
+                  <li key={consent.document_type} className="text-primary-800">
                     • {consent.document_type_display} (v{consent.version})
                   </li>
                 ))}
@@ -142,7 +142,7 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
               <button
                 onClick={handleAccept}
                 disabled={loading || !consents.terms || !consents.privacy || !consents.lgpd}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Salvando...' : 'Aceitar e Continuar'}
               </button>

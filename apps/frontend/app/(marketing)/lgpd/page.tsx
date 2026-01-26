@@ -48,16 +48,16 @@ export default function LGPDPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-900 to-purple-900 text-white py-20">
+      <section className="bg-gradient-to-br from-primary-900 to-secondary-900 text-white py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">🇧🇷</span>
             <div>
               <h1 className="text-5xl font-bold mb-2">LGPD</h1>
-              <p className="text-2xl text-blue-200">Lei Geral de Proteção de Dados</p>
+              <p className="text-2xl text-primary-200">Lei Geral de Proteção de Dados</p>
             </div>
           </div>
-          <p className="text-xl text-blue-100 mt-6">
+          <p className="text-xl text-primary-100 mt-6">
             A Ouvy está em total conformidade com a Lei nº 13.709/2018. 
             Conheça e exerça seus direitos como titular de dados.
           </p>
@@ -79,7 +79,7 @@ export default function LGPDPage() {
                 <p className="text-gray-600 mb-4">{direito.description}</p>
                 <Link
                   href={`/lgpd/solicitacao?tipo=${direito.title.toLowerCase()}`}
-                  className="text-blue-600 font-medium hover:underline"
+                  className="text-primary-600 font-medium hover:underline"
                 >
                   {direito.action} →
                 </Link>
@@ -93,7 +93,7 @@ export default function LGPDPage() {
           <h2 className="text-4xl font-bold text-gray-900 mb-8">Como Exercer Seus Direitos</h2>
           
           <div className="space-y-6">
-            <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-8 border-l-4 border-blue-600">
+            <div className="bg-gradient-to-r from-primary-50 to-primary-100 rounded-xl p-8 border-l-4 border-primary-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>📧</span>
                 Por Email
@@ -103,7 +103,7 @@ export default function LGPDPage() {
               </p>
               <a
                 href="mailto:privacidade@ouvy.com"
-                className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+                className="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
               >
                 privacidade@ouvy.com
               </a>
@@ -122,7 +122,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/lgpd/solicitacao"
-                className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-purple-700 transition"
+                className="inline-block bg-secondary-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
               >
                 Acessar Portal LGPD
               </Link>
@@ -165,7 +165,7 @@ export default function LGPDPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <div className="text-sm text-gray-500 mb-1">Email do DPO</div>
-                <a href="mailto:dpo@ouvy.com" className="text-xl font-semibold text-blue-600 hover:underline">
+                <a href="mailto:dpo@ouvy.com" className="text-xl font-semibold text-primary-600 hover:underline">
                   dpo@ouvy.com
                 </a>
               </div>
@@ -187,7 +187,7 @@ export default function LGPDPage() {
             <details className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition group">
               <summary className="font-semibold text-lg cursor-pointer list-none flex items-center justify-between">
                 <span>Onde meus dados são armazenados?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-primary-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-gray-700">
                 Todos os dados são armazenados em <strong>datacenters certificados na 
@@ -199,7 +199,7 @@ export default function LGPDPage() {
             <details className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition group">
               <summary className="font-semibold text-lg cursor-pointer list-none flex items-center justify-between">
                 <span>Por quanto tempo meus dados são mantidos?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-primary-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-gray-700">
                 Mantemos seus dados durante a vigência do contrato e por até <strong>5 anos 
@@ -211,7 +211,7 @@ export default function LGPDPage() {
             <details className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition group">
               <summary className="font-semibold text-lg cursor-pointer list-none flex items-center justify-between">
                 <span>Vocês compartilham dados com terceiros?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-primary-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-gray-700">
                 <strong>Não vendemos ou compartilhamos seus dados pessoais com terceiros para 
@@ -223,33 +223,33 @@ export default function LGPDPage() {
             <details className="bg-white rounded-xl p-6 border border-gray-200 hover:shadow-md transition group">
               <summary className="font-semibold text-lg cursor-pointer list-none flex items-center justify-between">
                 <span>Como vocês protegem meus dados?</span>
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-primary-600 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-gray-700">
                 Utilizamos criptografia SSL/TLS, backups diários, autenticação de dois fatores, 
                 monitoramento 24/7 e realizamos auditorias de segurança semestrais. Veja mais 
-                detalhes em <Link href="/recursos/seguranca" className="text-blue-600 hover:underline">Segurança de Dados</Link>.
+                detalhes em <Link href="/recursos/seguranca" className="text-primary-600 hover:underline">Segurança de Dados</Link>.
               </p>
             </details>
           </div>
         </section>
 
         {/* CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl p-8 text-center">
+        <div className="bg-gradient-to-r from-primary-600 to-purple-600 text-white rounded-xl p-8 text-center">
           <h3 className="text-3xl font-bold mb-4">Exercer Seus Direitos é Simples</h3>
-          <p className="text-xl text-blue-100 mb-8">
+          <p className="text-xl text-primary-100 mb-8">
             Respondemos todas as solicitações em até 15 dias úteis, conforme previsto na LGPD.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/lgpd/solicitacao"
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg font-bold hover:bg-blue-50 transition text-lg"
+              className="bg-white text-primary-600 px-8 py-4 rounded-lg font-bold hover:bg-primary-50 transition text-lg"
             >
               Fazer Solicitação LGPD
             </Link>
             <Link
               href="/privacidade"
-              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-blue-600 transition text-lg"
+              className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-bold hover:bg-white hover:text-primary-600 transition text-lg"
             >
               Ler Política Completa
             </Link>

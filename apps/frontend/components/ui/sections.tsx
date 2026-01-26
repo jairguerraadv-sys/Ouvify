@@ -29,7 +29,7 @@ export function Hero({
       case 'grid':
         return 'bg-gradient-to-br from-white to-neutral-50 relative overflow-hidden';
       case 'waves':
-        return 'bg-gradient-to-br from-brand-primary-50 via-white to-brand-secondary-50 relative overflow-hidden';
+        return 'bg-gradient-to-br from-primary-50 via-white to-secondary-50 relative overflow-hidden';
       default:
         return 'bg-white relative overflow-hidden';
     }

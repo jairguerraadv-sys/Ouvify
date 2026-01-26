@@ -3,6 +3,7 @@
 import { LucideIcon, FileQuestion, Plus, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 
 interface EmptyStateProps {
   icon?: LucideIcon;
@@ -63,54 +64,56 @@ export function EmptyState({
         {/* Primary Action */}
         {actionLabel && actionHref && (
           actionExternal ? (
-            <a
-              href={actionHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition-colors font-medium"
-            >
-              <Plus className="w-4 h-4" />
-              {actionLabel}
-            </a>
+            <Button variant="default" size="md" asChild>
+              <a
+                href={actionHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gap-2"
+              >
+                <Plus className="w-4 h-4" aria-hidden="true" />
+                {actionLabel}
+              </a>
+            </Button>
           ) : (
-            <Link
-              href={actionHref}
-              className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition-colors font-medium"
-            >
-              <Plus className="w-4 h-4" />
-              {actionLabel}
-            </Link>
+            <Button variant="default" size="md" asChild>
+              <Link href={actionHref} className="gap-2">
+                <Plus className="w-4 h-4" aria-hidden="true" />
+                {actionLabel}
+              </Link>
+            </Button>
           )
         )}
 
         {/* Copy Button */}
         {copyText && (
-          <button
+          <Button 
+            variant="ghost" 
+            size="md"
             onClick={handleCopy}
-            className="inline-flex items-center gap-2 bg-gray-100 text-gray-700 px-5 py-2.5 rounded-md hover:bg-gray-200 transition-colors font-medium"
+            className="gap-2"
           >
             {copied ? (
               <>
-                <Check className="w-4 h-4 text-green-600" />
+                <Check className="w-4 h-4 text-green-600" aria-hidden="true" />
                 Copiado!
               </>
             ) : (
               <>
-                <Copy className="w-4 h-4" />
+                <Copy className="w-4 h-4" aria-hidden="true" />
                 Copiar Link
               </>
             )}
-          </button>
+          </Button>
         )}
 
         {/* Secondary Action */}
         {secondaryActionLabel && secondaryActionHref && (
-          <Link
-            href={secondaryActionHref}
-            className="inline-flex items-center gap-2 text-gray-700 px-5 py-2.5 rounded-md hover:bg-gray-100 transition-colors font-medium"
-          >
-            {secondaryActionLabel}
-          </Link>
+          <Button variant="ghost" size="md" asChild>
+            <Link href={secondaryActionHref}>
+              {secondaryActionLabel}
+            </Link>
+          </Button>
         )}
       </div>
 

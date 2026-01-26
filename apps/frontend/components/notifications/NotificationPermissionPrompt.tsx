@@ -113,7 +113,7 @@ export function NotificationPermissionPrompt() {
 
   return (
     <div 
-      className="fixed bottom-4 right-4 max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 border-2 border-blue-500 z-50 animate-in slide-in-from-bottom-4 duration-300"
+      className="fixed bottom-4 right-4 max-w-sm bg-white dark:bg-gray-900 rounded-xl shadow-2xl p-6 border-2 border-primary-500 z-50 animate-in slide-in-from-bottom-4 duration-300"
       role="dialog"
       aria-labelledby="notification-prompt-title"
       aria-describedby="notification-prompt-description"
@@ -129,8 +129,8 @@ export function NotificationPermissionPrompt() {
       
       <div className="flex items-start gap-4">
         {/* Ícone */}
-        <div className="flex-shrink-0 p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-          <Bell className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+        <div className="flex-shrink-0 p-3 bg-primary-100 dark:bg-primary-900/30 rounded-full">
+          <Bell className="w-6 h-6 text-primary-600 dark:text-primary-400" />
         </div>
         
         <div className="flex-1 min-w-0">
@@ -162,7 +162,7 @@ export function NotificationPermissionPrompt() {
             <button
               onClick={handleAllow}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">

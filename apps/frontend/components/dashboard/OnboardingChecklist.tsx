@@ -124,7 +124,7 @@ export function OnboardingChecklist() {
       {/* Progress bar */}
       <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
         <div
-          className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out"
+          className="bg-primary-600 h-2 rounded-full transition-all duration-500 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -144,7 +144,7 @@ export function OnboardingChecklist() {
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`text-sm font-medium hover:text-blue-600 transition-colors inline-flex items-center gap-1 ${
+                  className={`text-sm font-medium hover:text-primary-600 transition-colors inline-flex items-center gap-1 ${
                     item.completed ? 'text-gray-500 line-through' : 'text-gray-900'
                   }`}
                 >
@@ -154,7 +154,7 @@ export function OnboardingChecklist() {
               ) : (
                 <Link
                   href={item.link}
-                  className={`text-sm font-medium hover:text-blue-600 transition-colors ${
+                  className={`text-sm font-medium hover:text-primary-600 transition-colors ${
                     item.completed ? 'text-gray-500 line-through' : 'text-gray-900'
                   }`}
                 >
@@ -168,8 +168,8 @@ export function OnboardingChecklist() {
       </ul>
 
       {percentage >= 75 && percentage < 100 && (
-        <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <p className="text-sm text-blue-900">
+        <div className="mt-4 p-3 bg-primary-50 border border-primary-200 rounded-lg">
+          <p className="text-sm text-primary-900">
             🎉 Quase lá! Você já concluiu {progress} de {total} passos.
           </p>
         </div>

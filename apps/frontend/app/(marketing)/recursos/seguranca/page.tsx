@@ -12,9 +12,9 @@ export default function SegurancaPage() {
       <div className="bg-white border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="text-sm">
-            <Link href="/" className="text-blue-600 hover:underline">Início</Link>
+            <Link href="/" className="text-primary-600 hover:underline">Início</Link>
             <span className="mx-2 text-gray-400">/</span>
-            <Link href="/recursos" className="text-blue-600 hover:underline">Recursos</Link>
+            <Link href="/recursos" className="text-primary-600 hover:underline">Recursos</Link>
             <span className="mx-2 text-gray-400">/</span>
             <span className="text-gray-600">Segurança</span>
           </nav>
@@ -22,13 +22,13 @@ export default function SegurancaPage() {
       </div>
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-800 text-white py-16">
+      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">🔒</span>
             <h1 className="text-5xl font-bold">Segurança de Dados</h1>
           </div>
-          <p className="text-xl text-blue-100">
+          <p className="text-xl text-primary-100">
             Seus dados e os dados dos seus clientes estão protegidos com as melhores 
             práticas de segurança da indústria.
           </p>
@@ -53,7 +53,7 @@ export default function SegurancaPage() {
           
           <div className="space-y-6">
             {/* Item 1 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-blue-600">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-primary-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🔐</span>
                 <div>
@@ -179,16 +179,16 @@ export default function SegurancaPage() {
           <h2 className="text-3xl font-bold text-gray-900 mb-8">Certificações e Compliance</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-6 border border-blue-200">
-              <h3 className="text-lg font-semibold text-blue-900 mb-3">🇧🇷 LGPD Compliant</h3>
-              <p className="text-blue-800">
+            <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-6 border border-primary-200">
+              <h3 className="text-lg font-semibold text-primary-900 mb-3">🇧🇷 LGPD Compliant</h3>
+              <p className="text-primary-800">
                 100% em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018).
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-purple-200">
-              <h3 className="text-lg font-semibold text-purple-900 mb-3">🇪🇺 GDPR Compliant</h3>
-              <p className="text-purple-800">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-6 border border-secondary-200">
+              <h3 className="text-lg font-semibold text-secondary-900 mb-3">🇪🇺 GDPR Compliant</h3>
+              <p className="text-secondary-800">
                 Conformidade com o Regulamento Geral de Proteção de Dados da União Europeia.
               </p>
             </div>
@@ -225,11 +225,11 @@ export default function SegurancaPage() {
                 <p className="text-gray-300">Uptime garantido</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-400 mb-2">&lt; 15min</div>
+                <div className="text-3xl font-bold text-primary-400 mb-2">&lt; 15min</div>
                 <p className="text-gray-300">Tempo de resposta a incidentes</p>
               </div>
               <div>
-                <div className="text-3xl font-bold text-purple-400 mb-2">24/7</div>
+                <div className="text-3xl font-bold text-secondary-400 mb-2">24/7</div>
                 <p className="text-gray-300">Monitoramento ativo</p>
               </div>
             </div>
@@ -237,7 +237,7 @@ export default function SegurancaPage() {
         </section>
 
         {/* CTA */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-8 text-center">
+        <div className="bg-primary-50 border border-primary-200 rounded-xl p-8 text-center">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Quer saber mais sobre nossa segurança?
           </h3>
@@ -248,13 +248,13 @@ export default function SegurancaPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-blue-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+              className="bg-primary-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
             >
               Falar com Especialista
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-blue-600 px-8 py-3 rounded-lg font-medium border-2 border-blue-600 hover:bg-blue-50 transition"
+              className="bg-white text-primary-600 px-8 py-3 rounded-lg font-medium border-2 border-primary-600 hover:bg-primary-50 transition"
             >
               ← Voltar para Recursos
             </Link>

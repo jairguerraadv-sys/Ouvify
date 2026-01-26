@@ -30,7 +30,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "disabled:cursor-not-allowed disabled:bg-gray-100 disabled:opacity-50",
             error 
               ? "border-error-500 focus:ring-error-500 focus:border-error-500" 
-              : "border-gray-300 focus:ring-brand-primary-500 focus:border-brand-primary-500 hover:border-gray-400",
+              : "border-gray-300 focus:ring-primary-500 focus:border-primary-500 hover:border-gray-400",
             className
           )}
           required={required}

@@ -306,8 +306,8 @@ function EditFeedbackContent() {
       </Card>
 
       {/* Info Card */}
-      <Card className="p-4 mt-4 bg-blue-50 border-blue-200">
-        <p className="text-sm text-blue-800">
+      <Card className="p-4 mt-4 bg-primary-50 border-primary-200">
+        <p className="text-sm text-primary-800">
           <strong>Nota:</strong> Ao editar um feedback, todas as interações e histórico serão mantidos.
           Apenas os campos acima serão atualizados.
         </p>

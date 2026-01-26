@@ -215,8 +215,8 @@ function AdminContent() {
   const getPlanoBadgeColor = (plano: string) => {
     const colors: Record<string, string> = {
       free: "bg-slate-600",
-      starter: "bg-blue-600",
-      pro: "bg-purple-600",
+      starter: "bg-primary-600",
+      pro: "bg-secondary-600",
       enterprise: "bg-amber-600",
     };
     return colors[plano] || "bg-slate-600";
@@ -297,7 +297,7 @@ function AdminContent() {
               title="Novos no Mês"
               value={metrics?.novos_mes}
               icon={UserPlus}
-              color="text-blue-400"
+              color="text-primary-400"
               loading={metricsLoading}
             />
             <KPICard
@@ -312,7 +312,7 @@ function AdminContent() {
               title="MRR Stripe"
               value={metrics?.mrr_stripe}
               icon={TrendingUp}
-              color="text-purple-400"
+              color="text-secondary-400"
               format="currency"
               loading={metricsLoading}
             />
@@ -343,10 +343,10 @@ function AdminContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Starter</p>
-                  <p className="text-2xl font-bold text-blue-400">{metrics?.distribuicao_planos?.starter || 0}</p>
+                  <p className="text-2xl font-bold text-primary-400">{metrics?.distribuicao_planos?.starter || 0}</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-blue-400" />
+                <div className="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-primary-400" />
                 </div>
               </div>
             </Card>
@@ -354,10 +354,10 @@ function AdminContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-slate-400 text-xs uppercase tracking-wide">Pro</p>
-                  <p className="text-2xl font-bold text-purple-400">{metrics?.distribuicao_planos?.pro || 0}</p>
+                  <p className="text-2xl font-bold text-secondary-400">{metrics?.distribuicao_planos?.pro || 0}</p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-purple-400" />
+                <div className="w-10 h-10 rounded-lg bg-secondary-500/20 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-secondary-400" />
                 </div>
               </div>
             </Card>
@@ -486,7 +486,7 @@ function AdminContent() {
                           href={`http://${tenant.subdominio}.localhost:3000/dashboard`}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-blue-400 hover:text-blue-300 hover:underline text-sm"
+                          className="text-primary-400 hover:text-primary-300 hover:underline text-sm"
                         >
                           {tenant.subdominio}
                         </a>

@@ -10,11 +10,11 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-brand-primary-100 text-brand-primary-700",
+          "bg-primary-100 text-primary-700",
         primary:
-          "bg-brand-primary-100 text-brand-primary-700",
+          "bg-primary-100 text-primary-700",
         secondary:
-          "bg-brand-secondary-100 text-brand-secondary-700",
+          "bg-secondary-100 text-secondary-700",
         success:
           "bg-success-100 text-success-700",
         warning:

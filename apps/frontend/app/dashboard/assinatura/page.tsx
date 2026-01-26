@@ -156,7 +156,7 @@ function AssinaturaContent() {
     },
     trialing: { 
       label: 'Período de Teste', 
-      className: 'bg-blue-100 text-blue-700',
+      className: 'bg-primary-100 text-primary-700',
       icon: Clock
     },
     incomplete: { 
@@ -338,7 +338,7 @@ function AssinaturaContent() {
                 • Você pode reativar sua assinatura a qualquer momento.
               </p>
               <p>
-                • Dúvidas? Entre em contato: <a href="mailto:suporte@ouvy.com.br" className="text-blue-600 hover:underline">suporte@ouvy.com.br</a>
+                • Dúvidas? Entre em contato: <a href="mailto:suporte@ouvy.com.br" className="text-primary-600 hover:underline">suporte@ouvy.com.br</a>
               </p>
             </CardContent>
           </Card>

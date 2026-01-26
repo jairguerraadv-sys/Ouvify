@@ -193,7 +193,7 @@ function TenantDetailsContent() {
                         </>
                       )}
                     </Badge>
-                    <Badge className="bg-blue-500/20 text-blue-400 border-blue-500/30 uppercase">
+                    <Badge className="bg-primary-500/20 text-primary-400 border-primary-500/30 uppercase">
                       {tenant.plano || 'Free'}
                     </Badge>
                   </div>
@@ -233,7 +233,7 @@ function TenantDetailsContent() {
           <Card className="bg-slate-900 border-slate-800">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Mail className="w-5 h-5 text-blue-400" />
+                <Mail className="w-5 h-5 text-primary-400" />
                 Contato
               </CardTitle>
             </CardHeader>
@@ -277,7 +277,7 @@ function TenantDetailsContent() {
           <Card className="bg-slate-900 border-slate-800">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-purple-400" />
+                <CreditCard className="w-5 h-5 text-secondary-400" />
                 Assinatura
               </CardTitle>
             </CardHeader>
@@ -396,10 +396,10 @@ interface StatsCardProps {
 
 function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   const colorClasses = {
-    blue: 'bg-blue-500/20 text-blue-400',
+    blue: 'bg-primary-500/20 text-primary-400',
     green: 'bg-green-500/20 text-green-400',
     red: 'bg-red-500/20 text-red-400',
-    purple: 'bg-purple-500/20 text-purple-400',
+    purple: 'bg-secondary-500/20 text-secondary-400',
     orange: 'bg-orange-500/20 text-orange-400',
   };
 

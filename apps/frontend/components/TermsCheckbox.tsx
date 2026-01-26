@@ -43,7 +43,7 @@ export default function TermsCheckbox({
             checked={isChecked}
             onChange={handleChange}
             required={required}
-            className={`h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 ${
+            className={`h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-blue-500 ${
               error ? 'border-red-500' : ''
             }`}
           />
@@ -53,7 +53,7 @@ export default function TermsCheckbox({
           <Link
             href={termsUrl}
             target="_blank"
-            className="text-blue-600 hover:text-blue-700 underline font-medium"
+            className="text-primary-600 hover:text-primary-700 underline font-medium"
           >
             {termsText}
           </Link>

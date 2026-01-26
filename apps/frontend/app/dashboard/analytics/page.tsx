@@ -204,7 +204,7 @@ function AnalyticsContent() {
                 label="Em Análise" 
                 value={data.metricas_por_status.em_analise} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-blue-500"
+                color="bg-primary-500"
               />
               <MetricBar 
                 label="Resolvido" 
@@ -226,7 +226,7 @@ function AnalyticsContent() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-purple-500" />
+              <TrendingUp className="w-5 h-5 text-secondary-500" />
               Por Tipo
             </CardTitle>
             <CardDescription>
@@ -245,7 +245,7 @@ function AnalyticsContent() {
                 label="Sugestão" 
                 value={data.metricas_por_tipo.sugestao} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-blue-500"
+                color="bg-primary-500"
               />
               <MetricBar 
                 label="Denúncia" 
@@ -341,10 +341,10 @@ interface KPICardProps {
 
 function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardProps) {
   const colorClasses = {
-    blue: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
+    blue: 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400',
     green: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400',
     orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
-    purple: 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
+    purple: 'bg-secondary-50 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400',
     yellow: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
   };
 

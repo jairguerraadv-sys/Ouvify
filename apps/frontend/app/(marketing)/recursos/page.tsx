@@ -408,11 +408,11 @@ export default function RecursosPage() {
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20">
+        <section className="bg-gradient-to-r from-primary-600 to-indigo-600 text-white py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Por Que Escolher o Ouvy?</h2>
-              <p className="text-xl text-blue-100">
+              <p className="text-xl text-primary-100">
                 Benefícios comprovados por centenas de empresas
               </p>
             </div>
@@ -424,7 +424,7 @@ export default function RecursosPage() {
                   <CardTitle className="text-white">+85% de Eficiência</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-blue-100">
+                  <p className="text-primary-100">
                     Reduza em até 85% o tempo de gestão de feedbacks com automações inteligentes
                   </p>
                 </CardContent>
@@ -436,7 +436,7 @@ export default function RecursosPage() {
                   <CardTitle className="text-white">100% de Transparência</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-blue-100">
+                  <p className="text-primary-100">
                     Visibilidade completa de todos os feedbacks com rastreabilidade total
                   </p>
                 </CardContent>
@@ -448,7 +448,7 @@ export default function RecursosPage() {
                   <CardTitle className="text-white">Conformidade LGPD</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-blue-100">
+                  <p className="text-primary-100">
                     Segurança e privacidade garantidas com certificação ISO 27001
                   </p>
                 </CardContent>

@@ -87,7 +87,7 @@ function FeedbacksContent() {
       },
       em_analise: {
         label: 'Em Análise',
-        className: 'bg-blue-100 text-blue-700 hover:bg-blue-100',
+        className: 'bg-primary-100 text-primary-700 hover:bg-primary-100',
         icon: <Clock className="h-3 w-3 mr-1" />
       },
       pendente: {
@@ -110,10 +110,10 @@ function FeedbacksContent() {
   const getCategoryColor = (categoria: string) => {
     const colors: { [key: string]: string } = {
       'Conduta': 'bg-red-100 text-red-700',
-      'Benefícios': 'bg-blue-100 text-blue-700',
+      'Benefícios': 'bg-primary-100 text-primary-700',
       'Reconhecimento': 'bg-green-100 text-green-700',
       'Segurança': 'bg-orange-100 text-orange-700',
-      'Infraestrutura': 'bg-purple-100 text-purple-700'
+      'Infraestrutura': 'bg-secondary-100 text-secondary-700'
     };
 
     return colors[categoria] || 'bg-slate-100 text-slate-700';

@@ -31,7 +31,7 @@ import { deleteFeedback } from "@/hooks/use-dashboard";
 function StatusBadge({ status }: { status: string }) {
   const variants: Record<string, { bg: string; text: string; label: string }> = {
     pendente: { bg: "bg-yellow-100", text: "text-yellow-800", label: "Pendente" },
-    em_analise: { bg: "bg-blue-100", text: "text-blue-800", label: "Em Análise" },
+    em_analise: { bg: "bg-primary-100", text: "text-primary-800", label: "Em Análise" },
     resolvido: { bg: "bg-green-100", text: "text-green-800", label: "Resolvido" },
     fechado: { bg: "bg-gray-100", text: "text-gray-800", label: "Fechado" },
   };
@@ -420,7 +420,7 @@ function FeedbackTicketContent() {
                     className={`max-w-xl rounded-lg p-4 text-sm shadow-sm border ${
                       isInterna
                         ? "bg-amber-50 border-amber-200"
-                        : "bg-blue-50 border-blue-200"
+                        : "bg-primary-50 border-primary-200"
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">

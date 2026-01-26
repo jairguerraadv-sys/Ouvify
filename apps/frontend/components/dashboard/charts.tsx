@@ -34,7 +34,7 @@ export function BarChart({
     'bg-success',
     'bg-warning',
     'bg-error',
-    'bg-purple-500',
+    'bg-secondary-500',
     'bg-pink-500',
     'bg-indigo-500'
   ];

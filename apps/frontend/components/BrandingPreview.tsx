@@ -34,7 +34,7 @@ export function BrandingPreview({
   return (
     <div className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden sticky top-6">
       {/* Header do Preview */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-200 px-4 py-3">
+      <div className="bg-gradient-to-r from-primary-50 to-indigo-50 border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-semibold text-gray-900">Pré-visualização</h3>
@@ -48,7 +48,7 @@ export function BrandingPreview({
               href={publicUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-medium text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center gap-1.5 text-xs font-medium text-primary-600 hover:text-primary-800 transition-colors"
             >
               <span>Abrir página</span>
               <ExternalLink className="w-3.5 h-3.5" />

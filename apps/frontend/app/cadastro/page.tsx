@@ -438,11 +438,11 @@ export default function CadastroPage() {
             <div>
               {/* Preview do subdomínio */}
               {formData.subdominio_desejado && subdominioStatus === 'available' && (
-                <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    <p className="text-sm text-blue-900 mb-1 font-medium">
+                <div className="mt-2 p-3 bg-primary-50 border border-primary-200 rounded-lg">
+                    <p className="text-sm text-primary-900 mb-1 font-medium">
                       ✨ Seu link público será:
                     </p>
-                    <code className="text-sm text-blue-700 bg-white px-2 py-1 rounded border border-blue-300">
+                    <code className="text-sm text-primary-700 bg-white px-2 py-1 rounded border border-primary-300">
                       https://{formData.subdominio_desejado}.ouvy.com/enviar
                     </code>
                   </div>

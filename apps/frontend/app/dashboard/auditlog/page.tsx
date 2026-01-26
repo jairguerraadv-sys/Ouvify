@@ -87,7 +87,7 @@ export default function AuditLogPage() {
                 </h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="flex items-center gap-2">
-                    <span className="text-blue-500">🔐</span> Login/Logout
+                    <span className="text-primary-500">🔐</span> Login/Logout
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-green-500">➕</span> Criações
@@ -99,7 +99,7 @@ export default function AuditLogPage() {
                     <span className="text-red-500">🗑️</span> Exclusões
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-purple-500">📥</span> Exportações
+                    <span className="text-secondary-500">📥</span> Exportações
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-red-600">🚨</span> Alertas

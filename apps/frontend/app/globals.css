@@ -158,19 +158,55 @@ a:focus-visible {
 }
 
 /* ===== FOCUS & ACCESSIBILITY ===== */
-:focus-visible {
-  outline: 3px solid hsl(var(--ring));
-  outline-offset: 3px;
+
+/* ✅ Focus states globais para acessibilidade WCAG AA */
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary)) !important;
+  outline-offset: 2px;
   border-radius: 0.375rem;
 }
 
+/* Links específicos */
+a:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 3px;
+  border-radius: 0.25rem;
+}
+
+/* Inputs e controles de formulário */
 input:focus-visible,
 textarea:focus-visible,
-select:focus-visible,
+select:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 0;
+  border-color: hsl(var(--ring));
+}
+
+/* Botões e elementos interativos */
 button:focus-visible,
-[role="button"]:focus-visible {
+[role="button"]:focus-visible,
+[role="tab"]:focus-visible,
+[role="menuitem"]:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
+  border-radius: 0.375rem;
+}
+
+/* Skip to content (acessibilidade) */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: hsl(var(--primary));
+  color: white;
+  padding: 8px 16px;
+  border-radius: 0 0 4px 0;
+  z-index: 100;
+  transition: top 0.2s;
+}
+
+.skip-to-content:focus {
+  top: 0;
 }
 
 /* ===== SCROLLBAR ===== */

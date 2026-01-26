@@ -17,127 +17,120 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // 🎨 Brand Colors - Ouvy Design System
-        brand: {
-          primary: {
-            50: '#EFF6FF',
-            100: '#DBEAFE',
-            200: '#BFDBFE',
-            300: '#93C5FD',
-            400: '#60A5FA',
-            500: '#3B82F6',  // Main
-            600: '#2563EB',  // Hover
-            700: '#1D4ED8',
-            800: '#1E40AF',
-            900: '#1E3A8A',
-          },
-          secondary: {
-            50: '#FAF5FF',
-            100: '#F3E8FF',
-            200: '#E9D5FF',
-            300: '#D8B4FE',
-            400: '#C084FC',
-            500: '#A855F7',  // Main
-            600: '#9333EA',  // Hover
-            700: '#7E22CE',
-            800: '#6B21A8',
-            900: '#581C87',
-          },
-        },
-        
-        // 🎨 Core brand colors (CSS variables for shadcn compatibility)
+        // 🎨 Ouvy Brand Colors - Unified System (NO brand- prefix)
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-          light: "hsl(var(--primary-light))",
-          dark: "hsl(var(--primary-dark))",
+          DEFAULT: "#3B82F6",
+          foreground: "#FFFFFF",
+          50: "#EFF6FF",
+          100: "#DBEAFE",
+          200: "#BFDBFE",
+          300: "#93C5FD",
+          400: "#60A5FA",
+          500: "#3B82F6",  // Main
+          600: "#2563EB",  // Hover
+          700: "#1D4ED8",
+          800: "#1E40AF",
+          900: "#1E3A8A",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-          light: "hsl(var(--secondary-light))",
-          dark: "hsl(var(--secondary-dark))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#A855F7",
+          foreground: "#FFFFFF",
+          50: "#FAF5FF",
+          100: "#F3E8FF",
+          200: "#E9D5FF",
+          300: "#D8B4FE",
+          400: "#C084FC",
+          500: "#A855F7",  // Main
+          600: "#9333EA",  // Hover
+          700: "#7E22CE",
+          800: "#6B21A8",
+          900: "#581C87",
         },
         
-        // ✅ Semantic colors with full palette
+        // ✅ Semantic colors with full palettes
         success: {
-          50: '#F0FDF4',
-          100: '#DCFCE7',
-          200: '#BBF7D0',
-          300: '#86EFAC',
-          400: '#4ADE80',
-          500: '#22C55E',  // Main
-          600: '#16A34A',  // Hover
-          700: '#15803D',
-          800: '#166534',
-          900: '#14532D',
-          DEFAULT: "hsl(var(--success))",
-          foreground: "hsl(var(--success-foreground))",
+          DEFAULT: "#22C55E",
+          foreground: "#FFFFFF",
+          50: "#F0FDF4",
+          100: "#DCFCE7",
+          200: "#BBF7D0",
+          300: "#86EFAC",
+          400: "#4ADE80",
+          500: "#22C55E",  // Main
+          600: "#16A34A",  // Hover
+          700: "#15803D",
+          800: "#166534",
+          900: "#14532D",
         },
         warning: {
-          50: '#FFFBEB',
-          100: '#FEF3C7',
-          200: '#FDE68A',
-          300: '#FCD34D',
-          400: '#FBBF24',
-          500: '#F59E0B',  // Main
-          600: '#D97706',  // Hover
-          700: '#B45309',
-          800: '#92400E',
-          900: '#78350F',
-          DEFAULT: "hsl(var(--warning))",
-          foreground: "hsl(var(--warning-foreground))",
+          DEFAULT: "#F59E0B",
+          foreground: "#111827",
+          50: "#FFFBEB",
+          100: "#FEF3C7",
+          200: "#FDE68A",
+          300: "#FCD34D",
+          400: "#FBBF24",
+          500: "#F59E0B",  // Main
+          600: "#D97706",  // Hover
+          700: "#B45309",
+          800: "#92400E",
+          900: "#78350F",
         },
         error: {
-          50: '#FEF2F2',
-          100: '#FEE2E2',
-          200: '#FECACA',
-          300: '#FCA5A5',
-          400: '#F87171',
-          500: '#EF4444',  // Main
-          600: '#DC2626',  // Hover
-          700: '#B91C1C',
-          800: '#991B1B',
-          900: '#7F1D1D',
-          DEFAULT: "hsl(var(--error))",
-          foreground: "hsl(var(--error-foreground))",
+          DEFAULT: "#EF4444",
+          foreground: "#FFFFFF",
+          50: "#FEF2F2",
+          100: "#FEE2E2",
+          200: "#FECACA",
+          300: "#FCA5A5",
+          400: "#F87171",
+          500: "#EF4444",  // Main
+          600: "#DC2626",  // Hover
+          700: "#B91C1C",
+          800: "#991B1B",
+          900: "#7F1D1D",
         },
         info: {
-          50: '#ECFEFF',
-          100: '#CFFAFE',
-          200: '#A5F3FC',
-          300: '#67E8F9',
-          400: '#22D3EE',
-          500: '#06B6D4',  // Main
-          600: '#0891B2',  // Hover
-          700: '#0E7490',
-          800: '#155E75',
-          900: '#164E63',
-          DEFAULT: "hsl(var(--info))",
-          foreground: "hsl(var(--info-foreground))",
+          DEFAULT: "#06B6D4",
+          foreground: "#FFFFFF",
+          50: "#ECFEFF",
+          100: "#CFFAFE",
+          200: "#A5F3FC",
+          300: "#67E8F9",
+          400: "#22D3EE",
+          500: "#06B6D4",  // Main
+          600: "#0891B2",  // Hover
+          700: "#0E7490",
+          800: "#155E75",
+          900: "#164E63",
         },
+
+        // UI colors
+        background: "#FFFFFF",
+        foreground: "#111827",
+        card: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#111827",
+        },
+        popover: {
+          DEFAULT: "#FFFFFF",
+          foreground: "#111827",
+        },
+        muted: {
+          DEFAULT: "#F9FAFB",
+          foreground: "#6B7280",
+        },
+        accent: {
+          DEFAULT: "#A855F7",
+          foreground: "#FFFFFF",
+        },
+        destructive: {
+          DEFAULT: "#EF4444",
+          foreground: "#FFFFFF",
+        },
+        border: "#E5E7EB",
+        input: "#F3F4F6",
+        ring: "#3B82F6",
         
         // Gray palette
         gray: {

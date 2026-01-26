@@ -190,9 +190,9 @@ export function CookieBanner() {
               </div>
               
               {/* Cookies de Analytics */}
-              <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100/30 rounded-xl border border-blue-200 hover:shadow-md transition-all">
-                <div className="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-blue-600" />
+              <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-primary-50 to-primary-100/30 rounded-xl border border-primary-200 hover:shadow-md transition-all">
+                <div className="flex-shrink-0 w-10 h-10 bg-primary-100 rounded-lg flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-primary-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
@@ -205,7 +205,7 @@ export function CookieBanner() {
                         className="sr-only peer"
                         aria-label="Habilitar cookies de análise"
                       />
-                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600 shadow-inner"></div>
+                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600 shadow-inner"></div>
                     </label>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
@@ -216,9 +216,9 @@ export function CookieBanner() {
               </div>
               
               {/* Cookies de Marketing */}
-              <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100/30 rounded-xl border border-purple-200 hover:shadow-md transition-all">
-                <div className="flex-shrink-0 w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Megaphone className="w-5 h-5 text-purple-600" />
+              <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100/30 rounded-xl border border-secondary-200 hover:shadow-md transition-all">
+                <div className="flex-shrink-0 w-10 h-10 bg-secondary-100 rounded-lg flex items-center justify-center">
+                  <Megaphone className="w-5 h-5 text-secondary-600" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
@@ -231,7 +231,7 @@ export function CookieBanner() {
                         className="sr-only peer"
                         aria-label="Habilitar cookies de marketing"
                       />
-                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600 shadow-inner"></div>
+                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-purple-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-600 shadow-inner"></div>
                     </label>
                   </div>
                   <p className="text-sm text-gray-600 leading-relaxed">
