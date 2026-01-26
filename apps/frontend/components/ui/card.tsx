@@ -2,22 +2,40 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Cards with Ouvy branding - Enhanced
+// 🎨 Design System: Cards with Ouvy branding - Blue/Purple theme
 const Card = React.memo(React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { variant?: 'default' | 'elevated' | 'outlined' | 'ghost' }
->(({ className, variant = 'default', ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { 
+    variant?: 'default' | 'elevated' | 'outlined' | 'ghost'
+    hover?: boolean
+    padding?: 'none' | 'sm' | 'md' | 'lg'
+  }
+>(({ className, variant = 'default', hover = false, padding, ...props }, ref) => {
   const variantStyles = {
-    default: 'rounded-xl border border-border bg-card text-card-foreground shadow-soft hover:shadow-md transition-all duration-300',
-    elevated: 'rounded-xl bg-card text-card-foreground shadow-lg hover:shadow-xl transition-all duration-300 border border-border/30 hover:-translate-y-1',
-    outlined: 'rounded-xl border-2 border-primary/50 bg-card text-card-foreground hover:border-primary hover:shadow-md transition-all duration-300',
-    ghost: 'rounded-xl border border-border/30 bg-transparent text-card-foreground hover:bg-muted/30 hover:border-border transition-all duration-300',
+    default: 'rounded-xl border border-gray-200 bg-white text-gray-900 shadow-md',
+    elevated: 'rounded-xl bg-white text-gray-900 shadow-lg border border-gray-100',
+    outlined: 'rounded-xl border-2 border-brand-primary-200 bg-white text-gray-900',
+    ghost: 'rounded-xl border border-gray-100 bg-transparent text-gray-900',
   };
+
+  const paddingStyles = {
+    none: '',
+    sm: 'p-4',
+    md: 'p-6',
+    lg: 'p-8',
+  };
+
+  const hoverStyles = hover ? 'hover:shadow-xl transition-shadow duration-300' : '';
 
   return (
     <div
       ref={ref}
-      className={cn(variantStyles[variant], className)}
+      className={cn(
+        variantStyles[variant],
+        hoverStyles,
+        padding ? paddingStyles[padding] : '',
+        className
+      )}
       role="region"
       {...props}
     />
@@ -31,7 +49,7 @@ const CardHeader = React.memo(React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex flex-col space-y-2 p-6 border-b border-border/50", className)}
+    className={cn("flex flex-col space-y-2 p-6", className)}
     {...props}
   />
 )));
@@ -41,9 +59,9 @@ const CardTitle = React.memo(React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <h2
+  <h3
     ref={ref}
-    className={cn("text-2xl font-bold leading-tight tracking-tight text-secondary", className)}
+    className={cn("text-2xl font-bold text-gray-900", className)}
     {...props}
   />
 )));
@@ -55,7 +73,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-sm text-muted-foreground leading-relaxed", className)}
+    className={cn("text-gray-600", className)}
     {...props}
   />
 ))
@@ -65,7 +83,7 @@ const CardContent = React.memo(React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn("p-6", className)} {...props} />
+  <div ref={ref} className={cn("p-6 pt-0", className)} {...props} />
 )));
 CardContent.displayName = "CardContent"
 
@@ -75,7 +93,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center gap-3 p-6 pt-0", className)}
+    className={cn("flex items-center gap-3 p-6 pt-4 border-t border-gray-200", className)}
     {...props}
   />
 ))

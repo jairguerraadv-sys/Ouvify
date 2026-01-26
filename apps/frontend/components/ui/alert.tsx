@@ -3,19 +3,21 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { AlertCircle, CheckCircle, AlertTriangle, Info, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+// 🎨 Design System: Alerts with Ouvy colors
 const alertVariants = cva(
-  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-current",
+  "relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4",
   {
     variants: {
       variant: {
-        default: "bg-background text-foreground border-border",
+        default: "bg-gray-50 border-gray-200 text-gray-900",
         success:
-          "border-success/50 bg-success/10 text-success dark:bg-success/5 [&>svg]:text-success",
+          "border-success-200 bg-success-50 text-success-900 [&>svg]:text-success-500",
         warning:
-          "border-warning/50 bg-warning/10 text-warning dark:bg-warning/5 [&>svg]:text-warning",
+          "border-warning-200 bg-warning-50 text-warning-900 [&>svg]:text-warning-500",
         error:
-          "border-error/50 bg-error/10 text-error dark:bg-error/5 [&>svg]:text-error",
-        info: "border-info/50 bg-info/10 text-info dark:bg-info/5 [&>svg]:text-info",
+          "border-error-200 bg-error-50 text-error-900 [&>svg]:text-error-500",
+        info: 
+          "border-info-200 bg-info-50 text-info-900 [&>svg]:text-info-500",
       },
     },
     defaultVariants: {

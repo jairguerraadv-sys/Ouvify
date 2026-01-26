@@ -83,7 +83,7 @@ export default async function RootLayout({
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
-        <meta name="theme-color" content="#00BCD4" />
+        <meta name="theme-color" content="#3B82F6" />
         <meta name="csp-nonce" content={nonce} />
         
         {/* ✅ NOVO: Estilos globais para White Label */}

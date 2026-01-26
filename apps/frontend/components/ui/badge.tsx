@@ -3,24 +3,42 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+// 🎨 Design System: Badges with Ouvy branding
 const badgeVariants = cva(
-  "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "inline-flex items-center gap-1 rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
   {
     variants: {
       variant: {
         default:
-          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+          "bg-brand-primary-100 text-brand-primary-700",
+        primary:
+          "bg-brand-primary-100 text-brand-primary-700",
         secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+          "bg-brand-secondary-100 text-brand-secondary-700",
         success:
-          "border-transparent bg-success text-success-foreground shadow hover:bg-success/80",
-        outline: "text-foreground",
+          "bg-success-100 text-success-700",
+        warning:
+          "bg-warning-100 text-warning-700",
+        error:
+          "bg-error-100 text-error-700",
+        destructive:
+          "bg-error-100 text-error-700",
+        info:
+          "bg-info-100 text-info-700",
+        gray:
+          "bg-gray-100 text-gray-700",
+        outline:
+          "border border-gray-300 text-gray-700 bg-transparent",
+      },
+      size: {
+        sm: "px-2 py-0.5 text-xs",
+        md: "px-2.5 py-1 text-sm",
+        lg: "px-3 py-1.5 text-base",
       },
     },
     defaultVariants: {
       variant: "default",
+      size: "md",
     },
   }
 )
@@ -29,9 +47,9 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({ className, variant, size, ...props }: BadgeProps) {
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <span className={cn(badgeVariants({ variant, size }), className)} {...props} />
   )
 }
 

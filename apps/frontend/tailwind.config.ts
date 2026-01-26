@@ -17,7 +17,35 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // 🎨 Core brand colors
+        // 🎨 Brand Colors - Ouvy Design System
+        brand: {
+          primary: {
+            50: '#EFF6FF',
+            100: '#DBEAFE',
+            200: '#BFDBFE',
+            300: '#93C5FD',
+            400: '#60A5FA',
+            500: '#3B82F6',  // Main
+            600: '#2563EB',  // Hover
+            700: '#1D4ED8',
+            800: '#1E40AF',
+            900: '#1E3A8A',
+          },
+          secondary: {
+            50: '#FAF5FF',
+            100: '#F3E8FF',
+            200: '#E9D5FF',
+            300: '#D8B4FE',
+            400: '#C084FC',
+            500: '#A855F7',  // Main
+            600: '#9333EA',  // Hover
+            700: '#7E22CE',
+            800: '#6B21A8',
+            900: '#581C87',
+          },
+        },
+        
+        // 🎨 Core brand colors (CSS variables for shadcn compatibility)
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -52,56 +80,122 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        // ✅ Semantic colors
+        
+        // ✅ Semantic colors with full palette
         success: {
+          50: '#F0FDF4',
+          100: '#DCFCE7',
+          200: '#BBF7D0',
+          300: '#86EFAC',
+          400: '#4ADE80',
+          500: '#22C55E',  // Main
+          600: '#16A34A',  // Hover
+          700: '#15803D',
+          800: '#166534',
+          900: '#14532D',
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
         },
         warning: {
+          50: '#FFFBEB',
+          100: '#FEF3C7',
+          200: '#FDE68A',
+          300: '#FCD34D',
+          400: '#FBBF24',
+          500: '#F59E0B',  // Main
+          600: '#D97706',  // Hover
+          700: '#B45309',
+          800: '#92400E',
+          900: '#78350F',
           DEFAULT: "hsl(var(--warning))",
           foreground: "hsl(var(--warning-foreground))",
         },
         error: {
+          50: '#FEF2F2',
+          100: '#FEE2E2',
+          200: '#FECACA',
+          300: '#FCA5A5',
+          400: '#F87171',
+          500: '#EF4444',  // Main
+          600: '#DC2626',  // Hover
+          700: '#B91C1C',
+          800: '#991B1B',
+          900: '#7F1D1D',
           DEFAULT: "hsl(var(--error))",
           foreground: "hsl(var(--error-foreground))",
         },
         info: {
+          50: '#ECFEFF',
+          100: '#CFFAFE',
+          200: '#A5F3FC',
+          300: '#67E8F9',
+          400: '#22D3EE',
+          500: '#06B6D4',  // Main
+          600: '#0891B2',  // Hover
+          700: '#0E7490',
+          800: '#155E75',
+          900: '#164E63',
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
+        
+        // Gray palette
+        gray: {
+          50: '#F9FAFB',
+          100: '#F3F4F6',
+          200: '#E5E7EB',
+          300: '#D1D5DB',
+          400: '#9CA3AF',
+          500: '#6B7280',
+          600: '#4B5563',
+          700: '#374151',
+          800: '#1F2937',
+          900: '#111827',
+        },
+        
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        mono: ["Fira Code", ...defaultTheme.fontFamily.mono],
+        mono: ["JetBrains Mono", "Fira Code", ...defaultTheme.fontFamily.mono],
       },
       fontSize: {
-        xs: ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.01em" }],
-        sm: ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.005em" }],
-        base: ["1rem", { lineHeight: "1.5rem" }],
-        lg: ["1.125rem", { lineHeight: "1.75rem" }],
-        xl: ["1.25rem", { lineHeight: "1.75rem" }],
-        "2xl": ["1.5rem", { lineHeight: "2rem" }],
-        "3xl": ["1.875rem", { lineHeight: "2.25rem", letterSpacing: "-0.025em" }],
-        "4xl": ["2.25rem", { lineHeight: "2.5rem", letterSpacing: "-0.025em" }],
-        "5xl": ["3rem", { lineHeight: "1", letterSpacing: "-0.03em" }],
-        "6xl": ["3.75rem", { lineHeight: "1", letterSpacing: "-0.03em" }],
+        xs: ["12px", "16px"],
+        sm: ["14px", "20px"],
+        base: ["16px", "24px"],
+        lg: ["18px", "28px"],
+        xl: ["20px", "28px"],
+        "2xl": ["24px", "32px"],
+        "3xl": ["30px", "36px"],
+        "4xl": ["36px", "40px"],
+        "5xl": ["48px", "1"],
+        "6xl": ["60px", "1"],
+        "7xl": ["72px", "1"],
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        none: "0",
+        sm: "4px",
+        DEFAULT: "6px",
+        md: "6px",
+        lg: "8px",
+        xl: "12px",
+        "2xl": "16px",
+        "3xl": "24px",
+        full: "9999px",
       },
       boxShadow: {
         soft: "0 2px 8px hsl(var(--foreground) / 0.08)",
         subtle: "0 1px 2px hsl(var(--foreground) / 0.05)",
-        sm: "0 1px 2px 0 hsl(var(--foreground) / 0.05)",
-        base: "0 4px 6px -1px hsl(var(--foreground) / 0.1)",
-        md: "0 4px 12px -2px hsl(var(--foreground) / 0.1)",
-        lg: "0 8px 16px -2px hsl(var(--foreground) / 0.1)",
-        xl: "0 12px 24px -4px hsl(var(--foreground) / 0.15)",
+        sm: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+        DEFAULT: "0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)",
+        md: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+        lg: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+        xl: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        "2xl": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        inner: "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)",
+        none: "none",
       },
       
       keyframes: {
@@ -110,11 +204,11 @@ const config: Config = {
           "100%": { opacity: "1" },
         },
         "slide-up": {
-          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "0%": { transform: "translateY(10px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
         "slide-down": {
-          "0%": { transform: "translateY(-20px)", opacity: "0" },
+          "0%": { transform: "translateY(-10px)", opacity: "0" },
           "100%": { transform: "translateY(0)", opacity: "1" },
         },
         "scale-in": {
@@ -125,13 +219,18 @@ const config: Config = {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0.5" },
         },
+        "spin": {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
       },
       animation: {
-        "fade-in": "fade-in 300ms ease-out",
-        "slide-up": "slide-up 400ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "slide-down": "slide-down 400ms cubic-bezier(0.16, 1, 0.3, 1)",
-        "scale-in": "scale-in 300ms ease-out",
+        "fade-in": "fade-in 0.3s ease-in-out",
+        "slide-up": "slide-up 0.3s ease-out",
+        "slide-down": "slide-down 0.3s ease-out",
+        "scale-in": "scale-in 0.2s ease-out",
         "pulse-subtle": "pulse-subtle 2s ease-in-out infinite",
+        "spin": "spin 1s linear infinite",
       },
       transitionDuration: {
         0: "0ms",
@@ -146,7 +245,11 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/typography"),
+    require("tailwindcss-animate"),
+  ],
 };
 
 export default config;

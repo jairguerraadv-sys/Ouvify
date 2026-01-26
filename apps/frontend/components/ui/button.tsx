@@ -4,55 +4,65 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Ouvy Colors (Cyan + Navy Blue) - Refined
+// 🎨 Design System: Ouvy Colors (Blue Primary + Purple Secondary)
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        // Primário: Cyan vibrante - para ações principais
+        // Primário: Azul #3B82F6 - para ações principais
         default:
-          "bg-primary text-primary-foreground shadow-md hover:bg-primary-dark hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
-        // Secundário: Azul marinho - para ações secundárias
+          "bg-brand-primary-500 text-white shadow-sm hover:bg-brand-primary-600 hover:shadow-md focus-visible:ring-brand-primary-500 active:scale-[0.98]",
+        // Usando CSS vars para compatibilidade com shadcn
+        primary:
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary-dark hover:shadow-md focus-visible:ring-primary active:scale-[0.98]",
+        // Secundário: Roxo #A855F7 - para ações secundárias
         secondary:
-          "bg-secondary text-secondary-foreground shadow-md hover:bg-secondary-dark hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
-        // Outline: Bordas primárias - para ações alternativas
+          "bg-brand-secondary-500 text-white shadow-sm hover:bg-brand-secondary-600 hover:shadow-md focus-visible:ring-brand-secondary-500 active:scale-[0.98]",
+        // Outline: Bordas primárias
         outline:
-          "border-2 border-primary text-primary bg-transparent hover:bg-primary hover:text-primary-foreground hover:scale-[1.02] active:scale-[0.98] transition-all",
-        // Outline secundário - para ações alternativas neutras
+          "border-2 border-brand-primary-500 text-brand-primary-500 bg-transparent hover:bg-brand-primary-50 focus-visible:ring-brand-primary-500 active:scale-[0.98]",
+        // Outline secundário
         "outline-secondary":
-          "border-2 border-secondary text-secondary bg-transparent hover:bg-secondary hover:text-secondary-foreground hover:scale-[1.02] active:scale-[0.98] transition-all",
+          "border-2 border-brand-secondary-500 text-brand-secondary-500 bg-transparent hover:bg-brand-secondary-50 focus-visible:ring-brand-secondary-500 active:scale-[0.98]",
         // Ghost: Sem fundo - para ações terciárias
         ghost: 
-          "text-foreground hover:bg-muted hover:text-secondary active:bg-muted/80 transition-colors",
+          "text-gray-700 hover:bg-gray-100 focus-visible:ring-gray-500",
         "ghost-primary":
-          "text-primary hover:bg-primary/10 hover:text-primary-dark active:bg-primary/20 transition-colors",
+          "text-brand-primary-500 hover:bg-brand-primary-50 hover:text-brand-primary-600 focus-visible:ring-brand-primary-500",
         // Destrutivo - para ações perigosas
         destructive:
-          "bg-error text-error-foreground shadow-md hover:bg-error/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+          "bg-error-500 text-white shadow-sm hover:bg-error-600 hover:shadow-md focus-visible:ring-error-500 active:scale-[0.98]",
+        danger:
+          "bg-error-500 text-white shadow-sm hover:bg-error-600 hover:shadow-md focus-visible:ring-error-500 active:scale-[0.98]",
         // Link - para navegação inline
-        link: "text-primary underline-offset-4 hover:underline hover:text-primary-dark active:text-primary-dark transition-colors",
+        link: "text-brand-primary-500 underline-offset-4 hover:underline hover:text-brand-primary-600",
         // Success - para ações positivas
         success:
-          "bg-success text-success-foreground shadow-md hover:bg-success/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+          "bg-success-500 text-white shadow-sm hover:bg-success-600 hover:shadow-md focus-visible:ring-success-500 active:scale-[0.98]",
         // Warning - para ações de aviso
         warning:
-          "bg-warning text-warning-foreground shadow-md hover:bg-warning/90 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] active:shadow-sm transition-all",
+          "bg-warning-500 text-gray-900 shadow-sm hover:bg-warning-600 hover:shadow-md focus-visible:ring-warning-500 active:scale-[0.98]",
       },
       size: {
-        default: "h-10 px-4 py-2.5",
-        sm: "h-8 rounded-md px-3 text-xs",
-        md: "h-9 px-4 py-2 text-sm",
-        lg: "h-11 rounded-xl px-6 py-3 text-base",
-        xl: "h-12 rounded-xl px-8 py-4 text-base font-bold",
+        sm: "h-8 px-3 py-1.5 text-sm rounded-md",
+        default: "h-10 px-4 py-2 text-base",
+        md: "h-10 px-4 py-2 text-base",
+        lg: "h-11 px-6 py-3 text-lg rounded-lg",
+        xl: "h-12 px-8 py-4 text-xl rounded-xl",
         icon: "h-10 w-10",
         "icon-sm": "h-8 w-8",
         "icon-lg": "h-12 w-12",
+      },
+      fullWidth: {
+        true: "w-full",
+        false: "",
       },
     },
     defaultVariants: {
       variant: "default",
       size: "default",
+      fullWidth: false,
     },
   }
 )
