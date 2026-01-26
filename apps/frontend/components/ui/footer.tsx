@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { LogoFooter } from '@/components/ui/logo';
 
 interface FooterProps {
   className?: string;
@@ -56,20 +56,9 @@ export function Footer({
           {/* Branding */}
           {showBranding && (
             <div className="col-span-2 space-y-4">
-              <Link href="/" className="flex items-center gap-2 group">
-                <div className="relative w-10 h-10 flex-shrink-0">
-                  <Image 
-                    src="/logo.png" 
-                    alt="Ouvy Logo" 
-                    width={40} 
-                    height={40}
-                    className="transition-transform group-hover:scale-105"
-                  />
-                </div>
-                {/* ✅ Texto com gradiente */}
-                <span className="text-2xl font-bold text-gradient-brand">Ouvy</span>
-              </Link>
-              <p className="text-gray-600 max-w-xs">
+              {/* ✅ Logo usando componente */}
+              <LogoFooter />
+              <p className="text-gray-600 max-w-xs">"
                 A plataforma mais completa para coletar, gerenciar e analisar 
                 feedback dos seus clientes.
               </p>

@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Logo } from '@/components/ui/logo';
-import { AlertTriangle, RefreshCcw, Home } from 'lucide-react';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { LogoError } from '@/components/ui/logo';
+import { Home, RefreshCw } from 'lucide-react';
 
 export default function Error({
   error,
@@ -15,69 +14,44 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    // Log do erro para monitoramento
-    console.error('Error:', error);
+    console.error(error);
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-error/5 via-background to-secondary/5 flex items-center justify-center p-4">
-      <Card variant="elevated" className="max-w-2xl w-full p-8 text-center">
-        <div className="flex justify-center mb-6">
-          <Logo size="xl" />
+    <div className="bg-white min-h-screen flex items-center justify-center px-4">
+      <div className="text-center max-w-2xl">
+        
+        {/* ✅ Logo grande */}
+        <div className="mb-8">
+          <LogoError />
         </div>
 
-        {/* Error Icon */}
-        <div className="flex justify-center mb-6">
-          <div className="rounded-full bg-error/10 p-6">
-            <AlertTriangle className="w-16 h-16 text-error" />
-          </div>
-        </div>
-
-        {/* Content */}
-        <h2 className="text-3xl font-bold text-secondary mb-4">
-          Algo deu errado!
-        </h2>
-        <p className="text-muted-foreground text-lg mb-2">
-          Ocorreu um erro inesperado ao processar sua solicitação.
+        <h1 className="text-6xl font-bold text-gradient-brand mb-4">
+          Algo deu errado
+        </h1>
+        
+        <p className="text-lg text-gray-600 mb-8">
+          Desculpe pelo inconveniente. Nossa equipe já foi notificada.
         </p>
-        {error.message && (
-          <p className="text-sm text-error/80 mb-8 font-mono bg-error/5 p-4 rounded-lg max-w-md mx-auto">
-            {error.message}
-          </p>
-        )}
 
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-          <Button onClick={reset} size="lg" className="gap-2">
-            <RefreshCcw className="w-4 h-4" />
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <Button 
+            variant="default" 
+            size="lg"
+            onClick={reset}
+            className="gap-2"
+          >
+            <RefreshCw className="w-5 h-5" />
             Tentar Novamente
           </Button>
           <Link href="/">
             <Button variant="outline" size="lg" className="gap-2">
-              <Home className="w-4 h-4" />
-              Voltar ao Início
+              <Home className="w-5 h-5" />
+              Voltar para Home
             </Button>
           </Link>
         </div>
-
-        {/* Help Text */}
-        <div className="mt-8 pt-8 border-t border-border">
-          <p className="text-sm text-muted-foreground mb-2">
-            Se o problema persistir, entre em contato conosco
-          </p>
-          <a 
-            href="mailto:support@ouvy.com" 
-            className="text-primary hover:text-primary-dark font-medium transition-colors"
-          >
-            support@ouvy.com
-          </a>
-          {error.digest && (
-            <p className="text-xs text-muted-foreground mt-4">
-              Código de erro: {error.digest}
-            </p>
-          )}
-        </div>
-      </Card>
+      </div>
     </div>
   );
 }

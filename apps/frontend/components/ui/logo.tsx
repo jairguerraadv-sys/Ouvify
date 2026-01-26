@@ -1,93 +1,83 @@
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
-type LogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-type LogoVariant = 'full' | 'icon';
-type LogoColorScheme = 'default' | 'white' | 'dark';
-
 interface LogoProps {
-  variant?: LogoVariant;
-  size?: LogoSize;
-  colorScheme?: LogoColorScheme;
+  /** Tamanho do logo: sm (32px), md (40px), lg (48px), xl (64px) */
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Se deve incluir o texto "Ouvy" ao lado */
+  showText?: boolean;
+  /** Se deve ser clicável (link para homepage) */
+  clickable?: boolean;
+  /** Prioridade de carregamento (usar true apenas no Header) */
+  priority?: boolean;
+  /** Classes CSS adicionais */
   className?: string;
-  href?: string;
-  linkTo?: string;
+  /** Classes CSS para o texto */
+  textClassName?: string;
 }
 
-const sizeConfig = {
-  xs: { width: 80, height: 32, text: 'text-lg', gap: 'gap-1.5' },
-  sm: { width: 100, height: 40, text: 'text-xl', gap: 'gap-2' },
-  md: { width: 120, height: 48, text: 'text-2xl', gap: 'gap-2.5' },
-  lg: { width: 150, height: 60, text: 'text-3xl', gap: 'gap-3' },
-  xl: { width: 180, height: 72, text: 'text-4xl', gap: 'gap-4' },
+const sizeMap = {
+  sm: { logo: 32, text: 'text-xl' },     // 32px logo + texto 20px
+  md: { logo: 40, text: 'text-2xl' },    // 40px logo + texto 24px (padrão)
+  lg: { logo: 48, text: 'text-3xl' },    // 48px logo + texto 28px
+  xl: { logo: 64, text: 'text-4xl' },    // 64px logo + texto 32px
 };
 
 export function Logo({
-  variant = 'icon',
   size = 'md',
-  colorScheme = 'default',
+  showText = true,
+  clickable = true,
+  priority = false,
   className,
-  href,
-  linkTo,
+  textClassName,
 }: LogoProps) {
-  const { width, height, text: textSize, gap } = sizeConfig[size];
-
-  const textColors = {
-    default: 'text-secondary',
-    white: 'text-gray-900',
-    dark: 'text-secondary-dark',
-  };
-
-  const LogoImage = () => (
-    <Image
-      src="/logo.png"
-      alt="Ouvy Logo"
-      width={width}
-      height={height}
-      className={cn('object-contain', 'transition-transform duration-200 hover:scale-105')}
-      priority
-    />
-  );
-
-  const LogoText = () => (
-    <span 
-      className={cn(
-        textSize, 
-        'font-bold tracking-tight leading-none',
-        textColors[colorScheme]
-      )}
-    >
-      Ouvy
-    </span>
-  );
+  const { logo, text } = sizeMap[size];
 
   const content = (
-    <>
-      {variant === 'full' ? (
-        <div className={cn('flex items-center', gap, className)}>
-          <LogoImage />
-          <LogoText />
-        </div>
-      ) : (
-        <div className={cn('flex items-center', className)}>
-          <LogoImage />
-        </div>
+    <div 
+      className={cn(
+        'inline-flex items-center gap-2',
+        clickable && 'group cursor-pointer',
+        className
       )}
-    </>
+    >
+      <div 
+        className="relative flex-shrink-0" 
+        style={{ width: logo, height: logo }}
+      >
+        <Image 
+          src="/logo.png" 
+          alt="Ouvy Logo" 
+          width={logo} 
+          height={logo}
+          className={cn(
+            'object-contain',
+            clickable && 'transition-transform group-hover:scale-105'
+          )}
+          priority={priority}
+          quality={100}
+        />
+      </div>
+      
+      {showText && (
+        <span 
+          className={cn(
+            text,
+            'font-bold text-gradient-brand',
+            textClassName
+          )}
+        >
+          Ouvy
+        </span>
+      )}
+    </div>
   );
 
-  const targetHref = linkTo ?? href;
-
-  if (targetHref) {
+  if (clickable) {
     return (
-      <Link 
-        href={targetHref}
-        className={cn(
-          'inline-flex items-center hover:opacity-80 transition-opacity duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary rounded-md'
-        )}
-      >
+      <Link href="/" aria-label="Ouvy - Voltar para página inicial">
         {content}
       </Link>
     );
@@ -95,3 +85,24 @@ export function Logo({
 
   return content;
 }
+
+// Export de variantes comuns para facilitar uso
+export const LogoHeader = () => (
+  <Logo size="md" showText priority />
+);
+
+export const LogoFooter = () => (
+  <Logo size="md" showText />
+);
+
+export const LogoAuth = () => (
+  <Logo size="lg" showText clickable className="justify-center" />
+);
+
+export const LogoError = () => (
+  <Logo size="xl" showText clickable className="justify-center" />
+);
+
+export const LogoOnly = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
+  <Logo size={size} showText={false} clickable={false} />
+);

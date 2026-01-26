@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Logo } from "@/components/ui/logo";
+import { Logo, LogoAuth } from "@/components/ui/logo";
 import { ArrowRight, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { api, getErrorMessage } from "@/lib/api";
@@ -104,11 +104,11 @@ export default function LoginPage() {
       <Card variant="elevated" className="w-full max-w-md relative z-10 animate-scale-in">
         <CardHeader>
           <div className="flex justify-center mb-8">
-            <Logo size="xl" />
+            <LogoAuth />
           </div>
           <h1 className="text-3xl font-bold text-secondary text-center mb-2">
             Bem-vindo de volta
-          </h1>
+          </h1>"
           <p className="text-muted-foreground text-center">
             Entre na sua conta <span className="text-gradient font-semibold">Ouvy</span>
           </p>

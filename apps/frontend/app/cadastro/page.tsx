@@ -4,7 +4,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { AlertCircle, CheckCircle, Loader, XCircle, ArrowRight } from 'lucide-react';
-import { Logo } from '@/components/ui/logo';
+import { Logo, LogoAuth } from '@/components/ui/logo';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge-chip';
@@ -274,7 +274,7 @@ export default function CadastroPage() {
         {/* Header */}
         <div className="text-center mb-10 animate-fade-in">
           <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
-            <Logo size="xl" />
+            <LogoAuth />
           </Link>
           <h1 className="text-4xl font-bold text-secondary-900 mt-6 mb-2">
             Criar Conta
