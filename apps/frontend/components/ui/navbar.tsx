@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
-import { Logo } from './logo';
+import { Logo, LogoHeader } from './logo';
 import { Menu, X } from 'lucide-react';
 
 interface NavLink {
@@ -48,9 +48,9 @@ export const NavBar = React.memo(function NavBar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Logo href="/" size="sm" />
+          <Logo size="sm" />
 
-          {/* Desktop Links */}
+          {/* Desktop Links */}"
           {links.length > 0 && (
             <div className="hidden md:flex items-center gap-8">
               {links.map((link) => (
