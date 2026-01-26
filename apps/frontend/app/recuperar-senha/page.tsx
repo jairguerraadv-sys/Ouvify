@@ -81,15 +81,14 @@ export default function RecuperarSenhaPage() {
                     Não recebeu? Verifique sua pasta de spam ou tente novamente em alguns minutos.
                   </p>
                 </div>
-                <Button 
-                  asChild
-                  className="w-full"
-                  variant="default"
-                >
-                  <Link href="/login">
+                <Link href="/login" className="w-full">
+                  <Button 
+                    className="w-full"
+                    variant="default"
+                  >
                     Voltar para o Login
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">

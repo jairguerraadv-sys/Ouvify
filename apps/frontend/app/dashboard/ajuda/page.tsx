@@ -319,20 +319,22 @@ function AjudaContent() {
               </p>
             </div>
             <div className="flex gap-3">
-              <Button variant="outline" asChild>
-                <a href="mailto:suporte@ouvy.com">
+              <a href="mailto:suporte@ouvy.com">
+                <Button variant="outline">
                   <Mail className="w-4 h-4 mr-2" />
                   Enviar Email
-                </a>
-              </Button>
-              <Button asChild>
-                <a
-                  href="https://docs.ouvy.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                </Button>
+              </a>
+              <a
+                href="https://docs.ouvy.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Button>
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Ver Documentação
+                </Button>
+              </a>
                 </a>
               </Button>
             </div>

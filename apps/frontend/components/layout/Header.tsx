@@ -57,12 +57,16 @@ export default function Header() {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center gap-3">
-            <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Entrar</Link>
-            </Button>
-            <Button variant="default" size="sm" asChild>
-              <Link href="/cadastro">Começar Grátis</Link>
-            </Button>
+            <Link href="/login">
+              <Button variant="ghost" size="sm">
+                Entrar
+              </Button>
+            </Link>
+            <Link href="/cadastro">
+              <Button variant="default" size="sm">
+                Começar Grátis
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,16 +99,16 @@ export default function Header() {
                 </Link>
               ))}
               <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
-                <Button variant="ghost" fullWidth asChild>
-                  <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)} className="w-full">
+                  <Button variant="ghost" className="w-full">
                     Entrar
-                  </Link>
-                </Button>
-                <Button variant="default" fullWidth asChild>
-                  <Link href="/cadastro" onClick={() => setMobileMenuOpen(false)}>
+                  </Button>
+                </Link>
+                <Link href="/cadastro" onClick={() => setMobileMenuOpen(false)} className="w-full">
+                  <Button variant="default" className="w-full">
                     Começar Grátis
-                  </Link>
-                </Button>
+                  </Button>
+                </Link>
               </div>
             </nav>
           </div>

@@ -77,14 +77,14 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
                 <p className="text-xs text-slate-600">{user?.email}</p>
               </div>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/perfil" className="cursor-pointer">
+              <DropdownMenuItem>
+                <Link href="/dashboard/perfil" className="cursor-pointer flex items-center">
                   <User className="h-4 w-4 mr-2" />
                   Perfil
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/dashboard/configuracoes" className="cursor-pointer">
+              <DropdownMenuItem>
+                <Link href="/dashboard/configuracoes" className="cursor-pointer flex items-center">
                   <Settings className="h-4 w-4 mr-2" />
                   Configurações
                 </Link>

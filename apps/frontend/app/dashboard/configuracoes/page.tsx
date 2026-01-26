@@ -464,26 +464,24 @@ function ConfiguracoesContent() {
                 <PlayCircle className="w-4 h-4" />
                 Refazer Tour Guiado
               </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start gap-2"
-                asChild
-              >
-                <a href="https://docs.ouvy.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://docs.ouvy.com" target="_blank" rel="noopener noreferrer" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-2"
+                >
                   <BookOpen className="w-4 h-4" />
                   Central de Ajuda
-                </a>
-              </Button>
-              <Button 
-                variant="outline" 
-                className="w-full justify-start gap-2"
-                asChild
-              >
-                <a href="mailto:suporte@ouvy.com">
+                </Button>
+              </a>
+              <a href="mailto:suporte@ouvy.com" className="w-full">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start gap-2"
+                >
                   <MessageCircle className="w-4 h-4" />
                   Contato com Suporte
-                </a>
-              </Button>
+                </Button>
+              </a>
             </div>
           </Card>
 

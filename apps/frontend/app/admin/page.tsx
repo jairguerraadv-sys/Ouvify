@@ -528,8 +528,8 @@ function AdminContent() {
                           <DropdownMenuContent align="end" className="bg-slate-800 border-slate-700">
                             <DropdownMenuLabel className="text-slate-400">Ações</DropdownMenuLabel>
                             <DropdownMenuSeparator className="bg-slate-700" />
-                            <DropdownMenuItem asChild className="text-slate-200 hover:bg-slate-700 cursor-pointer">
-                              <Link href={`/admin/tenants/${tenant.id}`}>
+                            <DropdownMenuItem className="text-slate-200 hover:bg-slate-700 cursor-pointer">
+                              <Link href={`/admin/tenants/${tenant.id}`} className="flex items-center">
                                 <Eye className="w-4 h-4 mr-2" />
                                 Ver Detalhes
                               </Link>
@@ -541,8 +541,8 @@ function AdminContent() {
                               <UserCog className="w-4 h-4 mr-2" />
                               Impersonar
                             </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="text-slate-200 hover:bg-slate-700 cursor-pointer">
-                              <a href={`http://${tenant.subdominio}.localhost:3000/dashboard`} target="_blank" rel="noreferrer">
+                            <DropdownMenuItem className="text-slate-200 hover:bg-slate-700 cursor-pointer">
+                              <a href={`http://${tenant.subdominio}.localhost:3000/dashboard`} target="_blank" rel="noreferrer" className="flex items-center">
                                 <ExternalLink className="w-4 h-4 mr-2" />
                                 Abrir Painel
                               </a>

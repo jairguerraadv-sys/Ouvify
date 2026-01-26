@@ -64,24 +64,23 @@ export function EmptyState({
         {/* Primary Action */}
         {actionLabel && actionHref && (
           actionExternal ? (
-            <Button variant="default" size="md" asChild>
-              <a
-                href={actionHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="gap-2"
-              >
+            <a
+              href={actionHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="default" size="md" className="gap-2">
                 <Plus className="w-4 h-4" aria-hidden="true" />
                 {actionLabel}
-              </a>
-            </Button>
+              </Button>
+            </a>
           ) : (
-            <Button variant="default" size="md" asChild>
-              <Link href={actionHref} className="gap-2">
+            <Link href={actionHref}>
+              <Button variant="default" size="md" className="gap-2">
                 <Plus className="w-4 h-4" aria-hidden="true" />
                 {actionLabel}
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           )
         )}
 
@@ -109,11 +108,11 @@ export function EmptyState({
 
         {/* Secondary Action */}
         {secondaryActionLabel && secondaryActionHref && (
-          <Button variant="ghost" size="md" asChild>
-            <Link href={secondaryActionHref}>
+          <Link href={secondaryActionHref}>
+            <Button variant="ghost" size="md">
               {secondaryActionLabel}
-            </Link>
-          </Button>
+            </Button>
+          </Link>
         )}
       </div>
 

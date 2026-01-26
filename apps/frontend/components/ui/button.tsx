@@ -65,10 +65,29 @@ const buttonVariants = cva(
   }
 )
 
+/**
+ * Button Component - Ouvy Design System
+ * 
+ * @important PADRÃO CORRETO DE USO COM LINKS:
+ * 
+ * ✅ CORRETO:
+ * <Link href="/path">
+ *   <Button variant="default">Text</Button>
+ * </Link>
+ * 
+ * ❌ ERRADO (causa React.Children.only error):
+ * <Button asChild>
+ *   <Link href="/path">Text</Link>
+ * </Button>
+ * 
+ * @note O prop `asChild` DEVE SER EVITADO com Button components.
+ * Use apenas para componentes Radix UI que exigem (DropdownMenuTrigger, etc).
+ * Para navegação, sempre envolva o Button com Link/a ao invés de usar asChild.
+ */
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+  asChild?: boolean  // ⚠️ Use APENAS em casos especiais - veja documentação acima
   isLoading?: boolean
 }
 
