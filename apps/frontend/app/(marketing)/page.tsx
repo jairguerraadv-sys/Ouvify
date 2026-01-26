@@ -4,8 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge, Chip } from '@/components/ui/badge-chip';
 import { H1, H2, H3, Paragraph, Lead } from '@/components/ui/typography';
-import { NavBar } from '@/components/ui/navbar';
-import { Footer } from '@/components/ui/footer';
 import { 
   Shield, 
   Lock, 
@@ -22,7 +20,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo } from 'react';
-import { Logo } from '@/components/ui/logo';
 
 export default function LandingPage() {
   const features = useMemo(() => [
@@ -57,29 +54,8 @@ export default function LandingPage() {
     "Onboarding em menos de 24h"
   ], []);
 
-  const navLinks = useMemo(() => [
-    { label: 'Recursos', href: '/recursos' },
-    { label: 'Preços', href: '/precos' },
-    { label: 'Demo', href: '/demo' },
-  ], []);
-
   return (
     <>
-      {/* Navbar */}
-      <NavBar
-        links={navLinks}
-        rightContent={
-          <div className="flex gap-3">
-            <Link href="/login">
-              <Button variant="ghost">Entrar</Button>
-            </Link>
-            <Link href="/cadastro">
-              <Button variant="default">Começar Grátis</Button>
-            </Link>
-          </div>
-        }
-      />
-
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-background via-background to-primary/5 overflow-hidden">
         {/* Decorative elements */}
@@ -400,9 +376,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <Footer showBranding />
     </>
   );
 }

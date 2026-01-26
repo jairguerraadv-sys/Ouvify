@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { H1, H2, Paragraph } from '@/components/ui/typography';
-import { NavBar } from '@/components/ui/navbar';
-import { Footer } from '@/components/ui/footer';
 import { api, getErrorMessage } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -222,29 +220,8 @@ export default function PrecosPage() {
     }
   };
 
-  const navLinks = [
-    { label: 'Início', href: '/' },
-    { label: 'Recursos', href: '/recursos' },
-    { label: 'Demo', href: '/demo' },
-  ];
-
   return (
-    <>
-      <NavBar
-        links={navLinks}
-        rightContent={
-          <div className="flex gap-3">
-            <Link href="/login">
-              <Button variant="ghost">Entrar</Button>
-            </Link>
-            <Link href="/cadastro">
-              <Button variant="default">Começar Grátis</Button>
-            </Link>
-          </div>
-        }
-      />
-
-      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5 relative overflow-hidden">
         {/* Decorative elements */}
         <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
         <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
@@ -527,8 +504,5 @@ export default function PrecosPage() {
           </div>
         </section>
       </div>
-
-      <Footer />
-    </>
   );
 }
