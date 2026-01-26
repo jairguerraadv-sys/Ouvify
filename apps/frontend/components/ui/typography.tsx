@@ -9,7 +9,7 @@ const H1 = React.forwardRef<
   <h1
     ref={ref}
     className={cn(
-      'text-5xl md:text-6xl font-bold leading-tight tracking-tighter text-secondary mb-4',
+      'text-5xl md:text-6xl font-bold leading-tight tracking-tighter text-gray-900 mb-4',
       className
     )}
     {...props}
@@ -24,7 +24,7 @@ const H2 = React.forwardRef<
   <h2
     ref={ref}
     className={cn(
-      'text-4xl md:text-5xl font-bold leading-tight tracking-tight text-secondary mb-3',
+      'text-4xl md:text-5xl font-bold leading-tight tracking-tight text-gray-900 mb-3',
       className
     )}
     {...props}
@@ -39,7 +39,7 @@ const H3 = React.forwardRef<
   <h3
     ref={ref}
     className={cn(
-      'text-2xl md:text-3xl font-bold leading-snug text-secondary mb-2',
+      'text-2xl md:text-3xl font-bold leading-snug text-gray-900 mb-2',
       className
     )}
     {...props}
@@ -54,7 +54,7 @@ const H4 = React.forwardRef<
   <h4
     ref={ref}
     className={cn(
-      'text-xl md:text-2xl font-bold leading-snug text-secondary mb-2',
+      'text-xl md:text-2xl font-bold leading-snug text-gray-900 mb-2',
       className
     )}
     {...props}
@@ -69,7 +69,7 @@ const H5 = React.forwardRef<
   <h5
     ref={ref}
     className={cn(
-      'text-lg font-bold leading-normal text-secondary mb-1',
+      'text-lg font-bold leading-normal text-gray-900 mb-1',
       className
     )}
     {...props}
@@ -84,7 +84,7 @@ const H6 = React.forwardRef<
   <h6
     ref={ref}
     className={cn(
-      'text-base font-bold leading-normal text-secondary mb-1',
+      'text-base font-bold leading-normal text-gray-900 mb-1',
       className
     )}
     {...props}

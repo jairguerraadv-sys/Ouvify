@@ -61,7 +61,7 @@ export const NavBar = React.memo(function NavBar({
                     'text-sm font-semibold transition-all duration-300 py-2 px-1 border-b-2 relative group',
                     link.active
                       ? 'text-primary border-primary' 
-                      : 'text-secondary border-transparent hover:text-primary hover:border-primary/50'
+                      : 'text-gray-700 border-transparent hover:text-primary hover:border-primary/50'
                   )}
                   aria-current={link.active ? 'page' : undefined}
                 >
@@ -83,7 +83,7 @@ export const NavBar = React.memo(function NavBar({
             <button
               onClick={toggleMobile}
               className={cn(
-                'md:hidden text-secondary hover:text-primary transition-colors duration-200 p-2 hover:bg-muted rounded-md',
+                'md:hidden text-gray-700 hover:text-primary transition-colors duration-200 p-2 hover:bg-muted rounded-md',
                 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
               )}
               aria-expanded={mobileOpen}
@@ -111,7 +111,7 @@ export const NavBar = React.memo(function NavBar({
                   'block text-sm font-medium transition-all duration-200 py-2 px-4 rounded-md',
                   link.active
                     ? 'text-primary bg-primary/10'
-                    : 'text-secondary hover:text-primary hover:bg-muted'
+                    : 'text-gray-700 hover:text-primary hover:bg-muted'
                 )}
                 onClick={closeMobile}
                 aria-current={link.active ? 'page' : undefined}

@@ -116,7 +116,7 @@ export default function DocumentacaoPage() {
             </div>
 
             <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-gradient-to-br from-blue-400 to-cyan-400 flex items-center justify-center">
+              <div className="aspect-video bg-gradient-to-br from-brand-primary-400 to-brand-secondary-400 flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">

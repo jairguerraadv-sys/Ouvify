@@ -29,7 +29,7 @@ function ConfiguracoesContent() {
   const theme = useTenantTheme();
   const { restartTour } = useOnboarding();
   const [tenant, setTenant] = useState<any>(null);
-  const [corPrimaria, setCorPrimaria] = useState('#00BCD4');
+  const [corPrimaria, setCorPrimaria] = useState('#3B82F6');
   const [corSecundaria, setCorSecundaria] = useState('#10B981');
   const [corTexto, setCorTexto] = useState('#1F2937');
   const [fonteCustomizada, setFonteCustomizada] = useState('Inter');
@@ -51,7 +51,7 @@ function ConfiguracoesContent() {
 
   useEffect(() => {
     if (theme) {
-      setCorPrimaria(theme.cor_primaria || '#00BCD4');
+      setCorPrimaria(theme.cor_primaria || '#3B82F6');
       setCorSecundaria(theme.cor_secundaria || '#10B981');
       setCorTexto(theme.cor_texto || '#1F2937');
       setFonteCustomizada(theme.fonte_customizada || 'Inter');
@@ -302,7 +302,7 @@ function ConfiguracoesContent() {
                       value={corPrimaria}
                       onChange={(e) => setCorPrimaria(e.target.value)}
                       className="font-mono" 
-                      placeholder="#00BCD4"
+                      placeholder="#3B82F6"
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">

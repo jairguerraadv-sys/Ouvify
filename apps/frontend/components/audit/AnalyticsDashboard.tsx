@@ -35,14 +35,14 @@ interface AnalyticsDashboardProps {
   className?: string;
 }
 
-// Cores para gráficos
+// Cores para gráficos - Design System Ouvy
 const COLORS = {
-  primary: '#00BCD4',
-  secondary: '#0A1E3B',
+  primary: '#3B82F6',    // Azul
+  secondary: '#A855F7',  // Roxo
   success: '#22C55E',
   warning: '#F59E0B',
   error: '#EF4444',
-  info: '#3B82F6',
+  info: '#06B6D4',
 };
 
 const SEVERITY_COLORS: Record<string, string> = {
