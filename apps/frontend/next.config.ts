@@ -25,15 +25,13 @@ let nextConfig: NextConfig = {
   },
 
   // Compilador SWC (otimizações)
+  // ✅ OTIMIZAÇÃO FASE 3: SWC minify é padrão no Next.js 16+
   compiler: {
     // Remove console.log em produção (exceto warn e error)
     removeConsole: process.env.NODE_ENV === 'production'
       ? { exclude: ['warn', 'error'] }
       : false,
   },
-  
-  // ✅ OTIMIZAÇÃO FASE 3: Minificação com SWC (mais rápido que Terser)
-  swcMinify: true,
 
   // Headers de segurança
   async headers() {
