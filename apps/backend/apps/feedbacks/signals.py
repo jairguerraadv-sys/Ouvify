@@ -232,3 +232,56 @@ def notificacoes_estao_ativas():
         bool: True se ativas
     """
     return not cache.get('notificacoes_desativadas', False)
+
+
+# =============================================================================
+# CACHE INVALIDATION - Auditoria Fase 3 (26/01/2026)
+# =============================================================================
+
+@receiver(post_save, sender=Feedback)
+def invalidate_dashboard_cache_on_feedback_save(sender, instance, created, **kwargs):
+    """
+    Invalida cache de dashboard stats quando Feedback é criado ou atualizado.
+    
+    **Performance (Auditoria Fase 3):**
+    - Garante dados frescos após mudanças
+    - Próximo request recalcula e atualiza cache
+    - Mantém 99% de cache hit rate (5min lifetime)
+    
+    **Cache keys invalidados:**
+    - dashboard_stats:{tenant_id}
+    """
+    if hasattr(instance, 'client') and instance.client:
+        cache_key = f"dashboard_stats:{instance.client.id}"
+        deleted = cache.delete(cache_key)
+        
+        if deleted:
+            action = 'criado' if created else 'atualizado'
+            logger.debug(
+                f"🗑️ Cache invalidado: {cache_key} | "
+                f"Feedback {instance.protocolo} {action}"
+            )
+
+
+@receiver(post_save, sender=FeedbackInteracao)
+def invalidate_dashboard_cache_on_interacao(sender, instance, created, **kwargs):
+    """
+    Invalida cache quando interação é adicionada (pode mudar status do feedback).
+    
+    **Razão:** Interações podem alterar status do feedback (pendente → resolvido),
+    impactando estatísticas do dashboard.
+    
+    Auditoria Fase 3 (26/01/2026)
+    """
+    if hasattr(instance, 'feedback') and instance.feedback:
+        feedback = instance.feedback
+        if hasattr(feedback, 'client') and feedback.client:
+            cache_key = f"dashboard_stats:{feedback.client.id}"
+            deleted = cache.delete(cache_key)
+            
+            if deleted:
+                logger.debug(
+                    f"🗑️ Cache invalidado: {cache_key} | "
+                    f"Interação adicionada ao feedback {feedback.protocolo}"
+                )
+

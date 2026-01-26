@@ -162,6 +162,13 @@ INSTALLED_APPS = [
     'apps.consent',        # LGPD Consent Management
 ]
 
+# Performance monitoring (development only) - Auditoria Fase 3
+if DEBUG:
+    INSTALLED_APPS += [
+        'nplusone.ext.django',  # N+1 query detection
+        'debug_toolbar',         # Django Debug Toolbar
+    ]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -178,6 +185,24 @@ MIDDLEWARE = [
     # Middleware de segurança adicional (headers CSP, etc)
     'apps.core.security_middleware.SecurityHeadersMiddleware',
 ]
+
+# Performance monitoring middleware (development only) - Auditoria Fase 3
+if DEBUG:
+    MIDDLEWARE += [
+        'nplusone.ext.django.NPlusOneMiddleware',  # N+1 detection
+        'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar
+    ]
+    
+    # Debug Toolbar configuration
+    INTERNAL_IPS = [
+        '127.0.0.1',
+        'localhost',
+    ]
+    
+    # nplusone configuration
+    NPLUSONE_RAISE = True  # Raise exception on N+1 (para forçar correção)
+    NPLUSONE_LOGGER = 'nplusone'
+    NPLUSONE_LOG_LEVEL = 'WARN'
 
 ROOT_URLCONF = 'config.urls'
 

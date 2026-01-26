@@ -6,16 +6,22 @@ import { withSentryConfig } from '@sentry/nextjs';
  * Otimizado para performance e segurança
  */
 let nextConfig: NextConfig = {
-  // Otimizações de imagem
+  // Otimizações de imagem (Auditoria Fase 3)
   images: {
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '*.railway.app',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',  // Cloudinary CDN
+      },
     ],
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60,
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],  // Responsive breakpoints
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],  // Small images/icons
   },
 
   // Compilador SWC (otimizações)
@@ -25,6 +31,9 @@ let nextConfig: NextConfig = {
       ? { exclude: ['warn', 'error'] }
       : false,
   },
+  
+  // ✅ OTIMIZAÇÃO FASE 3: Minificação com SWC (mais rápido que Terser)
+  swcMinify: true,
 
   // Headers de segurança
   async headers() {
@@ -78,15 +87,19 @@ let nextConfig: NextConfig = {
     ];
   },
 
-  // Otimização de pacotes externos
+  // Otimização de pacotes externos (Auditoria Fase 3)
   experimental: {
     optimizePackageImports: [
-      'lucide-react',
+      'lucide-react',  // Tree-shaking de ícones
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
       '@radix-ui/react-toast',
       '@radix-ui/react-tooltip',
+      '@radix-ui/react-select',
+      '@radix-ui/react-tabs',
+      'recharts',  // Biblioteca de gráficos (charts)
     ],
+    optimizeCss: true,  // ✅ NOVO: Otimização de CSS
   },
 
   // Output standalone para produção (reduz tamanho)

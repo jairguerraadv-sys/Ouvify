@@ -35,6 +35,10 @@ django-cloudinary-storage==0.3.0
 pillow==12.1.0
 python-magic==0.4.27  # MIME type detection via magic bytes (Auditoria Fase 2)
 
+# Performance Analysis & Monitoring (Auditoria Fase 3)
+nplusone==1.0.0  # N+1 query detection
+django-debug-toolbar==6.2.0  # Development debugging (dev only)
+
 # Push Notifications
 pywebpush==2.2.0
 
