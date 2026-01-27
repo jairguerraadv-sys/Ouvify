@@ -63,6 +63,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'titulo',
             'descricao',
             'status',
+            'prioridade',
             'anonimo',
             'email_contato',
             'data_criacao',

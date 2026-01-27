@@ -83,5 +83,6 @@ class FeedbackFilter(filters.FilterSet):
         fields = {
             'status': ['exact', 'in'],
             'tipo': ['exact', 'in'],
+            'prioridade': ['exact', 'in'],
             'data_criacao': ['gte', 'lte'],
         }

@@ -32,6 +32,13 @@ class Feedback(TenantAwareModel):
         ('fechado', 'Fechado'),
     ]
     
+    PRIORIDADE_CHOICES = [
+        ('baixa', 'Baixa'),
+        ('media', 'Média'),
+        ('alta', 'Alta'),
+        ('critica', 'Crítica'),
+    ]
+    
     tipo = models.CharField(
         max_length=20,
         choices=TIPO_CHOICES,
@@ -56,6 +63,14 @@ class Feedback(TenantAwareModel):
         default='pendente',
         verbose_name='Status',
         help_text='Status atual do feedback'
+    )
+    
+    prioridade = models.CharField(
+        max_length=10,
+        choices=PRIORIDADE_CHOICES,
+        default='media',
+        verbose_name='Prioridade',
+        help_text='Nível de prioridade do feedback'
     )
     
     # Atribuição
