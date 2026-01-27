@@ -2,15 +2,16 @@
 # OUVY SAAS - Monorepo Consolidated Requirements
 # =============================================================================
 # All Python dependencies for the project (backend, testing, tools)
+# Compatible with Python 3.11.8 (Railway runtime)
 # =============================================================================
 
 # Django Core
-Django==6.0.1
-djangorestframework==3.16.1
+Django==5.1.5
+djangorestframework==3.15.2
 djangorestframework-simplejwt==5.5.1
-django-cors-headers==4.9.0
+django-cors-headers==4.6.0
 django-filter==24.3
-django-redis==6.0.0
+django-redis==5.4.0
 
 # Database
 dj-database-url==3.1.0
@@ -37,7 +38,7 @@ python-magic==0.4.27  # MIME type detection via magic bytes (Auditoria Fase 2)
 
 # Performance Analysis & Monitoring (Auditoria Fase 3)
 nplusone==1.0.0  # N+1 query detection
-django-debug-toolbar==6.2.0  # Development debugging (dev only)
+django-debug-toolbar==5.0.1  # Development debugging (dev only)
 
 # Push Notifications
 pywebpush==2.2.0
