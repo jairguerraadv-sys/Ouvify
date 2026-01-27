@@ -285,3 +285,86 @@ def invalidate_dashboard_cache_on_interacao(sender, instance, created, **kwargs)
                     f"Interação adicionada ao feedback {feedback.protocolo}"
                 )
 
+
+# =============================================================================
+# SIGNAL: SLA Tracking - Primeira Resposta
+# =============================================================================
+
+@receiver(post_save, sender=FeedbackInteracao)
+def registrar_primeira_resposta_sla(sender, instance, created, **kwargs):
+    """
+    Registra automaticamente a primeira resposta para cálculo de SLA.
+    
+    Quando uma interação de resposta é criada (por membro da equipe),
+    e o feedback ainda não tem primeira resposta registrada,
+    calcula o tempo de primeira resposta e verifica SLA.
+    
+    **SLA Padrão:** 24 horas para primeira resposta
+    """
+    if not created:
+        return
+    
+    feedback = instance.feedback
+    
+    # Só processa se for resposta de membro da equipe (não do cliente)
+    # e se ainda não tem primeira resposta registrada
+    if instance.autor and feedback.data_primeira_resposta is None:
+        try:
+            # Registra primeira resposta (calcula SLA automaticamente)
+            feedback.registrar_primeira_resposta()
+            feedback.save(update_fields=[
+                'data_primeira_resposta', 
+                'tempo_primeira_resposta', 
+                'sla_primeira_resposta'
+            ])
+            
+            sla_status = "✅ dentro" if feedback.sla_primeira_resposta else "❌ fora"
+            logger.info(
+                f"📊 SLA Primeira Resposta: {feedback.protocolo} | "
+                f"Tempo: {feedback.tempo_primeira_resposta} | "
+                f"Status: {sla_status} do SLA"
+            )
+        except Exception as e:
+            logger.error(
+                f"❌ Erro ao registrar SLA primeira resposta: {str(e)}",
+                exc_info=True
+            )
+
+
+# =============================================================================
+# SIGNAL: SLA Tracking - Resolução
+# =============================================================================
+
+@receiver(pre_save, sender=Feedback)
+def registrar_resolucao_sla(sender, instance, **kwargs):
+    """
+    Registra automaticamente a resolução quando status muda para 'resolvido'.
+    
+    **SLA Padrão:** 72 horas para resolução
+    """
+    if not instance.pk:
+        return  # Novo feedback, não precisa verificar
+    
+    # Obtém status anterior
+    status_anterior = getattr(instance, '_status_anterior', None)
+    
+    # Se mudou para 'resolvido' e ainda não tem data de resolução
+    if (status_anterior != 'resolvido' and 
+        instance.status == 'resolvido' and 
+        instance.data_resolucao is None):
+        
+        try:
+            # Registra resolução (calcula SLA automaticamente)
+            instance.registrar_resolucao()
+            
+            sla_status = "✅ dentro" if instance.sla_resolucao else "❌ fora"
+            logger.info(
+                f"📊 SLA Resolução: {instance.protocolo} | "
+                f"Tempo: {instance.tempo_resolucao} | "
+                f"Status: {sla_status} do SLA"
+            )
+        except Exception as e:
+            logger.error(
+                f"❌ Erro ao registrar SLA resolução: {str(e)}",
+                exc_info=True
+            )

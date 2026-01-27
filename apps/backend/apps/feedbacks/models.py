@@ -97,6 +97,42 @@ class Feedback(TenantAwareModel):
         verbose_name='Atribuído por'
     )
     
+    # SLA Tracking
+    tempo_primeira_resposta = models.DurationField(
+        null=True,
+        blank=True,
+        verbose_name='Tempo Primeira Resposta',
+        help_text='Tempo entre criação e primeira interação'
+    )
+    tempo_resolucao = models.DurationField(
+        null=True,
+        blank=True,
+        verbose_name='Tempo de Resolução',
+        help_text='Tempo entre criação e resolução'
+    )
+    data_primeira_resposta = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Data Primeira Resposta'
+    )
+    data_resolucao = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Data de Resolução'
+    )
+    sla_primeira_resposta = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name='SLA Primeira Resposta',
+        help_text='True = dentro do SLA, False = fora do SLA'
+    )
+    sla_resolucao = models.BooleanField(
+        null=True,
+        blank=True,
+        verbose_name='SLA Resolução',
+        help_text='True = dentro do SLA, False = fora do SLA'
+    )
+    
     # Tags
     tags = models.ManyToManyField(
         'Tag',
@@ -244,6 +280,61 @@ class Feedback(TenantAwareModel):
         # Exemplo: OUVY-A1B2C3D4-E5F6G7H8
         uuid_hex = uuid.uuid4().hex.upper()
         return f"OUVY-{uuid_hex[:4]}-{uuid_hex[4:8]}"
+    
+    def calcular_sla_primeira_resposta(self, sla_horas: int = 24):
+        """
+        Calcula se a primeira resposta está dentro do SLA.
+        
+        Args:
+            sla_horas: Prazo em horas para primeira resposta (padrão: 24h)
+        
+        Returns:
+            bool: True se dentro do SLA, False se fora
+        """
+        if not self.data_primeira_resposta or not self.data_criacao:
+            return None
+        
+        from datetime import timedelta
+        prazo = timedelta(hours=sla_horas)
+        tempo_resposta = self.data_primeira_resposta - self.data_criacao
+        self.tempo_primeira_resposta = tempo_resposta
+        self.sla_primeira_resposta = tempo_resposta <= prazo
+        return self.sla_primeira_resposta
+    
+    def calcular_sla_resolucao(self, sla_horas: int = 72):
+        """
+        Calcula se a resolução está dentro do SLA.
+        
+        Args:
+            sla_horas: Prazo em horas para resolução (padrão: 72h)
+        
+        Returns:
+            bool: True se dentro do SLA, False se fora
+        """
+        if not self.data_resolucao or not self.data_criacao:
+            return None
+        
+        from datetime import timedelta
+        prazo = timedelta(hours=sla_horas)
+        tempo_resolucao = self.data_resolucao - self.data_criacao
+        self.tempo_resolucao = tempo_resolucao
+        self.sla_resolucao = tempo_resolucao <= prazo
+        return self.sla_resolucao
+    
+    def registrar_primeira_resposta(self):
+        """Registra a primeira resposta (chamado automaticamente por signal)."""
+        if self.data_primeira_resposta is None:
+            from django.utils import timezone
+            self.data_primeira_resposta = timezone.now()
+            self.calcular_sla_primeira_resposta()
+            self.save(update_fields=['data_primeira_resposta', 'tempo_primeira_resposta', 'sla_primeira_resposta'])
+    
+    def registrar_resolucao(self):
+        """Registra a resolução (chamado automaticamente por signal)."""
+        from django.utils import timezone
+        self.data_resolucao = timezone.now()
+        self.calcular_sla_resolucao()
+        self.save(update_fields=['data_resolucao', 'tempo_resolucao', 'sla_resolucao'])
     
     def save(self, *args, **kwargs):
         """

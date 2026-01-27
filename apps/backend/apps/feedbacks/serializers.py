@@ -73,10 +73,24 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'assigned_by_name',
             'tags',
             'tag_ids',
+            # SLA Tracking
+            'tempo_primeira_resposta',
+            'tempo_resolucao',
+            'data_primeira_resposta',
+            'data_resolucao',
+            'sla_primeira_resposta',
+            'sla_resolucao',
         ]
         
         # Campos somente leitura
-        read_only_fields = ['id', 'protocolo', 'data_criacao', 'data_atualizacao', 'assigned_at', 'assigned_by_name']
+        read_only_fields = [
+            'id', 'protocolo', 'data_criacao', 'data_atualizacao', 
+            'assigned_at', 'assigned_by_name',
+            # Campos SLA são calculados automaticamente
+            'tempo_primeira_resposta', 'tempo_resolucao',
+            'data_primeira_resposta', 'data_resolucao',
+            'sla_primeira_resposta', 'sla_resolucao',
+        ]
     
     def get_assigned_by_name(self, obj):
         """Retorna nome de quem fez a atribuição."""
