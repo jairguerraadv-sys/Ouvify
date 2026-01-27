@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.routers import SimpleRouter
 from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
 from apps.tenants.subscription_management import ManageSubscriptionView, ReactivateSubscriptionView  # type: ignore[import-not-found]
+from apps.tenants.team_views import TeamMemberViewSet, TeamInvitationViewSet  # type: ignore[import-not-found]
 from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
 from apps.core import views as core_views
 from apps.core.views.csp import csp_report
@@ -57,6 +58,25 @@ router.register(r'feedbacks', FeedbackViewSet, basename='feedback')
 # TenantAdminViewSet gera rotas administrativas (apenas superusuários):
 # - GET/PATCH   /api/admin/tenants/                      (list, partial_update)
 router.register(r'admin/tenants', TenantAdminViewSet, basename='admin-tenants')
+
+# Team Management - Multi-User System (Sprint 1)
+# TeamMemberViewSet gera:
+# - GET         /api/team/members/                       (list members)
+# - GET         /api/team/members/{id}/                  (retrieve member)
+# - PATCH       /api/team/members/{id}/                  (update role)
+# - DELETE      /api/team/members/{id}/                  (remove member)
+# - POST        /api/team/members/{id}/suspend/          (suspend member)
+# - POST        /api/team/members/{id}/activate/         (reactivate member)
+# - GET         /api/team/members/stats/                 (team statistics)
+router.register(r'team/members', TeamMemberViewSet, basename='team-members')
+
+# TeamInvitationViewSet gera:
+# - POST        /api/team/invitations/                   (create invitation)
+# - GET         /api/team/invitations/                   (list invitations)
+# - DELETE      /api/team/invitations/{id}/              (revoke invitation)
+# - POST        /api/team/invitations/accept/            (accept - public)
+# - POST        /api/team/invitations/{id}/resend/       (resend email)
+router.register(r'team/invitations', TeamInvitationViewSet, basename='team-invitations')
 
 urlpatterns = [
     path('', core_views.home, name='home'),  # Rota raiz para teste de multi-tenancy

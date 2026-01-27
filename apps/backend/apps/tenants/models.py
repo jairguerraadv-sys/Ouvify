@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+from django.utils import timezone
 from .plans import PlanFeatures
 
 
@@ -326,4 +327,434 @@ class Client(models.Model):
         current = self.get_current_feedback_count()
         
         return (current / limit * 100) if limit > 0 else 0
+    
+    # ==============================
+    # TEAM MANAGEMENT
+    # ==============================
+    
+    MAX_TEAM_MEMBERS = {
+        'free': 1,
+        'starter': 5,
+        'pro': 15,
+    }
+    
+    def can_add_team_member(self) -> bool:
+        """
+        Verifica se pode adicionar mais membros à equipe.
+        Respeita o limite do plano.
+        
+        Returns:
+            True se pode adicionar, False se atingiu o limite
+        """
+        current = self.team_members.filter(status=TeamMember.ACTIVE).count()
+        max_allowed = self.MAX_TEAM_MEMBERS.get(self.plano, 1)
+        return current < max_allowed
+    
+    def get_team_members_limit(self) -> int:
+        """Retorna o limite de membros do plano"""
+        return self.MAX_TEAM_MEMBERS.get(self.plano, 1)
+    
+    def get_active_team_members_count(self) -> int:
+        """Retorna o número de membros ativos"""
+        return self.team_members.filter(status=TeamMember.ACTIVE).count()
+    
+    def get_team_usage_percentage(self) -> float:
+        """Retorna a porcentagem de uso do limite de equipe"""
+        limit = self.get_team_members_limit()
+        current = self.get_active_team_members_count()
+        return (current / limit * 100) if limit > 0 else 0
+
+
+class TeamMember(models.Model):
+    """
+    Relaciona User a Client (tenant) com role específica.
+    Permite 1 User em múltiplos Clients (multi-tenancy).
+    Implementa sistema de permissões hierárquico OWNER > ADMIN > MODERATOR > VIEWER.
+    """
+    
+    # Roles hierárquicas (do maior para menor poder)
+    OWNER = 'OWNER'
+    ADMIN = 'ADMIN'
+    MODERATOR = 'MODERATOR'
+    VIEWER = 'VIEWER'
+    
+    ROLE_CHOICES = [
+        (OWNER, 'Proprietário'),        # Criador, todos os poderes
+        (ADMIN, 'Administrador'),       # Gerencia equipe + feedbacks
+        (MODERATOR, 'Moderador'),       # Responde feedbacks
+        (VIEWER, 'Visualizador'),       # Read-only
+    ]
+    
+    # Status do membro na equipe
+    ACTIVE = 'ACTIVE'
+    SUSPENDED = 'SUSPENDED'
+    REMOVED = 'REMOVED'
+    
+    STATUS_CHOICES = [
+        (ACTIVE, 'Ativo'),
+        (SUSPENDED, 'Suspenso'),
+        (REMOVED, 'Removido'),
+    ]
+    
+    # Relacionamentos
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='team_memberships',
+        verbose_name='Usuário',
+        help_text='Usuário que é membro deste tenant'
+    )
+    
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        related_name='team_members',
+        verbose_name='Cliente',
+        help_text='Tenant ao qual este usuário pertence'
+    )
+    
+    # Dados
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default=VIEWER,
+        verbose_name='Cargo',
+        help_text='Nível de permissão do usuário'
+    )
+    
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=ACTIVE,
+        verbose_name='Status',
+        help_text='Status atual do membro na equipe'
+    )
+    
+    # Metadata
+    invited_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='invitations_sent',
+        verbose_name='Convidado Por',
+        help_text='Usuário que enviou o convite'
+    )
+    
+    invited_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Data do Convite'
+    )
+    
+    joined_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Data de Entrada',
+        help_text='Quando o usuário aceitou o convite'
+    )
+    
+    removed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Data de Remoção'
+    )
+    
+    class Meta:
+        db_table = 'tenants_team_member'
+        verbose_name = 'Membro da Equipe'
+        verbose_name_plural = 'Membros da Equipe'
+        unique_together = [('user', 'client')]
+        indexes = [
+            models.Index(fields=['client', 'status']),
+            models.Index(fields=['user', 'status']),
+            models.Index(fields=['role', 'status']),
+        ]
+        ordering = ['-invited_at']
+    
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username} - {self.get_role_display()} @ {self.client.nome}"
+    
+    def has_permission(self, permission: str) -> bool:
+        """
+        Verifica se tem permissão específica.
+        Hierarquia: OWNER > ADMIN > MODERATOR > VIEWER
+        
+        Args:
+            permission: Nome da permissão (ex: 'manage_team', 'manage_feedbacks')
+        
+        Returns:
+            True se tem permissão, False caso contrário
+        """
+        if self.status != self.ACTIVE:
+            return False
+        
+        # Mapeamento de permissões por role
+        permissions_map = {
+            self.OWNER: [
+                'manage_team',          # Gerenciar membros da equipe
+                'manage_billing',       # Gerenciar assinatura e pagamentos
+                'manage_settings',      # Configurações gerais do tenant
+                'manage_branding',      # White label (logo, cores, etc)
+                'manage_feedbacks',     # Criar, editar, deletar feedbacks
+                'assign_feedbacks',     # Atribuir feedbacks a membros
+                'view_analytics',       # Ver dashboards e relatórios
+                'export_data',          # Exportar dados (CSV, PDF)
+                'manage_integrations',  # Configurar integrações (Slack, etc)
+                'delete_tenant',        # Deletar o tenant (perigoso)
+            ],
+            self.ADMIN: [
+                'manage_team',          # Gerenciar membros (exceto owner)
+                'manage_settings',      # Configurações gerais
+                'manage_branding',      # White label
+                'manage_feedbacks',     # Criar, editar, deletar feedbacks
+                'assign_feedbacks',     # Atribuir feedbacks
+                'view_analytics',       # Ver analytics
+                'export_data',          # Exportar dados
+                'manage_integrations',  # Configurar integrações
+            ],
+            self.MODERATOR: [
+                'manage_feedbacks',     # Criar, editar, responder feedbacks
+                'view_analytics',       # Ver analytics básico
+            ],
+            self.VIEWER: [
+                'view_feedbacks',       # Apenas visualizar feedbacks
+                'view_analytics',       # Ver analytics básico
+            ],
+        }
+        
+        allowed_permissions = permissions_map.get(self.role, [])
+        return permission in allowed_permissions
+    
+    def can_manage_member(self, target_member: 'TeamMember') -> bool:
+        """
+        Verifica se pode gerenciar outro membro (editar role, remover, etc).
+        
+        Regras:
+        - OWNER pode gerenciar todos (exceto outros OWNERs)
+        - ADMIN pode gerenciar MODERATOR e VIEWER
+        - MODERATOR e VIEWER não podem gerenciar ninguém
+        
+        Args:
+            target_member: Membro alvo da ação
+        
+        Returns:
+            True se pode gerenciar, False caso contrário
+        """
+        if not self.has_permission('manage_team'):
+            return False
+        
+        # OWNER pode gerenciar todos exceto outros OWNERs
+        if self.role == self.OWNER:
+            return target_member.role != self.OWNER
+        
+        # ADMIN pode gerenciar apenas MODERATOR e VIEWER
+        if self.role == self.ADMIN:
+            return target_member.role in [self.MODERATOR, self.VIEWER]
+        
+        return False
+    
+    def get_role_hierarchy_level(self) -> int:
+        """
+        Retorna nível hierárquico (maior = mais poder).
+        Usado para comparações e validações.
+        """
+        hierarchy = {
+            self.OWNER: 4,
+            self.ADMIN: 3,
+            self.MODERATOR: 2,
+            self.VIEWER: 1,
+        }
+        return hierarchy.get(self.role, 0)
+    
+    def suspend(self, suspended_by: User = None):
+        """Suspende o membro da equipe"""
+        self.status = self.SUSPENDED
+        self.save()
+    
+    def activate(self):
+        """Reativa o membro suspenso"""
+        self.status = self.ACTIVE
+        self.save()
+    
+    def remove(self, removed_by: User = None):
+        """Remove o membro da equipe (soft delete)"""
+        self.status = self.REMOVED
+        self.removed_at = timezone.now()
+        self.save()
+
+
+class TeamInvitation(models.Model):
+    """
+    Convite pendente com token único.
+    Expira em 7 dias e pode ser aceito apenas uma vez.
+    """
+    
+    # Status do convite
+    PENDING = 'PENDING'
+    ACCEPTED = 'ACCEPTED'
+    EXPIRED = 'EXPIRED'
+    REVOKED = 'REVOKED'
+    
+    STATUS_CHOICES = [
+        (PENDING, 'Pendente'),
+        (ACCEPTED, 'Aceito'),
+        (EXPIRED, 'Expirado'),
+        (REVOKED, 'Revogado'),
+    ]
+    
+    # Relacionamentos
+    client = models.ForeignKey(
+        Client,
+        on_delete=models.CASCADE,
+        related_name='invitations',
+        verbose_name='Cliente'
+    )
+    
+    invited_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='sent_invitations',
+        verbose_name='Convidado Por'
+    )
+    
+    # Dados do convite
+    email = models.EmailField(
+        verbose_name='Email do Convidado',
+        help_text='Email para onde o convite será enviado'
+    )
+    
+    role = models.CharField(
+        max_length=20,
+        choices=TeamMember.ROLE_CHOICES,
+        default=TeamMember.VIEWER,
+        verbose_name='Cargo',
+        help_text='Role que será atribuída ao aceitar'
+    )
+    
+    token = models.CharField(
+        max_length=64,
+        unique=True,
+        editable=False,
+        verbose_name='Token',
+        help_text='Token único para aceitar o convite'
+    )
+    
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default=PENDING,
+        verbose_name='Status'
+    )
+    
+    personal_message = models.TextField(
+        blank=True,
+        verbose_name='Mensagem Pessoal',
+        help_text='Mensagem opcional incluída no email de convite'
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Criado Em'
+    )
+    
+    expires_at = models.DateTimeField(
+        verbose_name='Expira Em',
+        help_text='Data de expiração do convite (7 dias)'
+    )
+    
+    accepted_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Aceito Em'
+    )
+    
+    class Meta:
+        db_table = 'tenants_team_invitation'
+        verbose_name = 'Convite de Equipe'
+        verbose_name_plural = 'Convites de Equipe'
+        indexes = [
+            models.Index(fields=['token']),
+            models.Index(fields=['email', 'status']),
+            models.Index(fields=['client', 'status']),
+        ]
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Convite para {self.email} - {self.client.nome} ({self.get_status_display()})"
+    
+    def save(self, *args, **kwargs):
+        """Gera token único e data de expiração se não existirem"""
+        if not self.token:
+            import secrets
+            self.token = secrets.token_urlsafe(48)
+        
+        if not self.expires_at:
+            from datetime import timedelta
+            self.expires_at = timezone.now() + timedelta(days=7)
+        
+        super().save(*args, **kwargs)
+    
+    @property
+    def is_valid(self) -> bool:
+        """Verifica se o convite ainda é válido"""
+        return self.status == self.PENDING and timezone.now() <= self.expires_at
+    
+    @property
+    def is_expired(self) -> bool:
+        """Verifica se o convite expirou"""
+        return timezone.now() > self.expires_at and self.status == self.PENDING
+    
+    def accept(self, user: User) -> TeamMember:
+        """
+        Aceita o convite e cria TeamMember.
+        
+        Args:
+            user: Usuário que está aceitando o convite
+        
+        Returns:
+            TeamMember criado
+        
+        Raises:
+            ValueError: Se o convite não for válido
+        """
+        if not self.is_valid:
+            raise ValueError("Convite inválido ou expirado")
+        
+        # Criar ou atualizar TeamMember
+        team_member, created = TeamMember.objects.get_or_create(
+            user=user,
+            client=self.client,
+            defaults={
+                'role': self.role,
+                'invited_by': self.invited_by,
+                'joined_at': timezone.now(),
+                'status': TeamMember.ACTIVE,
+            }
+        )
+        
+        # Se já existia, apenas atualizar
+        if not created:
+            team_member.role = self.role
+            team_member.status = TeamMember.ACTIVE
+            team_member.joined_at = timezone.now()
+            team_member.save()
+        
+        # Marcar convite como aceito
+        self.status = self.ACCEPTED
+        self.accepted_at = timezone.now()
+        self.save()
+        
+        return team_member
+    
+    def revoke(self):
+        """Revoga o convite (não pode mais ser aceito)"""
+        self.status = self.REVOKED
+        self.save()
+    
+    def mark_as_expired(self):
+        """Marca o convite como expirado"""
+        if self.is_expired:
+            self.status = self.EXPIRED
+            self.save()
 

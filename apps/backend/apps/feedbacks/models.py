@@ -58,6 +58,30 @@ class Feedback(TenantAwareModel):
         help_text='Status atual do feedback'
     )
     
+    # Atribuição
+    assigned_to = models.ForeignKey(
+        'tenants.TeamMember',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_feedbacks',
+        verbose_name='Atribuído para',
+        help_text='Membro responsável por responder este feedback'
+    )
+    assigned_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name='Data de atribuição'
+    )
+    assigned_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='feedbacks_assigned_by',
+        verbose_name='Atribuído por'
+    )
+    
     protocolo = models.CharField(
         max_length=20,
         unique=True,
@@ -126,6 +150,8 @@ class Feedback(TenantAwareModel):
             models.Index(fields=['protocolo']),  # ✅ JÁ EXISTE: protocolo indexado
             models.Index(fields=['client', '-data_criacao']),
             models.Index(fields=['client', 'status', '-data_criacao']),
+            models.Index(fields=['assigned_to', 'status']),  # ✅ NOVO: Queries de atribuição
+            models.Index(fields=['client', 'assigned_to']),  # ✅ NOVO: Filtros por assignee
         ]
     
     def __str__(self):

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Client
+from django.core.validators import EmailValidator
+from .models import Client, TeamMember, TeamInvitation
 from apps.core.validators import validate_subdomain, validate_strong_password
 from apps.core.utils import is_reserved_subdomain
 import re
@@ -250,4 +251,147 @@ class TenantActivityLogSerializer(serializers.Serializer):
     data = serializers.DateTimeField()
     autor = serializers.CharField(allow_null=True)
     ip_address = serializers.CharField(allow_null=True)
+
+
+# =============================================================================
+# TEAM MANAGEMENT SERIALIZERS
+# =============================================================================
+
+class UserBasicSerializer(serializers.ModelSerializer):
+    """Serializer básico do usuário (para nested relationships)"""
+    full_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'full_name']
+        read_only_fields = ['id', 'username', 'email']
+    
+    def get_full_name(self, obj):
+        return obj.get_full_name() or obj.username
+
+
+class TeamMemberSerializer(serializers.ModelSerializer):
+    """Serializer para TeamMember com informações do usuário"""
+    user = UserBasicSerializer(read_only=True)
+    invited_by_name = serializers.SerializerMethodField()
+    role_display = serializers.CharField(source='get_role_display', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    can_be_managed = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = TeamMember
+        fields = [
+            'id', 'user', 'role', 'role_display', 'status', 'status_display',
+            'invited_by', 'invited_by_name', 'invited_at', 'joined_at',
+            'removed_at', 'can_be_managed',
+        ]
+        read_only_fields = ['id', 'invited_by', 'invited_at', 'joined_at', 'removed_at']
+    
+    def get_invited_by_name(self, obj):
+        if obj.invited_by:
+            return obj.invited_by.get_full_name() or obj.invited_by.username
+        return None
+    
+    def get_can_be_managed(self, obj):
+        """Verifica se o usuário atual pode gerenciar este membro"""
+        request = self.context.get('request')
+        if not request or not hasattr(request, 'team_member'):
+            return False
+        return request.team_member.can_manage_member(obj)
+
+
+class TeamInvitationSerializer(serializers.ModelSerializer):
+    """Serializer para criar e listar convites"""
+    invited_by_name = serializers.SerializerMethodField()
+    role_display = serializers.CharField(source='get_role_display', read_only=True)
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    is_valid = serializers.BooleanField(read_only=True)
+    is_expired = serializers.BooleanField(read_only=True)
+    invite_url = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = TeamInvitation
+        fields = [
+            'id', 'email', 'role', 'role_display', 'status', 'status_display',
+            'personal_message', 'token', 'invited_by', 'invited_by_name',
+            'created_at', 'expires_at', 'accepted_at', 'is_valid', 'is_expired', 'invite_url',
+        ]
+        read_only_fields = ['id', 'token', 'invited_by', 'status', 'created_at', 'expires_at', 'accepted_at']
+    
+    def get_invited_by_name(self, obj):
+        if obj.invited_by:
+            return obj.invited_by.get_full_name() or obj.invited_by.username
+        return None
+    
+    def get_invite_url(self, obj):
+        return f"https://{obj.client.subdominio}.ouvy.com/convite/{obj.token}"
+    
+    def validate_email(self, value):
+        validator = EmailValidator()
+        validator(value)
+        
+        client = self.context.get('client')
+        if client:
+            if TeamMember.objects.filter(user__email=value, client=client, status=TeamMember.ACTIVE).exists():
+                raise serializers.ValidationError("Este usuário já é membro da equipe")
+            if TeamInvitation.objects.filter(email=value, client=client, status=TeamInvitation.PENDING).exists():
+                raise serializers.ValidationError("Já existe um convite pendente para este email")
+        
+        return value.lower()
+    
+    def validate_role(self, value):
+        if value == TeamMember.OWNER:
+            raise serializers.ValidationError("Não é possível convidar como OWNER")
+        return value
+    
+    def validate(self, attrs):
+        client = self.context.get('client')
+        if client and not client.can_add_team_member():
+            limit = client.get_team_members_limit()
+            raise serializers.ValidationError(
+                f"Limite de membros atingido ({limit}). Faça upgrade para adicionar mais membros."
+            )
+        return attrs
+
+
+class AcceptInvitationSerializer(serializers.Serializer):
+    """Serializer para aceitar convite (público)"""
+    token = serializers.CharField(required=True)
+    first_name = serializers.CharField(required=True, max_length=150)
+    last_name = serializers.CharField(required=True, max_length=150)
+    password = serializers.CharField(required=True, write_only=True, min_length=8, style={'input_type': 'password'})
+    password_confirm = serializers.CharField(required=True, write_only=True, min_length=8, style={'input_type': 'password'})
+    
+    def validate_token(self, value):
+        try:
+            invitation = TeamInvitation.objects.get(token=value)
+            if not invitation.is_valid:
+                raise serializers.ValidationError("Convite expirado ou já utilizado")
+            self.context['invitation'] = invitation
+            return value
+        except TeamInvitation.DoesNotExist:
+            raise serializers.ValidationError("Token inválido")
+    
+    def validate(self, attrs):
+        if attrs['password'] != attrs['password_confirm']:
+            raise serializers.ValidationError({'password': 'As senhas não conferem'})
+        return attrs
+    
+    def save(self):
+        invitation = self.context['invitation']
+        user, created = User.objects.get_or_create(
+            email=invitation.email,
+            defaults={
+                'username': invitation.email,
+                'first_name': self.validated_data['first_name'],
+                'last_name': self.validated_data['last_name'],
+            }
+        )
+        
+        if created:
+            user.set_password(self.validated_data['password'])
+            user.save()
+        
+        team_member = invitation.accept(user)
+        return {'user': user, 'team_member': team_member, 'invitation': invitation}
 

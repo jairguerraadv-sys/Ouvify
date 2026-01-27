@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convite para {{ company_name }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f3f4f6;
+        }
+        
+        .email-wrapper {
+            max-width: 600px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .header .emoji {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .content p {
+            margin-bottom: 16px;
+            font-size: 16px;
+            color: #4b5563;
+        }
+        
+        .invitation-details {
+            background-color: #f9fafb;
+            border-left: 4px solid #3B82F6;
+            padding: 20px;
+            margin: 24px 0;
+            border-radius: 4px;
+        }
+        
+        .invitation-details .label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #6b7280;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .invitation-details .value {
+            font-size: 18px;
+            color: #1f2937;
+            font-weight: 500;
+        }
+        
+        .personal-message {
+            background-color: #fffbeb;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            margin: 24px 0;
+            border-radius: 4px;
+            font-style: italic;
+            color: #92400e;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: white !important;
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 24px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(59, 130, 246, 0.3);
+        }
+        
+        .expiration-notice {
+            background-color: #fef2f2;
+            border: 1px solid #fee2e2;
+            padding: 16px;
+            border-radius: 6px;
+            margin: 24px 0;
+        }
+        
+        .expiration-notice .icon {
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .expiration-notice p {
+            color: #991b1b;
+            font-size: 14px;
+            margin: 0;
+        }
+        
+        .expiration-notice strong {
+            color: #7f1d1d;
+        }
+        
+        .footer {
+            background-color: #f9fafb;
+            padding: 24px 30px;
+            text-align: center;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .footer p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .footer .disclaimer {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 16px;
+        }
+        
+        .footer .logo {
+            color: #3B82F6;
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .email-wrapper {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .cta-button {
+                display: block;
+                padding: 14px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header -->
+        <div class="header">
+            <span class="emoji">🎉</span>
+            <h1>Você foi convidado!</h1>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <p>Olá!</p>
+            
+            <p>
+                <strong>{{ invited_by_name }}</strong> convidou você para fazer parte da equipe 
+                <strong>{{ company_name }}</strong> na plataforma Ouvy.
+            </p>
+            
+            <!-- Invitation Details -->
+            <div class="invitation-details">
+                <div class="label">Empresa</div>
+                <div class="value">{{ company_name }}</div>
+                
+                <div class="label" style="margin-top: 16px;">Seu Cargo</div>
+                <div class="value">{{ role_display }}</div>
+            </div>
+            
+            <!-- Personal Message (if exists) -->
+            {% if invitation.personal_message %}
+            <div class="personal-message">
+                <strong>Mensagem de {{ invited_by_name }}:</strong><br>
+                "{{ invitation.personal_message }}"
+            </div>
+            {% endif %}
+            
+            <!-- CTA Button -->
+            <div style="text-align: center;">
+                <a href="{{ invite_url }}" class="cta-button">
+                    Aceitar Convite
+                </a>
+            </div>
+            
+            <!-- Expiration Notice -->
+            <div class="expiration-notice">
+                <span class="icon">⏰</span>
+                <p>
+                    Este convite expira em <strong>{{ expires_days }} dias</strong> 
+                    ({{ invitation.expires_at|date:"d/m/Y às H:i" }}).
+                </p>
+            </div>
+            
+            <!-- Alternative Link -->
+            <p style="font-size: 14px; color: #6b7280;">
+                Se o botão não funcionar, copie e cole este link no seu navegador:<br>
+                <a href="{{ invite_url }}" style="color: #3B82F6; word-break: break-all;">{{ invite_url }}</a>
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p class="logo">Ouvy</p>
+            <p>Gestão de Feedbacks White Label</p>
+            
+            <p class="disclaimer">
+                Se você não estava esperando este convite, pode ignorar este email com segurança.
+            </p>
+            
+            <p style="font-size: 12px; color: #9ca3af; margin-top: 16px;">
+                © 2026 Ouvy. Todos os direitos reservados.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

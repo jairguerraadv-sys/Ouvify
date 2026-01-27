@@ -15,6 +15,7 @@ from .serializers import (
     FeedbackArquivoSerializer,
     FeedbackArquivoUploadSerializer,
 )
+from .filters import FeedbackFilter
 from .throttles import ProtocoloConsultaThrottle, FeedbackCriacaoThrottle
 from .constants import (
     InteracaoTipo,
@@ -44,6 +45,8 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     - GET /api/feedbacks/ - Listar feedbacks do tenant (autenticado, paginado)
     - GET /api/feedbacks/{id}/ - Detalhes de um feedback (autenticado)
     - GET /api/feedbacks/consultar-protocolo/?codigo=OUVY-XXXX-YYYY - Consulta pública
+    - POST /api/feedbacks/{id}/assign/ - Atribuir feedback para team member
+    - POST /api/feedbacks/{id}/unassign/ - Remover atribuição
     
     Paginação:
     - 20 itens por página (padrão)
@@ -55,6 +58,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     pagination_class = StandardResultsSetPagination
     parser_classes = [JSONParser, MultiPartParser, FormParser]
+    filterset_class = FeedbackFilter
     
     def get_permissions(self):
         """Permite público apenas nos endpoints explícitos de protocolo."""
@@ -862,3 +866,80 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         
         logger.info(f"📊 Export realizado | Tenant: {request.tenant.nome} | Formato: {format_type} | Registros: {queryset.count()}")
         return response
+    
+    @action(detail=True, methods=['post'])
+    def assign(self, request, pk=None):
+        """
+        Atribui feedback para um team member.
+        
+        POST /api/feedbacks/{id}/assign/
+        
+        Body:
+        {
+            "team_member_id": 123  // ID do TeamMember
+        }
+        
+        Returns:
+        {
+            "id": 1,
+            "assigned_to": {
+                "id": 123,
+                "user": {"full_name": "João Silva"},
+                "role": "MODERATOR"
+            },
+            "assigned_at": "2026-02-03T10:30:00Z",
+            "assigned_by_name": "Admin User"
+        }
+        """
+        from apps.tenants.models import TeamMember
+        
+        feedback = self.get_object()
+        team_member_id = request.data.get('team_member_id')
+        
+        # Validação
+        if not team_member_id:
+            return Response(
+                {'detail': 'team_member_id é obrigatório'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Verificar se team member existe e é do mesmo tenant
+        try:
+            team_member = TeamMember.objects.get(
+                id=team_member_id,
+                client=request.tenant,
+                status=TeamMember.ACTIVE
+            )
+        except TeamMember.DoesNotExist:
+            return Response(
+                {'detail': 'Team member não encontrado ou inativo'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        # Atribuir
+        feedback.assigned_to = team_member
+        feedback.assigned_at = timezone.now()
+        feedback.assigned_by = request.user
+        feedback.save()
+        
+        # TODO: Enviar email de notificação (Feature 2)
+        logger.info(f"✅ Feedback {feedback.protocolo} atribuído para {team_member.user.get_full_name()} por {request.user.get_full_name()}")
+        
+        serializer = self.get_serializer(feedback)
+        return Response(serializer.data)
+    
+    @action(detail=True, methods=['post'])
+    def unassign(self, request, pk=None):
+        """Remove atribuição do feedback."""
+        feedback = self.get_object()
+        old_assignee = feedback.assigned_to.user.get_full_name() if feedback.assigned_to else None
+        
+        feedback.assigned_to = None
+        feedback.assigned_at = None
+        feedback.save()
+        
+        if old_assignee:
+            logger.info(f"✅ Feedback {feedback.protocolo} desatribuído de {old_assignee} por {request.user.get_full_name()}")
+        
+        serializer = self.get_serializer(feedback)
+        return Response(serializer.data)

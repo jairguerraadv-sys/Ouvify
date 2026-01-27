@@ -8,6 +8,7 @@ from apps.core.sanitizers import (
     sanitize_plain_text,
     sanitize_rich_text,          # ✅ NOVO: Método com bleach
 )
+from apps.tenants.serializers import TeamMemberSerializer
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
@@ -15,6 +16,10 @@ class FeedbackSerializer(serializers.ModelSerializer):
     Serializador para converter dados do Feedback entre Django ORM e JSON.
     Usa os nomes em português conforme definido no modelo.
     """
+    
+    # Nested serializer para mostrar info do assignee
+    assigned_to = TeamMemberSerializer(read_only=True)
+    assigned_by_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Feedback
@@ -29,10 +34,19 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'email_contato',
             'data_criacao',
             'data_atualizacao',
+            'assigned_to',
+            'assigned_at',
+            'assigned_by_name',
         ]
         
         # Campos somente leitura
-        read_only_fields = ['id', 'protocolo', 'data_criacao', 'data_atualizacao']
+        read_only_fields = ['id', 'protocolo', 'data_criacao', 'data_atualizacao', 'assigned_at', 'assigned_by_name']
+    
+    def get_assigned_by_name(self, obj):
+        """Retorna nome de quem fez a atribuição."""
+        if obj.assigned_by:
+            return obj.assigned_by.get_full_name() or obj.assigned_by.username
+        return None
     
     def validate_titulo(self, value):
         """
