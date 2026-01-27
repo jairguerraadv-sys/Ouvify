@@ -5,6 +5,7 @@ Sprint 2 - Feature 1: Atribuição de Feedbacks
 """
 
 import pytest
+import uuid
 from unittest import mock
 from django.contrib.auth.models import User
 from apps.tenants.models import Client, TeamMember
@@ -19,6 +20,11 @@ def disable_celery_tasks():
             yield
 
 
+def get_unique_subdominio():
+    """Gera subdomínio único para cada teste."""
+    return f"testco-{uuid.uuid4().hex[:8]}"
+
+
 @pytest.mark.django_db
 class TestFeedbackAssignment:
     """Testes do sistema de atribuição de feedbacks."""
@@ -28,9 +34,9 @@ class TestFeedbackAssignment:
         from django.utils import timezone
         
         # Setup
-        client = Client.objects.create(nome='Test Company', subdominio='testco')
-        admin_user = User.objects.create_user('admin@test.com', password='Test@1234')
-        moderator_user = User.objects.create_user('mod@test.com', password='Test@1234')
+        client = Client.objects.create(nome='Test Company', subdominio=get_unique_subdominio())
+        admin_user = User.objects.create_user(f'admin-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
+        moderator_user = User.objects.create_user(f'mod-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
         
         admin = TeamMember.objects.create(
             user=admin_user, client=client, role=TeamMember.ADMIN
@@ -59,9 +65,9 @@ class TestFeedbackAssignment:
     
     def test_filter_assigned_to_me(self):
         """Filtro assigned_to_me retorna apenas feedbacks do usuário."""
-        client = Client.objects.create(nome='Test', subdominio='test')
-        user1 = User.objects.create_user('user1@test.com', password='Test@1234')
-        user2 = User.objects.create_user('user2@test.com', password='Test@1234')
+        client = Client.objects.create(nome='Test', subdominio=get_unique_subdominio())
+        user1 = User.objects.create_user(f'user1-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
+        user2 = User.objects.create_user(f'user2-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
         
         member1 = TeamMember.objects.create(user=user1, client=client, role=TeamMember.MODERATOR)
         member2 = TeamMember.objects.create(user=user2, client=client, role=TeamMember.MODERATOR)
@@ -90,8 +96,8 @@ class TestFeedbackAssignment:
     
     def test_unassign_feedback(self):
         """Remover atribuição deve limpar campos."""
-        client = Client.objects.create(nome='Test', subdominio='test')
-        user = User.objects.create_user('user@test.com', password='Test@1234')
+        client = Client.objects.create(nome='Test', subdominio=get_unique_subdominio())
+        user = User.objects.create_user(f'user-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
         member = TeamMember.objects.create(user=user, client=client, role=TeamMember.MODERATOR)
         
         feedback = Feedback.objects.create(
@@ -110,8 +116,8 @@ class TestFeedbackAssignment:
     
     def test_filter_unassigned_feedbacks(self):
         """Filtro unassigned retorna apenas feedbacks sem atribuição."""
-        client = Client.objects.create(nome='Test', subdominio='test')
-        user = User.objects.create_user('user@test.com', password='Test@1234')
+        client = Client.objects.create(nome='Test', subdominio=get_unique_subdominio())
+        user = User.objects.create_user(f'user-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
         member = TeamMember.objects.create(user=user, client=client, role=TeamMember.MODERATOR)
         
         feedback_assigned = Feedback.objects.create(
@@ -138,8 +144,8 @@ class TestFeedbackAssignment:
     
     def test_multiple_assignments_to_same_member(self):
         """Mesmo membro pode ter múltiplos feedbacks atribuídos."""
-        client = Client.objects.create(nome='Test', subdominio='test')
-        user = User.objects.create_user('user@test.com', password='Test@1234')
+        client = Client.objects.create(nome='Test', subdominio=get_unique_subdominio())
+        user = User.objects.create_user(f'user-{uuid.uuid4().hex[:8]}@test.com', password='Test@1234')
         member = TeamMember.objects.create(user=user, client=client, role=TeamMember.MODERATOR)
         
         feedback1 = Feedback.objects.create(
