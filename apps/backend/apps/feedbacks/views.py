@@ -892,6 +892,7 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         }
         """
         from apps.tenants.models import TeamMember
+        from .tasks import send_assignment_email
         
         feedback = self.get_object()
         team_member_id = request.data.get('team_member_id')
@@ -922,7 +923,9 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         feedback.assigned_by = request.user
         feedback.save()
         
-        # TODO: Enviar email de notificação (Feature 2)
+        # Enviar email async
+        send_assignment_email.delay(feedback.id, team_member.id)
+        
         logger.info(f"✅ Feedback {feedback.protocolo} atribuído para {team_member.user.get_full_name()} por {request.user.get_full_name()}")
         
         serializer = self.get_serializer(feedback)

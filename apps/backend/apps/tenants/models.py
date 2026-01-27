@@ -459,6 +459,12 @@ class TeamMember(models.Model):
         verbose_name='Data de Remoção'
     )
     
+    email_notifications = models.BooleanField(
+        default=True,
+        verbose_name='Receber notificações por email',
+        help_text='Se desabilitado, não receberá emails de atribuição/novos feedbacks'
+    )
+    
     class Meta:
         db_table = 'tenants_team_member'
         verbose_name = 'Membro da Equipe'
