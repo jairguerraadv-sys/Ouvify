@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db.models import Prefetch, Q, QuerySet
 from datetime import timedelta
 from typing import Any
-from .models import Feedback, FeedbackInteracao, FeedbackArquivo
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag
 from .serializers import (
     FeedbackSerializer,
     FeedbackConsultaSerializer,
@@ -14,6 +14,7 @@ from .serializers import (
     FeedbackInteracaoSerializer,
     FeedbackArquivoSerializer,
     FeedbackArquivoUploadSerializer,
+    TagSerializer,
 )
 from .filters import FeedbackFilter
 from .throttles import ProtocoloConsultaThrottle, FeedbackCriacaoThrottle
@@ -946,3 +947,68 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         
         serializer = self.get_serializer(feedback)
         return Response(serializer.data)
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet para gerenciar Tags de categorização de feedbacks.
+    
+    Endpoints:
+    - GET /api/tags/ - Listar todas as tags do tenant
+    - POST /api/tags/ - Criar nova tag
+    - GET /api/tags/{id}/ - Detalhes da tag
+    - PUT /api/tags/{id}/ - Atualizar tag
+    - DELETE /api/tags/{id}/ - Deletar tag
+    - GET /api/tags/stats/ - Estatísticas de uso das tags
+    """
+    
+    serializer_class = TagSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+    
+    def get_queryset(self):
+        """Retorna apenas tags do tenant atual, ordenadas por nome."""
+        return Tag.objects.prefetch_related('feedbacks').order_by('nome')
+    
+    def perform_create(self, serializer):
+        """Salva a tag associando ao usuário criador."""
+        serializer.save(criado_por=self.request.user)
+        logger.info(f"✅ Tag '{serializer.instance.nome}' criada por {self.request.user.get_full_name()}")
+    
+    def destroy(self, request, *args, **kwargs):
+        """Permite deletar tag apenas se não estiver em uso."""
+        tag = self.get_object()
+        feedback_count = tag.feedbacks.count()
+        
+        if feedback_count > 0:
+            return Response(
+                {
+                    'detail': f'Não é possível deletar. Tag está em uso por {feedback_count} feedback(s).',
+                    'feedback_count': feedback_count
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        tag_name = tag.nome
+        self.perform_destroy(tag)
+        logger.info(f"🗑️  Tag '{tag_name}' deletada por {request.user.get_full_name()}")
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Retorna estatísticas de uso das tags."""
+        from django.db.models import Count
+        
+        tags = self.get_queryset().annotate(
+            feedback_count=Count('feedbacks')
+        ).order_by('-feedback_count')
+        
+        stats = {
+            'total_tags': tags.count(),
+            'tags_in_use': tags.filter(feedback_count__gt=0).count(),
+            'tags_unused': tags.filter(feedback_count=0).count(),
+            'most_used': TagSerializer(tags[:5], many=True).data,
+        }
+        
+        return Response(stats)

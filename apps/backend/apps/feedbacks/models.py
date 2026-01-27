@@ -82,6 +82,15 @@ class Feedback(TenantAwareModel):
         verbose_name='Atribuído por'
     )
     
+    # Tags
+    tags = models.ManyToManyField(
+        'Tag',
+        blank=True,
+        related_name='feedbacks',
+        verbose_name='Tags',
+        help_text='Tags para categorização do feedback'
+    )
+    
     protocolo = models.CharField(
         max_length=20,
         unique=True,
@@ -375,3 +384,55 @@ class FeedbackArquivo(TenantAwareModel):
         if hasattr(self.arquivo, 'url'):
             return self.arquivo.url
         return ''
+
+
+class Tag(TenantAwareModel):
+    """
+    Tags/Labels para categorização de feedbacks.
+    Permite filtros e organização customizada por tenant.
+    """
+    
+    nome = models.CharField(
+        max_length=50,
+        verbose_name='Nome',
+        help_text='Nome da tag (ex: Urgente, Bug, Feature Request)'
+    )
+    
+    cor = models.CharField(
+        max_length=7,
+        default='#3B82F6',
+        verbose_name='Cor',
+        help_text='Cor em hexadecimal (#RRGGBB)'
+    )
+    
+    descricao = models.TextField(
+        blank=True,
+        verbose_name='Descrição',
+        help_text='Descrição opcional do propósito da tag'
+    )
+    
+    criado_em = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Criado em'
+    )
+    
+    criado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='tags_criadas',
+        verbose_name='Criado por'
+    )
+    
+    class Meta(TenantAwareModel.Meta):
+        verbose_name = 'Tag'
+        verbose_name_plural = 'Tags'
+        unique_together = [('client', 'nome')]  # Nome único por tenant
+        ordering = ['nome']
+        indexes = [
+            models.Index(fields=['client', 'nome']),
+        ]
+    
+    def __str__(self):
+        return f"{self.nome} ({self.client.nome})"

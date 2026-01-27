@@ -8,7 +8,7 @@ Provê filtros avançados para queries, incluindo:
 """
 
 from django_filters import rest_framework as filters
-from .models import Feedback
+from .models import Feedback, Tag
 
 
 class FeedbackFilter(filters.FilterSet):
@@ -20,6 +20,8 @@ class FeedbackFilter(filters.FilterSet):
     - GET /api/feedbacks/?assigned_to_me=true
     - GET /api/feedbacks/?unassigned=true
     - GET /api/feedbacks/?status=pendente,em_analise
+    - GET /api/feedbacks/?tags=1,2,3 - Feedbacks com qualquer uma das tags
+    - GET /api/feedbacks/?tags__all=1,2,3 - Feedbacks com todas as tags
     """
     
     assigned_to = filters.NumberFilter(
@@ -35,6 +37,19 @@ class FeedbackFilter(filters.FilterSet):
     unassigned = filters.BooleanFilter(
         method='filter_unassigned',
         help_text='true = apenas feedbacks não atribuídos'
+    )
+    
+    tags = filters.ModelMultipleChoiceFilter(
+        field_name='tags',
+        queryset=Tag.objects.all(),
+        help_text='IDs das tags (OR - qualquer uma)'
+    )
+    
+    tags__all = filters.ModelMultipleChoiceFilter(
+        field_name='tags',
+        queryset=Tag.objects.all(),
+        conjoined=True,
+        help_text='IDs das tags (AND - todas)'
     )
     
     def filter_assigned_to_me(self, queryset, name, value):

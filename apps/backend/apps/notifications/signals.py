@@ -44,6 +44,13 @@ def _handle_feedback_notification(sender, instance, created, **kwargs):
     - Novo feedback → notifica admins do tenant
     - Status alterado → notifica autor (se não anônimo)
     """
+    import os
+    
+    # Não envia notificações em ambiente de teste
+    if os.environ.get('TESTING', '').lower() == 'true':
+        logger.debug(f"TESTING=True - ignorando notificações para feedback {instance.id}")
+        return
+    
     from .tasks import send_feedback_created_push, send_status_update_push
     
     if created:

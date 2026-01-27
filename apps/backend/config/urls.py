@@ -31,6 +31,7 @@ from apps.tenants.jwt_views import CustomTokenObtainPairView
 
 # Expor referências para Pylance
 FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]
+TagViewSet = feedback_views.TagViewSet  # type: ignore[attr-defined]
 TenantInfoView = tenant_views.TenantInfoView  # type: ignore[attr-defined]
 UploadBrandingView = tenant_views.UploadBrandingView  # type: ignore[attr-defined]
 RegisterTenantView = tenant_views.RegisterTenantView  # type: ignore[attr-defined]
@@ -54,6 +55,12 @@ router = SimpleRouter()
 # - GET         /api/feedbacks/dashboard-stats/          (action stats)
 # - POST        /api/feedbacks/{id}/adicionar-interacao/ (action autenticada)
 router.register(r'feedbacks', FeedbackViewSet, basename='feedback')
+
+# TagViewSet gera rotas para gerenciar tags de categorização:
+# - GET/POST    /api/tags/                               (list, create)
+# - GET/PUT     /api/tags/{id}/                          (retrieve, update, delete)
+# - GET         /api/tags/stats/                         (tag usage statistics)
+router.register(r'tags', TagViewSet, basename='tag')
 
 # TenantAdminViewSet gera rotas administrativas (apenas superusuários):
 # - GET/PATCH   /api/admin/tenants/                      (list, partial_update)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Feedback, FeedbackInteracao, FeedbackArquivo
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag
 from django.utils import timezone
 from django.conf import settings
 from .constants import InteracaoTipo
@@ -11,6 +11,32 @@ from apps.core.sanitizers import (
 from apps.tenants.serializers import TeamMemberSerializer
 
 
+class TagSerializer(serializers.ModelSerializer):
+    """Serializer para Tags de categorização."""
+    
+    feedback_count = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Tag
+        fields = ['id', 'nome', 'cor', 'descricao', 'criado_em', 'feedback_count']
+        read_only_fields = ['id', 'criado_em', 'feedback_count']
+    
+    def get_feedback_count(self, obj):
+        """Retorna quantidade de feedbacks com esta tag."""
+        return obj.feedbacks.count()
+    
+    def validate_nome(self, value):
+        """Valida e sanitiza o nome da tag."""
+        return sanitize_plain_text(value, max_length=50)
+    
+    def validate_cor(self, value):
+        """Valida formato hexadecimal da cor."""
+        import re
+        if not re.match(r'^#[0-9A-Fa-f]{6}$', value):
+            raise serializers.ValidationError('Cor deve estar no formato #RRGGBB')
+        return value.upper()
+
+
 class FeedbackSerializer(serializers.ModelSerializer):
     """
     Serializador para converter dados do Feedback entre Django ORM e JSON.
@@ -20,6 +46,13 @@ class FeedbackSerializer(serializers.ModelSerializer):
     # Nested serializer para mostrar info do assignee
     assigned_to = TeamMemberSerializer(read_only=True)
     assigned_by_name = serializers.SerializerMethodField()
+    tags = TagSerializer(many=True, read_only=True)
+    tag_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        write_only=True,
+        required=False,
+        help_text='IDs das tags para associar ao feedback'
+    )
     
     class Meta:
         model = Feedback
@@ -37,6 +70,8 @@ class FeedbackSerializer(serializers.ModelSerializer):
             'assigned_to',
             'assigned_at',
             'assigned_by_name',
+            'tags',
+            'tag_ids',
         ]
         
         # Campos somente leitura
@@ -47,6 +82,26 @@ class FeedbackSerializer(serializers.ModelSerializer):
         if obj.assigned_by:
             return obj.assigned_by.get_full_name() or obj.assigned_by.username
         return None
+    
+    def create(self, validated_data):
+        """Cria feedback e associa tags."""
+        tag_ids = validated_data.pop('tag_ids', [])
+        feedback = super().create(validated_data)
+        
+        if tag_ids:
+            feedback.tags.set(tag_ids)
+        
+        return feedback
+    
+    def update(self, instance, validated_data):
+        """Atualiza feedback e tags."""
+        tag_ids = validated_data.pop('tag_ids', None)
+        feedback = super().update(instance, validated_data)
+        
+        if tag_ids is not None:
+            feedback.tags.set(tag_ids)
+        
+        return feedback
     
     def validate_titulo(self, value):
         """
