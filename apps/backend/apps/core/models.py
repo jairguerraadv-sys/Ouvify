@@ -179,3 +179,7 @@ class CSPViolation(models.Model):
         Trunca user agent para primeiros 200 caracteres.
         """
         return user_agent[:200] if user_agent else ""
+
+
+# Importar APIKey para que Django detecte o modelo
+from .api_keys import APIKey
