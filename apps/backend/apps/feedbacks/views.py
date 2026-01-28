@@ -521,6 +521,333 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         )
         
         return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path='analytics'
+    )
+    def analytics(self, request):
+        """
+        Endpoint de analytics avançado com métricas de SLA.
+        
+        Sprint 3 - Dashboard Analytics (8h)
+        
+        **Parâmetros:**
+        - periodo: 7, 30, 90 dias (default: 30)
+        
+        **Resposta:**
+        {
+            "periodo": {"inicio": "2026-01-01", "fim": "2026-01-27", "dias": 30},
+            "resumo": {"total": 150, "resolvidos": 98, "pendentes": 12, "em_andamento": 40},
+            "sla": {
+                "primeira_resposta": {"dentro": 85, "fora": 13, "taxa_cumprimento": "86.7%"},
+                "resolucao": {"dentro": 70, "fora": 28, "taxa_cumprimento": "71.4%"},
+                "tempo_medio_resposta": "4h 32m",
+                "tempo_medio_resolucao": "18h 45m"
+            },
+            "por_prioridade": {"baixa": 30, "media": 80, "alta": 35, "critica": 5},
+            "por_tipo": {"reclamacao": 50, "sugestao": 40, "denuncia": 30, "elogio": 30},
+            "por_status": {"novo": 10, "pendente": 12, "em_andamento": 40, "resolvido": 98},
+            "tendencia": [{"data": "2026-01-20", "criados": 5, "resolvidos": 3}, ...],
+            "top_tags": [{"nome": "Bug", "count": 25}, {"nome": "UX", "count": 18}]
+        }
+        """
+        from django.core.cache import cache
+        from django.db.models import Count, Q, Avg, F
+        from django.db.models.functions import TruncDate
+        
+        tenant = getattr(request, 'tenant', None)
+        if not tenant:
+            return Response(
+                {"error": "Tenant não identificado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Período de análise (default: 30 dias)
+        periodo_dias = int(request.query_params.get('periodo', 30))
+        if periodo_dias not in [7, 30, 90]:
+            periodo_dias = 30
+        
+        cache_key = f"analytics:{tenant.id}:{periodo_dias}"
+        
+        # Tentar cache primeiro
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            cached_data['cached'] = True
+            return Response(cached_data, status=status.HTTP_200_OK)
+        
+        # Calcular datas
+        data_fim = timezone.now()
+        data_inicio = data_fim - timedelta(days=periodo_dias)
+        
+        # Queryset filtrado pelo período
+        queryset = self.get_queryset().filter(data_criacao__gte=data_inicio)
+        
+        # ===========================================
+        # 1. RESUMO GERAL
+        # ===========================================
+        resumo = queryset.aggregate(
+            total=Count('id'),
+            resolvidos=Count('id', filter=Q(status='resolvido')),
+            pendentes=Count('id', filter=Q(status='pendente')),
+            em_andamento=Count('id', filter=Q(status='em_andamento')),
+            novos=Count('id', filter=Q(status='novo'))
+        )
+        
+        # ===========================================
+        # 2. MÉTRICAS DE SLA
+        # ===========================================
+        sla_stats = queryset.filter(
+            data_primeira_resposta__isnull=False
+        ).aggregate(
+            sla_resposta_dentro=Count('id', filter=Q(sla_primeira_resposta=True)),
+            sla_resposta_fora=Count('id', filter=Q(sla_primeira_resposta=False)),
+            tempo_medio_resposta=Avg('tempo_primeira_resposta')
+        )
+        
+        resolucao_stats = queryset.filter(
+            data_resolucao__isnull=False
+        ).aggregate(
+            sla_resolucao_dentro=Count('id', filter=Q(sla_resolucao=True)),
+            sla_resolucao_fora=Count('id', filter=Q(sla_resolucao=False)),
+            tempo_medio_resolucao=Avg('tempo_resolucao')
+        )
+        
+        # Calcular taxas de cumprimento
+        total_com_resposta = (sla_stats['sla_resposta_dentro'] or 0) + (sla_stats['sla_resposta_fora'] or 0)
+        total_resolvidos = (resolucao_stats['sla_resolucao_dentro'] or 0) + (resolucao_stats['sla_resolucao_fora'] or 0)
+        
+        taxa_sla_resposta = f"{(sla_stats['sla_resposta_dentro'] / total_com_resposta * 100):.1f}%" if total_com_resposta > 0 else "N/A"
+        taxa_sla_resolucao = f"{(resolucao_stats['sla_resolucao_dentro'] / total_resolvidos * 100):.1f}%" if total_resolvidos > 0 else "N/A"
+        
+        # Formatar tempos médios
+        def format_duration(td):
+            if not td:
+                return "N/A"
+            total_seconds = int(td.total_seconds())
+            hours, remainder = divmod(total_seconds, 3600)
+            minutes, _ = divmod(remainder, 60)
+            return f"{hours}h {minutes}m"
+        
+        sla_data = {
+            "primeira_resposta": {
+                "dentro": sla_stats['sla_resposta_dentro'] or 0,
+                "fora": sla_stats['sla_resposta_fora'] or 0,
+                "taxa_cumprimento": taxa_sla_resposta
+            },
+            "resolucao": {
+                "dentro": resolucao_stats['sla_resolucao_dentro'] or 0,
+                "fora": resolucao_stats['sla_resolucao_fora'] or 0,
+                "taxa_cumprimento": taxa_sla_resolucao
+            },
+            "tempo_medio_resposta": format_duration(sla_stats['tempo_medio_resposta']),
+            "tempo_medio_resolucao": format_duration(resolucao_stats['tempo_medio_resolucao'])
+        }
+        
+        # ===========================================
+        # 3. POR PRIORIDADE
+        # ===========================================
+        por_prioridade = dict(
+            queryset.values('prioridade').annotate(
+                count=Count('id')
+            ).values_list('prioridade', 'count')
+        )
+        
+        # ===========================================
+        # 4. POR TIPO
+        # ===========================================
+        por_tipo = dict(
+            queryset.values('tipo').annotate(
+                count=Count('id')
+            ).values_list('tipo', 'count')
+        )
+        
+        # ===========================================
+        # 5. POR STATUS
+        # ===========================================
+        por_status = dict(
+            queryset.values('status').annotate(
+                count=Count('id')
+            ).values_list('status', 'count')
+        )
+        
+        # ===========================================
+        # 6. TENDÊNCIA (criados vs resolvidos por dia)
+        # ===========================================
+        tendencia_criados = queryset.annotate(
+            data=TruncDate('data_criacao')
+        ).values('data').annotate(
+            criados=Count('id')
+        ).order_by('data')
+        
+        tendencia_resolvidos = queryset.filter(
+            data_resolucao__isnull=False
+        ).annotate(
+            data=TruncDate('data_resolucao')
+        ).values('data').annotate(
+            resolvidos=Count('id')
+        ).order_by('data')
+        
+        # Combinar tendências
+        tendencia_dict = {}
+        for item in tendencia_criados:
+            data_str = item['data'].isoformat() if item['data'] else None
+            if data_str:
+                tendencia_dict[data_str] = {'data': data_str, 'criados': item['criados'], 'resolvidos': 0}
+        
+        for item in tendencia_resolvidos:
+            data_str = item['data'].isoformat() if item['data'] else None
+            if data_str:
+                if data_str in tendencia_dict:
+                    tendencia_dict[data_str]['resolvidos'] = item['resolvidos']
+                else:
+                    tendencia_dict[data_str] = {'data': data_str, 'criados': 0, 'resolvidos': item['resolvidos']}
+        
+        tendencia = sorted(tendencia_dict.values(), key=lambda x: x['data'])
+        
+        # ===========================================
+        # 7. TOP TAGS
+        # ===========================================
+        from .models import Tag
+        top_tags = list(
+            Tag.objects.filter(client=tenant).annotate(
+                count=Count('feedbacks', filter=Q(feedbacks__data_criacao__gte=data_inicio))
+            ).filter(count__gt=0).order_by('-count').values('nome', 'count')[:10]
+        )
+        
+        # ===========================================
+        # RESPONSE
+        # ===========================================
+        response_data = {
+            "periodo": {
+                "inicio": data_inicio.date().isoformat(),
+                "fim": data_fim.date().isoformat(),
+                "dias": periodo_dias
+            },
+            "resumo": resumo,
+            "sla": sla_data,
+            "por_prioridade": por_prioridade,
+            "por_tipo": por_tipo,
+            "por_status": por_status,
+            "tendencia": tendencia,
+            "top_tags": top_tags,
+            "cached": False
+        }
+        
+        # Cachear por 10 minutos
+        cache.set(cache_key, response_data, timeout=600)
+        
+        logger.info(
+            f"📊 Analytics (CALCULADO) | Tenant: {tenant.nome} | "
+            f"Período: {periodo_dias}d | Total: {resumo['total']}"
+        )
+        
+        return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path='export-csv'
+    )
+    def export_csv(self, request):
+        """
+        Exporta feedbacks para CSV.
+        
+        Sprint 3 - Relatórios Exportáveis
+        
+        **Parâmetros:**
+        - periodo: 7, 30, 90, all (default: 30)
+        - status: filtrar por status
+        - prioridade: filtrar por prioridade
+        """
+        import csv
+        from django.http import HttpResponse
+        
+        tenant = getattr(request, 'tenant', None)
+        if not tenant:
+            return Response({"error": "Tenant não identificado"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Período
+        periodo = request.query_params.get('periodo', '30')
+        queryset = self.get_queryset()
+        
+        if periodo != 'all':
+            try:
+                dias = int(periodo)
+                data_inicio = timezone.now() - timedelta(days=dias)
+                queryset = queryset.filter(data_criacao__gte=data_inicio)
+            except ValueError:
+                pass
+        
+        # Filtros adicionais
+        status_filter = request.query_params.get('status')
+        if status_filter:
+            queryset = queryset.filter(status=status_filter)
+        
+        prioridade_filter = request.query_params.get('prioridade')
+        if prioridade_filter:
+            queryset = queryset.filter(prioridade=prioridade_filter)
+        
+        # Gerar CSV
+        response = HttpResponse(content_type='text/csv; charset=utf-8')
+        response['Content-Disposition'] = f'attachment; filename="feedbacks_{tenant.subdominio}_{timezone.now().strftime("%Y%m%d")}.csv"'
+        
+        # BOM para Excel reconhecer UTF-8
+        response.write('\ufeff')
+        
+        writer = csv.writer(response)
+        writer.writerow([
+            'Protocolo', 'Tipo', 'Título', 'Status', 'Prioridade',
+            'Data Criação', 'Data Resolução', 'Tempo Resposta (h)',
+            'Tempo Resolução (h)', 'SLA Resposta', 'SLA Resolução',
+            'Atribuído Para', 'Tags'
+        ])
+        
+        for fb in queryset.select_related('assigned_to__user').prefetch_related('tags'):
+            tempo_resposta = ""
+            if fb.tempo_primeira_resposta:
+                tempo_resposta = f"{fb.tempo_primeira_resposta.total_seconds() / 3600:.1f}"
+            
+            tempo_resolucao = ""
+            if fb.tempo_resolucao:
+                tempo_resolucao = f"{fb.tempo_resolucao.total_seconds() / 3600:.1f}"
+            
+            assigned_name = ""
+            if fb.assigned_to and fb.assigned_to.user:
+                assigned_name = fb.assigned_to.user.get_full_name() or fb.assigned_to.user.username
+            
+            tags = ", ".join([t.nome for t in fb.tags.all()])
+            
+            sla_resposta = ""
+            if fb.sla_primeira_resposta is not None:
+                sla_resposta = "Sim" if fb.sla_primeira_resposta else "Não"
+            
+            sla_resolucao = ""
+            if fb.sla_resolucao is not None:
+                sla_resolucao = "Sim" if fb.sla_resolucao else "Não"
+            
+            writer.writerow([
+                fb.protocolo,
+                fb.get_tipo_display() if hasattr(fb, 'get_tipo_display') else fb.tipo,
+                fb.titulo,
+                fb.get_status_display() if hasattr(fb, 'get_status_display') else fb.status,
+                fb.get_prioridade_display() if hasattr(fb, 'get_prioridade_display') else fb.prioridade,
+                fb.data_criacao.strftime('%Y-%m-%d %H:%M'),
+                fb.data_resolucao.strftime('%Y-%m-%d %H:%M') if fb.data_resolucao else '',
+                tempo_resposta,
+                tempo_resolucao,
+                sla_resposta,
+                sla_resolucao,
+                assigned_name,
+                tags
+            ])
+        
+        logger.info(f"📤 CSV exportado | Tenant: {tenant.nome} | Registros: {queryset.count()}")
+        
+        return response
     
     def _set_tenant_from_request(self, request):
         """
