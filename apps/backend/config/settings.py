@@ -161,6 +161,7 @@ INSTALLED_APPS = [
     'apps.auditlog',       # Audit Log & Analytics
     'apps.consent',        # LGPD Consent Management
     'apps.billing',        # Billing & Subscriptions (Sprint 4)
+    'apps.webhooks',       # Webhooks & Integrações (Sprint 5)
 ]
 
 # Performance monitoring (development only) - Auditoria Fase 3

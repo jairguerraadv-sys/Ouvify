@@ -134,6 +134,9 @@ urlpatterns = [
     # Billing & Subscriptions (Sprint 4)
     path('api/v1/billing/', include('apps.billing.urls')),
     
+    # Webhooks & Integrações (Sprint 5)
+    path('api/v1/webhooks/', include('apps.webhooks.urls')),
+    
     path('api/', include(router.urls)),  # API REST endpoints
     
     # JWT Authentication (Principal)
