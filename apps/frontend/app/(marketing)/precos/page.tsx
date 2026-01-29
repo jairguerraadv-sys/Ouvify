@@ -186,21 +186,24 @@ export default function PrecosPage() {
     setLoadingPlan(planId);
 
     try {
-      // Mapear planId para Stripe Price ID
-      const priceIdMap: Record<string, string> = {
-        'starter': process.env.NEXT_PUBLIC_STRIPE_PRICE_STARTER_MONTHLY || 'price_starter',
-        'pro': process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO_MONTHLY || 'price_pro',
+      // Mapear planId para ID do plano no banco de dados
+      // Os IDs são baseados nos slugs: 'free' (1), 'starter' (2), 'professional' (3), 'enterprise' (4)
+      const planIdMap: Record<string, number> = {
+        'free': 1,
+        'starter': 2,
+        'pro': 3,
+        'enterprise': 4,
       };
 
-      const priceId = priceIdMap[planId];
+      const numericPlanId = planIdMap[planId];
       
-      if (!priceId) {
+      if (!numericPlanId) {
         throw new Error('Plano inválido');
       }
 
-      // Criar sessão de checkout no Stripe
-      const response = await api.post<{ checkout_url: string }>('/api/tenants/subscribe/', {
-        price_id: priceId,
+      // Criar sessão de checkout no Stripe via API de billing
+      const response = await api.post<{ checkout_url: string }>('/api/v1/billing/subscription/checkout/', {
+        plan_id: numericPlanId,
         success_url: `${window.location.origin}/dashboard?payment=success&plan=${planId}`,
         cancel_url: `${window.location.origin}/precos?payment=cancelled`,
       });
