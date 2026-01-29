@@ -160,6 +160,7 @@ INSTALLED_APPS = [
     'apps.notifications',  # Push Notifications
     'apps.auditlog',       # Audit Log & Analytics
     'apps.consent',        # LGPD Consent Management
+    'apps.billing',        # Billing & Subscriptions (Sprint 4)
 ]
 
 # Performance monitoring (development only) - Auditoria Fase 3
