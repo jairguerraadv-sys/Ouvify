@@ -542,3 +542,132 @@ class Tag(TenantAwareModel):
     
     def __str__(self):
         return f"{self.nome} ({self.client.nome})"
+
+
+class ResponseTemplate(TenantAwareModel):
+    """
+    Templates de resposta pré-definidos para agilizar respostas em feedbacks.
+    Cada tenant pode ter seus próprios templates personalizados.
+    """
+    
+    CATEGORIA_CHOICES = [
+        ('agradecimento', 'Agradecimento'),
+        ('recebimento', 'Confirmação de Recebimento'),
+        ('analise', 'Em Análise'),
+        ('resolucao', 'Resolução'),
+        ('encerramento', 'Encerramento'),
+        ('esclarecimento', 'Pedido de Esclarecimento'),
+        ('outro', 'Outro'),
+    ]
+    
+    nome = models.CharField(
+        max_length=100,
+        verbose_name='Nome do Template',
+        help_text='Nome identificador do template (ex: "Agradecimento Padrão")'
+    )
+    
+    categoria = models.CharField(
+        max_length=20,
+        choices=CATEGORIA_CHOICES,
+        default='outro',
+        verbose_name='Categoria',
+        help_text='Categoria para organização dos templates'
+    )
+    
+    assunto = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name='Assunto do Email',
+        help_text='Assunto padrão para emails (opcional)'
+    )
+    
+    conteudo = models.TextField(
+        verbose_name='Conteúdo',
+        help_text='Texto do template. Use {{protocolo}}, {{nome}}, {{tipo}}, {{status}} como variáveis.'
+    )
+    
+    # Aplicabilidade
+    tipos_aplicaveis = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name='Tipos Aplicáveis',
+        help_text='Lista de tipos de feedback onde este template pode ser usado (vazio = todos)'
+    )
+    
+    # Controle
+    ativo = models.BooleanField(
+        default=True,
+        verbose_name='Ativo',
+        help_text='Se o template está disponível para uso'
+    )
+    
+    uso_count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='Vezes Usado',
+        help_text='Contador de quantas vezes o template foi utilizado'
+    )
+    
+    # Auditoria
+    criado_em = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Criado em'
+    )
+    
+    atualizado_em = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Atualizado em'
+    )
+    
+    criado_por = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='templates_criados',
+        verbose_name='Criado por'
+    )
+    
+    class Meta(TenantAwareModel.Meta):
+        verbose_name = 'Template de Resposta'
+        verbose_name_plural = 'Templates de Resposta'
+        unique_together = [('client', 'nome')]
+        ordering = ['categoria', 'nome']
+        indexes = [
+            models.Index(fields=['client', 'categoria']),
+            models.Index(fields=['client', 'ativo']),
+        ]
+    
+    def __str__(self):
+        return f"{self.nome} ({self.get_categoria_display()})"
+    
+    def increment_usage(self):
+        """Incrementa contador de uso"""
+        self.uso_count += 1
+        self.save(update_fields=['uso_count'])
+    
+    def render(self, feedback) -> str:
+        """
+        Renderiza o template com dados do feedback.
+        
+        Variáveis disponíveis:
+        - {{protocolo}}: Número do protocolo
+        - {{nome}}: Nome do remetente
+        - {{tipo}}: Tipo do feedback
+        - {{status}}: Status atual
+        - {{titulo}}: Título do feedback
+        """
+        content = self.conteudo
+        
+        replacements = {
+            '{{protocolo}}': feedback.protocolo or '',
+            '{{nome}}': feedback.nome or 'Prezado(a)',
+            '{{tipo}}': feedback.get_tipo_display() if hasattr(feedback, 'get_tipo_display') else feedback.tipo,
+            '{{status}}': feedback.get_status_display() if hasattr(feedback, 'get_status_display') else feedback.status,
+            '{{titulo}}': feedback.titulo or '',
+            '{{email}}': feedback.email or '',
+        }
+        
+        for key, value in replacements.items():
+            content = content.replace(key, str(value))
+        
+        return content

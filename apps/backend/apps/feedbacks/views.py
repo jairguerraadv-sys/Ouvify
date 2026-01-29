@@ -6,7 +6,7 @@ from django.utils import timezone
 from django.db.models import Prefetch, Q, QuerySet
 from datetime import timedelta
 from typing import Any
-from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag, ResponseTemplate
 from .serializers import (
     FeedbackSerializer,
     FeedbackConsultaSerializer,
@@ -15,6 +15,8 @@ from .serializers import (
     FeedbackArquivoSerializer,
     FeedbackArquivoUploadSerializer,
     TagSerializer,
+    ResponseTemplateSerializer,
+    ResponseTemplateRenderSerializer,
 )
 from .filters import FeedbackFilter
 from .throttles import ProtocoloConsultaThrottle, FeedbackCriacaoThrottle
@@ -1453,6 +1455,169 @@ class TagViewSet(viewsets.ModelViewSet):
             'tags_in_use': tags.filter(feedback_count__gt=0).count(),
             'tags_unused': tags.filter(feedback_count=0).count(),
             'most_used': TagSerializer(tags[:5], many=True).data,
+        }
+        
+        return Response(stats)
+
+
+class ResponseTemplateViewSet(viewsets.ModelViewSet):
+    """
+    API para gerenciar Templates de Resposta pré-definidos.
+    
+    Permite criar, listar, editar e usar templates para agilizar
+    respostas em feedbacks. Cada tenant tem seus próprios templates.
+    
+    Endpoints:
+    - GET /api/response-templates/ - Listar templates do tenant
+    - POST /api/response-templates/ - Criar novo template
+    - GET /api/response-templates/{id}/ - Detalhes do template
+    - PUT /api/response-templates/{id}/ - Atualizar template
+    - DELETE /api/response-templates/{id}/ - Deletar template
+    - POST /api/response-templates/render/ - Renderizar template com dados de feedback
+    - GET /api/response-templates/by-category/ - Listar por categoria
+    """
+    
+    serializer_class = ResponseTemplateSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    pagination_class = StandardResultsSetPagination
+    
+    def get_queryset(self):
+        """Retorna apenas templates do tenant atual."""
+        queryset = ResponseTemplate.objects.select_related('criado_por').order_by('categoria', 'nome')
+        
+        # Filtrar por categoria se especificado
+        categoria = self.request.query_params.get('categoria')
+        if categoria:
+            queryset = queryset.filter(categoria=categoria)
+        
+        # Filtrar por ativo se especificado
+        ativo = self.request.query_params.get('ativo')
+        if ativo is not None:
+            queryset = queryset.filter(ativo=ativo.lower() == 'true')
+        
+        # Filtrar por tipo de feedback aplicável
+        tipo_feedback = self.request.query_params.get('tipo_feedback')
+        if tipo_feedback:
+            queryset = queryset.filter(
+                Q(tipos_aplicaveis__contains=[tipo_feedback]) | 
+                Q(tipos_aplicaveis=[])
+            )
+        
+        return queryset
+    
+    def perform_create(self, serializer):
+        """Salva o template associando ao usuário criador."""
+        serializer.save(criado_por=self.request.user)
+        logger.info(f"✅ Template '{serializer.instance.nome}' criado por {self.request.user.get_full_name()}")
+    
+    def destroy(self, request, *args, **kwargs):
+        """Permite soft-delete (desativar) ou hard-delete se não usado."""
+        template = self.get_object()
+        
+        if template.uso_count > 0:
+            # Soft delete - apenas desativa
+            template.ativo = False
+            template.save(update_fields=['ativo'])
+            logger.info(f"🔒 Template '{template.nome}' desativado (em uso {template.uso_count}x)")
+            return Response({
+                'detail': 'Template desativado pois já foi utilizado.',
+                'uso_count': template.uso_count
+            })
+        
+        template_name = template.nome
+        self.perform_destroy(template)
+        logger.info(f"🗑️  Template '{template_name}' deletado")
+        
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    @action(detail=False, methods=['post'])
+    def render(self, request):
+        """
+        Renderiza um template com dados de um feedback específico.
+        
+        Body:
+        {
+            "template_id": 1,
+            "feedback_id": 123
+        }
+        
+        Retorna:
+        {
+            "rendered_content": "Texto renderizado com variáveis substituídas",
+            "assunto": "Assunto do email (se definido)",
+            "template_nome": "Nome do template"
+        }
+        """
+        serializer = ResponseTemplateRenderSerializer(
+            data=request.data,
+            context={'request': request}
+        )
+        serializer.is_valid(raise_exception=True)
+        
+        template = serializer.validated_data['template']
+        feedback = serializer.validated_data['feedback']
+        
+        # Renderizar template
+        rendered_content = template.render(feedback)
+        
+        # Incrementar contador de uso
+        template.increment_usage()
+        
+        logger.info(f"📝 Template '{template.nome}' renderizado para feedback {feedback.protocolo}")
+        
+        return Response({
+            'rendered_content': rendered_content,
+            'assunto': template.assunto,
+            'template_nome': template.nome,
+            'categoria': template.categoria,
+        })
+    
+    @action(detail=False, methods=['get'], url_path='by-category')
+    def by_category(self, request):
+        """
+        Retorna templates agrupados por categoria.
+        
+        Útil para exibir em dropdown/menu organizado.
+        """
+        from django.db.models import Count
+        
+        templates = self.get_queryset().filter(ativo=True)
+        
+        # Agrupar por categoria
+        categorias = {}
+        for template in templates:
+            cat = template.get_categoria_display()
+            if cat not in categorias:
+                categorias[cat] = {
+                    'categoria': template.categoria,
+                    'categoria_display': cat,
+                    'templates': []
+                }
+            categorias[cat]['templates'].append({
+                'id': template.id,
+                'nome': template.nome,
+                'uso_count': template.uso_count,
+            })
+        
+        return Response(list(categorias.values()))
+    
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        """Retorna estatísticas de uso dos templates."""
+        from django.db.models import Sum, Avg
+        
+        templates = self.get_queryset()
+        
+        stats = {
+            'total_templates': templates.count(),
+            'templates_ativos': templates.filter(ativo=True).count(),
+            'templates_inativos': templates.filter(ativo=False).count(),
+            'uso_total': templates.aggregate(total=Sum('uso_count'))['total'] or 0,
+            'media_uso': templates.aggregate(media=Avg('uso_count'))['media'] or 0,
+            'mais_usados': ResponseTemplateSerializer(
+                templates.order_by('-uso_count')[:5], 
+                many=True
+            ).data,
         }
         
         return Response(stats)

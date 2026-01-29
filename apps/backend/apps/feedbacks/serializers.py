@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag
+from .models import Feedback, FeedbackInteracao, FeedbackArquivo, Tag, ResponseTemplate
 from django.utils import timezone
 from django.conf import settings
 from .constants import InteracaoTipo
@@ -334,3 +334,89 @@ class FeedbackConsultaSerializer(serializers.ModelSerializer):
         """Retorna apenas arquivos públicos (não internos)."""
         qs = obj.arquivos.filter(interno=False).order_by('-data_envio')
         return FeedbackArquivoSerializer(qs, many=True).data
+
+
+# ===== RESPONSE TEMPLATE SERIALIZERS =====
+
+class ResponseTemplateSerializer(serializers.ModelSerializer):
+    """
+    Serializer para Templates de Resposta.
+    """
+    
+    categoria_display = serializers.CharField(
+        source='get_categoria_display', 
+        read_only=True
+    )
+    criado_por_nome = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = ResponseTemplate
+        fields = [
+            'id',
+            'nome',
+            'categoria',
+            'categoria_display',
+            'assunto',
+            'conteudo',
+            'tipos_aplicaveis',
+            'ativo',
+            'uso_count',
+            'criado_em',
+            'atualizado_em',
+            'criado_por_nome',
+        ]
+        read_only_fields = ['id', 'uso_count', 'criado_em', 'atualizado_em', 'criado_por_nome']
+    
+    def get_criado_por_nome(self, obj):
+        if obj.criado_por:
+            return obj.criado_por.get_full_name() or obj.criado_por.username
+        return None
+    
+    def validate_nome(self, value):
+        """Valida e sanitiza o nome do template."""
+        return sanitize_plain_text(value, max_length=100)
+    
+    def validate_conteudo(self, value):
+        """Valida e sanitiza o conteúdo do template."""
+        if len(value) < 10:
+            raise serializers.ValidationError('Conteúdo deve ter pelo menos 10 caracteres.')
+        return sanitize_rich_text(value, max_length=5000)
+    
+    def create(self, validated_data):
+        """Associa o criador ao template."""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated:
+            validated_data['criado_por'] = request.user
+        return super().create(validated_data)
+
+
+class ResponseTemplateRenderSerializer(serializers.Serializer):
+    """
+    Serializer para renderizar um template com dados de um feedback.
+    """
+    
+    template_id = serializers.IntegerField(required=True)
+    feedback_id = serializers.IntegerField(required=True)
+    
+    def validate(self, attrs):
+        """Valida existência do template e feedback."""
+        from .models import ResponseTemplate, Feedback
+        
+        try:
+            attrs['template'] = ResponseTemplate.objects.get(
+                id=attrs['template_id'],
+                client=self.context['request'].user.client,
+                ativo=True
+            )
+        except ResponseTemplate.DoesNotExist:
+            raise serializers.ValidationError({'template_id': 'Template não encontrado ou inativo.'})
+        
+        try:
+            attrs['feedback'] = Feedback.objects.get(
+                id=attrs['feedback_id'],
+                client=self.context['request'].user.client
+            )
+        except Feedback.DoesNotExist:
+            raise serializers.ValidationError({'feedback_id': 'Feedback não encontrado.'})
+        
+        return attrs

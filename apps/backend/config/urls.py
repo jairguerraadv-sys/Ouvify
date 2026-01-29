@@ -32,6 +32,7 @@ from apps.tenants.jwt_views import CustomTokenObtainPairView
 # Expor referências para Pylance
 FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]
 TagViewSet = feedback_views.TagViewSet  # type: ignore[attr-defined]
+ResponseTemplateViewSet = feedback_views.ResponseTemplateViewSet  # type: ignore[attr-defined]
 TenantInfoView = tenant_views.TenantInfoView  # type: ignore[attr-defined]
 UploadBrandingView = tenant_views.UploadBrandingView  # type: ignore[attr-defined]
 RegisterTenantView = tenant_views.RegisterTenantView  # type: ignore[attr-defined]
@@ -61,6 +62,14 @@ router.register(r'feedbacks', FeedbackViewSet, basename='feedback')
 # - GET/PUT     /api/tags/{id}/                          (retrieve, update, delete)
 # - GET         /api/tags/stats/                         (tag usage statistics)
 router.register(r'tags', TagViewSet, basename='tag')
+
+# ResponseTemplateViewSet gera rotas para templates de resposta:
+# - GET/POST    /api/response-templates/                 (list, create)
+# - GET/PUT     /api/response-templates/{id}/            (retrieve, update, delete)
+# - POST        /api/response-templates/render/          (render with feedback data)
+# - GET         /api/response-templates/by-category/     (grouped by category)
+# - GET         /api/response-templates/stats/           (usage statistics)
+router.register(r'response-templates', ResponseTemplateViewSet, basename='response-template')
 
 # TenantAdminViewSet gera rotas administrativas (apenas superusuários):
 # - GET/PATCH   /api/admin/tenants/                      (list, partial_update)
