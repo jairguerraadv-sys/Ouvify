@@ -387,7 +387,7 @@ export function ImportDataDialog() {
 
           {/* Result */}
           {result && (
-            <Alert variant={result.success ? 'default' : 'destructive'}>
+            <Alert variant={result.success ? 'success' : 'error'}>
               {result.success ? (
                 <CheckCircle2 className="h-4 w-4" />
               ) : (
