@@ -75,4 +75,24 @@ export { Progress } from './progress';
 // Stats Card
 export { StatsCard } from './stats-card';
 
+// Loading & Feedback (Sprint 5)
+export { 
+  LoadingOverlay,
+  CardSkeleton,
+  TableRowSkeleton,
+  ListSkeleton,
+  StatCardSkeleton,
+  ChartSkeleton,
+  useLoadingState,
+} from './LoadingOverlay';
+
+export {
+  InlineNotification,
+  StatusIndicator,
+  ProgressSteps,
+  CopyButton,
+  ActionResult,
+  Countdown,
+} from './ActionFeedback';
+
 // (exports duplicados e inválidos removidos)
