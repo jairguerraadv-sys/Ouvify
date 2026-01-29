@@ -5,3 +5,7 @@ class BillingConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.billing'
     verbose_name = 'Billing & Subscriptions'
+    
+    def ready(self):
+        """Registra signals quando o app é carregado."""
+        import apps.billing.signals  # noqa: F401

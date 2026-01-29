@@ -77,12 +77,16 @@ def professional_plan(db):
 
 @pytest.fixture
 def test_tenant_for_subscription(db):
-    """Cria tenant específico para testes de subscription."""
-    return Client.objects.create(
+    """Cria tenant específico para testes de subscription (sem auto-trial)."""
+    # Deleta subscription criada pelo signal
+    tenant = Client.objects.create(
         nome='Test Company Subscription',
         subdominio=f'sub-test-{timezone.now().timestamp():.0f}',
         ativo=True
     )
+    # Remove qualquer subscription criada pelo signal
+    Subscription.objects.all_tenants().filter(client=tenant).delete()
+    return tenant
 
 
 @pytest.fixture
@@ -99,12 +103,15 @@ def active_subscription(db, test_tenant_for_subscription, professional_plan):
 
 @pytest.fixture
 def trial_tenant(db):
-    """Cria tenant separado para trial."""
-    return Client.objects.create(
+    """Cria tenant separado para trial (sem auto-trial)."""
+    tenant = Client.objects.create(
         nome='Test Company Trial',
         subdominio=f'trial-test-{timezone.now().timestamp():.0f}',
         ativo=True
     )
+    # Remove qualquer subscription criada pelo signal
+    Subscription.objects.all_tenants().filter(client=tenant).delete()
+    return tenant
 
 
 @pytest.fixture
@@ -295,6 +302,44 @@ class TestFeatureGating:
         """Testa verificação de limite."""
         assert check_limit_access(test_tenant_for_subscription, 'feedbacks_per_month', 100) is True
         assert check_limit_access(test_tenant_for_subscription, 'feedbacks_per_month', 2000) is False
+
+
+# =============================================================================
+# Teste de Auto-Start Trial
+# =============================================================================
+
+@pytest.mark.django_db
+class TestAutoStartTrial:
+    """Testes para auto-start de trial em novos tenants."""
+    
+    def test_auto_start_trial_on_tenant_creation(self, db, professional_plan):
+        """Testa que trial é iniciado automaticamente ao criar tenant."""
+        # Cria um novo tenant
+        new_tenant = Client.objects.create(
+            nome='New Company Auto Trial',
+            subdominio=f'auto-trial-{timezone.now().timestamp():.0f}',
+            ativo=True
+        )
+        
+        # Verifica se subscription foi criada
+        subscription = Subscription.objects.all_tenants().filter(
+            client=new_tenant
+        ).first()
+        
+        assert subscription is not None
+        assert subscription.status == Subscription.STATUS_TRIALING
+        assert subscription.trial_start is not None
+        assert subscription.trial_end is not None
+    
+    def test_no_duplicate_trial_on_existing_subscription(self, test_tenant_for_subscription, active_subscription):
+        """Testa que não cria trial duplicado se já existe subscription."""
+        # O test_tenant_for_subscription já tem active_subscription
+        # Verifica que só existe uma subscription
+        subscription_count = Subscription.objects.all_tenants().filter(
+            client=test_tenant_for_subscription
+        ).count()
+        
+        assert subscription_count == 1
 
 
 # =============================================================================
