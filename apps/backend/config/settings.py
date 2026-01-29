@@ -652,6 +652,19 @@ SIMPLE_JWT = {
 # LOGGING
 # =============================================================================
 
+# Em produção, usar apenas console (Railway/Heroku não suportam file logs)
+# Em desenvolvimento, usar também file handler
+_log_handlers = ['console']
+
+# Tentar criar diretório de logs apenas em desenvolvimento local
+if DEBUG:
+    try:
+        (BASE_DIR / 'logs').mkdir(exist_ok=True)
+        _log_handlers.append('file')
+    except (PermissionError, OSError):
+        # Em containers/produção, não temos permissão para criar diretórios
+        pass
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -660,38 +673,44 @@ LOGGING = {
             'format': '{levelname} {asctime} {module} {message}',
             'style': '{',
         },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },
-        'file': {
+        **({'file': {
             'class': 'logging.FileHandler',
             'filename': BASE_DIR / 'logs' / 'django.log',
             'formatter': 'verbose',
-        },
+        }} if 'file' in _log_handlers else {}),
     },
     'root': {
-        'handlers': ['console', 'file'],
+        'handlers': _log_handlers,
         'level': 'INFO' if not DEBUG else 'DEBUG',
     },
     'loggers': {
         'django': {
-            'handlers': ['console', 'file'],
+            'handlers': _log_handlers,
             'level': 'INFO',
             'propagate': False,
         },
         'apps': {
-            'handlers': ['console', 'file'],
+            'handlers': _log_handlers,
             'level': 'DEBUG' if DEBUG else 'INFO',
+            'propagate': False,
+        },
+        'gunicorn': {
+            'handlers': ['console'],
+            'level': 'INFO',
             'propagate': False,
         },
     },
 }
-
-# Criar diretório de logs se não existir
-(BASE_DIR / 'logs').mkdir(exist_ok=True)
 
 # =============================================================================
 # DEFAULT PRIMARY KEY
