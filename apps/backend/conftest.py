@@ -2,9 +2,15 @@
 Fixtures globais para testes pytest do Ouvy SaaS
 """
 import os
+from pathlib import Path
 import django
 import pytest
 from django.conf import settings
+from dotenv import load_dotenv
+
+# Carregar variáveis de ambiente do .env
+env_path = Path(__file__).resolve().parent / '.env'
+load_dotenv(env_path)
 
 # Configurar Django para modo de teste
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')

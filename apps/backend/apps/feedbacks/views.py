@@ -1194,6 +1194,123 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         
         logger.info(f"📊 Export realizado | Tenant: {request.tenant.nome} | Formato: {format_type} | Registros: {queryset.count()}")
         return response
+
+    @action(
+        detail=False,
+        methods=['get'],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path='export-advanced'
+    )
+    @require_feature('export')
+    def export_advanced(self, request):
+        """
+        Exporta feedbacks com opções avançadas (CSV, JSON, XLSX).
+        
+        🔒 FEATURE GATING: Requer plano STARTER ou PRO.
+        
+        GET /api/feedbacks/export-advanced/?format=xlsx&periodo=30
+        
+        Parâmetros:
+        - format: csv, json, xlsx (padrão: csv)
+        - periodo: 7, 30, 90, all (padrão: 30)
+        - tipo, status, prioridade: filtros opcionais
+        - data_inicio, data_fim: YYYY-MM-DD (opcional)
+        """
+        from .export_service import ExportService
+        
+        tenant = getattr(request, 'tenant', None)
+        if not tenant:
+            return Response(
+                {"error": "Tenant não identificado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        format_type = request.query_params.get('format', 'csv').lower()
+        
+        if format_type not in ExportService.EXPORT_FORMATS:
+            return Response(
+                {"error": f"Formato inválido. Opções: {ExportService.EXPORT_FORMATS}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        filters = {
+            'periodo': request.query_params.get('periodo', '30'),
+            'tipo': request.query_params.get('tipo'),
+            'status': request.query_params.get('status'),
+            'prioridade': request.query_params.get('prioridade'),
+            'data_inicio': request.query_params.get('data_inicio'),
+            'data_fim': request.query_params.get('data_fim'),
+        }
+        
+        return ExportService.export_feedbacks(tenant, format_type, filters)
+
+    @action(
+        detail=False,
+        methods=['post'],
+        permission_classes=[permissions.IsAuthenticated],
+        url_path='import'
+    )
+    @require_feature('export')  # Import usa mesma feature de export
+    def import_feedbacks_endpoint(self, request):
+        """
+        Importa feedbacks de arquivo CSV ou JSON.
+        
+        🔒 FEATURE GATING: Requer plano STARTER ou PRO.
+        
+        POST /api/feedbacks/import/
+        
+        Form Data:
+        - file: arquivo CSV ou JSON
+        - format: csv ou json (detectado automaticamente se não fornecido)
+        - update_existing: true/false (padrão: false)
+        """
+        from .export_service import ImportService
+        
+        tenant = getattr(request, 'tenant', None)
+        if not tenant:
+            return Response(
+                {"error": "Tenant não identificado"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        file = request.FILES.get('file')
+        if not file:
+            return Response(
+                {"error": "Arquivo não fornecido"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # Detectar formato
+        format_type = request.data.get('format', '').lower()
+        if not format_type:
+            filename = file.name.lower()
+            if filename.endswith('.json'):
+                format_type = 'json'
+            else:
+                format_type = 'csv'
+        
+        if format_type not in ImportService.IMPORT_FORMATS:
+            return Response(
+                {"error": f"Formato inválido. Opções: {ImportService.IMPORT_FORMATS}"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        update_existing = request.data.get('update_existing', 'false').lower() == 'true'
+        
+        try:
+            file_content = file.read()
+            result = ImportService.import_feedbacks(
+                tenant, file_content, format_type, update_existing
+            )
+            
+            return Response(result, status=status.HTTP_200_OK if result['success'] else status.HTTP_400_BAD_REQUEST)
+            
+        except Exception as e:
+            logger.error(f"Erro na importação: {e}")
+            return Response(
+                {"error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
     
     @action(detail=True, methods=['post'])
     def assign(self, request, pk=None):

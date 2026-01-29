@@ -7,6 +7,7 @@ from pathlib import Path
 import sys
 import os
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 # Sentry para monitoring
 import sentry_sdk
@@ -29,8 +30,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Adicionar diretório apps ao path do Python para facilitar imports
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
-# Carregar variáveis de ambiente do arquivo .env (no diretório pai)
-load_dotenv(BASE_DIR.parent / '.env')
+# Carregar variáveis de ambiente do arquivo .env
+# Primeiro tenta do diretório do backend, depois do pai (para compatibilidade)
+env_path = BASE_DIR / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
+else:
+    load_dotenv(BASE_DIR.parent / '.env')
 
 # Detectar modo de teste e carregar configurações específicas
 if os.getenv('TESTING', 'False').lower() in ('true', '1', 'yes'):
