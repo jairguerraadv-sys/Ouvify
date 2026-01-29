@@ -166,3 +166,107 @@ export async function consultarProtocolo(codigo: string): Promise<Feedback> {
 export async function deleteFeedback(id: number): Promise<void> {
   return api.delete(`/api/feedbacks/${id}/`);
 }
+
+// Analytics Types
+interface AnalyticsTrend {
+  month: string;
+  denuncias: number;
+  sugestoes: number;
+  elogios: number;
+  duvidas: number;
+}
+
+interface AnalyticsType {
+  name: string;
+  value: number;
+}
+
+interface AnalyticsStatus {
+  name: string;
+  value: number;
+}
+
+interface AnalyticsResponseTime {
+  day: string;
+  tempo: number;
+  meta: number;
+}
+
+interface AnalyticsData {
+  trend: AnalyticsTrend[];
+  byType: AnalyticsType[];
+  byStatus: AnalyticsStatus[];
+  responseTime: AnalyticsResponseTime[];
+  summary: {
+    totalFeedbacks: number;
+    avgResponseTime: number;
+    slaCompliance: number;
+    satisfactionScore: number;
+  };
+}
+
+// Hook para analytics com dados de gráficos
+export function useAnalytics(period: 'week' | 'month' | 'quarter' | 'year' = 'month') {
+  const { data, error, isLoading, mutate } = useSWR<AnalyticsData>(
+    `/api/v1/analytics/dashboard/?period=${period}`,
+    fetcher,
+    {
+      refreshInterval: 60000, // Atualizar a cada 60 segundos
+      revalidateOnFocus: true,
+      dedupingInterval: 10000,
+    }
+  );
+
+  // Fallback data for demo/development
+  const fallbackData: AnalyticsData = {
+    trend: [
+      { month: 'Ago', denuncias: 12, sugestoes: 8, elogios: 5, duvidas: 3 },
+      { month: 'Set', denuncias: 15, sugestoes: 10, elogios: 7, duvidas: 4 },
+      { month: 'Out', denuncias: 18, sugestoes: 12, elogios: 9, duvidas: 6 },
+      { month: 'Nov', denuncias: 22, sugestoes: 15, elogios: 11, duvidas: 8 },
+      { month: 'Dez', denuncias: 19, sugestoes: 14, elogios: 8, duvidas: 5 },
+      { month: 'Jan', denuncias: 25, sugestoes: 18, elogios: 12, duvidas: 7 },
+    ],
+    byType: [
+      { name: 'Denúncias', value: 45 },
+      { name: 'Sugestões', value: 30 },
+      { name: 'Elogios', value: 15 },
+      { name: 'Dúvidas', value: 10 },
+    ],
+    byStatus: [
+      { name: 'Novo', value: 15 },
+      { name: 'Em Análise', value: 25 },
+      { name: 'Em Progresso', value: 20 },
+      { name: 'Resolvido', value: 35 },
+      { name: 'Fechado', value: 5 },
+    ],
+    responseTime: [
+      { day: 'Seg', tempo: 4.5, meta: 8 },
+      { day: 'Ter', tempo: 3.2, meta: 8 },
+      { day: 'Qua', tempo: 5.8, meta: 8 },
+      { day: 'Qui', tempo: 2.9, meta: 8 },
+      { day: 'Sex', tempo: 6.1, meta: 8 },
+      { day: 'Sáb', tempo: 4.0, meta: 8 },
+      { day: 'Dom', tempo: 3.5, meta: 8 },
+    ],
+    summary: {
+      totalFeedbacks: 100,
+      avgResponseTime: 4.3,
+      slaCompliance: 85,
+      satisfactionScore: 4.2,
+    }
+  };
+
+  return {
+    analytics: data || fallbackData,
+    isLoading,
+    error: error?.message,
+    refresh: mutate,
+    // Expose individual data sets for convenience
+    trend: data?.trend || fallbackData.trend,
+    byType: data?.byType || fallbackData.byType,
+    byStatus: data?.byStatus || fallbackData.byStatus,
+    responseTime: data?.responseTime || fallbackData.responseTime,
+    summary: data?.summary || fallbackData.summary,
+  };
+}
