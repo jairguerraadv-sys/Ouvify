@@ -81,7 +81,105 @@ def require_active_tenant(view_func):
     return wrapped_view
 
 
+def cache_response(timeout: int = 300, key_prefix: str = 'view', vary_on_user: bool = True):
+    """
+    Decorator para cache de responses de views DRF.
+    
+    Uso:
+        @cache_response(timeout=600, key_prefix='feedbacks-list')
+        def list(self, request):
+            ...
+    
+    Args:
+        timeout: TTL em segundos (default: 300 = 5 minutos)
+        key_prefix: Prefixo da chave de cache
+        vary_on_user: Se True, cache varia por usuário
+    
+    Returns:
+        Response cacheada ou nova response
+    """
+    from django.core.cache import cache
+    import hashlib
+    
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapped_view(self, request, *args, **kwargs):
+            # Construir chave de cache
+            cache_key_parts = [key_prefix, request.path]
+            
+            # Adicionar query params
+            if request.GET:
+                params_hash = hashlib.md5(
+                    request.GET.urlencode().encode()
+                ).hexdigest()[:12]
+                cache_key_parts.append(params_hash)
+            
+            # Adicionar user se vary_on_user
+            if vary_on_user and request.user.is_authenticated:
+                cache_key_parts.append(f'user:{request.user.id}')
+            
+            # Adicionar tenant se existir
+            tenant = getattr(request, 'tenant', None)
+            if tenant:
+                cache_key_parts.append(f'tenant:{tenant.id}')
+            
+            cache_key = ':'.join(cache_key_parts)
+            
+            # Tentar obter do cache
+            cached_response = cache.get(cache_key)
+            if cached_response is not None:
+                return cached_response
+            
+            # Executar view
+            response = view_func(self, request, *args, **kwargs)
+            
+            # Cachear apenas responses de sucesso
+            if response.status_code == 200:
+                cache.set(cache_key, response, timeout)
+            
+            return response
+        return wrapped_view
+    return decorator
+
+
+def invalidate_cache(patterns: list):
+    """
+    Decorator para invalidar cache após mutação.
+    
+    Uso:
+        @invalidate_cache(['feedbacks:*', 'dashboard:*'])
+        def create(self, request):
+            ...
+    
+    Args:
+        patterns: Lista de padrões de chave para invalidar
+    """
+    from django.core.cache import cache
+    
+    def decorator(view_func):
+        @wraps(view_func)
+        def wrapped_view(self, request, *args, **kwargs):
+            response = view_func(self, request, *args, **kwargs)
+            
+            # Invalidar cache após mutação bem sucedida
+            if response.status_code in [200, 201, 204]:
+                tenant = getattr(request, 'tenant', None)
+                
+                for pattern in patterns:
+                    if tenant and '{tenant_id}' in pattern:
+                        pattern = pattern.replace('{tenant_id}', str(tenant.id))
+                    
+                    # Tentar delete_pattern se disponível (django-redis)
+                    if hasattr(cache, 'delete_pattern'):
+                        cache.delete_pattern(pattern)
+            
+            return response
+        return wrapped_view
+    return decorator
+
+
 def require_plan(min_plan: str):
+
     """
     Decorator para validar plano mínimo necessário.
     
