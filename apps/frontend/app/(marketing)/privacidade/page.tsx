@@ -1,8 +1,16 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Shield, Eye, Lock, Database, UserCheck, FileText } from 'lucide-react';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Política de Privacidade | Ouvy - Plataforma de Feedback',
+  description: 'Saiba como a Ouvy coleta, usa e protege seus dados. Conformidade total com LGPD. Transparência e segurança em primeiro lugar.',
+  openGraph: {
+    title: 'Política de Privacidade | Ouvy',
+    description: 'Como protegemos seus dados na plataforma Ouvy - Conformidade LGPD',
+  },
+};
 
 export default function PrivacidadePage() {
   return (

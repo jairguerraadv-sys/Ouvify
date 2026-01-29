@@ -39,6 +39,7 @@ export function Footer({
         { label: 'Privacidade', href: '/privacidade' },
         { label: 'Termos', href: '/termos' },
         { label: 'LGPD', href: '/lgpd' },
+        { label: 'Cookies', href: '/cookies' },
       ],
     },
   ];
@@ -120,6 +121,9 @@ export function Footer({
             </Link>
             <Link href="/lgpd" className="text-gray-600 hover:text-primary-600 transition-colors">
               LGPD
+            </Link>
+            <Link href="/cookies" className="text-gray-600 hover:text-primary-600 transition-colors">
+              Cookies
             </Link>
           </div>
         </div>

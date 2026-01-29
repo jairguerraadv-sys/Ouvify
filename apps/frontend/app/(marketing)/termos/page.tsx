@@ -1,7 +1,15 @@
-'use client';
-
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Termos de Uso | Ouvy - Plataforma de Feedback',
+  description: 'Leia os Termos de Uso da plataforma Ouvy. Entenda seus direitos e responsabilidades ao usar nosso serviço de gestão de feedbacks.',
+  openGraph: {
+    title: 'Termos de Uso | Ouvy',
+    description: 'Termos e condições de uso da plataforma Ouvy',
+  },
+};
 
 export default function TermosPage() {
   return (
