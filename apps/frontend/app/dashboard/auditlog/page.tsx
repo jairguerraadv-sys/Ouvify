@@ -59,23 +59,23 @@ export default function AuditLogPage() {
                 </h3>
                 <ul className="space-y-3 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500">✓</span>
+                    <span className="text-success-500">✓</span>
                     Revise alertas de segurança regularmente
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500">✓</span>
+                    <span className="text-success-500">✓</span>
                     Monitore tentativas de login falhadas
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500">✓</span>
+                    <span className="text-success-500">✓</span>
                     Verifique acessos de IPs desconhecidos
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500">✓</span>
+                    <span className="text-success-500">✓</span>
                     Configure alertas automáticos para eventos críticos
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-green-500">✓</span>
+                    <span className="text-success-500">✓</span>
                     Exporte logs periodicamente para backup
                   </li>
                 </ul>
@@ -90,19 +90,19 @@ export default function AuditLogPage() {
                     <span className="text-primary-500">🔐</span> Login/Logout
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-green-500">➕</span> Criações
+                    <span className="text-success-500">➕</span> Criações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-yellow-500">✏️</span> Alterações
+                    <span className="text-warning-500">✏️</span> Alterações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-red-500">🗑️</span> Exclusões
+                    <span className="text-error-500">🗑️</span> Exclusões
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-secondary-500">📥</span> Exportações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-red-600">🚨</span> Alertas
+                    <span className="text-error-600">🚨</span> Alertas
                   </div>
                 </div>
               </div>

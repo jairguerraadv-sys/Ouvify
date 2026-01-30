@@ -43,8 +43,8 @@ export default function TermsCheckbox({
             checked={isChecked}
             onChange={handleChange}
             required={required}
-            className={`h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-blue-500 ${
-              error ? 'border-red-500' : ''
+            className={`h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 ${
+              error ? 'border-error-500' : ''
             }`}
           />
         </div>
@@ -57,11 +57,11 @@ export default function TermsCheckbox({
           >
             {termsText}
           </Link>
-          {required && <span className="text-red-500 ml-1">*</span>}
+          {required && <span className="text-error-500 ml-1">*</span>}
         </label>
       </div>
       {error && (
-        <p className="text-sm text-red-600 ml-7">{error}</p>
+        <p className="text-sm text-error-600 ml-7">{error}</p>
       )}
     </div>
   );

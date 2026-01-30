@@ -598,11 +598,11 @@ Não é possível acessar dados de outros tenants.
     ],
     'EXTERNAL_DOCS': {
         'description': 'Documentação Completa',
-        'url': 'https://docs.ouvy.com.br',
+        'url': 'https://docs.ouvify.com.br',
     },
     'CONTACT': {
         'name': 'Suporte Ouvify',
-        'email': 'suporte@ouvy.com.br',
+        'email': 'suporte@ouvify.com.br',
     },
     'LICENSE': {
         'name': 'Proprietary',
@@ -868,7 +868,7 @@ if TESTING_MODE:
 
 VAPID_PRIVATE_KEY = os.getenv('VAPID_PRIVATE_KEY')
 VAPID_PUBLIC_KEY = os.getenv('VAPID_PUBLIC_KEY')
-VAPID_ADMIN_EMAIL = os.getenv('VAPID_ADMIN_EMAIL', 'admin@ouvy.app')
+VAPID_ADMIN_EMAIL = os.getenv('VAPID_ADMIN_EMAIL', 'admin@ouvify.app')
 
 # Verificar VAPID em produção (opcional - apenas warning)
 if not DEBUG and not VAPID_PRIVATE_KEY:

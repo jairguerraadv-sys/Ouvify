@@ -49,7 +49,8 @@ export { Input } from './input';
 export { Button, buttonVariants } from './button';
 
 // Badges & Chips
-export { Badge, Chip } from './badge-chip';
+export { Badge, badgeVariants } from './badge';
+export { Chip } from './chip';
 
 // Avatar
 export { Avatar, AvatarImage, AvatarFallback } from './avatar';
@@ -68,6 +69,15 @@ export { Alert, AlertTitle, AlertDescription, AlertWithIcon } from './alert';
 
 // Status Badge
 export { StatusBadge } from './status-badge';
+
+// Empty State
+export { 
+  EmptyState, 
+  NoFeedbacks, 
+  NoResults, 
+  NoNotifications, 
+  ErrorState 
+} from './empty-state';
 
 // Progress
 export { Progress } from './progress';

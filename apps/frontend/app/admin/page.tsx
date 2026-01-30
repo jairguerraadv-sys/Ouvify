@@ -290,7 +290,7 @@ function AdminContent() {
               title="Ativos"
               value={metrics?.tenants_ativos}
               icon={Users}
-              color="text-green-400"
+              color="text-success-400"
               loading={metricsLoading}
             />
             <KPICard
@@ -320,7 +320,7 @@ function AdminContent() {
               title="Churn Rate"
               value={metrics?.churn_rate}
               icon={Activity}
-              color="text-red-400"
+              color="text-error-400"
               format="percent"
               loading={metricsLoading}
             />
@@ -514,7 +514,7 @@ function AdminContent() {
                         {formatDate(tenant.data_criacao, 'short')}
                       </TableCell>
                       <TableCell>
-                        <Badge className={tenant.ativo ? "bg-green-600/20 text-green-400 border-green-600/30" : "bg-red-600/20 text-red-400 border-red-600/30"}>
+                        <Badge className={tenant.ativo ? "bg-success-600/20 text-success-400 border-success-600/30" : "bg-error-600/20 text-error-400 border-error-600/30"}>
                           {tenant.ativo ? "Ativo" : "Inativo"}
                         </Badge>
                       </TableCell>
@@ -549,7 +549,7 @@ function AdminContent() {
                             </DropdownMenuItem>
                             <DropdownMenuSeparator className="bg-slate-700" />
                             <DropdownMenuItem 
-                              className={`cursor-pointer ${tenant.ativo ? "text-red-400 hover:bg-red-500/20" : "text-green-400 hover:bg-green-500/20"}`}
+                              className={`cursor-pointer ${tenant.ativo ? "text-error-400 hover:bg-error-500/20" : "text-success-400 hover:bg-success-500/20"}`}
                               onClick={() => setConfirmDialog({ open: true, tenant, action: "toggle" })}
                             >
                               <Power className="w-4 h-4 mr-2" />

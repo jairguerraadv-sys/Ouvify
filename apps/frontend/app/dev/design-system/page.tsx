@@ -14,6 +14,9 @@ import { Switch } from '@/components/ui/switch';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useToast } from '@/hooks/use-toast';
 import { colors, typography, spacing, borderRadius, shadows } from '@/lib/design-tokens';
 import { 
   CheckCircle, 
@@ -25,12 +28,14 @@ import {
   User, 
   Mail,
   Copy,
-  Check
+  Check,
+  Trash2
 } from 'lucide-react';
 
 export default function DesignSystemPage() {
   const [copiedColor, setCopiedColor] = useState<string | null>(null);
   const [progress, setProgress] = useState(66);
+  const { toast } = useToast();
 
   const copyToClipboard = (text: string, label: string) => {
     navigator.clipboard.writeText(text);
@@ -155,7 +160,7 @@ export default function DesignSystemPage() {
                     <CardContent>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-green-700">Success</h4>
+                          <h4 className="text-sm font-medium text-success-700">Success</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="success-light" name="light" hex={colors.semantic.success.light} />
                             <ColorSwatch color="success-main" name="main" hex={colors.semantic.success.main} />
@@ -163,7 +168,7 @@ export default function DesignSystemPage() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-yellow-700">Warning</h4>
+                          <h4 className="text-sm font-medium text-warning-700">Warning</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="warning-light" name="light" hex={colors.semantic.warning.light} />
                             <ColorSwatch color="warning-main" name="main" hex={colors.semantic.warning.main} />
@@ -171,7 +176,7 @@ export default function DesignSystemPage() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-red-700">Error</h4>
+                          <h4 className="text-sm font-medium text-error-700">Error</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="error-light" name="light" hex={colors.semantic.error.light} />
                             <ColorSwatch color="error-main" name="main" hex={colors.semantic.error.main} />
@@ -393,9 +398,9 @@ export default function DesignSystemPage() {
                           <Input id="disabled" disabled placeholder="Não editável" />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="error" className="text-red-500">Com erro</Label>
-                          <Input id="error" className="border-red-500 focus:ring-red-500" placeholder="Campo inválido" />
-                          <p className="text-xs text-red-500">Este campo é obrigatório.</p>
+                          <Label htmlFor="error" className="text-error-500">Com erro</Label>
+                          <Input id="error" className="border-error-500 focus:ring-error-500" placeholder="Campo inválido" />
+                          <p className="text-xs text-error-500">Este campo é obrigatório.</p>
                         </div>
                       </div>
                     </CardContent>
@@ -423,7 +428,7 @@ export default function DesignSystemPage() {
                         <AlertTitle>Atenção</AlertTitle>
                         <AlertDescription>Verifique os dados antes de continuar.</AlertDescription>
                       </Alert>
-                      <Alert variant="destructive">
+                      <Alert variant="error">
                         <XCircle className="h-4 w-4" />
                         <AlertTitle>Erro</AlertTitle>
                         <AlertDescription>Ocorreu um erro ao processar sua solicitação.</AlertDescription>
@@ -555,6 +560,154 @@ export default function DesignSystemPage() {
                           <Skeleton className="h-4 w-[200px]" />
                         </div>
                       </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Dialog */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Dialog (Modal)</CardTitle>
+                      <CardDescription>Modais e confirmações.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex gap-4">
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button>Abrir Dialog</Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Confirmar Ação</DialogTitle>
+                            <DialogDescription>
+                              Tem certeza que deseja continuar? Esta ação não pode ser desfeita.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <Button variant="outline">Cancelar</Button>
+                            <Button>Confirmar</Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="destructive">
+                            <Trash2 className="mr-2 h-4 w-4" />
+                            Deletar
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Deletar Item</DialogTitle>
+                            <DialogDescription>
+                              Esta ação é permanente e não pode ser revertida.
+                            </DialogDescription>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <Button variant="outline">Cancelar</Button>
+                            <Button variant="destructive">Deletar</Button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                    </CardContent>
+                  </Card>
+
+                  {/* Table */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Table</CardTitle>
+                      <CardDescription>Tabelas de dados.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            <TableHead>Nome</TableHead>
+                            <TableHead>Email</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="text-right">Ações</TableHead>
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          <TableRow>
+                            <TableCell className="font-medium">João Silva</TableCell>
+                            <TableCell>joao@email.com</TableCell>
+                            <TableCell><Badge variant="success">Ativo</Badge></TableCell>
+                            <TableCell className="text-right">
+                              <Button variant="ghost" size="icon-sm"><Settings className="h-4 w-4" /></Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium">Maria Santos</TableCell>
+                            <TableCell>maria@email.com</TableCell>
+                            <TableCell><Badge variant="warning">Pendente</Badge></TableCell>
+                            <TableCell className="text-right">
+                              <Button variant="ghost" size="icon-sm"><Settings className="h-4 w-4" /></Button>
+                            </TableCell>
+                          </TableRow>
+                          <TableRow>
+                            <TableCell className="font-medium">Pedro Costa</TableCell>
+                            <TableCell>pedro@email.com</TableCell>
+                            <TableCell><Badge variant="destructive">Inativo</Badge></TableCell>
+                            <TableCell className="text-right">
+                              <Button variant="ghost" size="icon-sm"><Settings className="h-4 w-4" /></Button>
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      </Table>
+                    </CardContent>
+                  </Card>
+
+                  {/* Toast */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Toast Notifications</CardTitle>
+                      <CardDescription>Notificações temporárias.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex flex-wrap gap-3">
+                      <Button 
+                        variant="outline"
+                        onClick={() => toast({ title: "Informação", description: "Esta é uma notificação padrão." })}
+                      >
+                        Default Toast
+                      </Button>
+                      <Button 
+                        variant="success"
+                        onClick={() => toast({ title: "Sucesso!", description: "Ação concluída com sucesso.", variant: "success" })}
+                      >
+                        Success Toast
+                      </Button>
+                      <Button 
+                        variant="destructive"
+                        onClick={() => toast({ title: "Erro!", description: "Algo deu errado.", variant: "destructive" })}
+                      >
+                        Error Toast
+                      </Button>
+                    </CardContent>
+                  </Card>
+
+                  {/* Tabs Demo */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Tabs</CardTitle>
+                      <CardDescription>Navegação em abas.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Tabs defaultValue="overview" className="w-full">
+                        <TabsList className="grid w-full grid-cols-3">
+                          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
+                          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+                          <TabsTrigger value="settings">Configurações</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="overview" className="p-4 border rounded-lg mt-2">
+                          <p className="text-sm text-gray-600">Conteúdo da aba Visão Geral.</p>
+                        </TabsContent>
+                        <TabsContent value="analytics" className="p-4 border rounded-lg mt-2">
+                          <p className="text-sm text-gray-600">Conteúdo da aba Analytics.</p>
+                        </TabsContent>
+                        <TabsContent value="settings" className="p-4 border rounded-lg mt-2">
+                          <p className="text-sm text-gray-600">Conteúdo da aba Configurações.</p>
+                        </TabsContent>
+                      </Tabs>
                     </CardContent>
                   </Card>
                 </div>

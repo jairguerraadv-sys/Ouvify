@@ -116,10 +116,10 @@ export default function AcceptInvitePage({ params }: Props) {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-indigo-100 p-4">
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
-            <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <CheckCircle2 className="w-16 h-16 text-success-500 mx-auto mb-4" />
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Convite Aceito! 🎉
             </h2>
@@ -133,7 +133,7 @@ export default function AcceptInvitePage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-indigo-100 p-4">
       <Card className="w-full max-w-md shadow-xl">
         <CardHeader className="space-y-1">
           <div className="flex items-center justify-center mb-4">
@@ -235,11 +235,11 @@ export default function AcceptInvitePage({ params }: Props) {
             {/* Info */}
             <p className="text-xs text-center text-gray-500 mt-4">
               Ao aceitar, você concorda com os{' '}
-              <a href="/termos" className="text-blue-600 hover:underline">
+              <a href="/termos" className="text-primary-600 hover:underline">
                 Termos de Uso
               </a>{' '}
               e{' '}
-              <a href="/privacidade" className="text-blue-600 hover:underline">
+              <a href="/privacidade" className="text-primary-600 hover:underline">
                 Política de Privacidade
               </a>
             </p>

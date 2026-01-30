@@ -66,15 +66,15 @@ export default function SegurancaPage() {
                   </p>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Certificado SSL de 256 bits</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Renovação automática e monitoramento 24/7</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Conformidade com PCI DSS para pagamentos</span>
                     </li>
                   </ul>
@@ -96,15 +96,15 @@ export default function SegurancaPage() {
                   </p>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Backup incremental a cada 6 horas</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Armazenamento em múltiplas regiões geográficas</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Recuperação de desastres em menos de 4 horas</span>
                     </li>
                   </ul>
@@ -113,7 +113,7 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 3 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-green-600">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-success-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🛡️</span>
                 <div>
@@ -126,15 +126,15 @@ export default function SegurancaPage() {
                   </p>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Dados armazenados em servidores no Brasil</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>DPO (Encarregado de Dados) dedicado</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Auditoria de segurança semestral</span>
                     </li>
                   </ul>
@@ -143,7 +143,7 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 4 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-red-600">
+            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-error-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🔑</span>
                 <div>
@@ -156,15 +156,15 @@ export default function SegurancaPage() {
                   </p>
                   <ul className="space-y-2 text-gray-600">
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Suporte a Google Authenticator e Authy</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Códigos de recuperação de backup</span>
                     </li>
                     <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">✓</span>
+                      <span className="text-success-500 mt-1">✓</span>
                       <span>Notificação de login suspeito</span>
                     </li>
                   </ul>
@@ -193,16 +193,16 @@ export default function SegurancaPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-green-200">
-              <h3 className="text-lg font-semibold text-green-900 mb-3">🛡️ ISO 27001 (em processo)</h3>
-              <p className="text-green-800">
+            <div className="bg-white rounded-xl p-6 border border-success-200">
+              <h3 className="text-lg font-semibold text-success-900 mb-3">🛡️ ISO 27001 (em processo)</h3>
+              <p className="text-success-800">
                 Certificação internacional de gestão de segurança da informação em andamento.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-red-200">
-              <h3 className="text-lg font-semibold text-red-900 mb-3">💳 PCI DSS Level 1</h3>
-              <p className="text-red-800">
+            <div className="bg-white rounded-xl p-6 border border-error-200">
+              <h3 className="text-lg font-semibold text-error-900 mb-3">💳 PCI DSS Level 1</h3>
+              <p className="text-error-800">
                 Conformidade com padrões de segurança da indústria de cartões de pagamento.
               </p>
             </div>
@@ -221,7 +221,7 @@ export default function SegurancaPage() {
             
             <div className="grid md:grid-cols-3 gap-6">
               <div>
-                <div className="text-3xl font-bold text-green-400 mb-2">99.9%</div>
+                <div className="text-3xl font-bold text-success-400 mb-2">99.9%</div>
                 <p className="text-gray-300">Uptime garantido</p>
               </div>
               <div>

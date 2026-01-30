@@ -9,7 +9,7 @@ from django.conf import settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 
 # Criar instância do Celery
-app = Celery('ouvy_saas')
+app = Celery('ouvify_saas')
 
 # Configurar usando namespace 'CELERY' das settings do Django
 app.config_from_object('django.conf:settings', namespace='CELERY')

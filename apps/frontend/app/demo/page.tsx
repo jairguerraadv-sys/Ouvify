@@ -310,7 +310,7 @@ export default function DemoPage() {
                     'Integrações disponíveis via API'
                   ].map((item, idx) => (
                     <div key={idx} className="flex gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-700">{item}</span>
                     </div>
                   ))}
@@ -331,10 +331,10 @@ export default function DemoPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-green-50 border-green-200">
+              <Card className="bg-success-50 border-success-200">
                 <CardContent className="pt-6">
                   <div className="flex gap-3 mb-3">
-                    <Eye className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    <Eye className="w-5 h-5 text-success-600 flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-1">Teste Grátis por 14 dias</h4>
                       <p className="text-sm text-gray-600">

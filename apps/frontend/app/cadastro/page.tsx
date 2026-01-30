@@ -7,7 +7,7 @@ import { AlertCircle, CheckCircle, Loader, XCircle, ArrowRight } from 'lucide-re
 import { Logo, LogoAuth } from '@/components/ui/logo';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge-chip';
+import { Badge } from '@/components/ui/badge';
 import { TooltipFormField } from '@/components/ui/Tooltip';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm, validateSubdomain } from '@/lib/validation';

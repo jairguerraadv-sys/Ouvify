@@ -91,7 +91,7 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem 
-                className="text-red-600 cursor-pointer"
+                className="text-error-600 cursor-pointer"
                 onClick={async () => {
                   if (confirm('Deseja realmente sair?')) {
                     await logout();

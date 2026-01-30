@@ -57,10 +57,10 @@ export function InlineNotification({
   };
 
   const colors = {
-    success: 'bg-green-50 border-green-200 text-green-800',
-    error: 'bg-red-50 border-red-200 text-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800',
+    success: 'bg-success-50 border-success-200 text-success-800',
+    error: 'bg-error-50 border-error-200 text-error-800',
+    warning: 'bg-warning-50 border-warning-200 text-warning-800',
+    info: 'bg-primary-50 border-primary-200 text-primary-800',
   };
 
   const Icon = icons[type];
@@ -112,10 +112,10 @@ export function StatusIndicator({
   };
 
   const colors = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    warning: 'bg-yellow-500',
-    loading: 'bg-blue-500',
+    success: 'bg-success-500',
+    error: 'bg-error-500',
+    warning: 'bg-warning-500',
+    loading: 'bg-primary-500',
     idle: 'bg-gray-400',
   };
 
@@ -123,7 +123,7 @@ export function StatusIndicator({
     <div className={cn('flex items-center gap-2', className)}>
       <span className="relative flex">
         {status === 'loading' ? (
-          <Loader2 className={cn('animate-spin text-blue-500', sizes[size])} />
+          <Loader2 className={cn('animate-spin text-primary-500', sizes[size])} />
         ) : (
           <>
             <span className={cn('rounded-full', sizes[size], colors[status])} />
@@ -240,7 +240,7 @@ export function CopyButton({ value, label, className }: CopyButtonProps) {
     >
       {copied ? (
         <>
-          <Check className="h-4 w-4 text-green-500" />
+          <Check className="h-4 w-4 text-success-500" />
           <span>Copiado!</span>
         </>
       ) : (
@@ -270,8 +270,8 @@ export function ActionResult({
   className,
 }: ActionResultProps) {
   const Icon = type === 'success' ? CheckCircle2 : XCircle;
-  const iconColor = type === 'success' ? 'text-green-500' : 'text-red-500';
-  const bgColor = type === 'success' ? 'bg-green-50' : 'bg-red-50';
+  const iconColor = type === 'success' ? 'text-success-500' : 'text-error-500';
+  const bgColor = type === 'success' ? 'bg-success-50' : 'bg-error-50';
 
   return (
     <div className={cn('text-center py-8', className)}>

@@ -140,7 +140,7 @@ export function ResponseTemplateSelector({
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-yellow-500" />
+            <Sparkles className="h-5 w-5 text-warning-500" />
             Templates de Resposta
           </DialogTitle>
           <DialogDescription>

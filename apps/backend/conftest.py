@@ -135,7 +135,7 @@ def superuser_factory(db):
     User = get_user_model()
     
     def create_superuser(
-        email='superadmin@ouvy.com',
+        email='superadmin@ouvify.com',
         password='SuperAdmin123!',
         **kwargs
     ):

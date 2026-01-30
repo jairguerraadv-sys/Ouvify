@@ -31,6 +31,33 @@ const eslintConfig = defineConfig([
       "no-debugger": "error",
     },
   },
+  // Design System: Block hardcoded colors in className
+  // Exceptions: chart configs, tenant customization, design-system demos
+  {
+    files: ["**/*.tsx", "**/*.ts"],
+    ignores: [
+      "**/dev/design-system/**",
+      "**/components/analytics/charts/**",
+      "**/components/TenantProvider.tsx",
+    ],
+    rules: {
+      "no-restricted-syntax": [
+        "warn",
+        {
+          selector: "Literal[value=/text-\\[#[0-9a-fA-F]/]",
+          message: "🎨 Hardcoded color detected! Use design tokens (text-primary-500, text-gray-700, etc.) instead of text-[#...]",
+        },
+        {
+          selector: "Literal[value=/bg-\\[#[0-9a-fA-F]/]",
+          message: "🎨 Hardcoded color detected! Use design tokens (bg-primary-500, bg-gray-100, etc.) instead of bg-[#...]",
+        },
+        {
+          selector: "Literal[value=/border-\\[#[0-9a-fA-F]/]",
+          message: "🎨 Hardcoded color detected! Use design tokens (border-primary-500, border-gray-200, etc.) instead of border-[#...]",
+        },
+      ],
+    },
+  },
 ]);
 
 export default eslintConfig;

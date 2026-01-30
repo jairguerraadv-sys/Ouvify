@@ -13,6 +13,8 @@ import {
   Settings,
   AlertCircle,
   FolderOpen,
+  Copy,
+  CheckCircle,
   type LucideIcon
 } from 'lucide-react';
 
@@ -56,6 +58,20 @@ interface EmptyStateProps {
   className?: string;
   /** Children for fully custom content */
   children?: React.ReactNode;
+  
+  // Legacy props (backward compatibility with EmptyState.tsx)
+  /** @deprecated Use action.label instead */
+  actionLabel?: string;
+  /** @deprecated Use action.href instead */
+  actionHref?: string;
+  /** @deprecated Use action with onClick/href target */
+  actionExternal?: boolean;
+  /** @deprecated Use secondaryAction.label instead */
+  secondaryActionLabel?: string;
+  /** @deprecated Use secondaryAction.href instead */
+  secondaryActionHref?: string;
+  /** Copy text feature (legacy) */
+  copyText?: string;
 }
 
 // ============================================
@@ -159,11 +175,44 @@ export function EmptyState({
   size = 'md',
   className,
   children,
+  // Legacy props
+  actionLabel,
+  actionHref,
+  actionExternal,
+  secondaryActionLabel,
+  secondaryActionHref,
+  copyText,
 }: EmptyStateProps) {
+  const [copied, setCopied] = React.useState(false);
+  
   const config = variantConfig[variant];
   const sizes = sizeConfig[size];
   
   const Icon = icon || config.icon;
+  
+  // Handle legacy props - convert to new format
+  const resolvedAction: EmptyStateAction | undefined = action || 
+    (actionLabel && actionHref ? {
+      label: actionLabel,
+      href: actionHref,
+    } : undefined);
+    
+  const resolvedSecondaryAction: EmptyStateAction | undefined = secondaryAction ||
+    (secondaryActionLabel && secondaryActionHref ? {
+      label: secondaryActionLabel,
+      href: secondaryActionHref,
+    } : undefined);
+    
+  const handleCopy = async () => {
+    if (!copyText) return;
+    try {
+      await navigator.clipboard.writeText(copyText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Erro ao copiar:', err);
+    }
+  };
   const displayTitle = title || config.title;
   const displayDescription = description || config.description;
 
@@ -245,10 +294,42 @@ export function EmptyState({
       </div>
 
       {/* Actions */}
-      {(action || secondaryAction) && (
+      {(resolvedAction || resolvedSecondaryAction || copyText) && (
         <div className="flex flex-wrap gap-3 mt-6 justify-center">
-          {action && renderAction(action, true)}
-          {secondaryAction && renderAction(secondaryAction, false)}
+          {resolvedAction && renderAction(resolvedAction, true)}
+          
+          {/* Copy Button (legacy feature) */}
+          {copyText && (
+            <Button 
+              variant="ghost" 
+              size={size === 'sm' ? 'sm' : 'default'}
+              onClick={handleCopy}
+              className="gap-2"
+            >
+              {copied ? (
+                <>
+                  <CheckCircle className="w-4 h-4 text-success-600" aria-hidden="true" />
+                  Copiado!
+                </>
+              ) : (
+                <>
+                  <Copy className="w-4 h-4" aria-hidden="true" />
+                  Copiar Link
+                </>
+              )}
+            </Button>
+          )}
+          
+          {resolvedSecondaryAction && renderAction(resolvedSecondaryAction, false)}
+        </div>
+      )}
+      
+      {/* Copy text display (legacy feature) */}
+      {copyText && (
+        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
+          <code className="text-sm text-gray-700 dark:text-gray-300 break-all">
+            {copyText}
+          </code>
         </div>
       )}
 

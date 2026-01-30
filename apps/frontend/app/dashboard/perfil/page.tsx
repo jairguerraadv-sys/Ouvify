@@ -57,7 +57,7 @@ function PerfilContent() {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `ouvy-dados-${new Date().toISOString().split('T')[0]}.json`;
+      link.download = `ouvify-dados-${new Date().toISOString().split('T')[0]}.json`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -336,16 +336,16 @@ function PerfilContent() {
                 </div>
 
                 {/* Excluir Conta */}
-                <div className="flex items-start justify-between py-4 bg-red-50 -mx-6 px-6 rounded-lg border border-red-200">
+                <div className="flex items-start justify-between py-4 bg-error-50 -mx-6 px-6 rounded-lg border border-error-200">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
-                      <AlertTriangle className="w-4 h-4 text-red-600" />
-                      <p className="font-semibold text-red-900">Excluir Minha Conta</p>
+                      <AlertTriangle className="w-4 h-4 text-error-600" />
+                      <p className="font-semibold text-error-900">Excluir Minha Conta</p>
                     </div>
-                    <p className="text-sm text-red-700 mb-2">
+                    <p className="text-sm text-error-700 mb-2">
                       <strong>⚠️ Ação irreversível!</strong> Todos os seus dados serão permanentemente removidos.
                     </p>
-                    <p className="text-sm text-red-600">
+                    <p className="text-sm text-error-600">
                       Ao excluir sua conta: sua assinatura será cancelada, todos os feedbacks e relatórios serão apagados,
                       e não será possível recuperar nenhuma informação.
                     </p>
@@ -355,7 +355,7 @@ function PerfilContent() {
                     size="sm"
                     onClick={handleDeleteAccount}
                     disabled={deleteLoading}
-                    className="ml-4 bg-red-600 hover:bg-red-700"
+                    className="ml-4 bg-error-600 hover:bg-error-700"
                   >
                     {deleteLoading ? (
                       <>

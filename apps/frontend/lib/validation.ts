@@ -87,7 +87,7 @@ const RESERVED_SUBDOMAINS = [
   'www', 'api', 'admin', 'app', 'mail', 'ftp', 'smtp', 'pop', 'imap',
   'webmail', 'email', 'static', 'assets', 'cdn', 'media', 'files',
   'blog', 'forum', 'shop', 'store', 'help', 'support', 'docs',
-  'ouvy', 'test', 'dev', 'staging', 'prod', 'production'
+  'ouvify', 'ouvy', 'test', 'dev', 'staging', 'prod', 'production'
 ];
 
 export function isReservedSubdomain(subdomain: string): boolean {

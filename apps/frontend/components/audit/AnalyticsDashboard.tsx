@@ -346,15 +346,15 @@ interface MetricCardProps {
 
 function MetricCard({ title, value, icon, description, variant = 'default' }: MetricCardProps) {
   return (
-    <Card className={variant === 'warning' ? 'border-yellow-500' : ''}>
+    <Card className={variant === 'warning' ? 'border-warning-500' : ''}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <div className={variant === 'warning' ? 'text-yellow-500' : 'text-muted-foreground'}>
+        <div className={variant === 'warning' ? 'text-warning-500' : 'text-muted-foreground'}>
           {icon}
         </div>
       </CardHeader>
       <CardContent>
-        <div className={`text-2xl font-bold ${variant === 'warning' ? 'text-yellow-600' : ''}`}>
+        <div className={`text-2xl font-bold ${variant === 'warning' ? 'text-warning-600' : ''}`}>
           {value}
         </div>
         <p className="text-xs text-muted-foreground">{description}</p>

@@ -65,7 +65,7 @@ export function SecurityAlertsCard({ className, maxItems = 5 }: SecurityAlertsCa
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <div>
           <CardTitle className="flex items-center gap-2">
-            <Shield className="h-5 w-5 text-red-500" />
+            <Shield className="h-5 w-5 text-error-500" />
             Alertas de Segurança
           </CardTitle>
           <CardDescription>Eventos que requerem atenção</CardDescription>
@@ -78,7 +78,7 @@ export function SecurityAlertsCard({ className, maxItems = 5 }: SecurityAlertsCa
       <CardContent>
         {alerts.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-8 text-center">
-            <Shield className="h-12 w-12 text-green-500 mb-3" />
+            <Shield className="h-12 w-12 text-success-500 mb-3" />
             <p className="text-sm font-medium">Nenhum alerta</p>
             <p className="text-xs text-muted-foreground">
               Sistema operando normalmente
@@ -89,9 +89,9 @@ export function SecurityAlertsCard({ className, maxItems = 5 }: SecurityAlertsCa
             {alerts.map((alert) => (
               <div
                 key={alert.id}
-                className="flex items-start gap-3 p-3 rounded-lg bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-900"
+                className="flex items-start gap-3 p-3 rounded-lg bg-error-50 dark:bg-error-950/20 border border-error-200 dark:border-error-900"
               >
-                <AlertTriangle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
+                <AlertTriangle className="h-5 w-5 text-error-500 mt-0.5 shrink-0" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-sm font-medium">

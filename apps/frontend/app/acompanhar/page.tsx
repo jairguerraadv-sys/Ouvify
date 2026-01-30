@@ -5,7 +5,7 @@ import { api, getErrorMessage } from '@/lib/api';
 import { Logo } from '@/components/ui/logo';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge-chip';
+import { Badge } from '@/components/ui/badge';
 import { H2, Paragraph } from '@/components/ui/typography';
 import { formatDate } from '@/lib/helpers';
 import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
@@ -139,9 +139,9 @@ export default function AcompanharPage() {
 
   const getStatusColor = useCallback((status: string) => {
     const cores: Record<string, string> = {
-      'pendente': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+      'pendente': 'bg-warning-100 text-warning-800 border-warning-300',
       'em_analise': 'bg-primary/10 text-primary border-primary/30',
-      'resolvido': 'bg-green-100 text-green-800 border-green-300',
+      'resolvido': 'bg-success-100 text-success-800 border-success-300',
       'fechado': 'bg-neutral-100 text-secondary border-neutral-300'
     };
     return cores[status] || 'bg-neutral-100 text-secondary border-neutral-300';
@@ -316,7 +316,7 @@ export default function AcompanharPage() {
 
                   {/* Evento: Criado */}
                   <div className="relative">
-                    <div className="absolute -left-8 w-4 h-4 rounded-full bg-green-500 border-2 border-white"></div>
+                    <div className="absolute -left-8 w-4 h-4 rounded-full bg-success-500 border-2 border-white"></div>
                     <div className="bg-gray-50 rounded-lg p-4">
                       <p className="font-semibold text-gray-800">✅ Feedback Registrado</p>
                       <p className="text-sm text-gray-600 mt-1">
@@ -362,10 +362,10 @@ export default function AcompanharPage() {
                   {/* Evento: Status Atual */}
                   {feedback.status === 'pendente' && !feedback.resposta_empresa && (
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-yellow-500 border-2 border-white animate-pulse"></div>
-                      <div className="bg-yellow-50 rounded-lg p-4">
-                        <p className="font-semibold text-yellow-800">⏳ Aguardando Análise</p>
-                        <p className="text-sm text-yellow-700 mt-1">
+                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-warning-500 border-2 border-white animate-pulse"></div>
+                      <div className="bg-warning-50 rounded-lg p-4">
+                        <p className="font-semibold text-warning-800">⏳ Aguardando Análise</p>
+                        <p className="text-sm text-warning-700 mt-1">
                           Sua manifestação será avaliada em breve
                         </p>
                       </div>

@@ -3,7 +3,7 @@
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState, useMemo, useCallback } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
-import { EmptyState } from '@/components/ui/EmptyState';
+import { EmptyState } from '@/components/ui/empty-state';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -82,7 +82,7 @@ function FeedbacksContent() {
     const variants: { [key: string]: { label: string; className: string; icon: React.ReactNode } } = {
       resolvido: {
         label: 'Resolvido',
-        className: 'bg-green-100 text-green-700 hover:bg-green-100',
+        className: 'bg-success-100 text-success-700 hover:bg-success-100',
         icon: <CheckCircle className="h-3 w-3 mr-1" />
       },
       em_analise: {
@@ -109,9 +109,9 @@ function FeedbacksContent() {
 
   const getCategoryColor = (categoria: string) => {
     const colors: { [key: string]: string } = {
-      'Conduta': 'bg-red-100 text-red-700',
+      'Conduta': 'bg-error-100 text-error-700',
       'Benefícios': 'bg-primary-100 text-primary-700',
-      'Reconhecimento': 'bg-green-100 text-green-700',
+      'Reconhecimento': 'bg-success-100 text-success-700',
       'Segurança': 'bg-orange-100 text-orange-700',
       'Infraestrutura': 'bg-secondary-100 text-secondary-700'
     };
@@ -201,7 +201,7 @@ function FeedbacksContent() {
               </div>
             ) : error ? (
               <div className="text-center py-12">
-                <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+                <AlertCircle className="h-12 w-12 text-error-400 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-slate-700 mb-2">
                   Erro ao carregar feedbacks
                 </h3>

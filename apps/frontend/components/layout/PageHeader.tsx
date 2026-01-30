@@ -145,8 +145,8 @@ export function StatsBanner({ stats, className }: StatsBannerProps) {
           {stat.change && (
             <p className={cn(
               'text-xs',
-              stat.change.type === 'increase' && 'text-green-600',
-              stat.change.type === 'decrease' && 'text-red-600',
+              stat.change.type === 'increase' && 'text-success-600',
+              stat.change.type === 'decrease' && 'text-error-600',
               stat.change.type === 'neutral' && 'text-muted-foreground',
             )}>
               {stat.change.type === 'increase' && '+'}

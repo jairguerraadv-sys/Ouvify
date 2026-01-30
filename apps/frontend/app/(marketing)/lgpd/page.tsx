@@ -131,7 +131,7 @@ export default function LGPDPage() {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-8 border-l-4 border-green-600">
+            <div className="bg-white rounded-xl p-8 border-l-4 border-success-600">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <span>⚙️</span>
                 Painel de Configurações
@@ -141,7 +141,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/settings/privacy"
-                className="inline-block bg-green-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-green-700 transition"
+                className="inline-block bg-success-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-success-700 transition"
               >
                 Ir para Configurações
               </Link>

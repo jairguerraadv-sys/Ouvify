@@ -100,7 +100,7 @@ export function PricingCard({
               </span>
               <span className="text-gray-500">/mês</span>
               {yearlySavings > 0 && (
-                <p className="text-sm text-green-600 mt-1">
+                <p className="text-sm text-success-600 mt-1">
                   Economize R$ {yearlySavings.toFixed(0)}/ano
                 </p>
               )}
@@ -147,7 +147,7 @@ export function PricingCard({
           {/* Features */}
           {plan.features.map((feature, idx) => (
             <div key={idx} className="flex gap-3 items-start">
-              <Check className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+              <Check className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
               <span className="text-sm text-gray-700">{feature}</span>
             </div>
           ))}

@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge, Chip } from '@/components/ui/badge-chip';
+import { Badge } from '@/components/ui/badge';
+import { Chip } from '@/components/ui/chip';
 import { H1, H2, H3, Paragraph, Lead } from '@/components/ui/typography';
 import { 
   Shield, 

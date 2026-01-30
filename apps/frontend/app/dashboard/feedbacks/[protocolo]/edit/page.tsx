@@ -198,7 +198,7 @@ function EditFeedbackContent() {
           {/* Título */}
           <div>
             <label htmlFor="titulo" className="block text-sm font-medium text-slate-700 mb-2">
-              Título <span className="text-red-500">*</span>
+              Título <span className="text-error-500">*</span>
             </label>
             <Input
               id="titulo"
@@ -218,7 +218,7 @@ function EditFeedbackContent() {
           {/* Descrição */}
           <div>
             <label htmlFor="descricao" className="block text-sm font-medium text-slate-700 mb-2">
-              Descrição <span className="text-red-500">*</span>
+              Descrição <span className="text-error-500">*</span>
             </label>
             <Textarea
               id="descricao"

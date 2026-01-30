@@ -110,7 +110,7 @@ function AnalyticsContent() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
-        <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
+        <AlertCircle className="w-16 h-16 text-error-500 mb-4" />
         <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
           Analytics Indisponível
         </h2>
@@ -198,7 +198,7 @@ function AnalyticsContent() {
                 label="Pendente" 
                 value={data.metricas_por_status.pendente} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-yellow-500"
+                color="bg-warning-500"
               />
               <MetricBar 
                 label="Em Análise" 
@@ -210,7 +210,7 @@ function AnalyticsContent() {
                 label="Resolvido" 
                 value={data.metricas_por_status.resolvido} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-green-500"
+                color="bg-success-500"
               />
               <MetricBar 
                 label="Fechado" 
@@ -239,7 +239,7 @@ function AnalyticsContent() {
                 label="Reclamação" 
                 value={data.metricas_por_tipo.reclamacao} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-red-500"
+                color="bg-error-500"
               />
               <MetricBar 
                 label="Sugestão" 
@@ -257,7 +257,7 @@ function AnalyticsContent() {
                 label="Elogio" 
                 value={data.metricas_por_tipo.elogio} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-green-500"
+                color="bg-success-500"
               />
             </div>
           </CardContent>
@@ -277,7 +277,7 @@ function AnalyticsContent() {
             <div className="flex flex-wrap gap-2">
               {data.features_habilitadas.map((feature) => (
                 <Badge key={feature} variant="secondary" className="px-3 py-1">
-                  <CheckCircle className="w-3 h-3 mr-1 text-green-500" />
+                  <CheckCircle className="w-3 h-3 mr-1 text-success-500" />
                   {feature}
                 </Badge>
               ))}
@@ -305,7 +305,7 @@ function AnalyticsContent() {
                   <div className="flex items-center gap-3">
                     <span className={`
                       w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                      ${index === 0 ? 'bg-yellow-100 text-yellow-700' : ''}
+                      ${index === 0 ? 'bg-warning-100 text-warning-700' : ''}
                       ${index === 1 ? 'bg-slate-200 text-slate-700' : ''}
                       ${index === 2 ? 'bg-orange-100 text-orange-700' : ''}
                       ${index > 2 ? 'bg-slate-100 text-slate-600' : ''}
@@ -342,10 +342,10 @@ interface KPICardProps {
 function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardProps) {
   const colorClasses = {
     blue: 'bg-primary-50 text-primary-600 dark:bg-white/30 dark:text-primary-400',
-    green: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400',
+    green: 'bg-success-50 text-success-600 dark:bg-success-900/30 dark:text-success-400',
     orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
     purple: 'bg-secondary-50 text-secondary-600 dark:bg-white/30 dark:text-secondary-400',
-    yellow: 'bg-yellow-50 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400',
+    yellow: 'bg-warning-50 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400',
   };
 
   return (
@@ -356,7 +356,7 @@ function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardPr
             <Icon className="w-6 h-6" />
           </div>
           {trend !== undefined && (
-            <div className={`flex items-center gap-1 text-sm ${trend >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            <div className={`flex items-center gap-1 text-sm ${trend >= 0 ? 'text-success-600' : 'text-error-600'}`}>
               {trend >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
               {Math.abs(trend)}%
             </div>

@@ -166,8 +166,8 @@ export default function TeamManagementPage() {
   const getRoleBadgeColor = (role: string) => {
     const colors: Record<string, string> = {
       OWNER: 'bg-purple-100 text-purple-800',
-      ADMIN: 'bg-blue-100 text-blue-800',
-      MODERATOR: 'bg-green-100 text-green-800',
+      ADMIN: 'bg-primary-100 text-primary-800',
+      MODERATOR: 'bg-success-100 text-success-800',
       VIEWER: 'bg-gray-100 text-gray-800',
     };
     return colors[role] || 'bg-gray-100 text-gray-800';
@@ -280,12 +280,12 @@ export default function TeamManagementPage() {
           
           <Card className="p-4">
             <div className="text-sm text-gray-600">Administradores</div>
-            <div className="text-2xl font-bold text-blue-600">{stats.members_by_role.admin}</div>
+            <div className="text-2xl font-bold text-primary-600">{stats.members_by_role.admin}</div>
           </Card>
           
           <Card className="p-4">
             <div className="text-sm text-gray-600">Moderadores</div>
-            <div className="text-2xl font-bold text-green-600">{stats.members_by_role.moderator}</div>
+            <div className="text-2xl font-bold text-success-600">{stats.members_by_role.moderator}</div>
           </Card>
         </div>
       )}
@@ -300,7 +300,7 @@ export default function TeamManagementPage() {
           {members.map((member) => (
             <div key={member.id} className="p-6 flex items-center justify-between hover:bg-gray-50">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
                   {member.user.first_name.charAt(0)}{member.user.last_name.charAt(0)}
                 </div>
                 
@@ -325,7 +325,7 @@ export default function TeamManagementPage() {
                     size="sm"
                     onClick={() => handleRemove(member.id)}
                   >
-                    <Trash2 className="w-4 h-4 text-red-600" />
+                    <Trash2 className="w-4 h-4 text-error-600" />
                   </Button>
                 )}
               </div>
@@ -345,8 +345,8 @@ export default function TeamManagementPage() {
             {invitations.map((invitation) => (
               <div key={invitation.id} className="p-6 flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-yellow-600" />
+                  <div className="w-12 h-12 rounded-full bg-warning-100 flex items-center justify-center">
+                    <Clock className="w-6 h-6 text-warning-600" />
                   </div>
                   
                   <div>
@@ -356,7 +356,7 @@ export default function TeamManagementPage() {
                     </div>
                     <div className="text-xs text-gray-400">
                       {invitation.is_expired ? (
-                        <span className="text-red-600">Expirado</span>
+                        <span className="text-error-600">Expirado</span>
                       ) : (
                         <span>Expira em {new Date(invitation.expires_at).toLocaleDateString('pt-BR')}</span>
                       )}
@@ -374,7 +374,7 @@ export default function TeamManagementPage() {
                     size="sm"
                     onClick={() => handleRevoke(invitation.id)}
                   >
-                    <X className="w-4 h-4 text-red-600" />
+                    <X className="w-4 h-4 text-error-600" />
                   </Button>
                 </div>
               </div>

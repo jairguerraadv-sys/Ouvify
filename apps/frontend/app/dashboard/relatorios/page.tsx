@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Download, FileText, Calendar, Filter, AlertCircle } from 'lucide-react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { EmptyState } from '@/components/ui/EmptyState';
 import api from '@/lib/api';
 import { AxiosResponse } from 'axios';
 
@@ -113,7 +112,7 @@ export default function RelatoriosPage() {
                 <select
                   value={filters.tipo}
                   onChange={(e) => setFilters({ ...filters, tipo: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="">Todos</option>
                   <option value="denuncia">Denúncia</option>
@@ -131,7 +130,7 @@ export default function RelatoriosPage() {
                 <select
                   value={filters.status}
                   onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 >
                   <option value="">Todos</option>
                   <option value="pendente">Pendente</option>
@@ -150,7 +149,7 @@ export default function RelatoriosPage() {
                   type="date"
                   value={filters.data_inicio}
                   onChange={(e) => setFilters({ ...filters, data_inicio: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
 
@@ -163,7 +162,7 @@ export default function RelatoriosPage() {
                   type="date"
                   value={filters.data_fim}
                   onChange={(e) => setFilters({ ...filters, data_fim: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
             </div>
@@ -174,7 +173,7 @@ export default function RelatoriosPage() {
             {/* CSV */}
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
               <div className="flex items-center gap-3 mb-4">
-                <FileText className="w-8 h-8 text-green-600" />
+                <FileText className="w-8 h-8 text-success-600" />
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">CSV</h3>
                   <p className="text-sm text-gray-600">Planilhas (Excel, Google Sheets)</p>
@@ -187,7 +186,7 @@ export default function RelatoriosPage() {
               <button
                 onClick={() => handleExport('csv')}
                 disabled={loading}
-                className="w-full bg-green-600 hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-gray-900 font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
+                className="w-full bg-success-600 hover:bg-success-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-gray-900 font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {loading ? 'Exportando...' : 'Exportar CSV'}

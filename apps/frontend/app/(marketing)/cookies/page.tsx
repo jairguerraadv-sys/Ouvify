@@ -182,8 +182,8 @@ export default function CookiesPage() {
                 </div>
               </div>
               
-              <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-4">
-                <p className="text-sm text-yellow-800">
+              <div className="bg-warning-50 border border-warning-200 rounded-lg p-4 mt-4">
+                <p className="text-sm text-warning-800">
                   <strong>Importante:</strong> Bloquear todos os cookies pode afetar a funcionalidade 
                   do site. Alguns recursos podem não funcionar corretamente sem cookies essenciais.
                 </p>

@@ -351,8 +351,8 @@ export default function RecursosPage() {
               {WORKFLOW_FEATURES.map((feature, idx) => (
                 <Card key={idx} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mb-3">
-                      <feature.icon className="w-5 h-5 text-green-600" />
+                    <div className="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center mb-3">
+                      <feature.icon className="w-5 h-5 text-success-600" />
                     </div>
                     <CardTitle className="text-lg mb-2">{feature.title}</CardTitle>
                     <CardDescription className="text-sm mb-4">{feature.description}</CardDescription>
@@ -361,7 +361,7 @@ export default function RecursosPage() {
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
-                          <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
                           <span className="text-xs text-gray-600">{detail}</span>
                         </li>
                       ))}
@@ -395,7 +395,7 @@ export default function RecursosPage() {
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
-                          <CheckCircle className="w-3.5 h-3.5 text-green-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
                           <span className="text-xs text-gray-600">{detail}</span>
                         </li>
                       ))}
@@ -480,15 +480,15 @@ export default function RecursosPage() {
 
             <div className="flex flex-wrap justify-center gap-8 mt-12 text-sm text-gray-500">
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Setup em 5 minutos</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Suporte em português</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 text-green-600" />
+                <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Cancele quando quiser</span>
               </div>
             </div>

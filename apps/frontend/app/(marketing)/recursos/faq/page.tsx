@@ -107,7 +107,7 @@ export default function FAQPage() {
             <span className="text-6xl">❓</span>
             <h1 className="text-5xl font-bold">Perguntas Frequentes</h1>
           </div>
-          <p className="text-xl text-green-100">
+          <p className="text-xl text-success-100">
             Encontre respostas para as dúvidas mais comuns sobre a plataforma Ouvify.
           </p>
         </div>
@@ -119,7 +119,7 @@ export default function FAQPage() {
           <input
             type="text"
             placeholder="Buscar pergunta..."
-            className="w-full px-6 py-4 rounded-xl border-2 border-gray-300 focus:border-green-500 focus:outline-none text-lg shadow-lg"
+            className="w-full px-6 py-4 rounded-xl border-2 border-gray-300 focus:border-success-500 focus:outline-none text-lg shadow-lg"
           />
           <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl">🔍</span>
         </div>
@@ -147,7 +147,7 @@ export default function FAQPage() {
                       className="w-full p-6 text-left flex items-center justify-between"
                     >
                       <span className="font-semibold text-lg text-gray-900 pr-4">{faq.q}</span>
-                      <span className={`text-green-600 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
+                      <span className={`text-success-600 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
                         ▼
                       </span>
                     </button>
@@ -166,7 +166,7 @@ export default function FAQPage() {
         ))}
 
         {/* CTA Contato */}
-        <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center mt-12">
+        <div className="bg-success-50 border border-success-200 rounded-xl p-8 text-center mt-12">
           <h3 className="text-2xl font-bold text-gray-900 mb-4">
             Não encontrou a resposta que procurava?
           </h3>
@@ -176,13 +176,13 @@ export default function FAQPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-green-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-green-700 transition"
+              className="bg-success-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-success-700 transition"
             >
               Entrar em Contato
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-green-600 px-8 py-3 rounded-lg font-medium border-2 border-green-600 hover:bg-green-50 transition"
+              className="bg-white text-success-600 px-8 py-3 rounded-lg font-medium border-2 border-success-600 hover:bg-success-50 transition"
             >
               ← Voltar para Recursos
             </Link>

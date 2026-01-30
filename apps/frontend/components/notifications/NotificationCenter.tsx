@@ -173,7 +173,7 @@ export function NotificationCenter() {
         
         {/* Badge de não lidas */}
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-gray-900 bg-red-500 rounded-full">
+          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-gray-900 bg-error-500 rounded-full">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}

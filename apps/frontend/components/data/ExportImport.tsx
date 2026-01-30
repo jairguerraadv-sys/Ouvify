@@ -397,19 +397,19 @@ export function ImportDataDialog() {
               <AlertDescription>
                 <div className="flex gap-4 mt-2">
                   <Badge variant="outline" className="gap-1">
-                    <span className="text-green-600">{result.created}</span> criados
+                    <span className="text-success-600">{result.created}</span> criados
                   </Badge>
                   <Badge variant="outline" className="gap-1">
-                    <span className="text-blue-600">{result.updated}</span> atualizados
+                    <span className="text-primary-600">{result.updated}</span> atualizados
                   </Badge>
                   <Badge variant="outline" className="gap-1">
-                    <span className="text-yellow-600">{result.skipped}</span> ignorados
+                    <span className="text-warning-600">{result.skipped}</span> ignorados
                   </Badge>
                 </div>
                 {result.errors.length > 0 && (
                   <div className="mt-2 text-xs max-h-24 overflow-y-auto">
                     {result.errors.slice(0, 5).map((err, i) => (
-                      <p key={i} className="text-red-600">{err}</p>
+                      <p key={i} className="text-error-600">{err}</p>
                     ))}
                     {result.errors.length > 5 && (
                       <p className="text-muted-foreground">...e mais {result.errors.length - 5} erros</p>

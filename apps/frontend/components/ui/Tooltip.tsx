@@ -56,7 +56,7 @@ export function TooltipFormField({
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
         {label}
-        {required && <span className="text-red-500">*</span>}
+        {required && <span className="text-error-500">*</span>}
         <Tooltip content={tooltip}>
           <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 text-gray-600 text-xs cursor-help hover:bg-gray-300 transition-colors">
             ?

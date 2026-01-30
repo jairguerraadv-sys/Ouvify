@@ -25,7 +25,7 @@ CACHES = {
             # Serializer JSON para facilitar debug
             'SERIALIZER': 'django_redis.serializers.json.JSONSerializer',
         },
-        'KEY_PREFIX': 'ouvy',
+        'KEY_PREFIX': 'ouvify',
         'TIMEOUT': 60 * 15,  # 15 minutos default
     },
     # Cache separado para sessões

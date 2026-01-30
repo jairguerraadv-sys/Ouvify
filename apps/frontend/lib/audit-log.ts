@@ -187,10 +187,10 @@ export async function getSessionStats(): Promise<SessionStats> {
  */
 export function getSeverityColor(severity: string): string {
   const colors: Record<string, string> = {
-    INFO: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300',
-    WARNING: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300',
-    ERROR: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300',
-    CRITICAL: 'bg-red-200 text-red-900 dark:bg-red-800 dark:text-red-100',
+    INFO: 'bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-300',
+    WARNING: 'bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-300',
+    ERROR: 'bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-300',
+    CRITICAL: 'bg-error-200 text-error-900 dark:bg-error-800 dark:text-error-100',
   };
   return colors[severity] || colors.INFO;
 }
@@ -201,20 +201,20 @@ export function getSeverityColor(severity: string): string {
 export function getActionColor(action: string): string {
   if (action.includes('LOGIN')) {
     return action.includes('FAILED') 
-      ? 'bg-red-100 text-red-800' 
-      : 'bg-green-100 text-green-800';
+      ? 'bg-error-100 text-error-800' 
+      : 'bg-success-100 text-success-800';
   }
   if (action.includes('CREATE') || action.includes('CREATED')) {
-    return 'bg-blue-100 text-blue-800';
+    return 'bg-primary-100 text-primary-800';
   }
   if (action.includes('UPDATE') || action.includes('CHANGED')) {
-    return 'bg-yellow-100 text-yellow-800';
+    return 'bg-warning-100 text-warning-800';
   }
   if (action.includes('DELETE') || action.includes('REMOVED')) {
-    return 'bg-red-100 text-red-800';
+    return 'bg-error-100 text-error-800';
   }
   if (action.includes('SECURITY') || action.includes('SUSPICIOUS')) {
-    return 'bg-red-200 text-red-900';
+    return 'bg-error-200 text-error-900';
   }
   return 'bg-gray-100 text-gray-800';
 }

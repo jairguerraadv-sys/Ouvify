@@ -30,9 +30,9 @@ import { deleteFeedback } from "@/hooks/use-dashboard";
 
 function StatusBadge({ status }: { status: string }) {
   const variants: Record<string, { bg: string; text: string; label: string }> = {
-    pendente: { bg: "bg-yellow-100", text: "text-yellow-800", label: "Pendente" },
+    pendente: { bg: "bg-warning-100", text: "text-warning-800", label: "Pendente" },
     em_analise: { bg: "bg-primary-100", text: "text-primary-800", label: "Em Análise" },
-    resolvido: { bg: "bg-green-100", text: "text-green-800", label: "Resolvido" },
+    resolvido: { bg: "bg-success-100", text: "text-success-800", label: "Resolvido" },
     fechado: { bg: "bg-gray-100", text: "text-gray-800", label: "Fechado" },
   };
   const variant = variants[status] || variants.pendente;
@@ -117,7 +117,7 @@ function FeedbackTicketContent() {
     return (
       <main className="p-6">
         <Card className="p-6">
-          <p className="text-red-600">Erro ao carregar ticket.</p>
+          <p className="text-error-600">Erro ao carregar ticket.</p>
           <Button variant="secondary" className="mt-4" onClick={() => router.back()}>
             Voltar
           </Button>
@@ -505,7 +505,7 @@ function FeedbackTicketContent() {
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedFile(null)}
-                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                  className="text-error-600 hover:text-error-700 hover:bg-error-50"
                 >
                   <X className="w-4 h-4" />
                 </Button>

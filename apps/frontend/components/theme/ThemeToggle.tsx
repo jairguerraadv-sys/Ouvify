@@ -61,7 +61,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
         className={cn(
           "p-2 rounded-lg transition-colors",
           "hover:bg-gray-100 dark:hover:bg-white",
-          "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+          "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
           "dark:focus:ring-offset-gray-900",
           className
         )}

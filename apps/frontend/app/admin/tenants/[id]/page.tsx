@@ -178,8 +178,8 @@ function TenantDetailsContent() {
                   </p>
                   <div className="flex items-center gap-3 mt-3">
                     <Badge className={tenant.ativo 
-                      ? 'bg-green-500/20 text-green-400 border-green-500/30'
-                      : 'bg-red-500/20 text-red-400 border-red-500/30'
+                      ? 'bg-success-500/20 text-success-400 border-success-500/30'
+                      : 'bg-error-500/20 text-error-400 border-error-500/30'
                     }>
                       {tenant.ativo ? (
                         <>
@@ -215,8 +215,8 @@ function TenantDetailsContent() {
                   disabled={toggling}
                   variant={tenant.ativo ? 'destructive' : 'default'}
                   className={tenant.ativo 
-                    ? 'bg-red-600 hover:bg-red-700'
-                    : 'bg-green-600 hover:bg-green-700'
+                    ? 'bg-error-600 hover:bg-error-700'
+                    : 'bg-success-600 hover:bg-success-700'
                   }
                 >
                   <Power className="w-4 h-4 mr-2" />
@@ -248,7 +248,7 @@ function TenantDetailsContent() {
           <Card className="bg-white border-gray-200">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-green-400" />
+                <Calendar className="w-5 h-5 text-success-400" />
                 Conta
               </CardTitle>
             </CardHeader>
@@ -397,8 +397,8 @@ interface StatsCardProps {
 function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   const colorClasses = {
     blue: 'bg-primary-500/20 text-primary-400',
-    green: 'bg-green-500/20 text-green-400',
-    red: 'bg-red-500/20 text-red-400',
+    green: 'bg-success-500/20 text-success-400',
+    red: 'bg-error-500/20 text-error-400',
     purple: 'bg-secondary-500/20 text-secondary-400',
     orange: 'bg-orange-500/20 text-orange-400',
   };

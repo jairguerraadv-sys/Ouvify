@@ -8,7 +8,7 @@ import SuccessCard from '@/components/SuccessCard';
 import { Logo } from '@/components/ui/logo';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge-chip';
+import { Badge } from '@/components/ui/badge';
 import { H2, Paragraph } from '@/components/ui/typography';
 import { Shield, Lock, AlertCircle, MessageSquare, Send } from 'lucide-react';
 import Link from 'next/link';

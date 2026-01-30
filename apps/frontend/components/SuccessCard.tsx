@@ -25,7 +25,7 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
             <span className="text-4xl">✅</span>
           </div>
           <h2 className="text-2xl font-bold mb-2">Feedback Enviado!</h2>
-          <p className="text-green-100">
+          <p className="text-success-100">
             Obrigado por sua manifestação
           </p>
         </div>
@@ -63,14 +63,14 @@ export default function SuccessCard({ protocolo, onClose }: SuccessCardProps) {
           </button>
 
           {/* Aviso importante */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+          <div className="bg-warning-50 border-l-4 border-warning-400 p-4 rounded">
             <div className="flex items-start">
               <span className="text-2xl mr-3">⚠️</span>
               <div>
-                <p className="font-semibold text-yellow-800 mb-1">
+                <p className="font-semibold text-warning-800 mb-1">
                   Importante!
                 </p>
-                <p className="text-sm text-yellow-700">
+                <p className="text-sm text-warning-700">
                   Guarde este código para acompanhar o status da sua manifestação. 
                   Você pode consultar a qualquer momento.
                 </p>

@@ -54,8 +54,8 @@ export function StatWidget({
                 {trend && (
                   <span className={cn(
                     'flex items-center text-xs font-medium',
-                    trend === 'up' && 'text-green-600',
-                    trend === 'down' && 'text-red-600',
+                    trend === 'up' && 'text-success-600',
+                    trend === 'down' && 'text-error-600',
                     trend === 'neutral' && 'text-gray-500'
                   )}>
                     {trend === 'up' && <TrendingUp className="h-3 w-3 mr-1" />}
@@ -114,7 +114,7 @@ export function SLAComplianceWidget({ compliance, target, trend, details }: SLAW
           {trend && (
             <span className={cn(
               'flex items-center text-sm mb-1',
-              trend === 'up' ? 'text-green-600' : 'text-red-600'
+              trend === 'up' ? 'text-success-600' : 'text-error-600'
             )}>
               {trend === 'up' ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
             </span>
@@ -126,15 +126,15 @@ export function SLAComplianceWidget({ compliance, target, trend, details }: SLAW
         {details && (
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-semibold text-green-600">{details.onTime}</p>
+              <p className="text-2xl font-semibold text-success-600">{details.onTime}</p>
               <p className="text-xs text-muted-foreground">No prazo</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-red-600">{details.late}</p>
+              <p className="text-2xl font-semibold text-error-600">{details.late}</p>
               <p className="text-xs text-muted-foreground">Atrasados</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-yellow-600">{details.pending}</p>
+              <p className="text-2xl font-semibold text-warning-600">{details.pending}</p>
               <p className="text-xs text-muted-foreground">Pendentes</p>
             </div>
           </div>
@@ -160,11 +160,11 @@ export function RecentActivityWidget({ activities }: { activities: Activity[] })
       case 'feedback':
         return <MessageSquare className="h-4 w-4 text-primary" />;
       case 'response':
-        return <CheckCircle className="h-4 w-4 text-green-600" />;
+        return <CheckCircle className="h-4 w-4 text-success-600" />;
       case 'status_change':
-        return <Zap className="h-4 w-4 text-yellow-600" />;
+        return <Zap className="h-4 w-4 text-warning-600" />;
       case 'assignment':
-        return <Users className="h-4 w-4 text-blue-600" />;
+        return <Users className="h-4 w-4 text-primary-600" />;
     }
   };
 
@@ -255,7 +255,7 @@ export function TeamPerformanceWidget({ members }: { members: TeamMember[] }) {
             <div key={member.id} className="flex items-center gap-3">
               <div className="flex-shrink-0 w-6 text-center">
                 {idx === 0 ? (
-                  <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                  <Star className="h-5 w-5 text-warning-500 fill-yellow-500" />
                 ) : (
                   <span className="text-sm text-muted-foreground">{idx + 1}</span>
                 )}
@@ -294,11 +294,11 @@ export function AlertsWidget({ alerts }: { alerts: Alert[] }) {
   const getAlertStyles = (type: Alert['type']) => {
     switch (type) {
       case 'error':
-        return 'bg-red-50 border-red-200 text-red-800';
+        return 'bg-error-50 border-error-200 text-error-800';
       case 'warning':
-        return 'bg-yellow-50 border-yellow-200 text-yellow-800';
+        return 'bg-warning-50 border-warning-200 text-warning-800';
       case 'info':
-        return 'bg-blue-50 border-blue-200 text-blue-800';
+        return 'bg-primary-50 border-primary-200 text-primary-800';
     }
   };
 

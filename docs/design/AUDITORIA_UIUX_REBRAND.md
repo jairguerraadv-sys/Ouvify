@@ -1,8 +1,152 @@
 # 🎨 AUDITORIA UI/UX E REBRAND - OUVIFY
 
 **Data da Auditoria:** 30 de Janeiro de 2026  
-**Versão:** 1.0  
+**Versão:** 2.0  
 **Autor:** Design System Engineer  
+
+---
+
+## 🔍 ROOT CAUSE ANALYSIS (FASE 0)
+
+### Por que mudanças anteriores não refletiram visualmente?
+
+Esta análise identifica as **causas raiz** de inconsistências visuais no sistema.
+
+---
+
+### ✅ VERIFICAÇÕES POSITIVAS (Sistema Funcional)
+
+| Verificação | Status | Evidência |
+|-------------|--------|-----------|
+| CSS Global importado corretamente | ✅ OK | `app/layout.tsx:12` → `import "./globals.css"` |
+| Único globals.css | ✅ OK | Apenas `apps/frontend/app/globals.css` existe |
+| Tailwind content paths | ✅ OK | `content: ["./app/**/*", "./components/**/*"]` |
+| Fonts via next/font | ✅ OK | Inter + Poppins com CSS variables |
+| CSS Variables HSL definidas | ✅ OK | `:root { --primary: 217 91% 60%; ... }` |
+
+---
+
+### 🚨 ROOT CAUSES IDENTIFICADAS
+
+#### RC-01: Conflito Dark Mode - Texto Invisível
+**Severidade:** P0 - Crítico
+
+**Arquivo:** `components/notifications/NotificationPermissionPrompt.tsx:179`
+
+**Problema:**
+```tsx
+// ERRO: dark:bg-white + dark:text-gray-300 = texto cinza claro em fundo branco
+className="... dark:bg-white text-gray-700 dark:text-gray-300 ..."
+```
+
+**Correção:**
+```tsx
+// CORRETO: usar cores semânticas ou gray-700 em dark
+className="... bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 ..."
+```
+
+---
+
+#### RC-02: Tokens HSL vs Hex Diretos (Duplicação)
+**Severidade:** P1 - Alto
+
+**Problema:** O sistema define cores em **dois lugares**:
+1. `globals.css` → CSS variables HSL (padrão shadcn)
+2. `tailwind.config.ts` → Valores HEX diretos
+
+**Arquivo:** `tailwind.config.ts:19-50` vs `globals.css:135-175`
+
+**Evidência:**
+```typescript
+// tailwind.config.ts - VALORES HEX DIRETOS
+primary: {
+  DEFAULT: "#3B82F6",  // HEX
+  500: "#3B82F6",
+  600: "#2563EB",
+}
+
+// globals.css - CSS VARIABLES HSL
+:root {
+  --primary: 217 91% 60%;  // HSL
+}
+```
+
+**Impacto:** Componentes usando `bg-primary-500` funcionam, mas `bg-primary` e `hsl(var(--primary))` são independentes. Não há conflito direto porque ambos resolvem para a mesma cor, mas viola single source of truth.
+
+**Correção recomendada:** Manter Tailwind config como está (já funciona) OU migrar para `hsl(var(--primary))` pattern.
+
+---
+
+#### RC-03: Estilos Inline para Tenant Customization
+**Severidade:** P2 - Aceitável (Justificado)
+
+**Arquivos:**
+- `components/BrandingPreview.tsx:73`
+- `components/TenantBanner.tsx:60`
+- `app/admin/tenants/[id]/page.tsx:348`
+
+**Problema:**
+```tsx
+style={{ backgroundColor: corPrimaria }}  // Dinâmico do tenant
+```
+
+**Justificativa:** Cores de tenant são dinâmicas e vêm do banco de dados. Não é possível usar tokens estáticos. **ACEITO como exceção documentada.**
+
+---
+
+#### RC-04: Design System Page usando Hex para Demonstração
+**Severidade:** P3 - Aceitável (Demo)
+
+**Arquivo:** `app/dev/design-system/page.tsx:48`
+
+**Problema:**
+```tsx
+style={{ backgroundColor: hex }}  // Para mostrar swatches
+```
+
+**Justificativa:** Página de demonstração que exibe os valores hex literais. **ACEITO como exceção documentada.**
+
+---
+
+#### RC-05: Charts com Cores Hardcoded
+**Severidade:** P2 - Médio
+
+**Arquivo:** `components/dashboard/charts.tsx:195`
+
+**Problema:**
+```tsx
+style={{ backgroundColor: segment.color }}  // Cores de gráficos
+```
+
+**Justificativa:** Cores de segmentos de gráfico geralmente vêm de dados ou config de chart library. Verificar se usam paleta do design system.
+
+---
+
+### 📊 RESUMO ROOT CAUSE
+
+| ID | Causa | Severidade | Ação |
+|----|-------|------------|------|
+| RC-01 | Dark mode texto invisível | P0 | **CORRIGIR** |
+| RC-02 | Duplicação HSL/Hex | P1 | Documentar (funciona) |
+| RC-03 | Tenant styles dinâmicos | P2 | **EXCEÇÃO ACEITA** |
+| RC-04 | Design system demo | P3 | **EXCEÇÃO ACEITA** |
+| RC-05 | Charts colors | P2 | Verificar paleta |
+
+---
+
+### ✅ CONCLUSÃO FASE 0
+
+**O sistema de tokens ESTÁ funcionando corretamente.** As "mudanças que não refletiam" eram:
+
+1. **Rebrand nominal incompleto** (ouvy → ouvify em strings) - CORRIGIDO no commit anterior
+2. **Um problema de contraste em dark mode** - A CORRIGIR agora
+3. **Exceções justificadas** para tenant customization e demos
+
+O visual é consistente porque:
+- Tailwind compila corretamente
+- CSS variables estão definidas
+- Componentes usam tokens
+- Fontes carregam via next/font
 
 ---
 

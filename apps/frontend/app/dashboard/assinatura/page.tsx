@@ -141,17 +141,17 @@ function AssinaturaContent() {
   const statusConfig = {
     active: { 
       label: 'Ativa', 
-      className: 'bg-green-100 text-green-700',
+      className: 'bg-success-100 text-success-700',
       icon: CheckCircle
     },
     canceled: { 
       label: 'Cancelada', 
-      className: 'bg-red-100 text-red-700',
+      className: 'bg-error-100 text-error-700',
       icon: XCircle
     },
     past_due: { 
       label: 'Pagamento Pendente', 
-      className: 'bg-yellow-100 text-yellow-700',
+      className: 'bg-warning-100 text-warning-700',
       icon: AlertTriangle
     },
     trialing: { 
@@ -283,7 +283,7 @@ function AssinaturaContent() {
                 <Button
                   onClick={handleReactivateSubscription}
                   disabled={loading}
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  className="w-full bg-success-600 hover:bg-success-700"
                 >
                   {loading ? (
                     <>

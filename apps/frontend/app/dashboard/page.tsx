@@ -102,8 +102,8 @@ function DashboardContent() {
   // Mapear tipo de feedback para cor de atividade
   const getActivityColor = (tipo: string) => {
     const tipoLower = tipo?.toLowerCase() || '';
-    if (tipoLower.includes('denúncia') || tipoLower.includes('denuncia')) return 'bg-red-100 text-red-600';
-    if (tipoLower.includes('sugestão') || tipoLower.includes('sugestao')) return 'bg-green-100 text-green-600';
+    if (tipoLower.includes('denúncia') || tipoLower.includes('denuncia')) return 'bg-error-100 text-error-600';
+    if (tipoLower.includes('sugestão') || tipoLower.includes('sugestao')) return 'bg-success-100 text-success-600';
     if (tipoLower.includes('elogio')) return 'bg-secondary-100 text-secondary-600';
     if (tipoLower.includes('dúvida') || tipoLower.includes('duvida')) return 'bg-primary-100 text-primary-600';
     return 'bg-gray-100 text-gray-600';
@@ -168,7 +168,7 @@ function DashboardContent() {
                         {kpi.value}
                       </div>
                       <div className="flex items-center gap-1 text-xs text-slate-600">
-                        {kpi.trend === 'up' && <ArrowUpRight className="h-3 w-3 text-green-600" />}
+                        {kpi.trend === 'up' && <ArrowUpRight className="h-3 w-3 text-success-600" />}
                         {kpi.change}
                       </div>
                     </>
@@ -317,7 +317,7 @@ function DashboardContent() {
                           }
                           className={
                             feedback.status === 'resolvido'
-                              ? 'bg-green-100 text-green-700'
+                              ? 'bg-success-100 text-success-700'
                               : feedback.status === 'em_analise'
                               ? 'bg-primary-100 text-primary-700'
                               : ''
