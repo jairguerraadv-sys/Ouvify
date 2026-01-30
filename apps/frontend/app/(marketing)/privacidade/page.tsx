@@ -233,7 +233,7 @@ export default function PrivacidadePage() {
                   </div>
                 </div>
                 <p className="text-muted-foreground leading-relaxed mt-4">
-                  Para exercer seus direitos, entre em contato: <strong>privacidade@ouvy.com</strong>
+                  Para exercer seus direitos, entre em contato: <strong>privacidade@ouvify.com</strong>
                 </p>
               </section>
 
@@ -318,14 +318,14 @@ export default function PrivacidadePage() {
                 <div className="bg-secondary/5 rounded-lg p-6 space-y-3">
                   <p className="text-muted-foreground">
                     <strong>Email do DPO:</strong>{' '}
-                    <a href="mailto:privacidade@ouvy.com" className="text-primary hover:underline">
-                      privacidade@ouvy.com
+                    <a href="mailto:privacidade@ouvify.com" className="text-primary hover:underline">
+                      privacidade@ouvify.com
                     </a>
                   </p>
                   <p className="text-muted-foreground">
                     <strong>Suporte Geral:</strong>{' '}
-                    <a href="mailto:support@ouvy.com" className="text-primary hover:underline">
-                      support@ouvy.com
+                    <a href="mailto:support@ouvify.com" className="text-primary hover:underline">
+                      support@ouvify.com
                     </a>
                   </p>
                   <p className="text-sm text-muted-foreground mt-4">

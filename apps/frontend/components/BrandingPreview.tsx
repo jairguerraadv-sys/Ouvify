@@ -28,7 +28,7 @@ export function BrandingPreview({
     : {};
   
   const publicUrl = tenant?.subdominio
-    ? `https://${tenant.subdominio}.ouvy.com/enviar`
+    ? `https://${tenant.subdominio}.ouvify.com/enviar`
     : '#';
 
   return (

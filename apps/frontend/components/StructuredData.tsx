@@ -20,11 +20,11 @@ export function OrganizationSchema() {
     '@type': 'Organization',
     name: 'Ouvify',
     description: 'Plataforma completa de ouvidoria digital',
-    url: 'https://ouvy.com',
-    logo: 'https://ouvy.com/logo.png',
+    url: 'https://ouvify.com',
+    logo: 'https://ouvify.com/logo.png',
     contactPoint: {
       '@type': 'ContactPoint',
-      email: 'support@ouvy.com',
+      email: 'support@ouvify.com',
       contactType: 'customer support',
     },
   };

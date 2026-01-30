@@ -25,7 +25,7 @@ export function generateSEO({
 }: SEOProps): Metadata {
   const siteName = 'Ouvify';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvify.com';
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
   const imageUrl = image.startsWith('http') ? image : `${baseUrl}${image}`;
 
@@ -55,8 +55,8 @@ export function generateSEO({
       title: fullTitle,
       description,
       images: [imageUrl],
-      creator: '@ouvy',
-      site: '@ouvy',
+      creator: '@ouvify',
+      site: '@ouvify',
     },
     robots: {
       index: true,
@@ -94,17 +94,17 @@ export function generateOrganizationSchema() {
     '@type': 'Organization',
     name: 'Ouvify',
     description: 'Plataforma completa de ouvidoria digital e canal de ética',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com',
-    logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com'}/logo.png`,
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvify.com',
+    logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvify.com'}/logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
-      email: 'support@ouvy.com',
+      email: 'support@ouvify.com',
       contactType: 'customer support',
       availableLanguage: ['pt-BR', 'en'],
     },
     sameAs: [
-      'https://twitter.com/ouvy',
-      'https://linkedin.com/company/ouvy',
+      'https://twitter.com/ouvify',
+      'https://linkedin.com/company/ouvify',
     ],
   };
 }
@@ -115,7 +115,7 @@ export function generateWebApplicationSchema() {
     '@type': 'WebApplication',
     name: 'Ouvify',
     description: 'Sistema SaaS para gestão de feedbacks, denúncias e canal de ética empresarial',
-    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com',
+    url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvify.com',
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web Browser',
     offers: {
@@ -132,7 +132,7 @@ export function generateWebApplicationSchema() {
 }
 
 export function generateBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvify.com';
   
   return {
     '@context': 'https://schema.org',

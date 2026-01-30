@@ -55,7 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://ouvy.com",
+    url: "https://ouvify.com",
     siteName: "Ouvify",
     title: "Ouvify - Canal de Ética Profissional",
     description: "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos.",

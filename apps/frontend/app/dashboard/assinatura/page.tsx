@@ -338,7 +338,7 @@ function AssinaturaContent() {
                 • Você pode reativar sua assinatura a qualquer momento.
               </p>
               <p>
-                • Dúvidas? Entre em contato: <a href="mailto:suporte@ouvy.com.br" className="text-primary-600 hover:underline">suporte@ouvy.com.br</a>
+                • Dúvidas? Entre em contato: <a href="mailto:suporte@ouvify.com.br" className="text-primary-600 hover:underline">suporte@ouvify.com.br</a>
               </p>
             </CardContent>
           </Card>

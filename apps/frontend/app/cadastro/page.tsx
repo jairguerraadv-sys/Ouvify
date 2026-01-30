@@ -413,7 +413,7 @@ export default function CadastroPage() {
             {/* Subdomínio */}
             <TooltipFormField
               label="Seu Subdomínio"
-              tooltip="Este será o endereço público onde seus clientes poderão enviar feedbacks. Exemplo: minhaempresa.ouvy.com/enviar"
+              tooltip="Este será o endereço público onde seus clientes poderão enviar feedbacks. Exemplo: minhaempresa.ouvify.com/enviar"
               required
             >
               <div className="flex items-center rounded-lg overflow-hidden border border-secondary-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all duration-200">
@@ -430,7 +430,7 @@ export default function CadastroPage() {
                   }`}
                 />
                 <div className="bg-gradient-primary-soft px-4 py-3 text-primary-700 text-sm font-semibold">
-                  .ouvy.com
+                  .ouvify.com
                 </div>
               </div>
             </TooltipFormField>
@@ -443,7 +443,7 @@ export default function CadastroPage() {
                       ✨ Seu link público será:
                     </p>
                     <code className="text-sm text-primary-700 bg-white px-2 py-1 rounded border border-primary-300">
-                      https://{formData.subdominio_desejado}.ouvy.com/enviar
+                      https://{formData.subdominio_desejado}.ouvify.com/enviar
                     </code>
                   </div>
                 )}

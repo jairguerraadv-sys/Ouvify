@@ -69,7 +69,7 @@ export function OnboardingChecklist() {
         title: 'Receba seu primeiro feedback',
         description: 'Compartilhe o link público ou crie um feedback de teste',
         completed: hasFeedbacks,
-        link: `https://${tenant.subdominio}.ouvy.com/enviar`,
+        link: `https://${tenant.subdominio}.ouvify.com/enviar`,
         external: true,
       },
       {

@@ -52,6 +52,6 @@ Mantemos seus dados apenas pelo tempo necessário.
 
 ## 8. Contato
 
-Para questões sobre privacidade: privacy@ouvy.com.br
+Para questões sobre privacidade: privacy@ouvify.com.br
 
 **Última atualização:** Janeiro 2026

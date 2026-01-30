@@ -149,7 +149,7 @@ export default function RecuperarSenhaPage() {
 
         <p className="text-center text-xs text-muted-foreground mt-6">
           Problemas com recuperação?{' '}
-          <a href="mailto:support@ouvy.com" className="text-primary hover:underline">
+          <a href="mailto:support@ouvify.com" className="text-primary hover:underline">
             Entre em contato
           </a>
         </p>

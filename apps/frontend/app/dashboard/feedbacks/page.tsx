@@ -223,9 +223,9 @@ function FeedbacksContent() {
                   title="Nenhum feedback recebido ainda"
                   description="Compartilhe o link da sua página pública com seus clientes para começar a receber feedbacks, sugestões e elogios."
                   actionLabel="Abrir Página Pública"
-                  actionHref={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  actionHref={`https://${tenant?.subdominio}.ouvify.com/enviar`}
                   actionExternal
-                  copyText={`https://${tenant?.subdominio}.ouvy.com/enviar`}
+                  copyText={`https://${tenant?.subdominio}.ouvify.com/enviar`}
                   secondaryActionLabel="Ver Tutorial"
                   secondaryActionHref="/dashboard?tour=restart"
                 />

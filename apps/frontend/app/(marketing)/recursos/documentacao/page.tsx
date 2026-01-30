@@ -143,7 +143,7 @@ export default function DocumentacaoPage() {
             <div className="grid md:grid-cols-2 gap-4 mb-6">
               <div className="bg-white rounded-lg p-4">
                 <div className="text-sm text-gray-400 mb-1">Base URL</div>
-                <code className="text-green-400">https://api.ouvy.com/v1</code>
+                <code className="text-green-400">https://api.ouvify.com/v1</code>
               </div>
               <div className="bg-white rounded-lg p-4">
                 <div className="text-sm text-gray-400 mb-1">Autenticação</div>

@@ -44,7 +44,7 @@ const faqItems: FAQItem[] = [
   {
     category: "Primeiros Passos",
     question: "Qual é o link para meus clientes enviarem feedbacks?",
-    answer: "Seu link público é: [seu-subdominio].ouvy.com/enviar. Você também pode encontrar esse link no topo do seu Dashboard, pronto para copiar e compartilhar.",
+    answer: "Seu link público é: [seu-subdominio].ouvify.com/enviar. Você também pode encontrar esse link no topo do seu Dashboard, pronto para copiar e compartilhar.",
   },
   {
     category: "Primeiros Passos",
@@ -174,7 +174,7 @@ function AjudaContent() {
 
           <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
             <a
-              href="https://docs.ouvy.com"
+              href="https://docs.ouvify.com"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-3"
@@ -193,7 +193,7 @@ function AjudaContent() {
 
           <Card className="p-4 cursor-pointer hover:shadow-md transition-shadow">
             <a
-              href="mailto:suporte@ouvy.com"
+              href="mailto:suporte@ouvify.com"
               className="flex items-center gap-3"
             >
               <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
@@ -202,7 +202,7 @@ function AjudaContent() {
               <div>
                 <p className="font-medium text-sm">Email Suporte</p>
                 <p className="text-xs text-muted-foreground">
-                  suporte@ouvy.com
+                  suporte@ouvify.com
                 </p>
               </div>
             </a>
@@ -319,14 +319,14 @@ function AjudaContent() {
               </p>
             </div>
             <div className="flex gap-3">
-              <a href="mailto:suporte@ouvy.com">
+              <a href="mailto:suporte@ouvify.com">
                 <Button variant="outline">
                   <Mail className="w-4 h-4 mr-2" />
                   Enviar Email
                 </Button>
               </a>
               <a
-                href="https://docs.ouvy.com"
+                href="https://docs.ouvify.com"
                 target="_blank"
                 rel="noopener noreferrer"
               >

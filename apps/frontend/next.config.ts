@@ -78,8 +78,8 @@ let nextConfig: NextConfig = {
       // Redirecionar www para non-www
       {
         source: '/:path*',
-        has: [{ type: 'host', value: 'www.ouvy.com' }],
-        destination: 'https://ouvy.com/:path*',
+        has: [{ type: 'host', value: 'www.ouvify.com' }],
+        destination: 'https://ouvify.com/:path*',
         permanent: true,
       },
     ];

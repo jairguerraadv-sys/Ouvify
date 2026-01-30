@@ -6,7 +6,7 @@ Disallow: /dashboard/*
 Disallow: /_next/
 Disallow: /public/
 
-Sitemap: https://ouvy-frontend.vercel.app/sitemap.xml
+Sitemap: https://ouvify.com/sitemap.xml
 
 # Delay for aggressive crawlers
 User-agent: AhrefsBot

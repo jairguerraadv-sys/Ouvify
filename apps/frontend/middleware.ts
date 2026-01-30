@@ -42,7 +42,7 @@ export function middleware(request: NextRequest) {
       style-src-elem 'self' 'unsafe-inline';
       img-src 'self' data: https: blob:;
       font-src 'self' data:;
-      connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || 'https://api.ouvy.com.br'} https://api.stripe.com;
+      connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || 'https://api.ouvify.com.br'} https://api.stripe.com;
       frame-src https://js.stripe.com https://hooks.stripe.com;
       object-src 'none';
       base-uri 'self';

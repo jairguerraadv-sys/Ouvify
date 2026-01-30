@@ -257,8 +257,8 @@ export default function CookiesPage() {
               <div className="bg-secondary/5 rounded-lg p-4 space-y-2">
                 <p className="text-muted-foreground">
                   <strong>Email:</strong>{' '}
-                  <a href="mailto:privacidade@ouvy.com" className="text-primary hover:underline">
-                    privacidade@ouvy.com
+                  <a href="mailto:privacidade@ouvify.com" className="text-primary hover:underline">
+                    privacidade@ouvify.com
                   </a>
                 </p>
               </div>

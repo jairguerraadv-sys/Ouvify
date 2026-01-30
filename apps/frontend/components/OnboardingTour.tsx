@@ -80,7 +80,7 @@ function OnboardingTourInner({ restartTrigger, onActiveChange }: OnboardingTourI
           element: '[data-tour="public-link"]',
           popover: {
             title: '2️⃣ Compartilhe o Link Público',
-            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvy.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
+            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
             side: 'bottom',
             align: 'start',
           },
@@ -117,9 +117,9 @@ function OnboardingTourInner({ restartTrigger, onActiveChange }: OnboardingTourI
           popover: {
             title: '✅ Pronto para Começar!',
             description: `Agora você está pronto para começar a receber feedbacks. Se tiver dúvidas:<br><br>
-              📧 Email: <a href="mailto:suporte@ouvy.com" style="color: #4F46E5;">suporte@ouvy.com</a><br>
+              📧 Email: <a href="mailto:suporte@ouvify.com" style="color: #4F46E5;">suporte@ouvify.com</a><br>
               💬 Chat: Disponível no canto inferior direito<br>
-              📚 Documentação: <a href="https://docs.ouvy.com" target="_blank" style="color: #4F46E5;">docs.ouvy.com</a>`,
+              📚 Documentação: <a href="https://docs.ouvify.com" target="_blank" style="color: #4F46E5;">docs.ouvify.com</a>`,
           },
         },
       ],
@@ -230,7 +230,7 @@ export function OnboardingTour() {
           element: '[data-tour="public-link"]',
           popover: {
             title: '2️⃣ Compartilhe o Link Público',
-            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvy.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
+            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
             side: 'bottom',
             align: 'start',
           },
@@ -267,9 +267,9 @@ export function OnboardingTour() {
           popover: {
             title: '✅ Pronto para Começar!',
             description: `Agora você está pronto para começar a receber feedbacks. Se tiver dúvidas:<br><br>
-              📧 Email: <a href="mailto:suporte@ouvy.com" style="color: #4F46E5;">suporte@ouvy.com</a><br>
+              📧 Email: <a href="mailto:suporte@ouvify.com" style="color: #4F46E5;">suporte@ouvify.com</a><br>
               💬 Chat: Disponível no canto inferior direito<br>
-              📚 Documentação: <a href="https://docs.ouvy.com" target="_blank" style="color: #4F46E5;">docs.ouvy.com</a>`,
+              📚 Documentação: <a href="https://docs.ouvify.com" target="_blank" style="color: #4F46E5;">docs.ouvify.com</a>`,
           },
         },
       ],

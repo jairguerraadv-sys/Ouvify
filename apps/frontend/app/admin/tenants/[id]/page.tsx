@@ -174,7 +174,7 @@ function TenantDetailsContent() {
                   <h1 className="text-2xl font-bold text-gray-900 mb-1">{tenant.nome}</h1>
                   <p className="text-slate-400 flex items-center gap-2">
                     <Globe className="w-4 h-4" />
-                    {tenant.subdominio}.ouvy.com
+                    {tenant.subdominio}.ouvify.com
                   </p>
                   <div className="flex items-center gap-3 mt-3">
                     <Badge className={tenant.ativo 
@@ -204,7 +204,7 @@ function TenantDetailsContent() {
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => window.open(`https://${tenant.subdominio}.ouvy.com/enviar`, '_blank')}
+                  onClick={() => window.open(`https://${tenant.subdominio}.ouvify.com/enviar`, '_blank')}
                   className="border-slate-700 text-slate-300 hover:bg-white"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />

@@ -102,10 +102,10 @@ export default function LGPDPage() {
                 Envie sua solicitação para nosso email dedicado de privacidade:
               </p>
               <a
-                href="mailto:privacidade@ouvy.com"
+                href="mailto:privacidade@ouvify.com"
                 className="inline-block bg-primary-600 text-gray-900 px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
               >
-                privacidade@ouvy.com
+                privacidade@ouvify.com
               </a>
               <p className="text-sm text-gray-600 mt-4">
                 Tempo de resposta: até 15 dias úteis
@@ -165,8 +165,8 @@ export default function LGPDPage() {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <div className="text-sm text-gray-500 mb-1">Email do DPO</div>
-                <a href="mailto:dpo@ouvy.com" className="text-xl font-semibold text-primary-600 hover:underline">
-                  dpo@ouvy.com
+                <a href="mailto:dpo@ouvify.com" className="text-xl font-semibold text-primary-600 hover:underline">
+                  dpo@ouvify.com
                 </a>
               </div>
               <div>

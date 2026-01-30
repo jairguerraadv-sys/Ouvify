@@ -216,14 +216,14 @@ export default function TermosPage() {
                 <div className="bg-secondary/5 rounded-lg p-4 space-y-2">
                   <p className="text-muted-foreground">
                     <strong>Email:</strong>{' '}
-                    <a href="mailto:legal@ouvy.com" className="text-primary hover:underline">
-                      legal@ouvy.com
+                    <a href="mailto:legal@ouvify.com" className="text-primary hover:underline">
+                      legal@ouvify.com
                     </a>
                   </p>
                   <p className="text-muted-foreground">
                     <strong>Suporte:</strong>{' '}
-                    <a href="mailto:support@ouvy.com" className="text-primary hover:underline">
-                      support@ouvy.com
+                    <a href="mailto:support@ouvify.com" className="text-primary hover:underline">
+                      support@ouvify.com
                     </a>
                   </p>
                 </div>
