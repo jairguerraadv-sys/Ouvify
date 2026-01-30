@@ -33,7 +33,7 @@
 ```
 1. Settings > API Keys
 2. Create API Key
-3. Nome: "Ouvy Production"
+3. Nome: "Ouvify Production"
 4. Permissions: "Mail Send" (Full Access)
 5. Copiar chave (aparece só 1 vez!)
    Exemplo: SG.xxxxxxxxxxxxxxxxxxxxxx
@@ -75,7 +75,7 @@ python manage.py shell
 from django.core.mail import send_mail
 
 result = send_mail(
-    subject='🎉 Teste SMTP - Ouvy',
+    subject='🎉 Teste SMTP - Ouvify',
     message='Email de teste enviado com sucesso!',
     from_email='noreply@ouvy.com',
     recipient_list=['SEU_EMAIL_AQUI@gmail.com'],
@@ -230,7 +230,7 @@ No Railway Dashboard:
 4. Ver logs em tempo real
 
 Procurar por:
-✅ "Starting Ouvy Backend Deploy..."
+✅ "Starting Ouvify Backend Deploy..."
 ✅ "Running migrations..."
 ✅ "Migrations applied successfully"
 ✅ "Collecting static files..."

@@ -110,7 +110,7 @@ export function Footer({
         {/* Bottom Section */}
         <div className="border-t border-gray-200 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-600">
-            © {currentYear} Ouvy. Todos os direitos reservados.
+            © {currentYear} Ouvify. Todos os direitos reservados.
           </p>
           <div className="flex gap-6 text-sm">
             <Link href="/privacidade" className="text-gray-600 hover:text-primary-600 transition-colors">

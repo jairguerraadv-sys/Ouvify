@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# DEPLOY PARA STAGING - Ouvy SaaS
+# DEPLOY PARA STAGING - Ouvify
 # Script para deploy automatizado no Railway (staging)
 # =============================================================================
 
@@ -9,7 +9,7 @@ set -e  # Parar em caso de erro
 echo "🚀 Iniciando deploy para STAGING..."
 
 # Verificar se estamos no diretório correto
-if [ ! -f "ouvy_saas/manage.py" ]; then
+if [ ! -f "ouvify_saas/manage.py" ]; then
     echo "❌ Erro: Execute este script do diretório raiz do projeto"
     exit 1
 fi
@@ -33,14 +33,14 @@ echo "🔧 Configurando variáveis de ambiente para staging..."
 # Railway vai usar .env.staging automaticamente se configurado
 
 echo "📦 Fazendo deploy do backend..."
-railway deploy --service ouvy-backend
+railway deploy --service ouvify-backend
 
 echo "⏳ Aguardando deploy completar..."
 sleep 30
 
 echo "🔍 Verificando health check..."
 # Tentar health check
-HEALTH_URL=$(railway domain --service ouvy-backend)
+HEALTH_URL=$(railway domain --service ouvify-backend)
 if [ -n "$HEALTH_URL" ]; then
     echo "🌐 Backend URL: https://$HEALTH_URL"
     echo "💚 Health Check: https://$HEALTH_URL/api/health/"
@@ -55,7 +55,7 @@ echo "✅ Deploy do backend concluído!"
 echo ""
 echo "📝 PRÓXIMOS PASSOS:"
 echo "1. Configure as variáveis de ambiente no Railway Dashboard"
-echo "2. Execute migrações: railway run python ouvy_saas/manage.py migrate"
-echo "3. Execute collectstatic: railway run python ouvy_saas/manage.py collectstatic --noinput"
+echo "2. Execute migrações: railway run python ouvify_saas/manage.py migrate"
+echo "3. Execute collectstatic: railway run python ouvify_saas/manage.py collectstatic --noinput"
 echo "4. Teste a API: https://$HEALTH_URL/api/health/"
-echo "5. Faça deploy do frontend: cd ouvy_frontend && vercel --prod=false"
+echo "5. Faça deploy do frontend: cd ouvify_frontend && vercel --prod=false"

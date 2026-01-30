@@ -1,5 +1,5 @@
 """
-Billing Models - Ouvy SaaS
+Billing Models - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Modelos:

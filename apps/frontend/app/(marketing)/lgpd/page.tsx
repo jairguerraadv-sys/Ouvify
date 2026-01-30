@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'LGPD - Seus Direitos | Ouvy',
-  description: 'Conheça seus direitos sob a LGPD e como exercê-los na plataforma Ouvy',
+  title: 'LGPD - Seus Direitos | Ouvify',
+  description: 'Conheça seus direitos sob a LGPD e como exercê-los na plataforma Ouvify',
 };
 
 export default function LGPDPage() {
@@ -58,7 +58,7 @@ export default function LGPDPage() {
             </div>
           </div>
           <p className="text-xl text-primary-100 mt-6">
-            A Ouvy está em total conformidade com a Lei nº 13.709/2018. 
+            A Ouvify está em total conformidade com a Lei nº 13.709/2018. 
             Conheça e exerça seus direitos como titular de dados.
           </p>
         </div>

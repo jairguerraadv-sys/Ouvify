@@ -13,7 +13,7 @@ describe('SEO Library', () => {
         description: 'Test description'
       });
 
-      expect(metadata.title).toBe('Test Page | Ouvy');
+      expect(metadata.title).toBe('Test Page | Ouvify');
       expect(metadata.description).toBe('Test description');
     });
 
@@ -24,7 +24,7 @@ describe('SEO Library', () => {
         url: '/dashboard'
       });
 
-      expect(metadata.openGraph?.title).toBe('Dashboard | Ouvy');
+      expect(metadata.openGraph?.title).toBe('Dashboard | Ouvify');
       expect(metadata.openGraph?.description).toBe('Manage your feedbacks');
       expect(metadata.openGraph?.url).toContain('/dashboard');
     });
@@ -36,7 +36,7 @@ describe('SEO Library', () => {
       });
 
       expect((metadata.twitter as any)?.card).toBe('summary_large_image');
-      expect(metadata.twitter?.title).toBe('Home | Ouvy');
+      expect(metadata.twitter?.title).toBe('Home | Ouvify');
     });
 
     it('uses custom image when provided', () => {
@@ -61,7 +61,7 @@ describe('SEO Library', () => {
       const schema = generateOrganizationSchema();
 
       expect(schema['@type']).toBe('Organization');
-      expect(schema.name).toBe('Ouvy');
+      expect(schema.name).toBe('Ouvify');
       expect(schema.url).toBeTruthy();
       expect(schema.logo).toBeTruthy();
     });
@@ -79,7 +79,7 @@ describe('SEO Library', () => {
       const schema = generateWebApplicationSchema();
 
       expect(schema['@type']).toBe('WebApplication');
-      expect(schema.name).toBe('Ouvy');
+      expect(schema.name).toBe('Ouvify');
       expect(schema.applicationCategory).toBe('BusinessApplication');
     });
 

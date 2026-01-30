@@ -14,7 +14,7 @@ RED='\033[0;31m'
 NC='\033[0m' # No Color
 
 # Diretórios
-BACKEND_DIR="../ouvy_saas"
+BACKEND_DIR="../ouvify_saas"
 FRONTEND_DIR="."
 
 # Funções de cleanup

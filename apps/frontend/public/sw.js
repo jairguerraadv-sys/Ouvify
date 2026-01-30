@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 /**
  * Service Worker para Web Push Notifications
- * Ouvy SaaS - Notificações em tempo real
+ * Ouvify - Notificações em tempo real
  */
 
 const CACHE_NAME = 'ouvy-push-v1';
@@ -25,7 +25,7 @@ self.addEventListener('push', (event) => {
   console.log('[SW] Push recebido:', event);
 
   let data = {
-    title: 'Ouvy',
+    title: 'Ouvify',
     body: 'Você tem uma nova notificação',
     icon: '/icon-192x192.png',
     badge: '/badge-72x72.png',

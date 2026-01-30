@@ -1,5 +1,5 @@
 """
-Create Default Plans Command - Ouvy SaaS
+Create Default Plans Command - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Cria os planos padrão do sistema.

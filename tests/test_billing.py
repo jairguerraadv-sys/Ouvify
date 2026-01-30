@@ -1,5 +1,5 @@
 """
-Billing Tests - Ouvy SaaS
+Billing Tests - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Testes unitários para:

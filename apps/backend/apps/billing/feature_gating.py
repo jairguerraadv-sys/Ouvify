@@ -1,5 +1,5 @@
 """
-Feature Gating - Ouvy SaaS
+Feature Gating - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Decorators e utilitários para controle de acesso baseado em planos.

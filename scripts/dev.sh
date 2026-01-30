@@ -29,8 +29,8 @@ NC='\033[0m' # No Color
 
 # Diretórios
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-BACKEND_DIR="$ROOT_DIR/ouvy_saas"
-FRONTEND_DIR="$ROOT_DIR/ouvy_frontend"
+BACKEND_DIR="$ROOT_DIR/ouvify_saas"
+FRONTEND_DIR="$ROOT_DIR/ouvify_frontend"
 VENV_DIR="$BACKEND_DIR/venv"
 
 # Funções auxiliares
@@ -77,7 +77,7 @@ activate_venv() {
 
 # Comandos
 cmd_start() {
-    print_header "Iniciando Ouvy SaaS (Backend + Frontend)"
+    print_header "Iniciando Ouvify (Backend + Frontend)"
     
     # Backend em background
     cd "$BACKEND_DIR"
@@ -93,7 +93,7 @@ cmd_start() {
     print_success "Frontend iniciado (PID: $FRONTEND_PID)"
     
     echo ""
-    echo -e "${GREEN}🚀 Ouvy SaaS está rodando!${NC}"
+    echo -e "${GREEN}🚀 Ouvify está rodando!${NC}"
     echo -e "   Backend:  http://localhost:8000"
     echo -e "   Frontend: http://localhost:3000"
     echo ""
@@ -174,7 +174,7 @@ cmd_deploy() {
 }
 
 cmd_help() {
-    echo "Ouvy SaaS - Script de Desenvolvimento"
+    echo "Ouvify - Script de Desenvolvimento"
     echo ""
     echo "Uso: ./scripts/dev.sh [comando]"
     echo ""

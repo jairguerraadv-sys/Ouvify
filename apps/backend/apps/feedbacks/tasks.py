@@ -66,7 +66,7 @@ Atribuído por: {feedback.assigned_by.get_full_name() if feedback.assigned_by el
 Acesse: {feedback_url}
 
 ---
-Ouvy - Gestão de Feedbacks
+Ouvify - Gestão de Feedbacks
         """.strip()
         
         # Enviar email
@@ -148,7 +148,7 @@ Título: {feedback.titulo}
 Acesse: {feedback_url}
 
 ---
-Ouvy - Gestão de Feedbacks
+Ouvify - Gestão de Feedbacks
             """.strip()
             
             send_mail(

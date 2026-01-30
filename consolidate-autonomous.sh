@@ -242,9 +242,9 @@ mkdir -p docs
 log "✓ Estrutura criada"
 
 # Mover backend (se não foi movido ainda)
-if [ -d "ouvy_saas" ] && [ ! -f "apps/backend/manage.py" ]; then
-    log "Copiando ouvy_saas → apps/backend..."
-    rsync -a ouvy_saas/ apps/backend/ \
+if [ -d "ouvify_saas" ] && [ ! -f "apps/backend/manage.py" ]; then
+    log "Copiando ouvify_saas → apps/backend..."
+    rsync -a ouvify_saas/ apps/backend/ \
         --exclude='__pycache__' \
         --exclude='*.pyc' \
         --exclude='node_modules' \
@@ -252,27 +252,27 @@ if [ -d "ouvy_saas" ] && [ ! -f "apps/backend/manage.py" ]; then
         --exclude='.git' 2>&1 | tee -a "$LOG_FILE"
     log "✓ Backend copiado"
 else
-    log_warning "Backend já foi movido ou ouvy_saas não existe"
+    log_warning "Backend já foi movido ou ouvify_saas não existe"
 fi
 
 # Mover frontend (se não foi movido ainda)
-if [ -d "ouvy_frontend" ] && [ ! -f "apps/frontend/package.json" ]; then
-    log "Copiando ouvy_frontend → apps/frontend..."
-    rsync -a ouvy_frontend/ apps/frontend/ \
+if [ -d "ouvify_frontend" ] && [ ! -f "apps/frontend/package.json" ]; then
+    log "Copiando ouvify_frontend → apps/frontend..."
+    rsync -a ouvify_frontend/ apps/frontend/ \
         --exclude='node_modules' \
         --exclude='.next' \
         --exclude='out' \
         --exclude='.git' 2>&1 | tee -a "$LOG_FILE"
     log "✓ Frontend copiado"
 else
-    log_warning "Frontend já foi movido ou ouvy_frontend não existe"
+    log_warning "Frontend já foi movido ou ouvify_frontend não existe"
 fi
 
 # Criar package.json para packages/types
 log "Criando packages/types/package.json..."
 cat > packages/types/package.json << 'EOF'
 {
-  "name": "@ouvy/types",
+  "name": "@ouvify/types",
   "version": "1.0.0",
   "private": true,
   "main": "./dist/index.js",
@@ -344,8 +344,8 @@ log "✓ Documentação organizada"
 git add -A
 git commit -m "refactor(phase2): restructure to monorepo
 
-- Create apps/backend (from ouvy_saas)
-- Create apps/frontend (from ouvy_frontend)
+- Create apps/backend (from ouvify_saas)
+- Create apps/frontend (from ouvify_frontend)
 - Create packages/types with shared TypeScript types
 - Organize documentation in docs/
 
@@ -367,10 +367,10 @@ PHASE3_START=$(date +%s)
 # Atualizar docker-compose.yml
 log "Atualizando docker-compose.yml..."
 if [ -f "docker-compose.yml" ]; then
-    sed -i.bak 's|context: ./ouvy_saas|context: ./apps/backend|g' docker-compose.yml
-    sed -i.bak 's|context: ./ouvy_frontend|context: ./apps/frontend|g' docker-compose.yml
-    sed -i.bak 's|./ouvy_saas:|./apps/backend:|g' docker-compose.yml
-    sed -i.bak 's|./ouvy_frontend:|./apps/frontend:|g' docker-compose.yml
+    sed -i.bak 's|context: ./ouvify_saas|context: ./apps/backend|g' docker-compose.yml
+    sed -i.bak 's|context: ./ouvify_frontend|context: ./apps/frontend|g' docker-compose.yml
+    sed -i.bak 's|./ouvify_saas:|./apps/backend:|g' docker-compose.yml
+    sed -i.bak 's|./ouvify_frontend:|./apps/frontend:|g' docker-compose.yml
     rm -f docker-compose.yml.bak
     log "✓ docker-compose.yml atualizado"
 fi
@@ -378,8 +378,8 @@ fi
 # Atualizar Makefile
 log "Atualizando Makefile..."
 if [ -f "Makefile" ]; then
-    sed -i.bak 's|ouvy_saas|apps/backend|g' Makefile
-    sed -i.bak 's|ouvy_frontend|apps/frontend|g' Makefile
+    sed -i.bak 's|ouvify_saas|apps/backend|g' Makefile
+    sed -i.bak 's|ouvify_frontend|apps/frontend|g' Makefile
     rm -f Makefile.bak
     log "✓ Makefile atualizado"
 fi
@@ -387,8 +387,8 @@ fi
 # Atualizar README.md
 log "Atualizando README.md..."
 if [ -f "README.md" ]; then
-    sed -i.bak 's|ouvy_saas/|apps/backend/|g' README.md
-    sed -i.bak 's|ouvy_frontend/|apps/frontend/|g' README.md
+    sed -i.bak 's|ouvify_saas/|apps/backend/|g' README.md
+    sed -i.bak 's|ouvify_frontend/|apps/frontend/|g' README.md
     rm -f README.md.bak
     log "✓ README.md atualizado"
 fi
@@ -396,8 +396,8 @@ fi
 # Atualizar workflows CI/CD
 log "Atualizando workflows CI/CD..."
 if [ -d ".github/workflows" ]; then
-    find .github/workflows -name "*.yml" -exec sed -i.bak 's|ouvy_saas|apps/backend|g' {} \;
-    find .github/workflows -name "*.yml" -exec sed -i.bak 's|ouvy_frontend|apps/frontend|g' {} \;
+    find .github/workflows -name "*.yml" -exec sed -i.bak 's|ouvify_saas|apps/backend|g' {} \;
+    find .github/workflows -name "*.yml" -exec sed -i.bak 's|ouvify_frontend|apps/frontend|g' {} \;
     find .github/workflows -name "*.bak" -delete
     log "✓ Workflows atualizados"
 fi
@@ -504,18 +504,18 @@ if [ ! -d "apps/frontend" ] || [ ! "$(ls -A apps/frontend)" ]; then
     exit 1
 fi
 
-# Remover ouvy_saas (se existir)
-if [ -d "ouvy_saas" ]; then
-    log "Removendo ouvy_saas/..."
-    rm -rf ouvy_saas
-    log "✓ ouvy_saas removido"
+# Remover ouvify_saas (se existir)
+if [ -d "ouvify_saas" ]; then
+    log "Removendo ouvify_saas/..."
+    rm -rf ouvify_saas
+    log "✓ ouvify_saas removido"
 fi
 
-# Remover ouvy_frontend (se existir)
-if [ -d "ouvy_frontend" ]; then
-    log "Removendo ouvy_frontend/..."
-    rm -rf ouvy_frontend
-    log "✓ ouvy_frontend removido"
+# Remover ouvify_frontend (se existir)
+if [ -d "ouvify_frontend" ]; then
+    log "Removendo ouvify_frontend/..."
+    rm -rf ouvify_frontend
+    log "✓ ouvify_frontend removido"
 fi
 
 # Limpar backups antigos (manter apenas o mais recente)
@@ -609,8 +609,8 @@ TOTAL_DURATION=$((PHASE5_END - PHASE1_START))
 git add -A
 git commit -m "refactor(phase5): finalize monorepo consolidation
 
-- Remove ouvy_saas/ (moved to apps/backend)
-- Remove ouvy_frontend/ (moved to apps/frontend)
+- Remove ouvify_saas/ (moved to apps/backend)
+- Remove ouvify_frontend/ (moved to apps/frontend)
 - Consolidate .gitignore
 - Clean old backups
 
@@ -660,7 +660,7 @@ echo ""
 log "🔍 VERIFICAÇÕES:"
 log "  -  __pycache__: $(find . -name '__pycache__' -type d 2>/dev/null | wc -l | tr -d ' ') (deve ser 0)"
 log "  -  node_modules: $(find . -maxdepth 3 -name 'node_modules' -type d 2>/dev/null | wc -l | tr -d ' ') (ideal 0-1)"
-log "  -  Diretórios antigos: $(ls -d ouvy_* 2>/dev/null | wc -l) (deve ser 0)"
+log "  -  Diretórios antigos: $(ls -d ouvify_* 2>/dev/null | wc -l) (deve ser 0)"
 echo ""
 
 log "📄 LOGS:"

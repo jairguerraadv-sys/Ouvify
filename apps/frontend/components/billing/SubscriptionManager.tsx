@@ -1,5 +1,5 @@
 /**
- * SubscriptionManager Component - Ouvy SaaS
+ * SubscriptionManager Component - Ouvify
  * Sprint 4 - Feature 4.3: Pricing Page
  * 
  * Componente para gerenciar assinatura no dashboard

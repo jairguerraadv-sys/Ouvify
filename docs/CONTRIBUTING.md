@@ -1,6 +1,6 @@
-# Guia de Contribuição - Ouvy SaaS
+# Guia de Contribuição - Ouvify
 
-Obrigado pelo interesse em contribuir com o Ouvy SaaS! Este documento fornece diretrizes e instruções para contribuidores.
+Obrigado pelo interesse em contribuir com o Ouvify! Este documento fornece diretrizes e instruções para contribuidores.
 
 ## Índice
 

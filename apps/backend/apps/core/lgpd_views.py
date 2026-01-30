@@ -210,7 +210,7 @@ class DataExportView(APIView):
                 "export_info": {
                     "generated_at": datetime.now().isoformat(),
                     "format": export_format,
-                    "platform": "Ouvy SaaS",
+                    "platform": "Ouvify",
                     "version": "1.0"
                 },
                 "user": user_data,

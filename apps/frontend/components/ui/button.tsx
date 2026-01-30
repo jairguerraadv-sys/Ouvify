@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Ouvy Design System: Unified Color System (NO brand- prefix)
+// 🎨 Ouvify Design System: Unified Color System (NO brand- prefix)
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
@@ -66,7 +66,7 @@ const buttonVariants = cva(
 )
 
 /**
- * Button Component - Ouvy Design System
+ * Button Component - Ouvify Design System
  * 
  * @important PADRÃO CORRETO DE USO COM LINKS:
  * 

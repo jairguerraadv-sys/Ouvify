@@ -1,5 +1,5 @@
 /**
- * PageHeader Component - Ouvy SaaS
+ * PageHeader Component - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Componente de cabeçalho de página com breadcrumbs, título e ações

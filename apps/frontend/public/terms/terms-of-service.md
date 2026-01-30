@@ -1,12 +1,12 @@
-# Termos de Uso - Ouvy
+# Termos de Uso - Ouvify
 
 ## 1. Aceitação dos Termos
 
-Ao acessar e usar a plataforma Ouvy, você concorda em cumprir estes Termos de Uso.
+Ao acessar e usar a plataforma Ouvify, você concorda em cumprir estes Termos de Uso.
 
 ## 2. Descrição do Serviço
 
-O Ouvy é uma plataforma SaaS White Label para gestão de feedbacks e reclamações.
+O Ouvify é uma plataforma SaaS White Label para gestão de feedbacks e reclamações.
 
 ## 3. Responsabilidades do Usuário
 

@@ -4,7 +4,7 @@ echo "✅ VALIDAÇÃO DE LOGO"
 echo "===================="
 echo ""
 
-cd /Users/jairneto/Desktop/ouvy_saas/apps/frontend
+cd /Users/jairneto/Desktop/ouvify_saas/apps/frontend
 
 # 1. Verificar se componente Logo existe
 echo "1. Componente Logo:"

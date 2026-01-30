@@ -1,5 +1,5 @@
 /**
- * Componentes UI Modernos e Elegantes - Ouvy
+ * Componentes UI Modernos e Elegantes - Ouvify
  * 
  * Este arquivo exporta todos os componentes UI otimizados para criar
  * uma interface profissional, elegante e moderna.

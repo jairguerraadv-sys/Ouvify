@@ -1,5 +1,5 @@
 """
-Ouvy SaaS - Load Testing com Locust
+Ouvify - Load Testing com Locust
 
 Simula carga de usuários na API para identificar bottlenecks.
 
@@ -28,9 +28,9 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class OuvyUser(HttpUser):
+class OuvifyUser(HttpUser):
     """
-    Simula usuário autenticado do Ouvy.
+    Simula usuário autenticado do Ouvify.
     
     Comportamento:
     - Login no início
@@ -254,7 +254,7 @@ class OuvyUser(HttpUser):
                 response.failure(f"Status {response.status_code}")
 
 
-class OuvyAnonymousUser(HttpUser):
+class OuvifyAnonymousUserUser(HttpUser):
     """
     Simula usuário anônimo enviando feedbacks.
     Representa visitantes do formulário público.

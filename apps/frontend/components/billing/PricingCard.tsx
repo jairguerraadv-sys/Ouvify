@@ -1,5 +1,5 @@
 /**
- * PricingCard Component - Ouvy SaaS
+ * PricingCard Component - Ouvify
  * Sprint 4 - Feature 4.3: Pricing Page
  * 
  * Componente reutilizável para exibição de planos de preço

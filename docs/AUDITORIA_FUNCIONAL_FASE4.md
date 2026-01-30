@@ -1,7 +1,7 @@
 # 🎯 Auditoria Funcional - Fase 4 | Relatório Executivo
 
 **Data:** 26/01/2026  
-**Projeto:** Ouvy SaaS - White Label Feedback Management  
+**Projeto:** Ouvify - White Label Feedback Management  
 **Objetivo:** Identificar gaps críticos para MVP e roadmap de 60 dias
 
 ---
@@ -257,8 +257,8 @@ class Feedback(TenantAwareModel):
 4. **Qualtrics** - Enterprise research ($$$$)
 5. **FeedbackCompany** - Reviews (€49/mês)
 
-### Posicionamento Ouvy
-| Feature | Ouvy | Typeform | SurveyMonkey | Medallia |
+### Posicionamento Ouvify
+| Feature | Ouvify | Typeform | SurveyMonkey | Medallia |
 |---------|------|----------|--------------|----------|
 | Preço (starter) | R$99/mês | R$275/mês | R$312/mês | R$2.000+/mês |
 | White Label | ✅ (logo+cores+domínio) | ❌ | ❌ | ✅ |

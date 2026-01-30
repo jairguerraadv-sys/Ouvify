@@ -1,6 +1,6 @@
-# Arquitetura do Sistema Ouvy SaaS
+# Arquitetura do Sistema Ouvify
 
-Este documento descreve a arquitetura técnica completa do sistema Ouvy SaaS, uma plataforma de canal de ética e ouvidoria multi-tenant.
+Este documento descreve a arquitetura técnica completa do sistema Ouvify, uma plataforma de canal de ética e ouvidoria multi-tenant.
 
 ## Índice
 
@@ -18,7 +18,7 @@ Este documento descreve a arquitetura técnica completa do sistema Ouvy SaaS, um
 
 ## Visão Geral
 
-O Ouvy SaaS é uma plataforma white-label para gestão de canais de ética, ouvidoria e feedbacks anônimos. O sistema permite que múltiplas organizações (tenants) operem de forma isolada na mesma infraestrutura.
+O Ouvify é uma plataforma white-label para gestão de canais de ética, ouvidoria e feedbacks anônimos. O sistema permite que múltiplas organizações (tenants) operem de forma isolada na mesma infraestrutura.
 
 ### Principais Funcionalidades
 

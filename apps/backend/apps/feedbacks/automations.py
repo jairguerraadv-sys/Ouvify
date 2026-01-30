@@ -1,5 +1,5 @@
 """
-Sistema de Automações - Ouvy SaaS
+Sistema de Automações - Ouvify
 ==================================
 
 Sprint 3 - Feature 2: Automações (6h)

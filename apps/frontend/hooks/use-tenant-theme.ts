@@ -55,7 +55,7 @@ export function useTenantTheme() {
         // Se não houver tenant identificado, retornar tema padrão
         logger.warn('Não foi possível carregar tema do tenant, usando padrão');
         return {
-          nome: 'Ouvy',
+          nome: 'Ouvify',
           subdominio: 'default',
           cor_primaria: '#00BCD4', // Cyan padrão
           logo: null,
@@ -238,5 +238,5 @@ export function useTenantLogo(): string | null {
  */
 export function useTenantName(): string {
   const theme = useTenantTheme();
-  return theme?.nome || 'Ouvy';
+  return theme?.nome || 'Ouvify';
 }

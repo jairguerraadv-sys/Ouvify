@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 🚀 Script de Deploy Automatizado - Ouvy SaaS
+# 🚀 Script de Deploy Automatizado - Ouvify
 # Data: 14 de Janeiro de 2026
 
 set -e  # Sair em caso de erro
@@ -38,7 +38,7 @@ print_header() {
 }
 
 # Verificar se estamos no diretório correto
-if [ ! -d "ouvy_saas" ] || [ ! -d "ouvy_frontend" ]; then
+if [ ! -d "ouvify_saas" ] || [ ! -d "ouvify_frontend" ]; then
     print_error "Execute este script no diretório raiz do projeto!"
     exit 1
 fi
@@ -109,7 +109,7 @@ case $choice in
         print_success "Login Railway realizado"
         
         # Navegar para pasta backend
-        cd ouvy_saas
+        cd ouvify_saas
         
         # Link ou criar projeto
         print_info "Configurando projeto Railway..."
@@ -185,11 +185,11 @@ case $choice in
         print_success "Login Vercel realizado"
         
         # Navegar para pasta frontend
-        cd ouvy_frontend
+        cd ouvify_frontend
         
         # Perguntar URL do backend
         print_warning "Digite a URL do backend Railway:"
-        read -p "URL (ex: https://ouvy-saas-production.up.railway.app): " backend_url
+        read -p "URL (ex: https://ouvify-saas-production.up.railway.app): " backend_url
         
         if [ -z "$backend_url" ]; then
             print_error "URL do backend é obrigatória!"
@@ -252,7 +252,7 @@ EOF
         case $service_choice in
             1)
                 print_info "Configurando variáveis do Backend..."
-                cd ouvy_saas
+                cd ouvify_saas
                 
                 print_info "Configurações necessárias:"
                 echo ""
@@ -279,7 +279,7 @@ EOF
                 ;;
             2)
                 print_info "Configurando variáveis do Frontend..."
-                cd ouvy_frontend
+                cd ouvify_frontend
                 
                 print_warning "Digite a URL do backend Railway:"
                 read -p "URL: " backend_url
@@ -320,23 +320,23 @@ EOF
         
         case $status_choice in
             1)
-                cd ouvy_saas
+                cd ouvify_saas
                 railway status
                 cd ..
                 ;;
             2)
-                cd ouvy_frontend
+                cd ouvify_frontend
                 vercel list
                 cd ..
                 ;;
             3)
                 print_info "Status Backend:"
-                cd ouvy_saas
+                cd ouvify_saas
                 railway status
                 cd ..
                 
                 print_info "Status Frontend:"
-                cd ouvy_frontend
+                cd ouvify_frontend
                 vercel list
                 cd ..
                 ;;
@@ -352,12 +352,12 @@ EOF
         
         case $logs_choice in
             1)
-                cd ouvy_saas
+                cd ouvify_saas
                 railway logs -f
                 cd ..
                 ;;
             2)
-                cd ouvy_frontend
+                cd ouvify_frontend
                 vercel logs
                 cd ..
                 ;;

@@ -1,4 +1,4 @@
-# 🎨 AUDITORIA UI/UX - OUVY
+# 🎨 AUDITORIA UI/UX - OUVIFY
 **Data:** 26 de janeiro de 2026  
 **Auditor:** GitHub Copilot  
 **Escopo:** Frontend completo (Design System, Branding, Páginas Marketing e Dashboard)
@@ -317,13 +317,13 @@ export function Link({ children, className, ...props }: LinkProps) {
 <Link href="/" className="flex items-center gap-2 group">
   <Image 
     src="/logo.svg" 
-    alt="Ouvy Logo" 
+    alt="Ouvify Logo" 
     width={40} 
     height={40}
     className="transition-transform group-hover:scale-105"
   />
   <span className="text-2xl font-bold bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600 bg-clip-text text-transparent">
-    Ouvy
+    Ouvify
   </span>
 </Link>
 ```
@@ -352,7 +352,7 @@ openGraph: {
       url: "/og-image.png",
       width: 1200,
       height: 630,
-      alt: "Ouvy - Canal de Ética Profissional",
+      alt: "Ouvify - Canal de Ética Profissional",
     },
   ],
 }
@@ -666,7 +666,7 @@ echo "  - Criar logo.svg e og-image.png"
 
 ## ✅ CONCLUSÃO
 
-O projeto Ouvy tem uma **base sólida de Design System** bem estruturada, mas sofre de **inconsistências na aplicação** das cores e branding. Os principais problemas são:
+O projeto Ouvify tem uma **base sólida de Design System** bem estruturada, mas sofre de **inconsistências na aplicação** das cores e branding. Os principais problemas são:
 
 1. **Cores hardcoded** espalhadas pelo código (fácil de corrigir em batch)
 2. **Logo e assets de branding ausentes** (crítico para identidade visual)

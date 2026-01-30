@@ -1,5 +1,5 @@
 """
-Webhooks App Config - Ouvy SaaS
+Webhooks App Config - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 """
 from django.apps import AppConfig

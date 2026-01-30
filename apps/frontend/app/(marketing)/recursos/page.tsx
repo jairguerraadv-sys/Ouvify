@@ -85,7 +85,7 @@ const CORE_FEATURES: Feature[] = [
       'Domínio próprio',
       'Customização de emails',
       'Temas personalizados',
-      'Remoção de marca Ouvy'
+      'Remoção de marca Ouvify'
     ]
   }
 ];
@@ -411,7 +411,7 @@ export default function RecursosPage() {
         <section className="bg-white text-gray-900 py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Por Que Escolher o Ouvy?</h2>
+              <h2 className="text-3xl font-bold mb-4">Por Que Escolher o Ouvify?</h2>
               <p className="text-xl text-primary-100">
                 Benefícios comprovados por centenas de empresas
               </p>

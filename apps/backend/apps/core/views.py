@@ -24,11 +24,11 @@ def home(request):
         <html>
             <head>
                 <meta charset="UTF-8">
-                <title>Ouvy - Plataforma White Label</title>
+                <title>Ouvify - Plataforma White Label</title>
             </head>
             <body style="font-family: sans-serif; text-align: center; padding: 50px; margin: 0;">
                 <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 50px; border-radius: 10px;">
-                    <h1>🎉 Bem-vindo ao Ouvy</h1>
+                    <h1>🎉 Bem-vindo ao Ouvify</h1>
                     <p>Plataforma White Label SaaS Multi-tenant</p>
                 </div>
                 <p style="margin-top: 30px; color: #666;">
@@ -59,7 +59,7 @@ def home(request):
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>{tenant_nome} - Ouvy</title>
+            <title>{tenant_nome} - Ouvify</title>
         </head>
         <body style="font-family: sans-serif; text-align: center; padding: 50px; margin: 0;">
             <div style="background-color: {tenant_cor}; color: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">

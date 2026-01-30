@@ -1,5 +1,5 @@
 /**
- * Billing Hooks - Ouvy SaaS
+ * Billing Hooks - Ouvify
  * Sprint 4 - Feature 4.3: Pricing Page
  * 
  * Hooks para gerenciamento de planos, assinaturas e billing

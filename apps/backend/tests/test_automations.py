@@ -1,5 +1,5 @@
 """
-Testes das Automações - Ouvy SaaS
+Testes das Automações - Ouvify
 ==================================
 
 Sprint 3 - Feature 2: Automações (6h)

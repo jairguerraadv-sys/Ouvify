@@ -1,5 +1,5 @@
 """
-Billing Views - Ouvy SaaS
+Billing Views - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Endpoints:

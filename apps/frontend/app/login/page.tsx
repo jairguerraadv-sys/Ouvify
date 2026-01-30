@@ -110,7 +110,7 @@ export default function LoginPage() {
             Bem-vindo de volta
           </h1>"
           <p className="text-muted-foreground text-center">
-            Entre na sua conta <span className="text-gradient font-semibold">Ouvy</span>
+            Entre na sua conta <span className="text-gradient font-semibold">Ouvify</span>
           </p>
         </CardHeader>
 

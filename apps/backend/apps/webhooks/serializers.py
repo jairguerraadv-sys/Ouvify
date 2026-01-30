@@ -1,5 +1,5 @@
 """
-Webhook Serializers - Ouvy SaaS
+Webhook Serializers - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 """
 from rest_framework import serializers

@@ -15,7 +15,7 @@ if curl -s http://localhost:8000/api/feedbacks/ > /dev/null 2>&1; then
     echo -e "${GREEN}   ✅ Backend está respondendo${NC}"
 else
     echo -e "${RED}   ❌ Backend não está acessível${NC}"
-    echo -e "${YELLOW}   Execute: cd ouvy_saas && bash run_server.sh${NC}"
+    echo -e "${YELLOW}   Execute: cd ouvify_saas && bash run_server.sh${NC}"
     exit 1
 fi
 
@@ -25,7 +25,7 @@ if curl -s http://localhost:3000 > /dev/null 2>&1; then
     echo -e "${GREEN}   ✅ Frontend está respondendo${NC}"
 else
     echo -e "${RED}   ❌ Frontend não está acessível${NC}"
-    echo -e "${YELLOW}   Execute: cd ouvy_frontend && npm run dev${NC}"
+    echo -e "${YELLOW}   Execute: cd ouvify_frontend && npm run dev${NC}"
     exit 1
 fi
 
@@ -33,10 +33,10 @@ fi
 echo -e "\n${YELLOW}3️⃣ Verificando arquivos criados...${NC}"
 
 FILES=(
-    "ouvy_frontend/app/page.tsx"
-    "ouvy_frontend/app/acompanhar/page.tsx"
-    "ouvy_frontend/components/SuccessCard.tsx"
-    "ouvy_frontend/.env.local"
+    "ouvify_frontend/app/page.tsx"
+    "ouvify_frontend/app/acompanhar/page.tsx"
+    "ouvify_frontend/components/SuccessCard.tsx"
+    "ouvify_frontend/.env.local"
 )
 
 for file in "${FILES[@]}"; do

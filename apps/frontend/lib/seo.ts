@@ -23,7 +23,7 @@ export function generateSEO({
   modifiedTime,
   author,
 }: SEOProps): Metadata {
-  const siteName = 'Ouvy';
+  const siteName = 'Ouvify';
   const fullTitle = title.includes(siteName) ? title : `${title} | ${siteName}`;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com';
   const fullUrl = url ? `${baseUrl}${url}` : baseUrl;
@@ -33,7 +33,7 @@ export function generateSEO({
     title: fullTitle,
     description,
     keywords: keywords.join(', '),
-    authors: author ? [{ name: author }] : [{ name: 'Ouvy Team' }],
+    authors: author ? [{ name: author }] : [{ name: 'Ouvify Team' }],
     openGraph: {
       type,
       locale: 'pt_BR',
@@ -92,7 +92,7 @@ export function generateOrganizationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Ouvy',
+    name: 'Ouvify',
     description: 'Plataforma completa de ouvidoria digital e canal de ética',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com',
     logo: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com'}/logo.png`,
@@ -113,7 +113,7 @@ export function generateWebApplicationSchema() {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebApplication',
-    name: 'Ouvy',
+    name: 'Ouvify',
     description: 'Sistema SaaS para gestão de feedbacks, denúncias e canal de ética empresarial',
     url: process.env.NEXT_PUBLIC_SITE_URL || 'https://ouvy.com',
     applicationCategory: 'BusinessApplication',

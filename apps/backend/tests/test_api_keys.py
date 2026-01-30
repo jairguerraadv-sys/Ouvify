@@ -1,5 +1,5 @@
 """
-Testes do Sistema de API Keys - Ouvy SaaS
+Testes do Sistema de API Keys - Ouvify
 ==========================================
 
 Sprint 3 - Feature 3: API Pública (4h)

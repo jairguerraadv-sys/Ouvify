@@ -54,16 +54,16 @@ done
 
 # Verificar se diretórios antigos ainda existem
 echo -e "\n⚠️  Verificando diretórios antigos..."
-if [ -d "ouvy_saas" ]; then
-    SIZE=$(du -sh ouvy_saas 2>/dev/null | cut -f1)
-    echo -e "  ${YELLOW}⚠️${NC}  ouvy_saas ainda existe ($SIZE)"
-    echo "      → Após validação, remova com: rm -rf ouvy_saas"
+if [ -d "ouvify_saas" ]; then
+    SIZE=$(du -sh ouvify_saas 2>/dev/null | cut -f1)
+    echo -e "  ${YELLOW}⚠️${NC}  ouvify_saas ainda existe ($SIZE)"
+    echo "      → Após validação, remova com: rm -rf ouvify_saas"
     ((WARNINGS++))
 fi
-if [ -d "ouvy_frontend" ]; then
-    SIZE=$(du -sh ouvy_frontend 2>/dev/null | cut -f1)
-    echo -e "  ${YELLOW}⚠️${NC}  ouvy_frontend ainda existe ($SIZE)"
-    echo "      → Após validação, remova com: rm -rf ouvy_frontend"
+if [ -d "ouvify_frontend" ]; then
+    SIZE=$(du -sh ouvify_frontend 2>/dev/null | cut -f1)
+    echo -e "  ${YELLOW}⚠️${NC}  ouvify_frontend ainda existe ($SIZE)"
+    echo "      → Após validação, remova com: rm -rf ouvify_frontend"
     ((WARNINGS++))
 fi
 

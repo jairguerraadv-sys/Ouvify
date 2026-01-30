@@ -163,7 +163,7 @@ class EmailService:
                 'dashboard_url': f"https://{tenant.dominio}/dashboard/relatorios",
             }
 
-            subject = f"Relatório semanal - Ouvy ({tenant.nome})"
+            subject = f"Relatório semanal - Ouvify ({tenant.nome})"
             html_message = render_to_string('emails/relatorio_semanal.html', context)
             plain_message = render_to_string('emails/relatorio_semanal.txt', context)
 
@@ -230,8 +230,8 @@ class WebhookService:
 
             headers = {
                 'Content-Type': 'application/json',
-                'User-Agent': 'Ouvy-Webhook/1.0',
-                'X-Ouvy-Signature': get_random_string(32),  # Em produção, implementar HMAC
+                'User-Agent': 'Ouvify-Webhook/1.0',
+                'X-Ouvify-Signature': get_random_string(32),  # Em produção, implementar HMAC
             }
 
             response = requests.post(

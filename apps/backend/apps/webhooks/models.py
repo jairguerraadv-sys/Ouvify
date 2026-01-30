@@ -1,5 +1,5 @@
 """
-Webhook Models - Ouvy SaaS
+Webhook Models - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 
 Models:

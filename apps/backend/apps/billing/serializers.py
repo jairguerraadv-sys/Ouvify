@@ -1,5 +1,5 @@
 """
-Billing Serializers - Ouvy SaaS
+Billing Serializers - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 """
 from rest_framework import serializers

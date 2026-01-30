@@ -1,5 +1,5 @@
 # =============================================================================
-# FEATURE GATING - Ouvy SaaS
+# FEATURE GATING - Ouvify
 # Controle de funcionalidades por ambiente
 # =============================================================================
 

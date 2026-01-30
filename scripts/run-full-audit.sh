@@ -3,7 +3,7 @@ set -e
 
 echo "╔════════════════════════════════════════════════════╗"
 echo "║  🔍 AUDITORIA COMPLETA PÓS-CONSOLIDAÇÃO           ║"
-echo "║  Monorepo: ouvy-saas                              ║"
+echo "║  Monorepo: ouvify-saas                              ║"
 echo "╚════════════════════════════════════════════════════╝"
 echo ""
 

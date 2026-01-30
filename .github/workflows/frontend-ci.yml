@@ -117,7 +117,7 @@ jobs:
       - name: Build
         working-directory: ./apps/frontend
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.ouvy.com.br' }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.ouvify.com.br' }}
         run: npm run build
 
   # ============================================

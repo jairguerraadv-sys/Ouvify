@@ -1,5 +1,5 @@
 """
-Custom pagination classes for the Ouvy SaaS API.
+Custom pagination classes for the Ouvify API.
 Provides consistent pagination across all endpoints.
 """
 from rest_framework.pagination import PageNumberPagination

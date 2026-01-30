@@ -1,5 +1,5 @@
 """
-Billing Tasks - Ouvy SaaS
+Billing Tasks - Ouvify
 Sprint 4 - Feature 4.2: Planos & Trial
 
 Celery tasks para:
@@ -145,7 +145,7 @@ def send_trial_expiring_email(subscription, days_remaining):
     message = f"""
 Olá!
 
-Seu período de trial do plano {subscription.plan.name} no Ouvy expira em {days_remaining} dias.
+Seu período de trial do plano {subscription.plan.name} no Ouvify expira em {days_remaining} dias.
 
 Para continuar aproveitando todos os recursos:
 - Faça upgrade do seu plano
@@ -153,7 +153,7 @@ Para continuar aproveitando todos os recursos:
 
 Acesse sua conta para fazer o upgrade: {settings.FRONTEND_URL}/billing
 
-Equipe Ouvy
+Equipe Ouvify
     """
     
     try:
@@ -173,11 +173,11 @@ def send_trial_expired_email(subscription):
     if not subscription.client.owner or not subscription.client.owner.email:
         return
     
-    subject = f"Seu trial do Ouvy expirou"
+    subject = f"Seu trial do Ouvify expirou"
     message = f"""
 Olá!
 
-Seu período de trial no Ouvy expirou.
+Seu período de trial no Ouvify expirou.
 
 {"Sua conta foi convertida para o plano gratuito." if subscription.plan.price_cents == 0 else "Sua conta foi suspensa."}
 
@@ -187,7 +187,7 @@ Para recuperar o acesso completo:
 
 Acesse sua conta: {settings.FRONTEND_URL}/billing
 
-Equipe Ouvy
+Equipe Ouvify
     """
     
     try:
@@ -207,7 +207,7 @@ def send_payment_reminder_email(subscription):
     if not subscription.client.owner or not subscription.client.owner.email:
         return
     
-    subject = f"Lembrete: Pagamento pendente no Ouvy"
+    subject = f"Lembrete: Pagamento pendente no Ouvify"
     message = f"""
 Olá!
 
@@ -219,7 +219,7 @@ Para evitar a suspensão do serviço:
 
 Acesse sua conta: {settings.FRONTEND_URL}/billing
 
-Equipe Ouvy
+Equipe Ouvify
     """
     
     try:

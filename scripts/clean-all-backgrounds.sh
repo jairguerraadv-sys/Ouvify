@@ -4,7 +4,7 @@ echo "🧹 LIMPEZA TOTAL DE BACKGROUNDS E CORES INCONSISTENTES"
 echo "========================================================"
 echo ""
 
-cd /Users/jairneto/Desktop/ouvy_saas/apps/frontend
+cd /Users/jairneto/Desktop/ouvify_saas/apps/frontend
 
 # Backup completo
 BACKUP_DIR=".backups/total_cleanup_$(date +%Y%m%d_%H%M%S)"

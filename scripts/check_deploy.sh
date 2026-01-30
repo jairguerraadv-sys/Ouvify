@@ -15,8 +15,8 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # URLs
-BACKEND_URL="https://ouvy-saas-production.up.railway.app"
-FRONTEND_URL="https://ouvy-frontend.vercel.app"
+BACKEND_URL="https://ouvify-saas-production.up.railway.app"
+FRONTEND_URL="https://ouvify-frontend.vercel.app"
 
 echo "📊 1. VERIFICANDO BACKEND (Railway)..."
 echo "--------------------------------------"
@@ -102,7 +102,7 @@ echo "Último commit: $LAST_COMMIT"
 # Railway CLI
 if command -v railway &> /dev/null; then
     echo -e "${GREEN}✅ Railway CLI instalado${NC}"
-    cd ouvy_saas 2>/dev/null && railway status 2>/dev/null && cd .. 2>/dev/null
+    cd ouvify_saas 2>/dev/null && railway status 2>/dev/null && cd .. 2>/dev/null
 else
     echo -e "${YELLOW}⚠️  Railway CLI não encontrado${NC}"
 fi

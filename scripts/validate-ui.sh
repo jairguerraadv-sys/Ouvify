@@ -4,7 +4,7 @@ echo "🔍 VALIDAÇÃO DE PADRONIZAÇÃO UI/UX"
 echo "======================================"
 echo ""
 
-cd /Users/jairneto/Desktop/ouvy_saas/apps/frontend
+cd /Users/jairneto/Desktop/ouvify_saas/apps/frontend
 
 # 1. Verificar gradientes de fundo (DEVE SER 0)
 echo "1. Gradientes de fundo (deve ser 0):"
@@ -84,5 +84,5 @@ echo "   - http://localhost:3000/recursos"
 echo "   - http://localhost:3000/dashboard"
 echo ""
 echo "🧪 Para testar:"
-echo "   cd /Users/jairneto/Desktop/ouvy_saas/apps/frontend"
+echo "   cd /Users/jairneto/Desktop/ouvify_saas/apps/frontend"
 echo "   npm run dev"

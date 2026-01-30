@@ -1,13 +1,13 @@
 #!/bin/bash
 # =============================================================================
-# Script de Verificação Pré-Deploy - Ouvy SaaS Backend
+# Script de Verificação Pré-Deploy - Ouvify Backend
 # Execute: ./scripts/pre_deploy_check.sh
 # =============================================================================
 
 set -e
 
 echo "======================================================================"
-echo "🔍 VERIFICAÇÃO PRÉ-DEPLOY - Ouvy SaaS Backend"
+echo "🔍 VERIFICAÇÃO PRÉ-DEPLOY - Ouvify Backend"
 echo "======================================================================"
 
 cd "$(dirname "$0")/.."
@@ -63,14 +63,14 @@ fi
 
 # 4. Verificar sintaxe Python
 echo -e "\n${YELLOW}4. Verificando sintaxe Python...${NC}"
-cd ouvy_saas
+cd ouvify_saas
 python3 -m py_compile config/settings.py 2>/dev/null && echo -e "${GREEN}✅ settings.py OK${NC}" || echo -e "${RED}❌ Erro em settings.py${NC}"
 python3 -m py_compile config/urls.py 2>/dev/null && echo -e "${GREEN}✅ urls.py OK${NC}" || echo -e "${RED}❌ Erro em urls.py${NC}"
 cd ..
 
 # 5. Verificar Django check
 echo -e "\n${YELLOW}5. Executando Django check...${NC}"
-cd ouvy_saas
+cd ouvify_saas
 if python3 manage.py check --deploy 2>/dev/null; then
     echo -e "${GREEN}✅ Django check passou${NC}"
 else
@@ -80,7 +80,7 @@ cd ..
 
 # 6. Verificar migrações pendentes
 echo -e "\n${YELLOW}6. Verificando migrações...${NC}"
-cd ouvy_saas
+cd ouvify_saas
 if python3 manage.py showmigrations --plan 2>/dev/null | grep -q '\[ \]'; then
     echo -e "${YELLOW}⚠️  Existem migrações pendentes${NC}"
 else
@@ -90,7 +90,7 @@ cd ..
 
 # 7. Verificar arquivos estáticos
 echo -e "\n${YELLOW}7. Verificando arquivos estáticos...${NC}"
-if [ -d "ouvy_saas/staticfiles" ]; then
+if [ -d "ouvify_saas/staticfiles" ]; then
     echo -e "${GREEN}✅ Pasta staticfiles existe${NC}"
 else
     echo -e "${YELLOW}⚠️  Execute 'python manage.py collectstatic' antes do deploy${NC}"

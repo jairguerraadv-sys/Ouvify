@@ -4,11 +4,11 @@ import { Cookie, Settings, Lock, BarChart3, Target, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/button';
 
 export const metadata: Metadata = {
-  title: 'Política de Cookies | Ouvy - Plataforma de Feedback',
-  description: 'Saiba como a Ouvy usa cookies para melhorar sua experiência. Gerencie suas preferências de cookies.',
+  title: 'Política de Cookies | Ouvify - Plataforma de Feedback',
+  description: 'Saiba como a Ouvify usa cookies para melhorar sua experiência. Gerencie suas preferências de cookies.',
   openGraph: {
-    title: 'Política de Cookies | Ouvy',
-    description: 'Como usamos cookies na plataforma Ouvy',
+    title: 'Política de Cookies | Ouvify',
+    description: 'Como usamos cookies na plataforma Ouvify',
   },
 };
 
@@ -67,7 +67,7 @@ export default function CookiesPage() {
             </p>
             <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
               Esta política explica como usamos cookies e tecnologias similares 
-              para melhorar sua experiência na plataforma Ouvy.
+              para melhorar sua experiência na plataforma Ouvify.
             </p>
           </div>
 
@@ -84,7 +84,7 @@ export default function CookiesPage() {
                 informações aos proprietários do site.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                No Ouvy, usamos cookies para:
+                No Ouvify, usamos cookies para:
               </p>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                 <li>Manter você conectado à sua conta</li>
@@ -176,7 +176,7 @@ export default function CookiesPage() {
                 <div>
                   <h4 className="font-semibold">Configurações da Conta</h4>
                   <p className="text-sm text-muted-foreground">
-                    Se você tem uma conta Ouvy, pode gerenciar suas preferências de privacidade 
+                    Se você tem uma conta Ouvify, pode gerenciar suas preferências de privacidade 
                     nas configurações do perfil.
                   </p>
                 </div>

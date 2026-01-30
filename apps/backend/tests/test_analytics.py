@@ -1,5 +1,5 @@
 """
-Testes do Dashboard Analytics - Ouvy SaaS
+Testes do Dashboard Analytics - Ouvify
 ==========================================
 
 Sprint 3 - Feature 1: Dashboard Analytics (8h)

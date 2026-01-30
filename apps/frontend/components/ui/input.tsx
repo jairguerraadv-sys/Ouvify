@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Inputs with Ouvy colors
+// 🎨 Design System: Inputs with Ouvify colors
 export interface InputProps extends React.ComponentProps<"input"> {
   label?: string;
   error?: string;

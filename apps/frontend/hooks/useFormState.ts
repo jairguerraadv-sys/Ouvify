@@ -1,5 +1,5 @@
 /**
- * useFormState Hook - Ouvy SaaS
+ * useFormState Hook - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Hook para gerenciar estado de formulários com validação e feedback

@@ -268,7 +268,7 @@ def test_edge_cases():
 
 def main():
     print(f"\n{BLUE}{'='*60}{RESET}")
-    print(f"{BLUE}  TESTES DE SANITIZAÇÃO XSS - Ouvy SaaS{RESET}")
+    print(f"{BLUE}  TESTES DE SANITIZAÇÃO XSS - Ouvify{RESET}")
     print(f"{BLUE}{'='*60}{RESET}")
     
     all_passed = True

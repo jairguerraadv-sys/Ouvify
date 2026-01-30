@@ -149,7 +149,7 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
             </div>
 
             <p className="text-xs text-gray-500 text-center mt-4">
-              Você deve aceitar os termos atualizados para continuar usando o Ouvy.
+              Você deve aceitar os termos atualizados para continuar usando o Ouvify.
             </p>
           </div>
         </div>

@@ -1,5 +1,5 @@
 /**
- * useConfirm Hook - Ouvy SaaS
+ * useConfirm Hook - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Hook para gerenciar diálogos de confirmação de forma declarativa

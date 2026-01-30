@@ -1,5 +1,5 @@
 """
-Webhook Service - Ouvy SaaS
+Webhook Service - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 
 Serviço para envio de webhooks
@@ -130,11 +130,11 @@ def deliver_webhook(
     # Preparar headers
     headers = {
         'Content-Type': 'application/json',
-        'User-Agent': 'Ouvy-Webhook/1.0',
-        'X-Ouvy-Event': event.event_type,
-        'X-Ouvy-Signature': endpoint.sign_payload(payload),
-        'X-Ouvy-Delivery': str(event.id),
-        'X-Ouvy-Timestamp': str(int(timezone.now().timestamp())),
+        'User-Agent': 'Ouvify-Webhook/1.0',
+        'X-Ouvify-Event': event.event_type,
+        'X-Ouvify-Signature': endpoint.sign_payload(payload),
+        'X-Ouvify-Delivery': str(event.id),
+        'X-Ouvify-Timestamp': str(int(timezone.now().timestamp())),
     }
     
     # Adicionar headers customizados

@@ -30,7 +30,7 @@ describe('Logo Component', () => {
 
   it('renders full variant with text', () => {
     render(<Logo variant="full" />);
-    expect(screen.getByText('Ouvy')).toBeInTheDocument();
+    expect(screen.getByText('Ouvify')).toBeInTheDocument();
   });
 
   it('has priority loading for LCP optimization', () => {

@@ -108,7 +108,7 @@ export default function FAQPage() {
             <h1 className="text-5xl font-bold">Perguntas Frequentes</h1>
           </div>
           <p className="text-xl text-green-100">
-            Encontre respostas para as dúvidas mais comuns sobre a plataforma Ouvy.
+            Encontre respostas para as dúvidas mais comuns sobre a plataforma Ouvify.
           </p>
         </div>
       </section>

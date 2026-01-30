@@ -1,5 +1,5 @@
 /**
- * useNotification Hook - Ouvy SaaS
+ * useNotification Hook - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Hook para gerenciar notificações toast de forma centralizada

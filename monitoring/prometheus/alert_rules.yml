@@ -1,9 +1,9 @@
 # Prometheus Alert Rules
 # ======================
-# Regras de alerta para o Ouvy SaaS
+# Regras de alerta para o Ouvify
 
 groups:
-  - name: ouvy_availability
+  - name: ouvify_availability
     interval: 30s
     rules:
       # API está down
@@ -28,7 +28,7 @@ groups:
           summary: "Frontend Next.js está offline"
           description: "O Frontend não está respondendo há mais de 1 minuto."
 
-  - name: ouvy_performance
+  - name: ouvify_performance
     interval: 30s
     rules:
       # Latência alta na API
@@ -64,7 +64,7 @@ groups:
           summary: "Alto volume de requisições"
           description: "Mais de 1000 req/min na API. Possível ataque DDoS."
 
-  - name: ouvy_database
+  - name: ouvify_database
     interval: 30s
     rules:
       # Conexões PostgreSQL altas
@@ -89,7 +89,7 @@ groups:
           summary: "Queries lentas detectadas"
           description: "Queries estão levando mais de 5s em média."
 
-  - name: ouvy_celery
+  - name: ouvify_celery
     interval: 30s
     rules:
       # Fila de tasks grande
@@ -114,7 +114,7 @@ groups:
           summary: "Nenhum Celery worker ativo"
           description: "Todos os workers Celery estão offline."
 
-  - name: ouvy_redis
+  - name: ouvify_redis
     interval: 30s
     rules:
       # Memória Redis alta
@@ -139,7 +139,7 @@ groups:
           summary: "Redis está offline"
           description: "O serviço Redis não está respondendo."
 
-  - name: ouvy_security
+  - name: ouvify_security
     interval: 60s
     rules:
       # Muitas falhas de login

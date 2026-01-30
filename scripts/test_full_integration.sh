@@ -34,7 +34,7 @@ if curl -s "$FRONTEND" > /dev/null; then
     echo -e "${GREEN}✓${NC} Frontend Next.js respondendo em $FRONTEND"
 else
     echo -e "${RED}✗${NC} Frontend Next.js não está respondendo"
-    echo "   Execute: cd ouvy_frontend && npm run dev"
+    echo "   Execute: cd ouvify_frontend && npm run dev"
     exit 1
 fi
 

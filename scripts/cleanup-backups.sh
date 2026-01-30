@@ -7,8 +7,8 @@ set -e  # Parar em caso de erro
 echo "🧹 Iniciando limpeza de backups..."
 
 # Backup de segurança antes de deletar
-echo "📦 Criando backup de segurança em /tmp/ouvy-backup-$(date +%Y%m%d)"
-mkdir -p /tmp/ouvy-backup-$(date +%Y%m%d)
+echo "📦 Criando backup de segurança em /tmp/ouvify-backup-$(date +%Y%m%d)"
+mkdir -p /tmp/ouvify-backup-$(date +%Y%m%d)
 
 # Arquivos para deletar
 FILES_TO_DELETE=(

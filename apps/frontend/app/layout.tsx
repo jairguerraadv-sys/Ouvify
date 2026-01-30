@@ -23,13 +23,13 @@ export const metadata: Metadata = {
     process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
   ),
   title: {
-    default: "Ouvy - Canal de Ética Profissional",
-    template: "%s | Ouvy",
+    default: "Ouvify - Canal de Ética Profissional",
+    template: "%s | Ouvify",
   },
   description:
     "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos. White Label, seguro e pronto para usar.",
   keywords: ["canal de ética", "ouvidoria", "feedback anônimo", "compliance", "saas"],
-  authors: [{ name: "Ouvy Team" }],
+  authors: [{ name: "Ouvify Team" }],
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -47,21 +47,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://ouvy.com",
-    siteName: "Ouvy",
-    title: "Ouvy - Canal de Ética Profissional",
+    siteName: "Ouvify",
+    title: "Ouvify - Canal de Ética Profissional",
     description: "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Ouvy - Canal de Ética Profissional",
+        alt: "Ouvify - Canal de Ética Profissional",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ouvy - Canal de Ética Profissional",
+    title: "Ouvify - Canal de Ética Profissional",
     description: "Plataforma SaaS completa para gerenciar denúncias e feedbacks anônimos.",
     images: ["/og-image.png"],
   },

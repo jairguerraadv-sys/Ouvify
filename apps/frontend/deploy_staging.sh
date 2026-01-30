@@ -1,6 +1,6 @@
 #!/bin/bash
 # =============================================================================
-# DEPLOY FRONTEND PARA STAGING - Ouvy SaaS
+# DEPLOY FRONTEND PARA STAGING - Ouvify
 # Script para deploy automatizado no Vercel (staging)
 # =============================================================================
 
@@ -10,7 +10,7 @@ echo "🚀 Iniciando deploy do frontend para STAGING..."
 
 # Verificar se estamos no diretório do frontend
 if [ ! -f "package.json" ] || [ ! -d "app" ]; then
-    echo "❌ Erro: Execute este script do diretório ouvy_frontend"
+    echo "❌ Erro: Execute este script do diretório ouvify_frontend"
     exit 1
 fi
 

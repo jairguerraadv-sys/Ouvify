@@ -1,5 +1,5 @@
 """
-Billing Signals - Ouvy SaaS
+Billing Signals - Ouvify
 Sprint 4 - Feature 4.2: Planos & Trial
 
 Signals para:

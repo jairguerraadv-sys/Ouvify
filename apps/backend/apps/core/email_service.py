@@ -1,5 +1,5 @@
 """
-Serviço de Email centralizado para o Ouvy SaaS.
+Serviço de Email centralizado para o Ouvify.
 
 Suporta múltiplos provedores:
 - SendGrid
@@ -117,13 +117,13 @@ class EmailService:
         Returns:
             bool: True se enviado com sucesso
         """
-        subject = "🔐 Recuperação de Senha - Ouvy"
+        subject = "🔐 Recuperação de Senha - Ouvify"
         
         # Versão texto
         message = f"""
 Olá {user.first_name or user.username},
 
-Você solicitou a recuperação de senha da sua conta Ouvy.
+Você solicitou a recuperação de senha da sua conta Ouvify.
 
 Clique no link abaixo para criar uma nova senha:
 {reset_link}
@@ -134,7 +134,7 @@ Se você não solicitou esta recuperação, ignore este email.
 Sua conta permanece segura.
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
 ---
 Este é um email automático, não responda.
         """
@@ -155,7 +155,7 @@ Este é um email automático, não responda.
     <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e5e7eb; border-top: none;">
         <p style="font-size: 16px;">Olá <strong>{user.first_name or user.username}</strong>,</p>
         
-        <p style="font-size: 16px;">Você solicitou a recuperação de senha da sua conta Ouvy.</p>
+        <p style="font-size: 16px;">Você solicitou a recuperação de senha da sua conta Ouvify.</p>
         
         <div style="text-align: center; margin: 30px 0;">
             <a href="{reset_link}" 
@@ -182,7 +182,7 @@ Este é um email automático, não responda.
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 30px 0;">
         
         <p style="font-size: 12px; color: #9ca3af; text-align: center;">
-            Este é um email automático enviado pela plataforma Ouvy.<br>
+            Este é um email automático enviado pela plataforma Ouvify.<br>
             Por favor, não responda a este email.
         </p>
     </div>
@@ -219,7 +219,7 @@ Este é um email automático, não responda.
         message = f"""
 Olá {tenant.owner.first_name or tenant.nome},
 
-Um novo feedback foi registrado na sua plataforma Ouvy:
+Um novo feedback foi registrado na sua plataforma Ouvify:
 
 📋 Protocolo: {feedback.protocolo}
 📌 Tipo: {feedback.get_tipo_display()}
@@ -230,7 +230,7 @@ Acesse o painel para visualizar os detalhes:
 {settings.BASE_URL}/dashboard/feedbacks/{feedback.protocolo}
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
         """
         
         html_message = f"""
@@ -328,12 +328,12 @@ Atenciosamente,
         Returns:
             bool: True se enviado com sucesso
         """
-        subject = "🎉 Bem-vindo ao Ouvy!"
+        subject = "🎉 Bem-vindo ao Ouvify!"
         
         message = f"""
 Olá {user.first_name or user.username},
 
-Seja bem-vindo ao Ouvy! Sua conta foi criada com sucesso.
+Seja bem-vindo ao Ouvify! Sua conta foi criada com sucesso.
 
 🏢 Empresa: {tenant.nome}
 🌐 Subdomínio: {tenant.subdominio}
@@ -346,7 +346,7 @@ Próximos passos:
 Precisa de ajuda? Acesse nossa documentação ou entre em contato.
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
         """
         
         html_message = f"""
@@ -355,7 +355,7 @@ Equipe Ouvy
 <head><meta charset="UTF-8"></head>
 <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px; border-radius: 10px 10px 0 0; text-align: center;">
-        <h1 style="color: white; margin: 0;">🎉 Bem-vindo ao Ouvy!</h1>
+        <h1 style="color: white; margin: 0;">🎉 Bem-vindo ao Ouvify!</h1>
     </div>
     
     <div style="background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; border: 1px solid #e5e7eb;">

@@ -1,5 +1,5 @@
 /**
- * Dashboard Charts with Recharts - Ouvy SaaS
+ * Dashboard Charts with Recharts - Ouvify
  * Sprint 5 - Feature 5.1: Dashboard Melhorado
  * 
  * Gráficos avançados usando Recharts

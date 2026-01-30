@@ -1,5 +1,5 @@
 """
-Custom validators for Ouvy SaaS application.
+Custom validators for Ouvify application.
 Provides reusable validation logic for models and serializers.
 """
 from django.core.exceptions import ValidationError

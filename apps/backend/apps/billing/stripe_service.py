@@ -1,5 +1,5 @@
 """
-Stripe Service - Ouvy SaaS
+Stripe Service - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 
 Este módulo fornece funções utilitárias para integração com Stripe:

@@ -1,12 +1,12 @@
 # Prometheus Monitoring Configuration
 # ===================================
-# Este arquivo configura a coleta de métricas do Ouvy SaaS
+# Este arquivo configura a coleta de métricas do Ouvify
 
 global:
   scrape_interval: 15s       # Intervalo padrão de coleta
   evaluation_interval: 15s   # Intervalo de avaliação de regras
   external_labels:
-    monitor: 'ouvy-saas'
+    monitor: 'ouvify-saas'
     environment: '${ENVIRONMENT:-development}'
 
 # Alertmanager configuration
@@ -31,14 +31,14 @@ scrape_configs:
   # Django Backend (via django-prometheus)
   - job_name: 'django'
     static_configs:
-      - targets: ['ouvy-backend:8000']
+      - targets: ['ouvify-backend:8000']
     metrics_path: /metrics
     scrape_interval: 10s
 
   # Next.js Frontend (custom metrics endpoint)
   - job_name: 'nextjs'
     static_configs:
-      - targets: ['ouvy-frontend:3000']
+      - targets: ['ouvify-frontend:3000']
     metrics_path: /api/metrics
     scrape_interval: 30s
 

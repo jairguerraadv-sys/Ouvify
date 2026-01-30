@@ -1,5 +1,5 @@
 """
-Webhook URLs - Ouvy SaaS
+Webhook URLs - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 """
 from django.urls import path, include

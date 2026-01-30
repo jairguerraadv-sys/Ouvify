@@ -4,11 +4,11 @@ import { Shield, Eye, Lock, Database, UserCheck, FileText } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Política de Privacidade | Ouvy - Plataforma de Feedback',
-  description: 'Saiba como a Ouvy coleta, usa e protege seus dados. Conformidade total com LGPD. Transparência e segurança em primeiro lugar.',
+  title: 'Política de Privacidade | Ouvify - Plataforma de Feedback',
+  description: 'Saiba como a Ouvify coleta, usa e protege seus dados. Conformidade total com LGPD. Transparência e segurança em primeiro lugar.',
   openGraph: {
-    title: 'Política de Privacidade | Ouvy',
-    description: 'Como protegemos seus dados na plataforma Ouvy - Conformidade LGPD',
+    title: 'Política de Privacidade | Ouvify',
+    description: 'Como protegemos seus dados na plataforma Ouvify - Conformidade LGPD',
   },
 };
 
@@ -35,7 +35,7 @@ export default function PrivacidadePage() {
                 Última atualização: 14 de janeiro de 2026
               </p>
               <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                No Ouvy, levamos sua privacidade a sério. Esta política descreve como coletamos, 
+                No Ouvify, levamos sua privacidade a sério. Esta política descreve como coletamos, 
                 usamos, armazenamos e protegemos seus dados pessoais.
               </p>
             </div>
@@ -289,7 +289,7 @@ export default function PrivacidadePage() {
                   9. Menores de Idade
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  O Ouvy não coleta intencionalmente dados de menores de 18 anos. Se identificarmos 
+                  O Ouvify não coleta intencionalmente dados de menores de 18 anos. Se identificarmos 
                   dados de menores, tomaremos medidas para deletá-los.
                 </p>
               </section>

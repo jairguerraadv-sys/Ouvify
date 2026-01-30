@@ -90,11 +90,11 @@ def send_feedback_notification(self, feedback_id: int, event_type: str):
         # Templates de email por evento
         templates = {
             'created': {
-                'subject': f'[Ouvy] Novo feedback recebido - {feedback.protocolo}',
+                'subject': f'[Ouvify] Novo feedback recebido - {feedback.protocolo}',
                 'message': f"""
 Olá,
 
-Um novo feedback foi recebido na sua plataforma Ouvy.
+Um novo feedback foi recebido na sua plataforma Ouvify.
 
 Protocolo: {feedback.protocolo}
 Tipo: {feedback.get_tipo_display()}
@@ -103,11 +103,11 @@ Título: {feedback.titulo}
 Acesse o dashboard para mais detalhes.
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
                 """.strip()
             },
             'updated': {
-                'subject': f'[Ouvy] Feedback atualizado - {feedback.protocolo}',
+                'subject': f'[Ouvify] Feedback atualizado - {feedback.protocolo}',
                 'message': f"""
 Olá,
 
@@ -118,11 +118,11 @@ Novo status: {feedback.get_status_display()}
 Acesse o dashboard para mais detalhes.
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
                 """.strip()
             },
             'resolved': {
-                'subject': f'[Ouvy] Feedback resolvido - {feedback.protocolo}',
+                'subject': f'[Ouvify] Feedback resolvido - {feedback.protocolo}',
                 'message': f"""
 Olá,
 
@@ -134,7 +134,7 @@ Título: {feedback.titulo}
 Parabéns pela resolução!
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
                 """.strip()
             }
         }
@@ -347,7 +347,7 @@ def send_daily_digest():
                 
                 if admin_email:
                     send_email_async.delay(  # type: ignore[attr-defined]
-                        subject=f'[Ouvy] Resumo diário - {tenant.nome}',
+                        subject=f'[Ouvify] Resumo diário - {tenant.nome}',
                         message=f"""
 Olá,
 
@@ -358,7 +358,7 @@ Aqui está o resumo de atividades de ontem:
 Acesse o dashboard para mais detalhes.
 
 Atenciosamente,
-Equipe Ouvy
+Equipe Ouvify
                         """.strip(),
                         recipient_list=[admin_email]
                     )

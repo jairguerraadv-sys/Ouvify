@@ -1,8 +1,8 @@
-# 🚀 Guia de Consolidação do Monorepo - Ouvy SaaS
+# 🚀 Guia de Consolidação do Monorepo - Ouvify
 
 ## 📋 Visão Geral
 
-Este guia fornece o passo a passo completo para consolidar a estrutura do projeto Ouvy SaaS de uma estrutura dispersa para um monorepo bem organizado.
+Este guia fornece o passo a passo completo para consolidar a estrutura do projeto Ouvify de uma estrutura dispersa para um monorepo bem organizado.
 
 ## 🎯 Objetivos
 

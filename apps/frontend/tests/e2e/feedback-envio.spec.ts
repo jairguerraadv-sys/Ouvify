@@ -11,7 +11,7 @@ test.describe('Feedback Submission Flow', () => {
     await page.goto('/enviar');
 
     // Verificar se a página carregou
-    await expect(page).toHaveTitle(/Ouvy/);
+    await expect(page).toHaveTitle(/Ouvify/);
     await expect(page.locator('h2')).toContainText('Canal de Ouvidoria');
 
     // Preencher formulário

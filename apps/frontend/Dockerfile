@@ -1,5 +1,5 @@
 # ============================================
-# Ouvy SaaS - Frontend Production Dockerfile
+# Ouvify - Frontend Production Dockerfile
 # Multi-stage build for optimized Next.js image
 # ============================================
 

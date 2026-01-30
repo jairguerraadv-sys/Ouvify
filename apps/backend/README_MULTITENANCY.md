@@ -1,4 +1,4 @@
-# Ouvy - Sistema Multi-tenant SaaS
+# Ouvify - Sistema Multi-tenant SaaS
 
 ## ✅ Estrutura Criada
 
@@ -25,7 +25,7 @@ apps/
 ### 1. Aplicar Migrações
 
 ```bash
-cd /Users/jairneto/Desktop/Ouvy/ouvy_saas/ouvy_saas
+cd /Users/jairneto/Desktop/ouvify_saas/ouvy_saas
 python manage.py makemigrations
 python manage.py migrate
 ```

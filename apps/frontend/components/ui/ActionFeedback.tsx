@@ -1,5 +1,5 @@
 /**
- * ActionFeedback Component - Ouvy SaaS
+ * ActionFeedback Component - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Componentes de feedback visual para ações do usuário

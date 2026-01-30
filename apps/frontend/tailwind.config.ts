@@ -17,7 +17,7 @@ const config: Config = {
     },
     extend: {
       colors: {
-        // 🎨 Ouvy Brand Colors - Unified System (NO brand- prefix)
+        // 🎨 Ouvify Brand Colors - Unified System (NO brand- prefix)
         primary: {
           DEFAULT: "#3B82F6",
           foreground: "#FFFFFF",

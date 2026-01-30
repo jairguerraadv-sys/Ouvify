@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Script de Teste de Integração Frontend + Backend
-# Ouvy SaaS - 14 de Janeiro de 2026
+# Ouvify - 14 de Janeiro de 2026
 
 echo "🧪 TESTE DE INTEGRAÇÃO FRONTEND + BACKEND"
 echo "=========================================="

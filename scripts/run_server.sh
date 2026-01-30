@@ -15,7 +15,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Navegar para o diretório correto
-cd "$(dirname "$0")/ouvy_saas"
+cd "$(dirname "$0")/ouvify_saas"
 
 echo -e "${BLUE}📍 Diretório atual:${NC} $(pwd)"
 echo ""
@@ -38,7 +38,7 @@ if [ -f "../check_env.py" ]; then
         exit 1
     fi
     
-    cd ouvy_saas
+    cd ouvify_saas
     echo ""
 fi
 
@@ -52,4 +52,4 @@ echo ""
 echo -e "${YELLOW}Pressione Ctrl+C para parar${NC}"
 echo ""
 
-/Users/jairneto/Desktop/ouvy_saas/venv/bin/python manage.py runserver
+/Users/jairneto/Desktop/ouvify_saas/venv/bin/python manage.py runserver

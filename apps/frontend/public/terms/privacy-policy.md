@@ -1,4 +1,4 @@
-# Política de Privacidade - Ouvy
+# Política de Privacidade - Ouvify
 
 ## 1. Informações que Coletamos
 

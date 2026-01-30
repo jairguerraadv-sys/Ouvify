@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Documentação | Recursos | Ouvy',
-  description: 'Guias, tutoriais e referência da API da plataforma Ouvy',
+  title: 'Documentação | Recursos | Ouvify',
+  description: 'Guias, tutoriais e referência da API da plataforma Ouvify',
 };
 
 export default function DocumentacaoPage() {
@@ -121,7 +121,7 @@ export default function DocumentacaoPage() {
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Integrando com sua Aplicação</h3>
-                <p className="text-gray-600 mb-4">Aprenda a integrar o Ouvy via API</p>
+                <p className="text-gray-600 mb-4">Aprenda a integrar o Ouvify via API</p>
                 <Link href="/docs/videos/integracao" className="text-secondary-600 font-medium hover:underline">
                   Assistir agora →
                 </Link>

@@ -1,5 +1,5 @@
 """
-Webhook Signals - Ouvy SaaS
+Webhook Signals - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 
 Signals para disparar webhooks automaticamente

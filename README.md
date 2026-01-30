@@ -1,8 +1,8 @@
-# 📚 Ouvy SaaS - Documentação Completa
+# 📚 Ouvify - Documentação Completa
 
 <div align="center">
 
-![Ouvy Logo](apps/frontend/public/logo.svg)
+![Ouvify Logo](apps/frontend/public/logo.svg)
 
 **Plataforma SaaS White Label para Canais de Feedback**
 
@@ -33,7 +33,7 @@
 
 ## 🎯 Sobre o Projeto
 
-O **Ouvy** é uma plataforma SaaS (Software as a Service) que permite empresas criarem seus próprios canais de comunicação para receber feedback de usuários, incluindo:
+O **Ouvify** é uma plataforma SaaS (Software as a Service) que permite empresas criarem seus próprios canais de comunicação para receber feedback de usuários, incluindo:
 
 - 🚨 **Denúncias** - Canal seguro e anônimo
 - 💬 **Reclamações** - Gestão de insatisfações
@@ -409,8 +409,8 @@ Este projeto é proprietário. Todos os direitos reservados.
 ## 👥 Time
 
 - **Desenvolvimento**: [Jair Guerra](https://github.com/jairguerraadv-sys)
-- **Design**: [Ouvy Team]
-- **Product**: [Ouvy Team]
+- **Design**: [Ouvify Team]
+- **Product**: [Ouvify Team]
 
 ---
 
@@ -424,7 +424,7 @@ Este projeto é proprietário. Todos os direitos reservados.
 
 <div align="center">
 
-**Feito com ❤️ pela equipe Ouvy**
+**Feito com ❤️ pela equipe Ouvify**
 
 [⬆ Voltar ao topo](#ouvy-saas---documentação-completa)
 

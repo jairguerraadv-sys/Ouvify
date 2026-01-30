@@ -1,5 +1,5 @@
 """
-Webhook Views - Ouvy SaaS
+Webhook Views - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 """
 from datetime import timedelta
@@ -69,7 +69,7 @@ class WebhookEndpointViewSet(viewsets.ModelViewSet):
             event_type='test',
             payload={
                 'tenant_id': endpoint.client_id,
-                'message': 'Este é um evento de teste do Ouvy',
+                'message': 'Este é um evento de teste do Ouvify',
                 'timestamp': timezone.now().isoformat(),
             },
             source_model='Test',

@@ -1,5 +1,5 @@
 """
-Billing URLs - Ouvy SaaS
+Billing URLs - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 """
 from django.urls import path, include

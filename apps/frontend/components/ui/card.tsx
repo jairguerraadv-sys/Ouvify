@@ -2,7 +2,7 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Cards with Ouvy branding - Blue/Purple theme
+// 🎨 Design System: Cards with Ouvify branding - Blue/Purple theme
 const Card = React.memo(React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { 

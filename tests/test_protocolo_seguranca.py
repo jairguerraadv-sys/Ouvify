@@ -8,7 +8,7 @@ validando distribuição estatística, unicidade e resistência a padrões previ
 Execução:
     python test_protocolo_seguranca.py
 
-Autor: Tech Lead - Ouvy SaaS
+Autor: Tech Lead - Ouvify
 Data: 2025
 """
 
@@ -273,7 +273,7 @@ def main():
     print("🛡️  TESTE DE SEGURANÇA DO SISTEMA DE PROTOCOLOS")
     print("=" * 50)
     print("\nEste script valida a segurança criptográfica dos")
-    print("protocolos gerados pelo sistema Ouvy SaaS.\n")
+    print("protocolos gerados pelo sistema Ouvify.\n")
     
     tester = ProtocoloSecurityTester(num_samples=1000)
     

@@ -1,5 +1,5 @@
 mode: 'agent'
-description: 'Auditoria completa e correção autônoma do projeto Ouvy SaaS'
+description: 'Auditoria completa e correção autônoma do projeto Ouvify'
 
 # CONTEXTO DO PROJETO
 Você é um Arquiteto de Software Sênior responsável pela auditoria final do Ouvy, uma plataforma SaaS White Label de feedback de usuários (denúncias, reclamações, sugestões, elogios) com sistema de rastreamento por código.

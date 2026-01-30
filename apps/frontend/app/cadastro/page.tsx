@@ -250,7 +250,7 @@ export default function CadastroPage() {
               Conta Criada!
             </h2>
             <p className="text-secondary-600">
-              Bem-vindo ao <span className="text-gradient-primary font-semibold">Ouvy</span>, {formData.nome.split(' ')[0]}!
+              Bem-vindo ao <span className="text-gradient-primary font-semibold">Ouvify</span>, {formData.nome.split(' ')[0]}!
             </p>
           </CardHeader>
           <div className="p-6">

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ouvy_saas
+cd ouvify_saas
 
 echo "========== INÍCIO DO SCRIPT =========="
 echo "🔄 Executando migrações..."
@@ -15,7 +15,7 @@ django.setup()
 from django.contrib.auth import get_user_model
 User = get_user_model()
 if not User.objects.filter(username='admin').exists():
-    User.objects.create_superuser('admin', 'admin@ouvy.com', 'Admin@Ouvy2026Temp!')
+    User.objects.create_superuser('admin', 'admin@ouvify.com', 'Admin@Ouvy2026Temp!')
     print('✅ Superusuário criado!')
 else:
     print('✅ Superusuário já existe!')

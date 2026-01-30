@@ -5,7 +5,7 @@
 global:
   # Configuração de SMTP para envio de emails
   smtp_smarthost: '${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}'
-  smtp_from: '${SMTP_FROM:-alertas@ouvy.com.br}'
+  smtp_from: '${SMTP_FROM:-alertas@ouvify.com.br}'
   smtp_auth_username: '${SMTP_USER}'
   smtp_auth_password: '${SMTP_PASSWORD}'
   smtp_require_tls: true
@@ -58,7 +58,7 @@ receivers:
   # Receptor padrão (email)
   - name: 'default-receiver'
     email_configs:
-      - to: '${ALERT_EMAIL:-devops@ouvy.com.br}'
+      - to: '${ALERT_EMAIL:-devops@ouvify.com.br}'
         send_resolved: true
         headers:
           Subject: '[OUVY] {{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
@@ -78,10 +78,10 @@ receivers:
   # Alertas críticos (email + Slack)
   - name: 'critical-alerts'
     email_configs:
-      - to: '${CRITICAL_ALERT_EMAIL:-oncall@ouvy.com.br}'
+      - to: '${CRITICAL_ALERT_EMAIL:-oncall@ouvify.com.br}'
         send_resolved: true
     slack_configs:
-      - channel: '#ouvy-alerts'
+      - channel: '#ouvify-alerts'
         send_resolved: true
         title: '{{ if eq .Status "firing" }}🚨{{ else }}✅{{ end }} {{ .CommonLabels.alertname }}'
         text: |
@@ -99,10 +99,10 @@ receivers:
   # Alertas de segurança
   - name: 'security-alerts'
     email_configs:
-      - to: '${SECURITY_EMAIL:-security@ouvy.com.br}'
+      - to: '${SECURITY_EMAIL:-security@ouvify.com.br}'
         send_resolved: true
     slack_configs:
-      - channel: '#ouvy-security'
+      - channel: '#ouvify-security'
         send_resolved: true
         color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
         title: '🔐 {{ .CommonLabels.alertname }}'
@@ -115,7 +115,7 @@ receivers:
   # Alertas de banco de dados
   - name: 'database-alerts'
     email_configs:
-      - to: '${DBA_EMAIL:-dba@ouvy.com.br}'
+      - to: '${DBA_EMAIL:-dba@ouvify.com.br}'
         send_resolved: true
 
 # Inibição de alertas (evita flood)

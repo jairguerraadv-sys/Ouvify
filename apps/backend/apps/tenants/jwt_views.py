@@ -1,5 +1,5 @@
 """
-JWT Views Customizadas para Ouvy SaaS
+JWT Views Customizadas para Ouvify
 Adiciona dados extras do usuário e tenant aos tokens JWT
 """
 

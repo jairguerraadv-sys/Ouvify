@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Termos de Uso | Ouvy - Plataforma de Feedback',
-  description: 'Leia os Termos de Uso da plataforma Ouvy. Entenda seus direitos e responsabilidades ao usar nosso serviço de gestão de feedbacks.',
+  title: 'Termos de Uso | Ouvify - Plataforma de Feedback',
+  description: 'Leia os Termos de Uso da plataforma Ouvify. Entenda seus direitos e responsabilidades ao usar nosso serviço de gestão de feedbacks.',
   openGraph: {
-    title: 'Termos de Uso | Ouvy',
-    description: 'Termos e condições de uso da plataforma Ouvy',
+    title: 'Termos de Uso | Ouvify',
+    description: 'Termos e condições de uso da plataforma Ouvify',
   },
 };
 
@@ -38,12 +38,12 @@ export default function TermosPage() {
                   1. Aceitação dos Termos
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Ao acessar e usar a plataforma Ouvy (&quot;Serviço&quot;), você concorda em cumprir e 
+                  Ao acessar e usar a plataforma Ouvify (&quot;Serviço&quot;), você concorda em cumprir e 
                   estar vinculado a estes Termos de Uso. Se você não concordar com qualquer parte 
                   destes termos, não deverá usar nosso Serviço.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
-                  O Ouvy é uma plataforma SaaS (Software as a Service) que fornece canais de 
+                  O Ouvify é uma plataforma SaaS (Software as a Service) que fornece canais de 
                   comunicação para feedback de usuários, incluindo denúncias, reclamações, 
                   sugestões e elogios, com sistema de rastreamento de interações.
                 </p>
@@ -55,7 +55,7 @@ export default function TermosPage() {
                   2. Definições
                 </h2>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                  <li><strong>Ouvy:</strong> A plataforma e todos os seus serviços</li>
+                  <li><strong>Ouvify:</strong> A plataforma e todos os seus serviços</li>
                   <li><strong>Cliente:</strong> Empresa ou organização que contrata o serviço</li>
                   <li><strong>Usuário Final:</strong> Pessoa que envia feedbacks através da plataforma</li>
                   <li><strong>Feedback:</strong> Qualquer comunicação enviada através da plataforma</li>
@@ -69,7 +69,7 @@ export default function TermosPage() {
                   3. Cadastro e Conta
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Para usar o Ouvy como Cliente, você deve criar uma conta fornecendo informações 
+                  Para usar o Ouvify como Cliente, você deve criar uma conta fornecendo informações 
                   precisas e completas. Você é responsável por:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
@@ -86,7 +86,7 @@ export default function TermosPage() {
                   4. Planos e Pagamentos
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  O Ouvy oferece diferentes planos de assinatura mensal. Os Clientes concordam em:
+                  O Ouvify oferece diferentes planos de assinatura mensal. Os Clientes concordam em:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Pagar as taxas de assinatura conforme o plano escolhido</li>
@@ -103,7 +103,7 @@ export default function TermosPage() {
                   5. Uso Aceitável
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  Ao usar o Ouvy, você concorda em NÃO:
+                  Ao usar o Ouvify, você concorda em NÃO:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Violar qualquer lei ou regulamento aplicável</li>
@@ -121,12 +121,12 @@ export default function TermosPage() {
                   6. Propriedade Intelectual
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  O Ouvy e todo o seu conteúdo (código, design, marca, logo) são propriedade 
+                  O Ouvify e todo o seu conteúdo (código, design, marca, logo) são propriedade 
                   exclusiva da empresa e protegidos por leis de propriedade intelectual.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   Os Clientes mantêm todos os direitos sobre os feedbacks e dados coletados 
-                  através da plataforma. O Ouvy não reivindica propriedade sobre o conteúdo 
+                  através da plataforma. O Ouvify não reivindica propriedade sobre o conteúdo 
                   dos Clientes.
                 </p>
               </section>
@@ -141,7 +141,7 @@ export default function TermosPage() {
                   <Link href="/privacidade" className="text-primary hover:underline font-semibold">
                     Política de Privacidade
                   </Link>
-                  . Ao usar o Ouvy, você concorda com essas práticas.
+                  . Ao usar o Ouvify, você concorda com essas práticas.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">
                   Estamos em conformidade com a LGPD (Lei Geral de Proteção de Dados) e GDPR 
@@ -170,7 +170,7 @@ export default function TermosPage() {
                   9. Limitação de Responsabilidade
                 </h2>
                 <p className="text-muted-foreground leading-relaxed">
-                  O Ouvy é fornecido &quot;como está&quot;, sem garantias de qualquer tipo. Não 
+                  O Ouvify é fornecido &quot;como está&quot;, sem garantias de qualquer tipo. Não 
                   garantimos que o serviço será ininterrupto, seguro ou livre de erros.
                 </p>
                 <p className="text-muted-foreground leading-relaxed">

@@ -1,5 +1,5 @@
 """
-Fixtures globais para testes pytest do Ouvy SaaS
+Fixtures globais para testes pytest do Ouvify
 """
 import os
 from pathlib import Path

@@ -165,10 +165,10 @@ export default function DemoPage() {
               <span className="text-sm font-medium text-primary">Demonstração Gratuita</span>
             </div>
             <H1 className="mb-6 text-primary">
-              Veja o Ouvy <span className="text-secondary">em Ação</span>
+              Veja o Ouvify <span className="text-secondary">em Ação</span>
             </H1>
             <Paragraph className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Agende uma demonstração personalizada e descubra como o Ouvy pode transformar a gestão de feedbacks da sua empresa
+              Agende uma demonstração personalizada e descubra como o Ouvify pode transformar a gestão de feedbacks da sua empresa
             </Paragraph>
           </div>
 

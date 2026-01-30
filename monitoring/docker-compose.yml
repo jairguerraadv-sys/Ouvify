@@ -8,7 +8,7 @@ services:
   # Prometheus - Coleta e armazenamento de métricas
   prometheus:
     image: prom/prometheus:v2.49.0
-    container_name: ouvy-prometheus
+    container_name: ouvify-prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - ./prometheus/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
@@ -23,13 +23,13 @@ services:
       - "9090:9090"
     networks:
       - monitoring
-      - ouvy-network
+      - ouvify-network
     restart: unless-stopped
 
   # Grafana - Visualização de métricas
   grafana:
     image: grafana/grafana:10.3.1
-    container_name: ouvy-grafana
+    container_name: ouvify-grafana
     volumes:
       - grafana_data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
@@ -51,7 +51,7 @@ services:
   # Alertmanager - Gerenciamento de alertas
   alertmanager:
     image: prom/alertmanager:v0.27.0
-    container_name: ouvy-alertmanager
+    container_name: ouvify-alertmanager
     volumes:
       - ./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
@@ -67,7 +67,7 @@ services:
   # Node Exporter - Métricas do sistema
   node-exporter:
     image: prom/node-exporter:v1.7.0
-    container_name: ouvy-node-exporter
+    container_name: ouvify-node-exporter
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -85,33 +85,33 @@ services:
   # Redis Exporter
   redis-exporter:
     image: oliver006/redis_exporter:v1.57.0
-    container_name: ouvy-redis-exporter
+    container_name: ouvify-redis-exporter
     environment:
       - REDIS_ADDR=${REDIS_URL:-redis://redis:6379}
     ports:
       - "9121:9121"
     networks:
       - monitoring
-      - ouvy-network
+      - ouvify-network
     restart: unless-stopped
 
   # PostgreSQL Exporter
   postgres-exporter:
     image: prometheuscommunity/postgres-exporter:v0.15.0
-    container_name: ouvy-postgres-exporter
+    container_name: ouvify-postgres-exporter
     environment:
-      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-ouvy_db}?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-ouvify_db}?sslmode=disable
     ports:
       - "9187:9187"
     networks:
       - monitoring
-      - ouvy-network
+      - ouvify-network
     restart: unless-stopped
 
 networks:
   monitoring:
     driver: bridge
-  ouvy-network:
+  ouvify-network:
     external: true
 
 volumes:

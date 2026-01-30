@@ -59,7 +59,7 @@ echo ""
 
 # 5. Verificar se há migrações pendentes
 echo "🗄️  Verificando migrações..."
-cd ouvy_saas
+cd ouvify_saas
 if python3 manage.py showmigrations 2>/dev/null | grep -q "\[ \]"; then
     echo -e "${YELLOW}⚠️  Há migrações não aplicadas${NC}"
     echo "Execute: python manage.py migrate"
@@ -105,7 +105,7 @@ echo ""
 
 # 9. Verificar estrutura de apps Django
 echo "🏗️  Verificando estrutura Django..."
-APPS=("ouvy_saas/apps/core" "ouvy_saas/apps/tenants" "ouvy_saas/apps/feedbacks")
+APPS=("ouvify_saas/apps/core" "ouvify_saas/apps/tenants" "ouvify_saas/apps/feedbacks")
 for app in "${APPS[@]}"; do
     if [ -d "$app" ]; then
         echo -e "${GREEN}✅ $app${NC}"
@@ -118,10 +118,10 @@ echo ""
 
 # 10. Verificar estrutura Next.js
 echo "⚛️  Verificando estrutura Next.js..."
-if [ -d "ouvy_frontend/app" ]; then
-    echo -e "${GREEN}✅ ouvy_frontend/app${NC}"
+if [ -d "ouvify_frontend/app" ]; then
+    echo -e "${GREEN}✅ ouvify_frontend/app${NC}"
 else
-    echo -e "${RED}❌ ouvy_frontend/app não encontrado${NC}"
+    echo -e "${RED}❌ ouvify_frontend/app não encontrado${NC}"
     PROBLEMS=$((PROBLEMS + 1))
 fi
 echo ""

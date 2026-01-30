@@ -43,10 +43,10 @@ echo -e "\n${YELLOW}🔄 Atualizando referências...${NC}"
 # docker-compose.yml
 if [ -f "docker-compose.yml" ]; then
     echo "  Atualizando docker-compose.yml..."
-    sed -i.tmp 's|context: ./ouvy_saas|context: ./apps/backend|g' docker-compose.yml
-    sed -i.tmp 's|context: ./ouvy_frontend|context: ./apps/frontend|g' docker-compose.yml
-    sed -i.tmp 's|- ./ouvy_saas:/app|- ./apps/backend:/app|g' docker-compose.yml
-    sed -i.tmp 's|- ./ouvy_frontend:/app|- ./apps/frontend:/app|g' docker-compose.yml
+    sed -i.tmp 's|context: ./ouvify_saas|context: ./apps/backend|g' docker-compose.yml
+    sed -i.tmp 's|context: ./ouvify_frontend|context: ./apps/frontend|g' docker-compose.yml
+    sed -i.tmp 's|- ./ouvify_saas:/app|- ./apps/backend:/app|g' docker-compose.yml
+    sed -i.tmp 's|- ./ouvify_frontend:/app|- ./apps/frontend:/app|g' docker-compose.yml
     rm -f docker-compose.yml.tmp
     echo -e "    ${GREEN}✓${NC}"
 fi
@@ -54,8 +54,8 @@ fi
 # Makefile
 if [ -f "Makefile" ]; then
     echo "  Atualizando Makefile..."
-    sed -i.tmp 's|ouvy_saas|apps/backend|g' Makefile
-    sed -i.tmp 's|ouvy_frontend|apps/frontend|g' Makefile
+    sed -i.tmp 's|ouvify_saas|apps/backend|g' Makefile
+    sed -i.tmp 's|ouvify_frontend|apps/frontend|g' Makefile
     rm -f Makefile.tmp
     echo -e "    ${GREEN}✓${NC}"
 fi
@@ -63,8 +63,8 @@ fi
 # README.md
 if [ -f "README.md" ]; then
     echo "  Atualizando README.md..."
-    sed -i.tmp 's|ouvy_saas/|apps/backend/|g' README.md
-    sed -i.tmp 's|ouvy_frontend/|apps/frontend/|g' README.md
+    sed -i.tmp 's|ouvify_saas/|apps/backend/|g' README.md
+    sed -i.tmp 's|ouvify_frontend/|apps/frontend/|g' README.md
     rm -f README.md.tmp
     echo -e "    ${GREEN}✓${NC}"
 fi
@@ -72,8 +72,8 @@ fi
 # GitHub workflows
 if [ -d ".github/workflows" ]; then
     echo "  Atualizando workflows..."
-    find .github/workflows -name "*.yml" -exec sed -i.tmp 's|ouvy_saas|apps/backend|g' {} \;
-    find .github/workflows -name "*.yml" -exec sed -i.tmp 's|ouvy_frontend|apps/frontend|g' {} \;
+    find .github/workflows -name "*.yml" -exec sed -i.tmp 's|ouvify_saas|apps/backend|g' {} \;
+    find .github/workflows -name "*.yml" -exec sed -i.tmp 's|ouvify_frontend|apps/frontend|g' {} \;
     find .github/workflows -name "*.tmp" -delete
     echo -e "    ${GREEN}✓${NC}"
 fi

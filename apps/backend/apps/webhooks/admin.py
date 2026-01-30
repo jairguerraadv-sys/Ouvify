@@ -1,5 +1,5 @@
 """
-Webhook Admin - Ouvy SaaS
+Webhook Admin - Ouvify
 Sprint 5 - Feature 5.2: Integrações (Webhooks)
 """
 from django.contrib import admin

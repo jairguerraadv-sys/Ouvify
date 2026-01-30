@@ -1,4 +1,4 @@
-# 📋 Relatório de Auditoria - Estrutura do Projeto Ouvy
+# 📋 Relatório de Auditoria - Estrutura do Projeto Ouvify
 **Data:** 23 de Janeiro de 2026  
 **Auditor:** GitHub Copilot (Claude Sonnet 4.5)
 

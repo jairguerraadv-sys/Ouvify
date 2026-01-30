@@ -1,4 +1,4 @@
-# 📘 Guia de Acessibilidade - Ouvy
+# 📘 Guia de Acessibilidade - Ouvify
 
 > **Conformidade:** WCAG 2.1 Nível AA  
 > **Última atualização:** Janeiro 2026
@@ -16,7 +16,7 @@
 
 ## 🎯 Visão Geral
 
-O Ouvy foi desenvolvido seguindo as diretrizes **WCAG 2.1 Nível AA** para garantir que todos os usuários, incluindo pessoas com deficiências, possam utilizar a plataforma de forma eficiente.
+O Ouvify foi desenvolvido seguindo as diretrizes **WCAG 2.1 Nível AA** para garantir que todos os usuários, incluindo pessoas com deficiências, possam utilizar a plataforma de forma eficiente.
 
 ### Princípios POUR
 
@@ -469,7 +469,7 @@ export function FeedbackList() {
 | AA | 4.5:1 | 3:1 | 3:1 |
 | AAA | 7:1 | 4.5:1 | - |
 
-### Cores do Ouvy
+### Cores do Ouvify
 
 | Cor | Hex | Contraste com Branco |
 |-----|-----|---------------------|

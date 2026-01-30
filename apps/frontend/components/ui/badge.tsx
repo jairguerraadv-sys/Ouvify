@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
-// 🎨 Design System: Badges with Ouvy branding
+// 🎨 Design System: Badges with Ouvify branding
 const badgeVariants = cva(
   "inline-flex items-center gap-1 rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2",
   {

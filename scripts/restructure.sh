@@ -9,8 +9,8 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Verificar se estamos na raiz do projeto
-if [ ! -f "package.json" ] || [ ! -d "ouvy_saas" ] || [ ! -d "ouvy_frontend" ]; then
-    echo -e "${RED}❌ Execute este script da raiz do projeto ouvy_saas${NC}"
+if [ ! -f "package.json" ] || [ ! -d "ouvify_saas" ] || [ ! -d "ouvify_frontend" ]; then
+    echo -e "${RED}❌ Execute este script da raiz do projeto ouvify_saas${NC}"
     exit 1
 fi
 
@@ -29,10 +29,10 @@ echo -e "${GREEN}✓ Estrutura criada${NC}"
 
 # Mover backend
 echo -e "\n${YELLOW}🔄 Movendo backend (Django)...${NC}"
-if [ -d "ouvy_saas" ]; then
+if [ -d "ouvify_saas" ]; then
     if [ ! "$(ls -A apps/backend 2>/dev/null)" ]; then
-        echo "  Copiando ouvy_saas → apps/backend..."
-        rsync -a --info=progress2 ouvy_saas/ apps/backend/ \
+        echo "  Copiando ouvify_saas → apps/backend..."
+        rsync -a --info=progress2 ouvify_saas/ apps/backend/ \
             --exclude='__pycache__' \
             --exclude='*.pyc' \
             --exclude='node_modules' \
@@ -46,15 +46,15 @@ if [ -d "ouvy_saas" ]; then
         echo -e "${YELLOW}⚠️  apps/backend não está vazio, pulando...${NC}"
     fi
 else
-    echo -e "${RED}❌ ouvy_saas não encontrado${NC}"
+    echo -e "${RED}❌ ouvify_saas não encontrado${NC}"
 fi
 
 # Mover frontend
 echo -e "\n${YELLOW}🔄 Movendo frontend (Next.js)...${NC}"
-if [ -d "ouvy_frontend" ]; then
+if [ -d "ouvify_frontend" ]; then
     if [ ! "$(ls -A apps/frontend 2>/dev/null)" ]; then
-        echo "  Copiando ouvy_frontend → apps/frontend..."
-        rsync -a --info=progress2 ouvy_frontend/ apps/frontend/ \
+        echo "  Copiando ouvify_frontend → apps/frontend..."
+        rsync -a --info=progress2 ouvify_frontend/ apps/frontend/ \
             --exclude='node_modules' \
             --exclude='.next' \
             --exclude='.git' \
@@ -65,7 +65,7 @@ if [ -d "ouvy_frontend" ]; then
         echo -e "${YELLOW}⚠️  apps/frontend não está vazio, pulando...${NC}"
     fi
 else
-    echo -e "${RED}❌ ouvy_frontend não encontrado${NC}"
+    echo -e "${RED}❌ ouvify_frontend não encontrado${NC}"
 fi
 
 # Mover documentação
@@ -88,10 +88,10 @@ echo -e "${GREEN}🎉 Reestruturação concluída!${NC}"
 echo -e "${GREEN}================================${NC}"
 echo ""
 echo -e "${YELLOW}⚠️  IMPORTANTE:${NC}"
-echo "1. NÃO delete ouvy_saas e ouvy_frontend ainda"
+echo "1. NÃO delete ouvify_saas e ouvify_frontend ainda"
 echo "2. Valide se tudo foi copiado corretamente:"
-echo "   diff -r ouvy_saas apps/backend"
-echo "   diff -r ouvy_frontend apps/frontend"
+echo "   diff -r ouvify_saas apps/backend"
+echo "   diff -r ouvify_frontend apps/frontend"
 echo "3. Execute: scripts/update-references.sh"
 echo "4. Teste com: npm install && npm run dev"
 echo "5. Após validação total, execute: scripts/finalize-migration.sh"

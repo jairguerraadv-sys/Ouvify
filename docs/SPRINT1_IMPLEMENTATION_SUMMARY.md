@@ -206,7 +206,7 @@ class TeamInvitationViewSet(PermissionRequiredMixin, TenantFilterMixin, viewsets
         
         try:
             send_mail(
-                subject=f"Convite para {invitation.client.nome} no Ouvy",
+                subject=f"Convite para {invitation.client.nome} no Ouvify",
                 message=f"Você foi convidado para fazer parte da equipe.\n\nAcesse: {invite_url}",
                 from_email='noreply@ouvy.com',
                 recipient_list=[invitation.email],
@@ -315,7 +315,7 @@ Criar `apps/backend/templates/emails/team_invitation.html`:
             <h1>🎉 Você foi convidado!</h1>
         </div>
         <div class="content">
-            <p><strong>{{ invitation.invited_by.get_full_name }}</strong> convidou você para fazer parte da equipe <strong>{{ invitation.client.nome }}</strong> no Ouvy.</p>
+            <p><strong>{{ invitation.invited_by.get_full_name }}</strong> convidou você para fazer parte da equipe <strong>{{ invitation.client.nome }}</strong> no Ouvify.</p>
             
             <p>Cargo: <strong>{{ invitation.get_role_display }}</strong></p>
             
@@ -336,7 +336,7 @@ Criar `apps/backend/templates/emails/team_invitation.html`:
             </p>
         </div>
         <div class="footer">
-            <p>© 2026 Ouvy - Gestão de Feedbacks White Label</p>
+            <p>© 2026 Ouvify - Gestão de Feedbacks White Label</p>
         </div>
     </div>
 </body>

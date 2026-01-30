@@ -1,5 +1,5 @@
 """
-Testes do Sistema de SLA Tracking - Ouvy SaaS
+Testes do Sistema de SLA Tracking - Ouvify
 =============================================
 
 Sprint 2 - Feature 5: SLA Tracking (12h)

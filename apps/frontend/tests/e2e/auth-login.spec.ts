@@ -6,7 +6,7 @@ test.describe('Authentication Flow', () => {
     await page.goto('/login');
 
     // Verificar se a página carregou
-    await expect(page).toHaveTitle(/Ouvy/);
+    await expect(page).toHaveTitle(/Ouvify/);
     await expect(page.locator('h1')).toContainText('Entrar');
 
     // Preencher credenciais válidas

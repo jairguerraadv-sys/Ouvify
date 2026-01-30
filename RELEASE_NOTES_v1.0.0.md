@@ -10,7 +10,7 @@
 
 ## 📋 Resumo Executivo
 
-O **Ouvy SaaS** é uma plataforma completa de ouvidoria digital multi-tenant, desenvolvida com Django 5.1 + Next.js 14. Esta release marca a conclusão do MVP com todas as funcionalidades essenciais implementadas e testadas.
+O **Ouvify** é uma plataforma completa de ouvidoria digital multi-tenant, desenvolvida com Django 5.1 + Next.js 14. Esta release marca a conclusão do MVP com todas as funcionalidades essenciais implementadas e testadas.
 
 ---
 
@@ -207,4 +207,4 @@ Proprietary - Todos os direitos reservados.
 
 ---
 
-**Ouvy SaaS** - Transformando feedback em ação. 🎯
+**Ouvify** - Transformando feedback em ação. 🎯

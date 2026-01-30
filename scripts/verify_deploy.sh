@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy Verification Script - Ouvy SaaS
+# Deploy Verification Script - Ouvify
 # Sprint 5 - Feature 5.5: Testes E2E & Deploy Final
 #
 # Este script verifica todos os componentes antes do deploy

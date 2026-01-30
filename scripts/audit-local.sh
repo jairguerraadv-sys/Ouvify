@@ -2,7 +2,7 @@
 
 echo "╔════════════════════════════════════════════════════╗"
 echo "║  🔍 AUDITORIA PÓS-CONSOLIDAÇÃO (Local)            ║"
-echo "║  Monorepo: ouvy-saas                              ║"
+echo "║  Monorepo: ouvify-saas                              ║"
 echo "║  Modo: Sem Docker                                 ║"
 echo "╚════════════════════════════════════════════════════╝"
 echo ""

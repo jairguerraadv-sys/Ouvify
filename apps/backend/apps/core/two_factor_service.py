@@ -48,7 +48,7 @@ class TwoFactorAuthService:
     """
     
     # Configurações
-    ISSUER_NAME = 'Ouvy'
+    ISSUER_NAME = 'Ouvify'
     TOTP_INTERVAL = 30  # segundos
     TOTP_DIGITS = 6
     BACKUP_CODES_COUNT = 10

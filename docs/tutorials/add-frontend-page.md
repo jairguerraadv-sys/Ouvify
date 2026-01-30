@@ -70,7 +70,7 @@ import { PageHeader } from '@/components/layout/PageHeader';
 import { ReportBuilder } from '@/components/reports/ReportBuilder';
 
 export const metadata: Metadata = {
-  title: 'Relatórios | Ouvy',
+  title: 'Relatórios | Ouvify',
   description: 'Gere relatórios customizados de feedbacks',
 };
 

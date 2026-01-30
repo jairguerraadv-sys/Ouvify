@@ -39,7 +39,7 @@ fi
 
 # Tentar build
 echo "🔨 Executando build..."
-npm run build > /tmp/ouvy-build.log 2>&1 &
+npm run build > /tmp/ouvify-build.log 2>&1 &
 BUILD_PID=$!
 
 # Aguardar 30 segundos
@@ -48,18 +48,18 @@ sleep 30
 # Verificar se ainda está rodando
 if kill -0 $BUILD_PID 2>/dev/null; then
   echo "⏳ Build ainda em andamento (PID: $BUILD_PID)"
-  echo "   Logs em: /tmp/ouvy-build.log"
-  echo "   Para acompanhar: tail -f /tmp/ouvy-build.log"
+  echo "   Logs em: /tmp/ouvify-build.log"
+  echo "   Para acompanhar: tail -f /tmp/ouvify-build.log"
 else
   # Verificar resultado
-  if grep -q "Compiled successfully" /tmp/ouvy-build.log 2>/dev/null; then
+  if grep -q "Compiled successfully" /tmp/ouvify-build.log 2>/dev/null; then
     echo "✅ Build completado com sucesso!"
-  elif grep -iq "error\|children.only" /tmp/ouvy-build.log 2>/dev/null; then
+  elif grep -iq "error\|children.only" /tmp/ouvify-build.log 2>/dev/null; then
     echo "❌ Build falhou com erros:"
-    grep -i "error\|children.only" /tmp/ouvy-build.log | head -10
+    grep -i "error\|children.only" /tmp/ouvify-build.log | head -10
   else
     echo "⚠️  Status do build indeterminado"
-    echo "   Verifique /tmp/ouvy-build.log"
+    echo "   Verifique /tmp/ouvify-build.log"
   fi
 fi
 

@@ -4,8 +4,8 @@ echo "🔍 Testando integração Frontend ↔ Backend"
 echo "=========================================="
 echo ""
 
-BACKEND_URL="${BACKEND_URL:-https://ouvy-saas-production.up.railway.app}"
-FRONTEND_URL="${FRONTEND_URL:-https://ouvy-frontend-jairguerraadv-sys-projects.vercel.app}"
+BACKEND_URL="${BACKEND_URL:-https://ouvify-saas-production.up.railway.app}"
+FRONTEND_URL="${FRONTEND_URL:-https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app}"
 
 PASSED=0
 FAILED=0
@@ -33,7 +33,7 @@ echo "1. Backend Health Checks"
 echo "------------------------"
 test_endpoint "Health endpoint" "$BACKEND_URL/health/" "200"
 test_endpoint "API docs" "$BACKEND_URL/api/docs/" "200 301 302"
-test_endpoint "Admin" "$BACKEND_URL/painel-admin-ouvy-2026/" "200 301 302"
+test_endpoint "Admin" "$BACKEND_URL/painel-admin-ouvify-2026/" "200 301 302"
 
 echo ""
 echo "2. Backend API Endpoints"

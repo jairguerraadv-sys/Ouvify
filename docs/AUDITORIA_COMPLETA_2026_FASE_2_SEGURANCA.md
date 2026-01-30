@@ -1019,7 +1019,7 @@ Total:      164 issues
 
 ### Status Geral: ⭐⭐⭐⭐⭐ (91.5% - EXCELENTE)
 
-O projeto **Ouvy** demonstra **práticas de segurança excepcionais** para uma aplicação SaaS B2B. A equipe implementou múltiplas camadas de defesa, seguindo princípios de "defense in depth" e "security by design".
+O projeto **Ouvify** demonstra **práticas de segurança excepcionais** para uma aplicação SaaS B2B. A equipe implementou múltiplas camadas de defesa, seguindo princípios de "defense in depth" e "security by design".
 
 ### Principais Pontos Fortes 🌟
 

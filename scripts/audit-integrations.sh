@@ -34,7 +34,7 @@ else
 fi
 
 echo -n "  Tabelas... "
-TABLE_COUNT=$(docker compose exec -T postgres psql -U ouvy -d ouvy_dev -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public';" 2>/dev/null | tr -d ' ')
+TABLE_COUNT=$(docker compose exec -T postgres psql -U ouvy -d ouvify_dev -t -c "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public';" 2>/dev/null | tr -d ' ')
 if [ -n "$TABLE_COUNT" ] && [ "$TABLE_COUNT" -gt 0 ]; then
     echo "✅ $TABLE_COUNT tabelas"
 else

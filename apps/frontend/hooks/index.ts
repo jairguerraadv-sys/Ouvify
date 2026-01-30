@@ -1,5 +1,5 @@
 /**
- * Hooks Index - Ouvy SaaS
+ * Hooks Index - Ouvify
  * Exporta todos os hooks do projeto
  */
 

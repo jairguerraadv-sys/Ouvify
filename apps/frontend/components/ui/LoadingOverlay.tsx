@@ -1,5 +1,5 @@
 /**
- * LoadingOverlay Component - Ouvy SaaS
+ * LoadingOverlay Component - Ouvify
  * Sprint 5 - Feature 5.4: Melhorias UX
  * 
  * Componente de loading overlay para operações assíncronas

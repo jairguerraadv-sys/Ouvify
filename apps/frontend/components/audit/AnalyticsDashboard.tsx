@@ -35,7 +35,7 @@ interface AnalyticsDashboardProps {
   className?: string;
 }
 
-// Cores para gráficos - Design System Ouvy
+// Cores para gráficos - Design System Ouvify
 const COLORS = {
   primary: '#3B82F6',    // Azul
   secondary: '#A855F7',  // Roxo

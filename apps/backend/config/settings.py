@@ -1,5 +1,5 @@
 """
-Django settings for Ouvy SaaS project.
+Django settings for Ouvify project.
 Configurações carregadas de variáveis de ambiente para segurança.
 """
 
@@ -159,7 +159,7 @@ INSTALLED_APPS = [
     'corsheaders',         # Para o frontend conectar (Next.js)
     'drf_spectacular',     # OpenAPI 3.0 documentation
 
-    # Nossos Apps (Ouvy)
+    # Nossos Apps (Ouvify)
     'apps.core',
     'apps.tenants',
     'apps.feedbacks',
@@ -540,11 +540,11 @@ REST_FRAMEWORK = {
 # =============================================================================
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Ouvy SaaS API',
+    'TITLE': 'Ouvify API',
     'DESCRIPTION': '''
-## API do Sistema Ouvy SaaS
+## API do Sistema Ouvify
 
-O Ouvy é uma plataforma SaaS multi-tenant para canais de ética, ouvidoria e gestão de feedbacks anônimos.
+O Ouvify é uma plataforma SaaS multi-tenant para canais de ética, ouvidoria e gestão de feedbacks anônimos.
 
 ### Autenticação
 
@@ -601,7 +601,7 @@ Não é possível acessar dados de outros tenants.
         'url': 'https://docs.ouvy.com.br',
     },
     'CONTACT': {
-        'name': 'Suporte Ouvy',
+        'name': 'Suporte Ouvify',
         'email': 'suporte@ouvy.com.br',
     },
     'LICENSE': {
@@ -754,7 +754,7 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')  # API Key do provedo
 EMAIL_TIMEOUT = int(os.getenv('EMAIL_TIMEOUT', '30'))
 
 # Remetentes
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Ouvy <no-reply@ouvy.com.br>')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'Ouvify <no-reply@ouvify.com.br>')
 SERVER_EMAIL = os.getenv('SERVER_EMAIL', DEFAULT_FROM_EMAIL)
 
 # Em produção, usar backend real; em desenvolvimento, apenas console

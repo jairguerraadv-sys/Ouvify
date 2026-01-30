@@ -1,5 +1,5 @@
 /**
- * Billing Components Tests - Ouvy SaaS
+ * Billing Components Tests - Ouvify
  * Sprint 4 - Feature 4.3: Pricing Page
  */
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';

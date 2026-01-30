@@ -27,7 +27,7 @@ export default function PrivacidadePage() {
                 Última atualização: 14 de janeiro de 2026
               </p>
               <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
-                No Ouvy, levamos sua privacidade a sério. Esta política descreve como coletamos, 
+                No Ouvify, levamos sua privacidade a sério. Esta política descreve como coletamos, 
                 usamos, armazenamos e protegemos seus dados pessoais.
               </p>
             </div>

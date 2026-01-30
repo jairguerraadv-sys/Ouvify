@@ -289,7 +289,7 @@ Este padrão:
 
 ```tsx
 /**
- * Button Component - Ouvy Design System
+ * Button Component - Ouvify Design System
  * 
  * @important PADRÃO CORRETO DE USO COM LINKS:
  * 

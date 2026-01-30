@@ -1,5 +1,5 @@
 """
-Custom exceptions and exception handler for the Ouvy SaaS application.
+Custom exceptions and exception handler for the Ouvify application.
 Provides consistent error handling and messaging across the API.
 """
 from rest_framework.views import exception_handler

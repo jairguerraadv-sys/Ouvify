@@ -1,5 +1,5 @@
 """
-Billing Admin - Ouvy SaaS
+Billing Admin - Ouvify
 Sprint 4 - Feature 4.1: Integração Stripe
 """
 from django.contrib import admin

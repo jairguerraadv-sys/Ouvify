@@ -3,7 +3,7 @@
 
 **Data da Auditoria:** 26 de Janeiro de 2026  
 **Auditor:** GitHub Copilot (Claude Sonnet 4.5)  
-**Projeto:** Ouvy - Plataforma White Label SaaS de Gestão de Feedback  
+**Projeto:** Ouvify - Plataforma White Label SaaS de Gestão de Feedback  
 **Stack:** Python (Django) + JavaScript (Next.js)  
 
 ---
@@ -123,7 +123,7 @@ ouvy_saas/ (ROOT - MONOREPO)
 │       │   │   └── page.tsx       # Landing page
 │       │   ├── acompanhar/        # Página de acompanhamento por protocolo
 │       │   │   └── page.tsx
-│       │   ├── admin/             # Dashboard administrativo Ouvy
+│       │   ├── admin/             # Dashboard administrativo Ouvify
 │       │   │   ├── page.tsx
 │       │   │   └── layout.tsx
 │       │   ├── cadastro/          # Signup de novos tenants
@@ -781,7 +781,7 @@ erDiagram
   - `/dashboard/feedbacks/` - Lista e gerenciamento de feedbacks
   - `/dashboard/relatorios/` - Relatórios e analytics
   - `/dashboard/configuracoes/` - Customização white label
-- `/admin/` - Dashboard administrativo Ouvy (superuser only)
+- `/admin/` - Dashboard administrativo Ouvify (superuser only)
 
 ### 🧩 Componentes React
 
@@ -1221,7 +1221,7 @@ Total:                ~45,000 linhas
 
 ### Status Geral: ⭐⭐⭐⭐☆ (80% - Muito Bom)
 
-O projeto **Ouvy** apresenta uma **arquitetura sólida e bem estruturada**, seguindo boas práticas de desenvolvimento de aplicações SaaS multi-tenant. A organização em monorepo com TurboRepo facilita o desenvolvimento e deploy independente de backend e frontend.
+O projeto **Ouvify** apresenta uma **arquitetura sólida e bem estruturada**, seguindo boas práticas de desenvolvimento de aplicações SaaS multi-tenant. A organização em monorepo com TurboRepo facilita o desenvolvimento e deploy independente de backend e frontend.
 
 ### Principais Pontos Fortes ✅
 1. Multi-tenancy bem implementado com isolamento por Client

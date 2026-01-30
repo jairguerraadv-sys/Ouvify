@@ -63,7 +63,7 @@ function OnboardingTourInner({ restartTrigger, onActiveChange }: OnboardingTourI
         {
           element: 'body',
           popover: {
-            title: '🎉 Bem-vindo ao Ouvy!',
+            title: '🎉 Bem-vindo ao Ouvify!',
             description: `Olá ${user?.name || 'Visitante'}! Vamos fazer um tour rápido de 2 minutos para você conhecer as principais funcionalidades da plataforma.`,
           },
         },
@@ -213,7 +213,7 @@ export function OnboardingTour() {
         {
           element: 'body',
           popover: {
-            title: '🎉 Bem-vindo ao Ouvy!',
+            title: '🎉 Bem-vindo ao Ouvify!',
             description: `Olá ${user?.name || 'Visitante'}! Vamos fazer um tour rápido de 2 minutos para você conhecer as principais funcionalidades da plataforma.`,
           },
         },

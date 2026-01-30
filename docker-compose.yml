@@ -6,11 +6,11 @@ services:
   # ============================================
   postgres:
     image: postgres:16-alpine
-    container_name: ouvy_postgres
+    container_name: ouvify_postgres
     environment:
-      POSTGRES_DB: ouvy_dev
+      POSTGRES_DB: ouvify_dev
       POSTGRES_USER: ouvy
-      POSTGRES_PASSWORD: ouvy_dev_pass
+      POSTGRES_PASSWORD: ouvify_dev_pass
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -21,14 +21,14 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # Redis Cache & Celery Broker
   # ============================================
   redis:
     image: redis:7-alpine
-    container_name: ouvy_redis
+    container_name: ouvify_redis
     volumes:
       - redis_data:/data
     ports:
@@ -39,14 +39,14 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # ElasticSearch for Search
   # ============================================
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
-    container_name: ouvy_elasticsearch
+    container_name: ouvify_elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
@@ -61,7 +61,7 @@ services:
       timeout: 10s
       retries: 5
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # Django Backend
@@ -70,7 +70,7 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile.dev
-    container_name: ouvy_backend
+    container_name: ouvify_backend
     volumes:
       - ./apps/backend:/app
       - backend_media:/app/media
@@ -80,7 +80,7 @@ services:
     environment:
       - DEBUG=True
       - SECRET_KEY=dev-secret-key-change-in-production
-      - DATABASE_URL=postgresql://ouvy:ouvy_dev_pass@postgres:5432/ouvy_dev
+      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -102,7 +102,7 @@ services:
         python manage.py runserver 0.0.0.0:8000
       "
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # Next.js Frontend
@@ -111,7 +111,7 @@ services:
     build:
       context: ./apps/frontend
       dockerfile: Dockerfile.dev
-    container_name: ouvy_frontend
+    container_name: ouvify_frontend
     volumes:
       - ./apps/frontend:/app
       - /app/node_modules
@@ -126,7 +126,7 @@ services:
       - backend
     command: npm run dev
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # Celery Worker
@@ -135,12 +135,12 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile.dev
-    container_name: ouvy_celery_worker
+    container_name: ouvify_celery_worker
     volumes:
       - ./apps/backend:/app
     environment:
       - DEBUG=True
-      - DATABASE_URL=postgresql://ouvy:ouvy_dev_pass@postgres:5432/ouvy_dev
+      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -152,7 +152,7 @@ services:
         condition: service_healthy
     command: celery -A config worker -l info --concurrency=2
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # Celery Beat Scheduler
@@ -161,12 +161,12 @@ services:
     build:
       context: ./apps/backend
       dockerfile: Dockerfile.dev
-    container_name: ouvy_celery_beat
+    container_name: ouvify_celery_beat
     volumes:
       - ./apps/backend:/app
     environment:
       - DEBUG=True
-      - DATABASE_URL=postgresql://ouvy:ouvy_dev_pass@postgres:5432/ouvy_dev
+      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -177,19 +177,19 @@ services:
         condition: service_healthy
     command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     networks:
-      - ouvy_network
+      - ouvify_network
 
   # ============================================
   # MailHog - SMTP Testing
   # ============================================
   mailhog:
     image: mailhog/mailhog:latest
-    container_name: ouvy_mailhog
+    container_name: ouvify_mailhog
     ports:
       - "1025:1025"  # SMTP
       - "8025:8025"  # Web UI
     networks:
-      - ouvy_network
+      - ouvify_network
 
 volumes:
   postgres_data:
@@ -199,5 +199,5 @@ volumes:
   backend_static:
 
 networks:
-  ouvy_network:
+  ouvify_network:
     driver: bridge

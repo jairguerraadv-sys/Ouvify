@@ -1,5 +1,5 @@
 /**
- * Billing Components Index - Ouvy SaaS
+ * Billing Components Index - Ouvify
  * Sprint 4 - Feature 4.3: Pricing Page
  */
 export { PricingCard } from './PricingCard';

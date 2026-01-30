@@ -1,6 +1,6 @@
 #!/bin/bash
 # Validação de segurança pós-correções Fase 2
-# Auditoria Ouvy SaaS - 26/01/2026
+# Auditoria Ouvify - 26/01/2026
 
 set -e
 

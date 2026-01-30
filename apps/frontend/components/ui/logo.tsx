@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 interface LogoProps {
   /** Tamanho do logo: sm (32px), md (40px), lg (48px), xl (64px) */
   size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Se deve incluir o texto "Ouvy" ao lado */
+  /** Se deve incluir o texto "Ouvify" ao lado */
   showText?: boolean;
   /** Se deve ser clicável (link para homepage) */
   clickable?: boolean;
@@ -49,7 +49,7 @@ export function Logo({
       >
         <Image 
           src="/logo.png" 
-          alt="Ouvy Logo" 
+          alt="Ouvify Logo" 
           width={logo} 
           height={logo}
           className={cn(
@@ -69,7 +69,7 @@ export function Logo({
             textClassName
           )}
         >
-          Ouvy
+          Ouvify
         </span>
       )}
     </div>
@@ -77,7 +77,7 @@ export function Logo({
 
   if (clickable) {
     return (
-      <Link href="/" aria-label="Ouvy - Voltar para página inicial">
+      <Link href="/" aria-label="Ouvify - Voltar para página inicial">
         {content}
       </Link>
     );

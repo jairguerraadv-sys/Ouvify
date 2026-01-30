@@ -44,7 +44,7 @@ class TenantIsolationMiddleware:
 
         return self.get_response(request)
 """
-Tenant Middleware for Ouvy SaaS application.
+Tenant Middleware for Ouvify application.
 Handles automatic tenant identification based on subdomain or headers.
 """
 import logging

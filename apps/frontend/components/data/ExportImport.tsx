@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Export/Import Data Component - Ouvy SaaS
+ * Export/Import Data Component - Ouvify
  * Sprint 5 - Feature 5.3: Export/Import de Dados
  */
 

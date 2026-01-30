@@ -1,5 +1,5 @@
 /**
- * Dashboard Widgets - Ouvy SaaS
+ * Dashboard Widgets - Ouvify
  * Sprint 5 - Feature 5.1: Dashboard Melhorado
  * 
  * Widgets reutilizáveis para o dashboard

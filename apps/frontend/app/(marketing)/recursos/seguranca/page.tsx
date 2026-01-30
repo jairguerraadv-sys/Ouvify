@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Segurança | Recursos | Ouvy',
-  description: 'Conheça as medidas de segurança e proteção de dados da plataforma Ouvy',
+  title: 'Segurança | Recursos | Ouvify',
+  description: 'Conheça as medidas de segurança e proteção de dados da plataforma Ouvify',
 };
 
 export default function SegurancaPage() {
@@ -41,7 +41,7 @@ export default function SegurancaPage() {
         {/* Introdução */}
         <div className="prose prose-lg max-w-none mb-12">
           <p className="text-xl text-gray-700 leading-relaxed">
-            Na Ouvy, levamos a segurança dos dados muito a sério. Implementamos múltiplas 
+            Na Ouvify, levamos a segurança dos dados muito a sério. Implementamos múltiplas 
             camadas de proteção para garantir que suas informações e as de seus clientes 
             estejam sempre seguras.
           </p>

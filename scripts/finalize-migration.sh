@@ -10,7 +10,7 @@ NC='\033[0m'
 
 # Confirmar
 echo -e "${YELLOW}⚠️  ATENÇÃO: Este script irá:${NC}"
-echo "  1. Remover diretórios ouvy_saas e ouvy_frontend"
+echo "  1. Remover diretórios ouvify_saas e ouvify_frontend"
 echo "  2. Remover backups antigos"
 echo "  3. Fazer commit final"
 echo ""
@@ -32,16 +32,16 @@ fi
 
 # Remover diretórios antigos
 echo -e "\n${YELLOW}🗑️  Removendo diretórios antigos...${NC}"
-if [ -d "ouvy_saas" ]; then
-    echo "  Removendo ouvy_saas..."
-    rm -rf ouvy_saas
-    echo -e "  ${GREEN}✓${NC} ouvy_saas removido"
+if [ -d "ouvify_saas" ]; then
+    echo "  Removendo ouvify_saas..."
+    rm -rf ouvify_saas
+    echo -e "  ${GREEN}✓${NC} ouvify_saas removido"
 fi
 
-if [ -d "ouvy_frontend" ]; then
-    echo "  Removendo ouvy_frontend..."
-    rm -rf ouvy_frontend
-    echo -e "  ${GREEN}✓${NC} ouvy_frontend removido"
+if [ -d "ouvify_frontend" ]; then
+    echo "  Removendo ouvify_frontend..."
+    rm -rf ouvify_frontend
+    echo -e "  ${GREEN}✓${NC} ouvify_frontend removido"
 fi
 
 # Limpar backups antigos
@@ -134,8 +134,8 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
     git commit -m "refactor: complete monorepo restructure
 
-- Move backend: ouvy_saas → apps/backend
-- Move frontend: ouvy_frontend → apps/frontend
+- Move backend: ouvify_saas → apps/backend
+- Move frontend: ouvify_frontend → apps/frontend
 - Create packages/ structure for shared code
 - Update all references (docker-compose, Makefile, CI/CD)
 - Consolidate .gitignore

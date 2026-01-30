@@ -248,7 +248,7 @@ class TeamInvitationViewSet(PermissionRequiredMixin, TenantFilterMixin, viewsets
         text_message = f"""
 Olá!
 
-{context['invited_by_name']} convidou você para fazer parte da equipe {context['company_name']} no Ouvy.
+{context['invited_by_name']} convidou você para fazer parte da equipe {context['company_name']} no Ouvify.
 
 Cargo: {context['role_display']}
 
@@ -260,12 +260,12 @@ Este convite expira em 7 dias.
 Se você não estava esperando este convite, pode ignorar este email.
 
 ---
-Ouvy - Gestão de Feedbacks White Label
+Ouvify - Gestão de Feedbacks White Label
         """
         
         try:
             send_mail(
-                subject=f"🎉 Convite para {invitation.client.nome} no Ouvy",
+                subject=f"🎉 Convite para {invitation.client.nome} no Ouvify",
                 message=text_message.strip(),
                 from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@ouvy.com'),
                 recipient_list=[invitation.email],

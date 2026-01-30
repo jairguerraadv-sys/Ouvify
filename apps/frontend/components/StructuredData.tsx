@@ -18,7 +18,7 @@ export function OrganizationSchema() {
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Ouvy',
+    name: 'Ouvify',
     description: 'Plataforma completa de ouvidoria digital',
     url: 'https://ouvy.com',
     logo: 'https://ouvy.com/logo.png',

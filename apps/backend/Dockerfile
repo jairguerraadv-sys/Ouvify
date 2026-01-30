@@ -1,5 +1,5 @@
 # ============================================
-# Ouvy SaaS - Backend Production Dockerfile
+# Ouvify - Backend Production Dockerfile
 # Multi-stage build for optimized image
 # ============================================
 

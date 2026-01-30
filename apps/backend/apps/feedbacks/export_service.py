@@ -1,5 +1,5 @@
 """
-Export/Import Services - Ouvy SaaS
+Export/Import Services - Ouvify
 Sprint 5 - Feature 5.3: Export/Import de Dados
 
 Serviços para exportação e importação de dados do sistema.

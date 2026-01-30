@@ -1,4 +1,4 @@
-# 📚 Tutoriais Ouvy
+# 📚 Tutoriais Ouvify
 
 > Guias passo-a-passo para desenvolvedores, administradores e usuários.
 

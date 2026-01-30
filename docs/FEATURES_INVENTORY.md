@@ -1,4 +1,4 @@
-# 📦 Inventário de Funcionalidades - Ouvy SaaS
+# 📦 Inventário de Funcionalidades - Ouvify
 
 **Data:** 26/01/2026  
 **Versão:** v1.0.0-audit  

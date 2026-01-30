@@ -22,8 +22,8 @@ NC='\033[0m' # No Color
 # ==============================================================================
 echo -e "${BLUE}[1/6]${NC} Verificando estrutura do projeto..."
 
-FRONTEND_DIR="/Users/jairneto/Desktop/ouvy_saas/ouvy_frontend"
-BACKEND_DIR="/Users/jairneto/Desktop/ouvy_saas/ouvy_saas"
+FRONTEND_DIR="/Users/jairneto/Desktop/ouvify_saas/ouvify_frontend"
+BACKEND_DIR="/Users/jairneto/Desktop/ouvify_saas/ouvify_saas"
 
 if [ ! -d "$FRONTEND_DIR" ]; then
   echo -e "${RED}✗ Frontend não encontrado${NC}"
@@ -106,8 +106,8 @@ echo ""
 echo -e "${BLUE}[5/6]${NC} Documentação criada..."
 
 DOC_FILES=(
-  "/Users/jairneto/Desktop/ouvy_saas/UI_UX_IMPLEMENTATION_2.0.md"
-  "/Users/jairneto/Desktop/ouvy_saas/MODERNIZACAO_COMPLETA_13_01_2026.md"
+  "/Users/jairneto/Desktop/ouvify_saas/UI_UX_IMPLEMENTATION_2.0.md"
+  "/Users/jairneto/Desktop/ouvify_saas/MODERNIZACAO_COMPLETA_13_01_2026.md"
 )
 
 for doc in "${DOC_FILES[@]}"; do
@@ -180,7 +180,7 @@ echo "  4. Verificar status na dashboard"
 echo ""
 
 echo -e "${YELLOW}Verificação Pós-Deploy:${NC}"
-echo "  1. Testar em staging.ouvy.com"
+echo "  1. Testar em staging.ouvify.com"
 echo "  2. Verificar components no Vercel"
 echo "  3. Testar responsividade mobile"
 echo "  4. Validar performance (Lighthouse)"
@@ -205,7 +205,7 @@ echo ""
 # GIT STATUS
 # ==============================================================================
 echo -e "${BLUE}Git Status:${NC}"
-cd /Users/jairneto/Desktop/ouvy_saas
+cd /Users/jairneto/Desktop/ouvify_saas
 git status --short 2>/dev/null | head -10 || echo "  (Git não disponível)"
 
 echo ""
