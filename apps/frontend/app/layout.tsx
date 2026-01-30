@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins } from "next/font/google";
 import { headers } from "next/headers";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { OnboardingProvider } from "@/components/OnboardingTour";
@@ -16,6 +16,15 @@ const inter = Inter({
   display: "swap",
   preload: true,
   fallback: ["system-ui", "arial"],
+  variable: "--font-inter",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  preload: true,
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -124,7 +133,7 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
         <CSPNonceProvider nonce={nonce}>
           <ThemeProvider>
             <AuthProvider>

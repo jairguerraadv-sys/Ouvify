@@ -147,7 +147,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-inter)", "Inter", ...defaultTheme.fontFamily.sans],
+        heading: ["var(--font-poppins)", "Poppins", "Inter", ...defaultTheme.fontFamily.sans],
         mono: ["JetBrains Mono", "Fira Code", ...defaultTheme.fontFamily.mono],
       },
       fontSize: {

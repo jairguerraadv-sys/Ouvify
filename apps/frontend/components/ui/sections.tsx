@@ -58,7 +58,7 @@ export function Hero({
         )}
 
         <h1 className={cn(
-          'text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight',
+          'text-4xl sm:text-5xl lg:text-6xl font-bold font-heading leading-tight',
           gradient && 'bg-gradient-to-r from-secondary via-primary to-accent bg-clip-text text-transparent',
           !gradient && 'text-secondary'
         )}>
@@ -175,7 +175,7 @@ export function FeatureCard({
         )}
 
         <div>
-          <h3 className="text-lg font-bold text-secondary group-hover:text-primary transition-colors">
+          <h3 className="text-lg font-bold font-heading text-secondary group-hover:text-primary transition-colors">
             {title}
           </h3>
           <p className="text-neutral-600 text-sm mt-2 leading-relaxed">
@@ -216,7 +216,7 @@ export function Stat({ value, label, unit, icon }: StatProps) {
           </div>
         </div>
       )}
-      <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
+      <div className="text-3xl sm:text-4xl font-bold font-heading bg-gradient-to-r from-secondary to-primary bg-clip-text text-transparent">
         {value}
         {unit && <span className="text-lg text-neutral-600 ml-1">{unit}</span>}
       </div>

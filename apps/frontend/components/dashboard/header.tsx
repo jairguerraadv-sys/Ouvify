@@ -33,7 +33,7 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
       <div className="flex h-16 items-center justify-between px-6">
         {/* Left */}
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
+          <h1 className="text-2xl font-bold font-heading text-slate-900">{title}</h1>
           {(subtitle || description) && <p className="text-sm text-slate-600">{subtitle || description}</p>}
         </div>
 

@@ -61,7 +61,7 @@ const CardTitle = React.memo(React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("text-2xl font-bold text-gray-900", className)}
+    className={cn("text-2xl font-bold font-heading text-gray-900", className)}
     {...props}
   />
 )));

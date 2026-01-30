@@ -4,7 +4,7 @@ import { Logo } from '@/components/ui/logo';
 describe('Logo Component', () => {
   it('renders logo image', () => {
     render(<Logo />);
-    const logo = screen.getByAltText(/ouvy/i);
+    const logo = screen.getByAltText(/ouvify/i);
     expect(logo).toBeInTheDocument();
   });
 
@@ -15,26 +15,26 @@ describe('Logo Component', () => {
   });
 
   it('renders different sizes', () => {
-    const { rerender, container } = render(<Logo size="xs" />);
+    const { rerender, container } = render(<Logo size="sm" />);
     let img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('80');
+    expect(img?.getAttribute('width')).toBe('32');
 
     rerender(<Logo size="md" />);
     img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('120');
+    expect(img?.getAttribute('width')).toBe('40');
 
     rerender(<Logo size="xl" />);
     img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('180');
+    expect(img?.getAttribute('width')).toBe('64');
   });
 
-  it('renders full variant with text', () => {
-    render(<Logo variant="full" />);
+  it('renders logo with text when showText is true', () => {
+    render(<Logo showText={true} />);
     expect(screen.getByText('Ouvify')).toBeInTheDocument();
   });
 
   it('has priority loading for LCP optimization', () => {
-    const { container } = render(<Logo />);
+    const { container } = render(<Logo priority />);
     const img = container.querySelector('img');
     expect(img?.getAttribute('loading')).toBe(null); // priority removes loading attr
   });
