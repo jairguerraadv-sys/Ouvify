@@ -4,74 +4,54 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 
 interface LogoProps {
-  /** Tamanho do logo: sm (32px), md (40px), lg (48px), xl (64px) */
-  size?: 'sm' | 'md' | 'lg' | 'xl';
-  /** Se deve incluir o texto "Ouvify" ao lado */
-  showText?: boolean;
+  /** Altura do logo: sm (32px), md (40px), lg (48px), xl (64px), 2xl (80px) */
+  size?: 'sm' | 'md' | 'lg' | 'xl' | '2xl';
   /** Se deve ser clicável (link para homepage) */
   clickable?: boolean;
   /** Prioridade de carregamento (usar true apenas no Header) */
   priority?: boolean;
   /** Classes CSS adicionais */
   className?: string;
-  /** Classes CSS para o texto */
-  textClassName?: string;
 }
 
+// Logo completo (ícone + texto) tem proporção ~1.87:1
+// Altura -> Largura calculada automaticamente
 const sizeMap = {
-  sm: { logo: 32, text: 'text-xl' },     // 32px logo + texto 20px
-  md: { logo: 40, text: 'text-2xl' },    // 40px logo + texto 24px (padrão)
-  lg: { logo: 48, text: 'text-3xl' },    // 48px logo + texto 28px
-  xl: { logo: 64, text: 'text-4xl' },    // 64px logo + texto 32px
+  sm: { height: 32, width: 60 },      // Pequeno - mobile, compacto
+  md: { height: 40, width: 75 },      // Padrão - header, sidebar
+  lg: { height: 48, width: 90 },      // Grande - auth pages
+  xl: { height: 64, width: 120 },     // Extra grande - error pages
+  '2xl': { height: 80, width: 150 },  // Hero sections
 };
 
 export function Logo({
   size = 'md',
-  showText = true,
   clickable = true,
   priority = false,
   className,
-  textClassName,
 }: LogoProps) {
-  const { logo, text } = sizeMap[size];
+  const { height, width } = sizeMap[size];
 
   const content = (
     <div 
       className={cn(
-        'inline-flex items-center gap-2',
+        'inline-flex items-center',
         clickable && 'group cursor-pointer',
         className
       )}
     >
-      <div 
-        className="relative flex-shrink-0" 
-        style={{ width: logo, height: logo }}
-      >
-        <Image 
-          src="/logo.png" 
-          alt="Ouvify Logo" 
-          width={logo} 
-          height={logo}
-          className={cn(
-            'object-contain',
-            clickable && 'transition-transform group-hover:scale-105'
-          )}
-          priority={priority}
-          quality={100}
-        />
-      </div>
-      
-      {showText && (
-        <span 
-          className={cn(
-            text,
-            'font-bold text-gradient-brand',
-            textClassName
-          )}
-        >
-          Ouvify
-        </span>
-      )}
+      <Image 
+        src="/logo.png" 
+        alt="Ouvify - Canal de Ética Profissional" 
+        width={width} 
+        height={height}
+        className={cn(
+          'object-contain',
+          clickable && 'transition-transform group-hover:scale-105'
+        )}
+        priority={priority}
+        quality={90}
+      />
     </div>
   );
 
@@ -86,40 +66,48 @@ export function Logo({
   return content;
 }
 
-// Export de variantes comuns para facilitar uso
+// ============================================
+// VARIANTES PRÉ-CONFIGURADAS
+// ============================================
+
+/** Logo para o Header principal (marketing) */
 export const LogoHeader = () => (
-  <Logo size="md" showText priority />
+  <Logo size="md" priority />
 );
 
+/** Logo para o Footer */
 export const LogoFooter = () => (
-  <Logo size="md" showText />
+  <Logo size="md" />
 );
 
+/** Logo para páginas de autenticação (login, cadastro) */
 export const LogoAuth = () => (
-  <Logo size="lg" showText clickable className="justify-center" />
+  <Logo size="lg" className="justify-center" />
 );
 
+/** Logo para páginas de erro (404, 500) */
 export const LogoError = () => (
-  <Logo size="xl" showText clickable className="justify-center" />
+  <Logo size="xl" className="justify-center" />
 );
 
-export const LogoOnly = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
-  <Logo size={size} showText={false} clickable={false} />
-);
-
+/** Logo para a Sidebar do dashboard */
 export const LogoSidebar = () => (
-  <Logo size="md" showText priority className="justify-start" />
+  <Logo size="md" priority className="justify-start" />
 );
 
+/** Logo compacto para mobile */
 export const LogoMobile = () => (
-  <Logo size="sm" showText priority />
+  <Logo size="sm" priority />
 );
 
-export const LogoCompact = () => (
-  <Logo size="sm" showText={false} clickable />
+/** Logo grande para hero sections */
+export const LogoHero = () => (
+  <Logo size="2xl" clickable={false} className="justify-center" />
 );
 
-// Dark variant for dark backgrounds
-export const LogoDark = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
-  <Logo size={size} showText textClassName="text-white" />
+/** Logo não clicável (decorativo) */
+export const LogoStatic = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
+  <Logo size={size} clickable={false} />
 );
+
+export default Logo;

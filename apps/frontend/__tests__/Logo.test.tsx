@@ -8,29 +8,42 @@ describe('Logo Component', () => {
     expect(logo).toBeInTheDocument();
   });
 
-  it('renders with icon variant by default', () => {
+  it('renders with correct default size', () => {
     const { container } = render(<Logo />);
     const img = container.querySelector('img');
     expect(img).toBeInTheDocument();
+    // Default size is 'md' with width 75
+    expect(img?.getAttribute('width')).toBe('75');
   });
 
-  it('renders different sizes', () => {
+  it('renders different sizes with correct proportions', () => {
     const { rerender, container } = render(<Logo size="sm" />);
     let img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('32');
+    expect(img?.getAttribute('width')).toBe('60');
+    expect(img?.getAttribute('height')).toBe('32');
 
     rerender(<Logo size="md" />);
     img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('40');
+    expect(img?.getAttribute('width')).toBe('75');
+    expect(img?.getAttribute('height')).toBe('40');
 
     rerender(<Logo size="xl" />);
     img = container.querySelector('img');
-    expect(img?.getAttribute('width')).toBe('64');
+    expect(img?.getAttribute('width')).toBe('120');
+    expect(img?.getAttribute('height')).toBe('64');
   });
 
-  it('renders logo with text when showText is true', () => {
-    render(<Logo showText={true} />);
-    expect(screen.getByText('Ouvify')).toBeInTheDocument();
+  it('renders as link when clickable', () => {
+    const { container } = render(<Logo clickable />);
+    const link = container.querySelector('a');
+    expect(link).toBeInTheDocument();
+    expect(link?.getAttribute('href')).toBe('/');
+  });
+
+  it('renders without link when not clickable', () => {
+    const { container } = render(<Logo clickable={false} />);
+    const link = container.querySelector('a');
+    expect(link).not.toBeInTheDocument();
   });
 
   it('has priority loading for LCP optimization', () => {
