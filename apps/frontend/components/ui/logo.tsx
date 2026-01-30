@@ -106,3 +106,20 @@ export const LogoError = () => (
 export const LogoOnly = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
   <Logo size={size} showText={false} clickable={false} />
 );
+
+export const LogoSidebar = () => (
+  <Logo size="md" showText priority className="justify-start" />
+);
+
+export const LogoMobile = () => (
+  <Logo size="sm" showText priority />
+);
+
+export const LogoCompact = () => (
+  <Logo size="sm" showText={false} clickable />
+);
+
+// Dark variant for dark backgrounds
+export const LogoDark = ({ size = 'md' }: Pick<LogoProps, 'size'>) => (
+  <Logo size={size} showText textClassName="text-white" />
+);

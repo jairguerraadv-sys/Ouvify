@@ -30,7 +30,7 @@ export function Footer({
       links: [
         { label: 'Documentação', href: '/recursos/documentacao' },
         { label: 'FAQ', href: '/recursos/faq' },
-        { label: 'Contato', href: 'mailto:contato@ouvy.com' },
+        { label: 'Contato', href: 'mailto:contato@ouvify.com' },
       ],
     },
     {
