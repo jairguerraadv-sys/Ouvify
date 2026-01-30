@@ -24,9 +24,6 @@ sentry_sdk.init(
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Adicionar diretório apps ao path do Python para facilitar imports
 sys.path.insert(0, str(BASE_DIR / 'apps'))
 
@@ -92,11 +89,7 @@ if not DEBUG and ALLOWED_HOSTS == ['*']:
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Headers de segurança adicionais
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = 'DENY'
-
+# Headers de segurança (configurações completas em bloco de produção abaixo)
 # Content Security Policy
 if not DEBUG:
     # CSP_INCLUDE_NONCE_IN = ['script-src']  # Django 6.0+ native nonce support
@@ -418,17 +411,19 @@ ALLOWED_FILE_TYPES = [
 ]
 
 # =============================================================================
-# CONFIGURAÇÕES DE SEGURANÇA ADICIONAIS
+# CONFIGURAÇÕES DE SEGURANÇA (CONSOLIDADAS)
 # =============================================================================
 
+# Headers de segurança aplicados em todos os ambientes
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
+# Configurações adicionais apenas em produção
 if not DEBUG:
-    # Configurações de segurança para produção
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = 'DENY'
     SECURE_HSTS_SECONDS = 31536000  # 1 ano
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
