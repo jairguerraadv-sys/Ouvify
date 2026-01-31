@@ -159,7 +159,7 @@ export function useFullUpdateFeedback() {
 
 // Função auxiliar para consultar protocolo público
 export async function consultarProtocolo(codigo: string): Promise<Feedback> {
-  return api.get<Feedback>(`/api/feedbacks/consultar-protocolo/?codigo=${codigo}`);
+  return api.get<Feedback>(`/api/feedbacks/consultar-protocolo/?protocolo=${codigo}`);
 }
 
 // Função para excluir feedback

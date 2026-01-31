@@ -7,6 +7,10 @@ import { screen, waitFor } from '@testing-library/dom';
 import { useRouter } from 'next/navigation';
 import DashboardPage from '@/app/dashboard/page';
 
+jest.mock('@/components/ProtectedRoute', () => ({
+  ProtectedRoute: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 // Mock dos módulos necessários
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({
@@ -73,6 +77,15 @@ jest.mock('@/hooks/use-dashboard', () => ({
     ],
     isLoading: false,
     error: null,
+  })),
+  useAnalytics: jest.fn(() => ({
+    trend: [],
+    byType: [],
+    responseTime: [],
+    summary: {
+      totalFeedbacks: 150,
+      slaCompliance: 85,
+    },
   })),
 }));
 

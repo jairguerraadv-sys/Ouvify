@@ -15,7 +15,7 @@
   }
 
   body {
-    @apply bg-white text-gray-900;
+    @apply bg-background text-foreground;
     font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -24,7 +24,7 @@
   /* ===== TIPOGRAFIA ===== */
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold text-gray-900;
+    @apply font-bold text-foreground;
     font-family: var(--font-poppins), 'Poppins', 'Inter', sans-serif;
     letter-spacing: -0.02em;
   }
@@ -37,7 +37,7 @@
   h6 { @apply text-lg md:text-xl; }
 
   p {
-    @apply text-gray-600 leading-relaxed;
+    @apply text-muted-foreground leading-relaxed;
   }
 
   a {
@@ -61,7 +61,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100;
+    @apply bg-muted;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -78,14 +78,14 @@
   
   /* Gradiente APENAS para texto */
   .text-gradient-brand {
-    background: linear-gradient(135deg, #3B82F6 0%, #A855F7 100%);
+    background: linear-gradient(135deg, #0EA5E9 0%, #A855F7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-primary {
-    background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -98,7 +98,7 @@
 
   /* Seção alternada (usar com MODERAÇÃO) */
   .section-alternate {
-    @apply bg-gray-50;
+    @apply bg-muted;
   }
 
   /* Animações suaves */
@@ -117,27 +117,27 @@
   
   /* Hero Section Padrão */
   .hero-section {
-    @apply bg-white border-b border-gray-200 py-16 md:py-24;
+    @apply bg-background border-b border-border py-16 md:py-24;
   }
 
   /* Content Section Padrão */
   .content-section {
-    @apply bg-white py-12 md:py-16;
+    @apply bg-background py-12 md:py-16;
   }
 
   /* Section com fundo alternado */
   .alternate-section {
-    @apply bg-gray-50 py-12 md:py-16;
+    @apply bg-muted py-12 md:py-16;
   }
 }
 
 /* ===== Design System Ouvify - HSL Variables ===== */
 :root {
-  /* 🎨 CORES PRIMÁRIAS - AZUL PROFISSIONAL (#3B82F6) */
-  --primary: 217 91% 60%;            /* #3B82F6 Azul */
+  /* 🎨 CORES PRIMÁRIAS - SKY BLUE (#0EA5E9) */
+  --primary: 199 89% 48%;            /* #0EA5E9 */
   --primary-foreground: 0 0% 100%;   /* Branco */
-  --primary-light: 213 94% 68%;      /* #60A5FA Light variant */
-  --primary-dark: 224 76% 48%;       /* #2563EB Dark/Hover */
+  --primary-light: 199 95% 62%;      /* ~#38BDF8 */
+  --primary-dark: 201 96% 40%;       /* ~#0284C7 */
   
   /* 🎯 SECUNDÁRIA - ROXO CRIATIVO (#A855F7) */
   --secondary: 271 91% 65%;          /* #A855F7 Roxo */
@@ -178,7 +178,7 @@
   /* 🔗 INPUTS & BORDERS */
   --input: 220 14% 96%;              /* #F3F4F6 Gray-100 */
   --border: 220 13% 91%;             /* #E5E7EB Gray-200 */
-  --ring: 217 91% 60%;               /* Primary (Azul) */
+  --ring: 199 89% 48%;               /* Primary (Sky) */
   
   --radius: 0.5rem;
 }

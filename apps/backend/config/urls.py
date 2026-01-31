@@ -21,8 +21,7 @@ from apps.core.health import health_check as health_check_view, readiness_check 
 from apps.tenants.logout_views import LogoutView, LogoutAllDevicesView  # type: ignore[import-not-found]
 from apps.core.lgpd_views import AccountDeletionView, DataExportView  # type: ignore[import-not-found]
 from apps.core.profile_views import UserProfileUpdateView  # type: ignore[import-not-found]
-from apps.core.views.analytics import AnalyticsView  # type: ignore[import-not-found]
-from rest_framework.authtoken.views import obtain_auth_token
+from apps.core.views.analytics import AnalyticsView, AnalyticsDashboardView  # type: ignore[import-not-found]
 from config.swagger import swagger_urlpatterns
 
 # JWT Views
@@ -124,10 +123,17 @@ urlpatterns = [
     
     # Analytics e Métricas
     path('api/analytics/', AnalyticsView.as_view(), name='analytics'),
+
+    # Analytics v1 (compat com frontend)
+    path('api/v1/analytics/dashboard/', AnalyticsDashboardView.as_view(), name='analytics-dashboard'),
     
     # Busca Global (ElasticSearch)
     path('api/', include('apps.core.search_urls')),
     
+    # Logout aliases (compat com clientes antigos)
+    path('api/auth/logout/', LogoutView.as_view(), name='api-auth-logout'),
+    path('api/auth/logout/all/', LogoutAllDevicesView.as_view(), name='api-auth-logout-all-devices'),
+
     # Two-Factor Authentication (2FA)
     path('api/auth/', include('apps.core.two_factor_urls')),
     
@@ -154,7 +160,6 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     
     # Auth token (DRF authtoken) - LEGACY - manter para backward compatibility
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     
     # Logout com invalidação de token
     # ATUALIZADO: Auditoria 30/01/2026 - Adicionado blacklist JWT

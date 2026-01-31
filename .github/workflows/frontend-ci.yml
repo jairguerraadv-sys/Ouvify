@@ -42,11 +42,11 @@ jobs:
         
       - name: Run ESLint
         working-directory: ./apps/frontend
-        run: npm run lint || true
+        run: npm run lint
         
       - name: TypeScript Type Check
         working-directory: ./apps/frontend
-        run: npx tsc --noEmit || true
+        run: npx tsc --noEmit
 
   # ============================================
   # Security Scan
@@ -64,7 +64,7 @@ jobs:
           
       - name: Run npm audit
         working-directory: ./apps/frontend
-        run: npm audit --audit-level=high || true
+        run: npm audit --audit-level=high
 
   # ============================================
   # Tests
@@ -88,7 +88,7 @@ jobs:
         
       - name: Run Tests with Coverage
         working-directory: ./apps/frontend
-        run: npm test -- --coverage --watchAll=false || true
+        run: npm test -- --coverage --watchAll=false
           
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
@@ -154,7 +154,7 @@ jobs:
         
       - name: Run Playwright Tests
         working-directory: ./apps/frontend
-        run: npx playwright test || true
+        run: npx playwright test
         
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4

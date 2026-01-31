@@ -99,6 +99,9 @@ which python  # Deve mostrar caminho do venv
 # Instalar requirements
 pip install --upgrade pip
 pip install -r requirements.txt
+
+# Nota (auditoria 2026-01-31): para tooling no root do monorepo,
+# `pip install -r /requirements.txt` funciona como wrapper.
 ```
 
 ### 2.3 Configurar Variáveis de Ambiente

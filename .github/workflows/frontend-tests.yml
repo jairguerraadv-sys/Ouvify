@@ -36,13 +36,13 @@ jobs:
       run: npm install --legacy-peer-deps
 
     - name: TypeScript check
-      run: npx tsc --noEmit || true
+      run: npx tsc --noEmit
 
     - name: Lint check
-      run: npm run lint --if-present || true
+      run: npm run lint --if-present
 
     - name: Run tests
-      run: npm test -- --coverage --passWithNoTests || true
+      run: npm test -- --coverage --passWithNoTests
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4

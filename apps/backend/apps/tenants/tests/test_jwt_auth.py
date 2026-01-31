@@ -111,21 +111,14 @@ class JWTAuthTestCase(TestCase):
     
     def test_expired_token_rejected(self):
         """Testa que token expirado é rejeitado"""
-        # Criar token com tempo de vida muito curto
         from datetime import timedelta
-        from django.conf import settings
-        
-        # Salvar configuração original
-        original_lifetime = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME']
-        
-        # Configurar para expirar em 1 segundo
-        settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'] = timedelta(seconds=1)
-        
+        from django.utils import timezone
+
         refresh = RefreshToken.for_user(self.user)
-        access_token = str(refresh.access_token)
-        
-        # Aguardar expiração
-        time.sleep(2)
+        access = refresh.access_token
+        # Forçar expiração no passado
+        access.set_exp(from_time=timezone.now() - timedelta(seconds=2), lifetime=timedelta(seconds=1))
+        access_token = str(access)
         
         # Tentar usar token expirado (incluir HTTP_HOST)
         self.client.credentials(
@@ -135,20 +128,13 @@ class JWTAuthTestCase(TestCase):
         response = self.client.get('/api/users/me/')
         
         self.assertEqual(response.status_code, 401)
-        
-        # Restaurar configuração original
-        settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'] = original_lifetime
     
-    def test_legacy_token_auth_still_works(self):
-        """Testa que autenticação legacy (Token) ainda funciona para backward compatibility"""
-        from rest_framework.authtoken.models import Token
-        
-        token = Token.objects.create(user=self.user)
-        
+    def test_token_auth_header_rejected(self):
+        """TokenAuth legado foi removido; apenas Bearer JWT deve funcionar."""
         self.client.credentials(
-            HTTP_AUTHORIZATION=f'Token {token.key}',
+            HTTP_AUTHORIZATION='Token not-a-real-token',
             HTTP_HOST='testjwt.localhost'
         )
         response = self.client.get('/api/users/me/')
-        
-        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.status_code, 401)

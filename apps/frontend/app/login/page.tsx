@@ -8,10 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Logo, LogoAuth } from "@/components/ui/logo";
 import { ArrowRight, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { api, getErrorMessage } from "@/lib/api";
 import { isValidEmail } from "@/lib/validation";
-import { storage } from "@/lib/helpers";
-import type { AuthToken } from "@/lib/types";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface LoginForm {
   email: string;
@@ -20,6 +18,7 @@ interface LoginForm {
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [formData, setFormData] = useState<LoginForm>({ email: "", senha: "" });
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
   const [loading, setLoading] = useState(false);
@@ -62,34 +61,14 @@ export default function LoginPage() {
     setApiError("");
 
     try {
-      const response = await api.post<{ token: string }>("/api-token-auth/", {
-        username: formData.email,
-        password: formData.senha,
-      });
-
-      if (response.token) {
-        storage.set("auth_token", response.token);
-        
-        // Buscar informações do usuário após login
-        try {
-          const userResponse = await api.get<AuthToken>("/api/tenant-info/", {
-            headers: {
-              Authorization: `Token ${response.token}`
-            }
-          });
-          
-          if (userResponse.tenant) {
-            storage.set("tenant_id", userResponse.tenant.id);
-          }
-        } catch (err) {
-          console.warn("Não foi possível buscar tenant_info:", err);
-        }
-        
-        router.push("/dashboard");
-      }
+      await login(formData.email, formData.senha);
+      const redirect = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('redirect')
+        : null;
+      router.push(redirect || "/dashboard");
     } catch (error) {
       console.error("Erro no login:", error);
-      setApiError(getErrorMessage(error));
+      setApiError(error instanceof Error ? error.message : "Erro ao fazer login");
     } finally {
       setLoading(false);
     }

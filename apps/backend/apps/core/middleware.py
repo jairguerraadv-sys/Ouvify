@@ -23,16 +23,31 @@ class TenantIsolationMiddleware:
                     "detail": "Usuário autenticado sem tenant associado."
                 }, status=403)
 
-            # Se o usuário tiver campo tenant/cliente, garantir correspondência
-            if hasattr(user, 'tenant_id') and user.tenant_id != tenant.id:
+            # Superusuários podem acessar qualquer tenant (admin global)
+            if getattr(user, 'is_superuser', False):
+                return self.get_response(request)
+
+            # Validar membership do usuário no tenant (owner ou TeamMember ativo)
+            try:
+                from apps.tenants.models import TeamMember  # import local p/ evitar ciclos
+
+                is_owner = getattr(tenant, 'owner_id', None) == getattr(user, 'id', None)
+                is_member = TeamMember.objects.filter(
+                    user=user,
+                    client=tenant,
+                    status=TeamMember.ACTIVE,
+                ).exists()
+
+                if not (is_owner or is_member):
+                    return JsonResponse({
+                        "error": "tenant_mismatch",
+                        "detail": "Usuário não pertence ao tenant da requisição.",
+                    }, status=403)
+            except Exception:
+                # Se não conseguimos validar membership com segurança, bloquear.
                 return JsonResponse({
                     "error": "tenant_mismatch",
-                    "detail": "Usuário não pertence ao tenant da requisição."
-                }, status=403)
-            if hasattr(user, 'client_id') and user.client_id != tenant.id:
-                return JsonResponse({
-                    "error": "tenant_mismatch",
-                    "detail": "Usuário não pertence ao tenant da requisição."
+                    "detail": "Não foi possível validar o tenant do usuário.",
                 }, status=403)
 
         # Opcional: bloquear requisições sem tenant para rotas privadas
@@ -78,13 +93,17 @@ class TenantMiddleware:
         '/admin/',
         '/api/register-tenant/',
         '/api/check-subdominio/',
-        '/api-token-auth/',
         '/api/token/',
         '/health/',  # Health check para monitoring
         '/ready/',   # Readiness check
         '/api/password-reset/',  # Reset de senha
+        '/api/team/invitations/accept/',  # Aceite de convite (público via token)
+        '/api/consent/versions/',  # Consentimento (público)
+        '/api/consent/user-consents/accept_anonymous/',  # Consentimento anônimo (público)
         '/api/feedbacks/consultar-protocolo/',  # Consulta pública de protocolo
         '/api/tenants/webhook/',  # Webhook do Stripe (valida via signature)
+        '/api/v1/billing/plans/',  # Planos (público)
+        '/api/v1/billing/webhook/',  # Webhook do Stripe Billing (sem tenant no host)
     ]
     
     # URLs que permitem tenant via header mesmo sem subdomínio
@@ -132,17 +151,19 @@ class TenantMiddleware:
             host_without_port == '127.0.0.1'
         )
         
-        # Se for IP/localhost, tentar via header ou usar padrão (se habilitado)
+        # Se for IP/localhost, tentar via header (se ainda não setou) ou usar padrão (se habilitado)
         if is_ip_or_localhost or len(parts) == 1:
             tenant_id = request.headers.get('X-Tenant-ID')
 
             if tenant_id:
                 try:
-                    tenant = Client.objects.get(id=tenant_id, ativo=True)
+                    tenant_id_int = int(str(tenant_id).strip())
+                    tenant = Client.objects.only('id', 'nome', 'subdominio', 'ativo').get(id=tenant_id_int, ativo=True)
                     set_current_tenant(tenant)
                     request.tenant = tenant
+                    request.tenant_source = 'header'
                     logger.debug(f"✅ Tenant identificado via header: {tenant.nome}")
-                except (Client.DoesNotExist, ValueError):
+                except (Client.DoesNotExist, ValueError, TypeError):
                     logger.warning(f"⚠️ Tenant ID inválido no header: {tenant_id}")
 
             # Fallback só é permitido quando explicitamente ativado
@@ -154,6 +175,7 @@ class TenantMiddleware:
                     if tenant:
                         set_current_tenant(tenant)
                         request.tenant = tenant
+                        request.tenant_source = 'fallback'
                         logger.debug(f"🔧 Usando tenant padrão (dev): {tenant.nome}")
                 except Exception as e:
                     logger.error(f"❌ Erro ao buscar tenant padrão: {e}")
@@ -172,7 +194,7 @@ class TenantMiddleware:
                 logger.debug("ℹ️ Nenhum tenant identificado (modo público)")
         
         # Se houver subdomínio (mais de uma parte no host e não é IP)
-        elif len(parts) > 1:
+        elif len(parts) > 1 and not tenant:
             subdomain = parts[0]
             
             # Ignorar subdominios comuns como www
@@ -192,6 +214,7 @@ class TenantMiddleware:
                     
                     # Também adicionar ao objeto request para fácil acesso
                     request.tenant = tenant
+                    request.tenant_source = 'subdomain'
                     
                 except Client.DoesNotExist:
                     # Tenant não encontrado - retornar erro 404
@@ -207,6 +230,21 @@ class TenantMiddleware:
                         '<p>Múltiplos tenants encontrados. Contate o administrador.</p>',
                         status=500
                     )
+
+        # Permitir identificação via header somente para URLs explicitamente habilitadas
+        # (ex.: frontend em domínio único chamando APIs tenant-aware).
+        if not tenant and any(request.path.startswith(url) for url in self.HEADER_TENANT_URLS):
+            tenant_id = request.headers.get('X-Tenant-ID')
+            if tenant_id:
+                try:
+                    tenant_id_int = int(str(tenant_id).strip())
+                    tenant = Client.objects.only('id', 'nome', 'subdominio', 'ativo').get(id=tenant_id_int, ativo=True)
+                    set_current_tenant(tenant)
+                    request.tenant = tenant
+                    request.tenant_source = 'header'
+                    logger.debug(f"✅ Tenant identificado via header (url allowlist): {tenant.nome}")
+                except (Client.DoesNotExist, ValueError, TypeError):
+                    logger.warning(f"⚠️ Tenant ID inválido no header (url allowlist): {tenant_id}")
         
         # Processar a requisição
         response = self.get_response(request)

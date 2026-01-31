@@ -7,6 +7,10 @@ import { screen, waitFor, fireEvent, within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import FeedbacksPage from '@/app/dashboard/feedbacks/page';
 
+jest.mock('@/components/ProtectedRoute', () => ({
+  ProtectedRoute: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+}));
+
 // Mock dos módulos necessários
 jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({
@@ -46,7 +50,7 @@ const mockFeedbacks = [
     tipo: 'reclamacao',
     categoria: 'atendimento',
     status: 'novo',
-    created_at: '2024-01-15T10:00:00Z',
+    data_criacao: '2024-01-15T10:00:00Z',
     descricao: 'Descrição da reclamação',
   },
   {
@@ -56,7 +60,7 @@ const mockFeedbacks = [
     tipo: 'sugestao',
     categoria: 'sistema',
     status: 'em_andamento',
-    created_at: '2024-01-14T09:00:00Z',
+    data_criacao: '2024-01-14T09:00:00Z',
     descricao: 'Descrição da sugestão',
   },
   {
@@ -66,7 +70,7 @@ const mockFeedbacks = [
     tipo: 'elogio',
     categoria: 'produto',
     status: 'resolvido',
-    created_at: '2024-01-13T08:00:00Z',
+    data_criacao: '2024-01-13T08:00:00Z',
     descricao: 'Descrição do elogio',
   },
 ];
@@ -163,7 +167,7 @@ describe('Feedbacks Page', () => {
   describe('Estados de Loading e Erro', () => {
     it('exibe estado de loading', async () => {
       const { useFeedbacks } = require('@/hooks/use-dashboard');
-      useFeedbacks.mockReturnValue({
+      useFeedbacks.mockReturnValueOnce({
         feedbacks: null,
         isLoading: true,
         error: null,
@@ -179,7 +183,7 @@ describe('Feedbacks Page', () => {
 
     it('exibe estado vazio quando não há feedbacks', async () => {
       const { useFeedbacks } = require('@/hooks/use-dashboard');
-      useFeedbacks.mockReturnValue({
+      useFeedbacks.mockReturnValueOnce({
         feedbacks: [],
         isLoading: false,
         error: null,

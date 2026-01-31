@@ -30,7 +30,7 @@ describe('Badge Component', () => {
   it('renders destructive variant', () => {
     render(<Badge variant="destructive">Error</Badge>);
     const badge = screen.getByText('Error');
-    expect(badge.className).toContain('bg-destructive');
+    expect(badge.className).toContain('bg-error-100');
   });
 
   it('renders outline variant', () => {

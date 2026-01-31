@@ -3,13 +3,12 @@ Views para logout com invalidação de token.
 
 ATUALIZADO: Auditoria 30/01/2026
 - Adicionado blacklist de JWT (simplejwt)
-- Invalida tanto DRF Token quanto JWT
+- Invalida JWT (simplejwt)
 """
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.token_blacklist.models import OutstandingToken, BlacklistedToken
 import logging
@@ -25,8 +24,6 @@ class LogoutView(APIView):
     POST /api/logout/
     
     Headers: 
-        Authorization: Token <token>
-        ou
         Authorization: Bearer <jwt_access_token>
     
     Body (opcional para JWT):
@@ -47,16 +44,7 @@ class LogoutView(APIView):
         success_messages = []
         
         try:
-            # 1. Invalidar DRF Token (se existir)
-            try:
-                token = Token.objects.get(user=user)
-                token.delete()
-                success_messages.append("DRF Token invalidado")
-                logger.info(f"✅ DRF Token deletado | User: {user.username}")
-            except Token.DoesNotExist:
-                pass  # Usuário pode estar usando apenas JWT
-            
-            # 2. Blacklist JWT Refresh Token (se fornecido)
+            # 1. Blacklist JWT Refresh Token (se fornecido)
             refresh_token = request.data.get('refresh')
             if refresh_token:
                 try:
@@ -135,10 +123,7 @@ class LogoutAllDevicesView(APIView):
         user = request.user
         
         try:
-            # 1. Deletar DRF Token
-            Token.objects.filter(user=user).delete()
-            
-            # 2. Blacklist todos os JWT tokens
+            # 1. Blacklist todos os JWT tokens
             outstanding_tokens = OutstandingToken.objects.filter(user=user)
             blacklisted_count = 0
             

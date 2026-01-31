@@ -14,19 +14,19 @@
 // ============================================
 
 export const colors = {
-  // Cores Primárias (Identidade da marca - Azul Profissional)
+  // Cores Primárias (Identidade da marca - Sky Blue #0ea5e9)
   primary: {
-    50: '#EFF6FF',   // Muito claro - backgrounds sutis
-    100: '#DBEAFE',  // Claro - hover states
-    200: '#BFDBFE',  // Claro médio
-    300: '#93C5FD',  // Médio
-    400: '#60A5FA',  // Médio escuro
-    500: '#3B82F6',  // Base - cor principal da marca
-    600: '#2563EB',  // Escuro - hover em botões
-    700: '#1D4ED8',  // Mais escuro
-    800: '#1E40AF',  // Muito escuro
-    900: '#1E3A8A',  // Quase preto
-    DEFAULT: '#3B82F6',
+    50: '#F0F9FF',   // backgrounds sutis
+    100: '#E0F2FE',  // hover states
+    200: '#BAE6FD',
+    300: '#7DD3FC',
+    400: '#38BDF8',
+    500: '#0EA5E9',  // Base - cor principal da marca
+    600: '#0284C7',  // Hover
+    700: '#0369A1',
+    800: '#075985',
+    900: '#0C4A6E',
+    DEFAULT: '#0EA5E9',
   },
   
   // Cores Secundárias (Roxo Criativo)
@@ -133,8 +133,8 @@ export const colors = {
     tertiary: '#6B7280',     // Texto terciário (cinza) - Contraste 4.5:1
     inverse: '#FFFFFF',      // Texto em fundos escuros
     disabled: '#9CA3AF',     // Texto desabilitado
-    link: '#3B82F6',         // Links
-    linkHover: '#2563EB',    // Links hover
+    link: '#0EA5E9',         // Links
+    linkHover: '#0284C7',    // Links hover
   },
   
   // Cores de Borda
@@ -142,7 +142,7 @@ export const colors = {
     light: '#E5E7EB',        // Bordas sutis
     DEFAULT: '#D1D5DB',      // Bordas padrão
     dark: '#9CA3AF',         // Bordas escuras
-    focus: '#3B82F6',        // Bordas de foco
+    focus: '#0EA5E9',        // Bordas de foco
   },
 } as const;
 
@@ -212,21 +212,21 @@ export const typography = {
 
 // Classes CSS utilitárias para headings
 export const headingStyles = {
-  h1: 'font-heading text-5xl font-bold text-gray-900 tracking-tight',
-  h2: 'font-heading text-4xl font-bold text-gray-900 tracking-tight',
-  h3: 'font-heading text-3xl font-semibold text-gray-900',
-  h4: 'font-heading text-2xl font-semibold text-gray-900',
-  h5: 'font-heading text-xl font-semibold text-gray-900',
-  h6: 'font-heading text-lg font-semibold text-gray-900',
+  h1: 'font-heading text-5xl font-bold text-neutral-900 tracking-tight',
+  h2: 'font-heading text-4xl font-bold text-neutral-900 tracking-tight',
+  h3: 'font-heading text-3xl font-semibold text-neutral-900',
+  h4: 'font-heading text-2xl font-semibold text-neutral-900',
+  h5: 'font-heading text-xl font-semibold text-neutral-900',
+  h6: 'font-heading text-lg font-semibold text-neutral-900',
 } as const;
 
 // Classes para textos
 export const textStyles = {
-  body: 'font-sans text-base text-gray-900 leading-normal',
-  bodySecondary: 'font-sans text-base text-gray-600 leading-normal',
-  small: 'font-sans text-sm text-gray-600 leading-snug',
-  caption: 'font-sans text-xs text-gray-500 leading-tight',
-  label: 'font-sans text-sm font-medium text-gray-700 leading-snug',
+  body: 'font-sans text-base text-neutral-900 leading-normal',
+  bodySecondary: 'font-sans text-base text-neutral-600 leading-normal',
+  small: 'font-sans text-sm text-neutral-600 leading-snug',
+  caption: 'font-sans text-xs text-neutral-500 leading-tight',
+  label: 'font-sans text-sm font-medium text-neutral-700 leading-snug',
   link: 'font-sans text-base text-primary-600 hover:text-primary-700 underline-offset-4 hover:underline transition-colors',
 } as const;
 

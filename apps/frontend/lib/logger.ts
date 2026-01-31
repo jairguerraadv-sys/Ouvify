@@ -4,6 +4,7 @@
  */
 
 const isDev = process.env.NODE_ENV === 'development';
+const isTest = process.env.NODE_ENV === 'test';
 const isClient = typeof window !== 'undefined';
 
 export const logger = {
@@ -11,6 +12,7 @@ export const logger = {
    * Log de erro (sempre ativo, mas com informação reduzida em produção)
    */
   error: (...args: unknown[]) => {
+    if (isTest) return;
     if (isDev) {
       console.error('[ERROR]', ...args);
     } else {
@@ -23,7 +25,7 @@ export const logger = {
    * Log de aviso (apenas em desenvolvimento)
    */
   warn: (...args: unknown[]) => {
-    if (isDev) {
+    if (isDev && !isTest) {
       console.warn('[WARN]', ...args);
     }
   },
@@ -32,7 +34,7 @@ export const logger = {
    * Log informativo (apenas em desenvolvimento)
    */
   log: (...args: unknown[]) => {
-    if (isDev) {
+    if (isDev && !isTest) {
       console.log('[INFO]', ...args);
     }
   },
@@ -41,7 +43,7 @@ export const logger = {
    * Log de debug (apenas em desenvolvimento)
    */
   debug: (...args: unknown[]) => {
-    if (isDev) {
+    if (isDev && !isTest) {
       console.debug('[DEBUG]', ...args);
     }
   },
@@ -50,7 +52,7 @@ export const logger = {
    * Log de sucesso (apenas em desenvolvimento)
    */
   success: (...args: unknown[]) => {
-    if (isDev) {
+    if (isDev && !isTest) {
       console.log('[SUCCESS] ✅', ...args);
     }
   },

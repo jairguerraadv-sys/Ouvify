@@ -156,7 +156,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       setUser(userData);
       setTenant(tenantData);
-      router.push('/dashboard');
     } catch (err: unknown) {
       const error = err as AxiosError<{detail?: string; non_field_errors?: string[]; error?: string}>;
       const errorMessage = error.response?.data?.detail || 
@@ -198,9 +197,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     try {
       // O RegisterData já vem no formato correto do formulário
-      const response = await apiClient.post('/api/register-tenant/', data);
+      const response = await apiClient.post<{
+        token?: string;
+        access?: string;
+        refresh?: string;
+        user: any;
+        tenant?: any;
+      }>('/api/register-tenant/', data);
 
-      const { token, user: userResponse, tenant: tenantResponse } = response.data;
+      const { access, refresh, user: userResponse, tenant: tenantResponse } = response.data;
 
       // Criar objeto user do formato esperado
       const userData = {
@@ -224,32 +229,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         cor_texto: undefined,
       } : null;
 
-      // Salvar no localStorage
-      localStorage.setItem('auth_token', token);
+      if (!access || !refresh) {
+        throw new Error('Registro concluído, mas JWT não foi emitido (access/refresh ausentes).');
+      }
+
+      // Salvar tokens JWT no localStorage
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
       localStorage.setItem('user', JSON.stringify(userData));
       if (tenantResponse?.id) {
         localStorage.setItem('tenant_id', tenantResponse.id.toString());
         localStorage.setItem('tenant', JSON.stringify(tenantData));
       }
 
-      // Configurar header de autenticação
-      apiClient.defaults.headers.common['Authorization'] = `Token ${token}`;
+      // Configurar header de autenticação JWT
+      apiClient.defaults.headers.common['Authorization'] = `Bearer ${access}`;
 
       setUser(userData);
       setTenant(tenantData);
-      router.push('/dashboard');
     } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+        throw err;
+      }
+
       const error = err as AxiosError<{detail?: string; errors?: Record<string, string[]>; error?: string}>;
-      const errorMessage = error.response?.data?.detail || 
-                          error.response?.data?.errors || 
-                          error.response?.data?.error || 
-                          'Erro ao registrar';
-      setError(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
-      throw new Error(typeof errorMessage === 'string' ? errorMessage : 'Dados inválidos');
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.response?.data?.error ||
+        'Erro ao registrar';
+
+      setError(errorMessage);
+      throw new Error(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, [router]);
+  }, []);
 
   const updateUser = useCallback(async (data: Partial<User>) => {
     setLoading(true);

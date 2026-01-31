@@ -160,7 +160,7 @@ INSTALLED_APPS = [
     
     # Bibliotecas de Terceiros
     'rest_framework',      # Para criar a API
-    'rest_framework.authtoken',  # Para autenticação via token (legacy)
+    # 'rest_framework.authtoken',  # Legacy TokenAuth removido (hardening 2026)
     'rest_framework_simplejwt.token_blacklist',  # JWT com blacklist
     'corsheaders',         # Para o frontend conectar (Next.js)
     'drf_spectacular',     # OpenAPI 3.0 documentation
@@ -195,6 +195,9 @@ MIDDLEWARE = [
     
     # Middleware de Multi-tenancy (O nosso porteiro)
     'apps.core.middleware.TenantMiddleware',
+
+    # Enforce de isolamento e membership do tenant
+    'apps.core.middleware.TenantIsolationMiddleware',
     
     # Middleware de segurança adicional (headers CSP, etc)
     'apps.core.security_middleware.SecurityHeadersMiddleware',
@@ -515,7 +518,6 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT como principal
-        'rest_framework.authentication.TokenAuthentication',  # Token legacy (backward compatibility)
         'rest_framework.authentication.SessionAuthentication',  # Para Django Admin
     ],
     'DEFAULT_RENDERER_CLASSES': [

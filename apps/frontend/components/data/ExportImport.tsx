@@ -71,7 +71,7 @@ export function ExportDataDialog() {
 
       const response = await fetch(`/api/feedbacks/export-advanced/?${params.toString()}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
         },
       });
 
@@ -292,7 +292,7 @@ export function ImportDataDialog() {
       const response = await fetch('/api/feedbacks/import/', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('accessToken')}`,
+          'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
         },
         body: formData,
       });

@@ -221,13 +221,7 @@ export function EmptyState({
     
     if (actionConfig.href) {
       return (
-        <Button 
-          variant={buttonVariant} 
-          asChild
-          size={size === 'sm' ? 'sm' : 'default'}
-        >
-          <a href={actionConfig.href}>{actionConfig.label}</a>
-        </Button>
+        <Button variant={buttonVariant} asChild size={size === 'sm' ? 'sm' : 'default'}><a href={actionConfig.href}>{actionConfig.label}</a></Button>
       );
     }
     

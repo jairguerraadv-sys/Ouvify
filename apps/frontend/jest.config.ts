@@ -14,6 +14,12 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
   },
+  testPathIgnorePatterns: [
+    '<rootDir>/e2e/',
+    '<rootDir>/tests/e2e/',
+    '<rootDir>/.next/',
+    '<rootDir>/node_modules/',
+  ],
   collectCoverageFrom: [
     'app/**/*.{js,jsx,ts,tsx}',
     'components/**/*.{js,jsx,ts,tsx}',

@@ -7,7 +7,7 @@ test.describe('Authentication Flow', () => {
 
     // Verificar se a página carregou
     await expect(page).toHaveTitle(/Ouvify/);
-    await expect(page.locator('h1')).toContainText('Entrar');
+    await expect(page.locator('h1')).toContainText('Bem-vindo');
 
     // Preencher credenciais válidas
     await page.fill('input[type="email"]', 'admin@test.com');
@@ -24,9 +24,9 @@ test.describe('Authentication Flow', () => {
     await expect(page.url()).toContain('/dashboard');
 
     // Verificar se token foi salvo
-    const token = await page.evaluate(() => localStorage.getItem('auth_token'));
+    const token = await page.evaluate(() => localStorage.getItem('access_token'));
     expect(token).toBeTruthy();
-    expect(token).toMatch(/^Token /);
+    expect(token).toMatch(/^eyJ/);
   });
 
   test('should show error with invalid credentials', async ({ page }) => {
@@ -54,7 +54,7 @@ test.describe('Authentication Flow', () => {
     await page.waitForURL('/login?redirect=/dashboard');
 
     // Verificar se estamos na página de login
-    await expect(page.locator('h1')).toContainText('Entrar');
+    await expect(page.locator('h1')).toContainText('Bem-vindo');
   });
 
   test('should logout successfully', async ({ authenticatedPage }) => {
@@ -70,7 +70,7 @@ test.describe('Authentication Flow', () => {
     await page.waitForURL('/login');
 
     // Verificar se token foi removido
-    const token = await page.evaluate(() => localStorage.getItem('auth_token'));
+    const token = await page.evaluate(() => localStorage.getItem('access_token'));
     expect(token).toBeNull();
   });
 
@@ -83,7 +83,7 @@ test.describe('Authentication Flow', () => {
     await page.waitForURL('/dashboard');
 
     // Simular token expirado removendo do localStorage
-    await page.evaluate(() => localStorage.removeItem('auth_token'));
+    await page.evaluate(() => localStorage.removeItem('access_token'));
 
     // Tentar acessar uma rota protegida
     await page.reload();

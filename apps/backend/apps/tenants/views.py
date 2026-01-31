@@ -5,13 +5,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework import status
-from rest_framework.authtoken.models import Token
 from rest_framework.decorators import action
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle
 from django.contrib.auth.models import User
 from django.db import transaction
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import ClientPublicSerializer, RegisterTenantSerializer, ClientSerializer, UserSerializer, TenantAdminSerializer, ClientBrandingSerializer
 from .models import Client
 from .services import StripeService
@@ -272,23 +272,25 @@ class RegisterTenantView(APIView):
                     ativo=True
                 )
                 
-                # 3. Criar token de autenticação
-                token, _ = Token.objects.get_or_create(user=user)
-                
                 logger.info(
                     f"✅ Novo tenant criado | "
                     f"Empresa: {tenant.nome} | "
                     f"Subdomínio: {tenant.subdominio} | "
                     f"Owner: {user.email}"
                 )
+
+                # 4. Emitir JWT (novo padrão)
+                jwt_refresh = RefreshToken.for_user(user)
+                jwt_access = jwt_refresh.access_token
                 
-                # 4. Retornar dados completos
+                # 5. Retornar dados completos
                 return Response(
                     {
                         "message": "Conta criada com sucesso!",
                         "user": UserSerializer(user).data,
                         "tenant": ClientSerializer(tenant).data,
-                        "token": token.key,
+                        "access": str(jwt_access),
+                        "refresh": str(jwt_refresh),
                         "dashboard_url": f"http://{tenant.subdominio}.localhost:3000/dashboard"
                     },
                     status=status.HTTP_201_CREATED

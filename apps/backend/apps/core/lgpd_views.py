@@ -25,7 +25,7 @@ class AccountDeletionView(APIView):
     Exclui a conta do usuário e todos os dados associados (direito ao esquecimento).
     
     DELETE /api/account/
-    Headers: Authorization: Token <token>
+    Headers: Authorization: Bearer <jwt_access_token>
     Body (opcional): {
         "confirm": true,
         "reason": "Motivo da exclusão" (opcional)
@@ -88,10 +88,6 @@ class AccountDeletionView(APIView):
                     tenant_nome = "N/A"
                     logger.info(f"🗑️ Exclusão de conta sem tenant | User: {user.email}")
                 
-                # Excluir tokens de autenticação
-                from rest_framework.authtoken.models import Token
-                Token.objects.filter(user=user).delete()
-                
                 # Guardar email para log antes de excluir
                 user_email = user.email
                 
@@ -132,7 +128,7 @@ class DataExportView(APIView):
     Exporta todos os dados pessoais do usuário (direito à portabilidade).
     
     GET /api/export-data/
-    Headers: Authorization: Token <token>
+    Headers: Authorization: Bearer <jwt_access_token>
     Query params:
         - format: 'json' (padrão) ou 'csv'
     

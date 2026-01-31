@@ -42,7 +42,9 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
         cache: 'pip'
-        cache-dependency-path: ./apps/backend/requirements.txt
+        cache-dependency-path: |
+          ./requirements.txt
+          ./apps/backend/requirements.txt
 
     - name: Install dependencies
       run: |
@@ -81,4 +83,4 @@ jobs:
         DATABASE_URL: 'postgresql://ouvify:test_password@localhost:5432/ouvify_test'
         TESTING: 'True'
         DJANGO_SETTINGS_MODULE: config.settings
-      run: pytest -v --tb=short || echo "Tests completed"
+      run: pytest -v --tb=short

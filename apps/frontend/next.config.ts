@@ -19,6 +19,7 @@ let nextConfig: NextConfig = {
       },
     ],
     formats: ['image/avif', 'image/webp'],
+    qualities: [75, 90],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],  // Responsive breakpoints
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],  // Small images/icons
@@ -81,6 +82,38 @@ let nextConfig: NextConfig = {
         has: [{ type: 'host', value: 'www.ouvify.com' }],
         destination: 'https://ouvify.com/:path*',
         permanent: true,
+      },
+
+      // Gaps de rotas (Auditoria 2026-01-31): manter links funcionando sem inventar UX nova
+      {
+        source: '/notifications',
+        destination: '/dashboard',
+        permanent: false,
+      },
+      {
+        source: '/contato',
+        destination: '/recursos/faq',
+        permanent: false,
+      },
+      {
+        source: '/lgpd/solicitacao',
+        destination: '/lgpd',
+        permanent: false,
+      },
+      {
+        source: '/settings/privacy',
+        destination: '/dashboard/configuracoes',
+        permanent: false,
+      },
+      {
+        source: '/docs',
+        destination: '/recursos/documentacao',
+        permanent: false,
+      },
+      {
+        source: '/docs/:path*',
+        destination: '/recursos/documentacao',
+        permanent: false,
       },
     ];
   },

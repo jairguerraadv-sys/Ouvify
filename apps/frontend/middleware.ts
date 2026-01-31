@@ -66,7 +66,7 @@ export function middleware(request: NextRequest) {
     if (cspHeader) {
       // TEMP: For testing - always apply CSP
       if (cspMode === 'report-only') {
-        response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report');
+        response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report/');
       } else {
         response.headers.set('Content-Security-Policy', cspHeader);
       }
@@ -85,7 +85,7 @@ export function middleware(request: NextRequest) {
   if (cspHeader) {
     // TEMP: For testing - always apply CSP
     if (cspMode === 'report-only') {
-      response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report');
+      response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report/');
     } else {
       response.headers.set('Content-Security-Policy', cspHeader);
     }

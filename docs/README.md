@@ -123,6 +123,9 @@ cd apps/backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+
+# Nota (auditoria 2026-01-31): `apps/backend/requirements.txt` é self-contained.
+# O `requirements.txt` na raiz do repo é um wrapper para tooling no root.
 python manage.py migrate
 python manage.py createsuperuser
 

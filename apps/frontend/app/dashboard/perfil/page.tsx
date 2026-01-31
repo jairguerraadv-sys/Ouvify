@@ -375,7 +375,7 @@ function PerfilContent() {
                 <div className="pt-2 text-xs text-muted-foreground space-y-1">
                   <p>• A exportação de dados pode levar alguns minutos dependendo do volume de informações.</p>
                   <p>• A exclusão da conta é processada imediatamente e não pode ser desfeita.</p>
-                  <p>• Para mais informações sobre como tratamos seus dados, consulte nossa <a href="/politica-privacidade" className="text-orange-600 hover:underline">Política de Privacidade</a>.</p>
+                  <p>• Para mais informações sobre como tratamos seus dados, consulte nossa <a href="/privacidade" className="text-orange-600 hover:underline">Política de Privacidade</a>.</p>
                 </div>
               </CardContent>
             </Card>

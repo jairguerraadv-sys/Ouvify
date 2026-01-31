@@ -1,12 +1,15 @@
 # =============================================================================
-# OUVIFY SAAS - Monorepo Consolidated Requirements
+# OUVIFY SAAS - Backend Requirements (Source of Truth)
 # =============================================================================
-# All Python dependencies for the project (backend, testing, tools)
-# Compatible with Python 3.11.8 (Railway runtime)
+# Keep this file self-contained because several deploy targets build with
+# `apps/backend` as the context (Docker, Railway/Nixpacks, etc.).
+#
+# If you need a monorepo-level requirements file, use `/requirements.txt`
+# as a wrapper that includes this file.
 # =============================================================================
 
 # Django Core
-Django==5.1.5
+Django==5.1.15
 djangorestframework==3.15.2
 djangorestframework-simplejwt==5.5.1
 django-cors-headers==4.6.0

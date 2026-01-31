@@ -27,10 +27,10 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const verifyToken = useCallback(async () => {
-    const token = localStorage.getItem('auth_token');
+    const accessToken = localStorage.getItem('access_token');
     
     // Se não tem token, redireciona imediatamente
-    if (!token) {
+    if (!accessToken) {
       router.push('/login?redirect=' + encodeURIComponent(window.location.pathname));
       return;
     }
@@ -54,7 +54,7 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token }),
+        body: JSON.stringify({ token: accessToken }),
       });
 
       if (response.ok) {
@@ -77,7 +77,7 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
 
           if (refreshResponse.ok) {
             const data = await refreshResponse.json();
-            localStorage.setItem('auth_token', data.access);
+            localStorage.setItem('access_token', data.access);
             if (data.refresh) {
               localStorage.setItem('refresh_token', data.refresh);
             }
@@ -89,22 +89,30 @@ export function ProtectedRoute({ children, fallback }: ProtectedRouteProps) {
         }
         
         // Refresh falhou, limpar tokens e redirecionar
-        localStorage.removeItem('auth_token');
+        localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('tenant_id');
+        localStorage.removeItem('tenant');
         lastVerification = { time: now, valid: false };
+        setIsAuthenticated(false);
+        setIsVerifying(false);
         router.push('/login?redirect=' + encodeURIComponent(window.location.pathname));
       } else {
-        // Erro inesperado, manter autenticado (graceful degradation)
+        // Erro inesperado: falhar fechado
         console.warn('Token verification failed with status:', response.status);
-        setIsAuthenticated(true);
+        lastVerification = { time: now, valid: false };
+        setIsAuthenticated(false);
         setIsVerifying(false);
+        router.push('/login?redirect=' + encodeURIComponent(window.location.pathname));
       }
     } catch (error) {
-      // Erro de rede, verificar apenas client-side (graceful degradation)
+      // Erro de rede: falhar fechado
       console.warn('Token verification error:', error);
-      // Em caso de erro de rede, confiar no token local
-      setIsAuthenticated(true);
+      lastVerification = { time: now, valid: false };
+      setIsAuthenticated(false);
       setIsVerifying(false);
+      router.push('/login?redirect=' + encodeURIComponent(window.location.pathname));
     }
   }, [router]);
 

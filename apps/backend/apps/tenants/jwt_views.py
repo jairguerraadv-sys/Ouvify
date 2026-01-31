@@ -14,6 +14,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     na resposta do token.
     """
     
+    def to_internal_value(self, data):
+        # Compat: permitir `email` como alias de `username`
+        if isinstance(data, dict) and 'username' not in data and 'email' in data:
+            data = {**data, 'username': data.get('email')}
+        return super().to_internal_value(data)
+
     def validate(self, attrs):
         # Obter tokens padrão (access + refresh)
         data = super().validate(attrs)

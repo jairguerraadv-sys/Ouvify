@@ -32,7 +32,7 @@ export const test = base.extend<TestFixtures>({
 
     // Aguardar login (verificar token no localStorage)
     await page.waitForFunction(() => {
-      return localStorage.getItem('auth_token') !== null;
+      return localStorage.getItem('access_token') !== null;
     });
 
     // Usar a página autenticada

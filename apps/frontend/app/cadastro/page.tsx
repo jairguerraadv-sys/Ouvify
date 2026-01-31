@@ -12,8 +12,8 @@ import { TooltipFormField } from '@/components/ui/Tooltip';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm, validateSubdomain } from '@/lib/validation';
 import { stripHtml } from '@/lib/sanitize';
-import { storage, debounce } from '@/lib/helpers';
-import type { RegisterData, AuthToken } from '@/lib/types';
+import { debounce } from '@/lib/helpers';
+import type { RegisterData } from '@/lib/types';
 
 interface FormErrors {
   [key: string]: string;
@@ -176,15 +176,64 @@ export default function CadastroPage() {
         subdominio_desejado: formData.subdominio_desejado.toLowerCase().trim(),
       };
       
-      const response = await api.post<AuthToken>('/api/register-tenant/', sanitizedData);
+      const response = await api.post<{
+        access: string;
+        refresh: string;
+        user: {
+          id: number;
+          email: string;
+          username: string;
+          first_name?: string;
+          last_name?: string;
+        };
+        tenant?: {
+          id: number;
+          nome: string;
+          subdominio: string;
+          plano?: string;
+          ativo?: boolean;
+          logo?: string | null;
+          cor_primaria?: string | null;
+          cor_secundaria?: string | null;
+          cor_texto?: string | null;
+        };
+      }>('/api/register-tenant/', sanitizedData);
 
-      // Armazenar dados de autenticação
-      const { token, tenant, user } = response;
-      
-      storage.set('auth_token', token);
-      storage.set('tenant_id', tenant?.id?.toString() || '');
-      storage.set('tenant_subdominio', tenant?.subdominio || '');
-      storage.set('user_name', user?.first_name || user?.username || '');
+      const { access, refresh, tenant, user } = response;
+
+      // Armazenar dados de autenticação (JWT)
+      localStorage.setItem('access_token', access);
+      localStorage.setItem('refresh_token', refresh);
+
+      const userData = {
+        id: user.id.toString(),
+        name: user.username || user.email.split('@')[0],
+        email: user.email,
+        tenant_id: tenant?.id?.toString(),
+        empresa: tenant?.nome,
+      };
+      localStorage.setItem('user', JSON.stringify(userData));
+
+      if (tenant?.id) {
+        localStorage.setItem('tenant_id', tenant.id.toString());
+        localStorage.setItem(
+          'tenant',
+          JSON.stringify({
+            id: tenant.id,
+            nome: tenant.nome,
+            subdominio: tenant.subdominio,
+            plano: tenant.plano || 'FREE',
+            ativo: tenant.ativo !== false,
+            logo: tenant.logo || undefined,
+            cor_primaria: tenant.cor_primaria || undefined,
+            cor_secundaria: tenant.cor_secundaria || undefined,
+            cor_texto: tenant.cor_texto || undefined,
+          })
+        );
+        localStorage.setItem('tenant_subdominio', tenant.subdominio);
+      }
+
+      localStorage.setItem('user_name', user.first_name || user.username || user.email.split('@')[0]);
       
       setSuccess(true);
       

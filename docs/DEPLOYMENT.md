@@ -114,6 +114,10 @@ nixPkgs = ['python311', 'postgresql']
 [phases.install]
 cmds = ['pip install -r requirements.txt']
 
+# Nota (auditoria 2026-01-31): `apps/backend/requirements.txt` é o arquivo
+# self-contained usado em ambientes onde o build context é `apps/backend`.
+# O `requirements.txt` na raiz é um wrapper para tooling no root.
+
 [phases.build]
 cmds = ['python manage.py collectstatic --noinput']
 
