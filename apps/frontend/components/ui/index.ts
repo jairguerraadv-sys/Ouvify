@@ -85,6 +85,36 @@ export { Progress } from './progress';
 // Stats Card
 export { StatsCard } from './stats-card';
 
+// Page Layout (NEW)
+export { 
+  PageLayout, 
+  PageContent, 
+  PageSection, 
+  PageGrid, 
+  PageDivider 
+} from './page-layout';
+
+// Form Components (NEW)
+export { 
+  Form, 
+  FormField, 
+  FormSection, 
+  FormActions, 
+  FormRow 
+} from './form-field';
+
+// Loading States (NEW)
+export { 
+  LoadingState, 
+  LoadingSpinner, 
+  LoadingDots, 
+  PageLoading, 
+  ButtonLoadingContent 
+} from './loading-state';
+
+// Breadcrumb
+export { Breadcrumb } from './breadcrumb';
+
 // Loading & Feedback (Sprint 5)
 export { 
   LoadingOverlay,
