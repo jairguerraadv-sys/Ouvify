@@ -121,7 +121,7 @@ jobs:
       - name: Build
         working-directory: ./apps/frontend
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL || 'https://api.ouvify.com.br' }}
+          NEXT_PUBLIC_API_URL: https://ouvify.up.railway.app
         run: npm run build
 
   # ============================================
