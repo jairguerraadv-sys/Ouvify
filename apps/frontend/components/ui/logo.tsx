@@ -24,6 +24,9 @@ const sizeMap = {
   '2xl': { height: 80, width: 150 },  // Hero sections
 };
 
+// Usar versões otimizadas do logo
+const LOGO_SRC = '/logo/logo-full.png';
+
 export function Logo({
   size = 'md',
   clickable = true,
@@ -41,7 +44,7 @@ export function Logo({
       )}
     >
       <Image 
-        src="/logo.png" 
+        src={LOGO_SRC}
         alt="Ouvify - Canal de Ética Profissional" 
         width={width} 
         height={height}

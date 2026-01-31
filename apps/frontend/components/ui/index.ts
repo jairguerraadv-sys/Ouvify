@@ -11,7 +11,17 @@
  */
 
 // Core Components
-export { Logo } from './logo';
+export { 
+  Logo, 
+  LogoHeader, 
+  LogoFooter, 
+  LogoAuth, 
+  LogoError, 
+  LogoSidebar, 
+  LogoMobile,
+  LogoHero,
+  LogoStatic,
+} from './logo';
 export { NavBar } from './navbar';
 export { Footer } from './footer';
 

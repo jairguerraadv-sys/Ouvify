@@ -4,12 +4,7 @@ import React, { ReactNode, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { AlertCircle, HelpCircle } from 'lucide-react';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/Tooltip';
+import { Tooltip } from '@/components/ui/Tooltip';
 
 // ============================================
 // FORM FIELD
@@ -87,22 +82,15 @@ export function FormField({
           <span className="text-error-500" aria-hidden="true">*</span>
         )}
         {tooltip && (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button 
-                  type="button" 
-                  className="text-gray-400 hover:text-gray-500"
-                  aria-label={`Ajuda: ${tooltip}`}
-                >
-                  <HelpCircle className="h-4 w-4" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="max-w-xs">{tooltip}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip content={tooltip}>
+            <button 
+              type="button" 
+              className="text-gray-400 hover:text-gray-500"
+              aria-label={`Ajuda: ${tooltip}`}
+            >
+              <HelpCircle className="h-4 w-4" />
+            </button>
+          </Tooltip>
         )}
       </Label>
       
