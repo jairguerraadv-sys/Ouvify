@@ -34,6 +34,14 @@ export function middleware(request: NextRequest) {
     cspHeader = '';
   } else {
     // Production CSP (strict) - applied in production or when FORCE_CSP=true
+    // Include all possible backend URLs to ensure connectivity
+    const apiUrls = [
+      process.env.NEXT_PUBLIC_API_URL,
+      'https://ouvify-production.up.railway.app',
+      'https://ouvify.up.railway.app',
+      'https://api.ouvify.com.br',
+    ].filter(Boolean).join(' ');
+    
     cspHeader = `
       default-src 'self';
       script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com;
@@ -42,7 +50,7 @@ export function middleware(request: NextRequest) {
       style-src-elem 'self' 'unsafe-inline';
       img-src 'self' data: https: blob:;
       font-src 'self' data:;
-      connect-src 'self' ${process.env.NEXT_PUBLIC_API_URL || 'https://api.ouvify.com.br'} https://api.stripe.com;
+      connect-src 'self' ${apiUrls} https://api.stripe.com wss://ouvify-production.up.railway.app wss://ouvify.up.railway.app;
       frame-src https://js.stripe.com https://hooks.stripe.com;
       object-src 'none';
       base-uri 'self';
