@@ -18,7 +18,7 @@ from apps.core import views as core_views
 from apps.core.views.csp import csp_report
 from apps.core.password_reset import PasswordResetRequestView, PasswordResetConfirmView  # type: ignore[import-not-found]
 from apps.core.health import health_check as health_check_view, readiness_check  # type: ignore[import-not-found]
-from apps.tenants.logout_views import LogoutView  # type: ignore[import-not-found]
+from apps.tenants.logout_views import LogoutView, LogoutAllDevicesView  # type: ignore[import-not-found]
 from apps.core.lgpd_views import AccountDeletionView, DataExportView  # type: ignore[import-not-found]
 from apps.core.profile_views import UserProfileUpdateView  # type: ignore[import-not-found]
 from apps.core.views.analytics import AnalyticsView  # type: ignore[import-not-found]
@@ -157,7 +157,9 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token, name='api_token_auth'),
     
     # Logout com invalidação de token
+    # ATUALIZADO: Auditoria 30/01/2026 - Adicionado blacklist JWT
     path('api/logout/', LogoutView.as_view(), name='api-logout'),
+    path('api/logout/all/', LogoutAllDevicesView.as_view(), name='api-logout-all-devices'),
     
     # Perfil do Usuário
     path('api/auth/me/', UserProfileUpdateView.as_view(), name='user-profile'),

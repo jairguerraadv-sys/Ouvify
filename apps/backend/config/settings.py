@@ -60,10 +60,23 @@ if not DEBUG and not SECRET_KEY_ENV:
         "Gere uma nova: python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'"
     )
 
-# Em desenvolvimento, usar fallback; em produção, usar da env
-SECRET_KEY = SECRET_KEY_ENV or 'r0FpXcqiJeBmF7EPR2AhEAsI0L8HV1dNMDueS7DP1PE9vENXI'
+# ATUALIZADO: Auditoria 30/01/2026
+# Em produção, EXIGIR SECRET_KEY da env; em dev/teste, usar fallback seguro
+if DEBUG or os.getenv('TESTING', 'False').lower() in ('true', '1', 'yes'):
+    # Desenvolvimento/Teste: usar fallback APENAS se não configurada
+    SECRET_KEY = SECRET_KEY_ENV or 'dev-only-key-do-not-use-in-production-' + str(hash('ouvify'))
+    if not SECRET_KEY_ENV:
+        import warnings
+        warnings.warn(
+            "⚠️ SECRET_KEY não configurada. Usando chave de desenvolvimento. "
+            "NUNCA use em produção!",
+            UserWarning
+        )
+else:
+    # Produção: SEMPRE usar da variável de ambiente (já validado acima)
+    SECRET_KEY = SECRET_KEY_ENV
 
-if DEBUG:
+if DEBUG and SECRET_KEY_ENV:
     print("✅ SECRET_KEY carregado de .env com sucesso.")
 
 # Hosts permitidos

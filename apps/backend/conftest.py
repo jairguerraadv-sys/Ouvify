@@ -18,12 +18,17 @@ os.environ['TESTING'] = 'True'
 
 
 @pytest.fixture(scope='session')
-def django_db_setup():
+def django_db_setup(django_db_blocker):
     """Setup do banco de dados para testes."""
+    from django.core.management import call_command
+    
     settings.DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',
     }
+    
+    with django_db_blocker.unblock():
+        call_command('migrate', '--run-syncdb', verbosity=0)
 
 
 @pytest.fixture
