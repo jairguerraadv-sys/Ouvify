@@ -37,7 +37,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./apps/frontend
-        run: npm ci
+        run: npm install --legacy-peer-deps
         
       - name: Run ESLint
         working-directory: ./apps/frontend
@@ -83,7 +83,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./apps/frontend
-        run: npm ci
+        run: npm install --legacy-peer-deps
         
       - name: Run Tests with Coverage
         working-directory: ./apps/frontend
@@ -116,7 +116,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./apps/frontend
-        run: npm ci
+        run: npm install --legacy-peer-deps
         
       - name: Build
         working-directory: ./apps/frontend
@@ -145,7 +145,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./apps/frontend
-        run: npm ci
+        run: npm install --legacy-peer-deps
       
       - name: Install Playwright Browsers
         working-directory: ./apps/frontend
