@@ -2,9 +2,9 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "name": "ouvify-frontend",
-  "buildCommand": "cd apps/frontend && npm install && npm run build",
+  "buildCommand": "cd apps/frontend && npm run build",
   "outputDirectory": "apps/frontend/.next",
-  "installCommand": "npm install --prefix apps/frontend",
+  "installCommand": "npm install --legacy-peer-deps --prefix apps/frontend",
   "framework": "nextjs",
   "regions": ["gru1"],
   "github": {
