@@ -21,7 +21,7 @@
     "test:backend": "cd apps/backend && python -m pytest",
     "format": "turbo run format",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "engines": {
     "node": ">=18.0.0",
