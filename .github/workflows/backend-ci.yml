@@ -91,7 +91,7 @@ jobs:
         image: postgres:16-alpine
         env:
           POSTGRES_DB: ouvify_test
-          POSTGRES_USER: ouvy
+          POSTGRES_USER: ouvify
           POSTGRES_PASSWORD: test_password
         ports:
           - 5432:5432
@@ -129,7 +129,7 @@ jobs:
       - name: Run Tests with Coverage
         working-directory: ./apps/backend
         env:
-          DATABASE_URL: postgresql://ouvy:test_password@localhost:5432/ouvify_test
+          DATABASE_URL: postgresql://ouvify:test_password@localhost:5432/ouvify_test
           REDIS_URL: redis://localhost:6379/0
           SECRET_KEY: test-secret-key-for-ci
           DEBUG: 'False'

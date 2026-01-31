@@ -43,7 +43,7 @@ def send_assignment_email(self, feedback_id: int, team_member_id: int):
             return {'status': 'skipped', 'reason': 'notifications_disabled'}
         
         # Construir URL do feedback
-        feedback_url = f"https://{feedback.client.subdominio}.ouvy.com/dashboard/feedbacks/{feedback.id}"
+        feedback_url = f"https://{feedback.client.subdominio}.ouvify.com/dashboard/feedbacks/{feedback.id}"
         
         # Renderizar template HTML
         html_message = render_to_string('emails/feedback_assigned.html', {
@@ -126,7 +126,7 @@ def send_new_feedback_email(self, feedback_id: int):
             logger.info(f"📧 Nenhum admin para notificar sobre feedback {feedback.protocolo}")
             return {'status': 'skipped', 'reason': 'no_recipients'}
         
-        feedback_url = f"https://{feedback.client.subdominio}.ouvy.com/dashboard/feedbacks/{feedback.id}"
+        feedback_url = f"https://{feedback.client.subdominio}.ouvify.com/dashboard/feedbacks/{feedback.id}"
         
         emails_sent = 0
         for admin in admins:

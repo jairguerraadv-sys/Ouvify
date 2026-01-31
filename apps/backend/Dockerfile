@@ -31,7 +31,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 FROM python:3.12-slim AS production
 
 # Create non-root user for security
-RUN groupadd -r ouvy && useradd -r -g ouvy ouvy
+RUN groupadd -r ouvify && useradd -r -g ouvify ouvify
 
 WORKDIR /app
 
@@ -47,7 +47,7 @@ COPY --from=builder /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
 # Copy application code
-COPY --chown=ouvy:ouvy . .
+COPY --chown=ouvify:ouvify . .
 
 # Environment variables
 ENV PYTHONUNBUFFERED=1 \
@@ -57,13 +57,13 @@ ENV PYTHONUNBUFFERED=1 \
 
 # Create directories for static and media files
 RUN mkdir -p /app/staticfiles /app/media && \
-    chown -R ouvy:ouvy /app/staticfiles /app/media
+    chown -R ouvify:ouvify /app/staticfiles /app/media
 
 # Collect static files
 RUN python manage.py collectstatic --noinput --clear || true
 
 # Switch to non-root user
-USER ouvy
+USER ouvify
 
 # Healthcheck
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \

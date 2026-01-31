@@ -13,7 +13,7 @@ def home(request):
     Retorna informações básicas do sistema.
     """
     return Response({
-        'message': 'OUVY SaaS - API Online',
+        'message': 'Ouvify SaaS - API Online',
         'version': '1.0.0',
         'status': 'operational',
         'tenant_mode': 'enabled'

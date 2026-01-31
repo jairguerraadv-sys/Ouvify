@@ -34,11 +34,11 @@ const cspDirectives = {
     ],
     'connect-src': [
       "'self'",
-      'https://ouvy-saas-production.up.railway.app',
+      'https://ouvify-production.up.railway.app',
       'https://api.stripe.com',
       'https://*.sentry.io',
       'https://vitals.vercel-insights.com',
-      'wss://ouvy-saas-production.up.railway.app', // WebSockets
+      'wss://ouvify-production.up.railway.app', // WebSockets
     ],
     'frame-src': [
       "'self'",

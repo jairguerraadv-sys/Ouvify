@@ -100,7 +100,7 @@ services:
     image: prometheuscommunity/postgres-exporter:v0.15.0
     container_name: ouvify-postgres-exporter
     environment:
-      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-ouvify_db}?sslmode=disable
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-ouvify}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB:-ouvify_db}?sslmode=disable
     ports:
       - "9187:9187"
     networks:

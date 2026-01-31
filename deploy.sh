@@ -43,7 +43,7 @@ if [ ! -d "ouvify_saas" ] || [ ! -d "ouvify_frontend" ]; then
     exit 1
 fi
 
-print_header "🚀 DEPLOY OUVY SAAS"
+print_header "🚀 DEPLOY OUVIFY"
 
 # Verificar Git
 print_info "Verificando Git..."

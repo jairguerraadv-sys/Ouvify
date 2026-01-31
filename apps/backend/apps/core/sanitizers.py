@@ -325,6 +325,64 @@ def sanitize_search_query(query: str, max_length: int = 100) -> str:
     return sanitized.strip()
 
 
+def sanitize_filename(filename: str, max_length: int = 255) -> str:
+    """
+    Sanitiza nome de arquivo para prevenir path traversal e caracteres inválidos.
+    
+    Args:
+        filename: Nome do arquivo original
+        max_length: Comprimento máximo permitido
+        
+    Returns:
+        str: Nome de arquivo seguro
+    """
+    if not filename:
+        return 'unnamed'
+    
+    # Remover path traversal
+    sanitized = filename.replace('..', '').replace('/', '').replace('\\', '')
+    
+    # Remover caracteres inválidos para sistemas de arquivos
+    sanitized = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', sanitized)
+    
+    # Normalizar espaços
+    sanitized = ' '.join(sanitized.split())
+    
+    # Substituir espaços por underscore
+    sanitized = sanitized.replace(' ', '_')
+    
+    # Limitar comprimento preservando extensão
+    if len(sanitized) > max_length:
+        name, ext = sanitized.rsplit('.', 1) if '.' in sanitized else (sanitized, '')
+        max_name_length = max_length - len(ext) - 1 if ext else max_length
+        sanitized = f"{name[:max_name_length]}.{ext}" if ext else name[:max_length]
+    
+    return sanitized.strip('_') or 'unnamed'
+
+
+def sanitize_phone_number(phone: str) -> str:
+    """
+    Sanitiza número de telefone removendo formatação.
+    
+    Args:
+        phone: Número de telefone com possível formatação
+        
+    Returns:
+        str: Apenas números (e opcionalmente +)
+    """
+    if not phone:
+        return ''
+    
+    # Manter apenas dígitos e +
+    sanitized = re.sub(r'[^\d+]', '', phone)
+    
+    # Garantir que + só aparece no início
+    if '+' in sanitized and not sanitized.startswith('+'):
+        sanitized = sanitized.replace('+', '')
+    
+    return sanitized
+
+
 def validate_and_sanitize_json_string(value: str) -> Optional[str]:
     """
     Valida e sanitiza uma string que pode conter JSON malicioso.

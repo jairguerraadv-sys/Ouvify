@@ -29,5 +29,5 @@ DICAS PARA RESPOSTA:
 - Use o protocolo para referência
 
 --
-Este email foi enviado automaticamente pelo sistema Ouvy.
+Este email foi enviado automaticamente pelo sistema Ouvify.
 Empresa: {{ tenant.nome }} | Domínio: {{ tenant.dominio }}

@@ -324,7 +324,7 @@ class TeamInvitationSerializer(serializers.ModelSerializer):
         return None
     
     def get_invite_url(self, obj):
-        return f"https://{obj.client.subdominio}.ouvy.com/convite/{obj.token}"
+        return f"https://{obj.client.subdominio}.ouvify.com/convite/{obj.token}"
     
     def validate_email(self, value):
         validator = EmailValidator()

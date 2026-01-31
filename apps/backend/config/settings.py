@@ -83,7 +83,7 @@ if DEBUG and SECRET_KEY_ENV:
 # Para Railway: adicione todos os possíveis domínios e use suffix pattern
 allowed_hosts_str = os.getenv(
     'ALLOWED_HOSTS',
-    'localhost,127.0.0.1,testserver,.local,.railway.app,.up.railway.app,ouvy-saas-production.up.railway.app'
+    'localhost,127.0.0.1,testserver,.local,.localhost,.railway.app,.up.railway.app,ouvify-production.up.railway.app'
 )
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(',') if h.strip()]
 
@@ -176,8 +176,8 @@ INSTALLED_APPS = [
     'apps.webhooks',       # Webhooks & Integrações (Sprint 5)
 ]
 
-# Performance monitoring (development only) - Auditoria Fase 3
-if DEBUG:
+# Performance monitoring (development only, not in testing) - Auditoria Fase 3
+if DEBUG and not TESTING_MODE:
     INSTALLED_APPS += [
         'nplusone.ext.django',  # N+1 query detection
         'debug_toolbar',         # Django Debug Toolbar
@@ -200,8 +200,8 @@ MIDDLEWARE = [
     'apps.core.security_middleware.SecurityHeadersMiddleware',
 ]
 
-# Performance monitoring middleware (development only) - Auditoria Fase 3
-if DEBUG:
+# Performance monitoring middleware (development only, not in testing) - Auditoria Fase 3
+if DEBUG and not TESTING_MODE:
     MIDDLEWARE += [
         'nplusone.ext.django.NPlusOneMiddleware',  # N+1 detection
         'debug_toolbar.middleware.DebugToolbarMiddleware',  # Debug toolbar
@@ -300,7 +300,7 @@ else:
         DATABASES = {
             'default': {
                 'ENGINE': 'django.db.backends.postgresql',
-                'NAME': os.getenv('DB_NAME', 'ouvy_db'),
+                'NAME': os.getenv('DB_NAME', 'ouvify_db'),
                 'USER': os.getenv('DB_USER', 'postgres'),
                 'PASSWORD': os.getenv('DB_PASSWORD', ''),
                 'HOST': os.getenv('DB_HOST', 'localhost'),
@@ -448,7 +448,7 @@ if not DEBUG:
 # Origens permitidas para requisições do frontend
 CORS_ALLOWED_ORIGINS = os.getenv(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3000,http://127.0.0.1:3000,https://ouvy-frontend-jairguerraadv-sys-projects.vercel.app'
+    'http://localhost:3000,http://127.0.0.1:3000,https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app'
 ).split(',')
 
 # Segurança CORS: bloquear origens de desenvolvimento em produção
@@ -494,8 +494,8 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://ouvy.vercel.app',
-    'https://ouvy-frontend-jairguerraadv-sys-projects.vercel.app',
+    'https://ouvify.vercel.app',
+    'https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app',
 ]
 
 # Em produção, remover localhost
@@ -815,8 +815,14 @@ if TESTING_MODE:
         'tenant_info': '100000/minute',  # ✅ Endpoint público tenant-info
     }
     
-    # Desabilitar CSRF
-    MIDDLEWARE = [m for m in MIDDLEWARE if 'CsrfViewMiddleware' not in m]
+    # Desabilitar CSRF e nplusone middleware para testes
+    MIDDLEWARE = [m for m in MIDDLEWARE if 'CsrfViewMiddleware' not in m and 'NPlusOne' not in m]
+    
+    # Desabilitar nplusone completamente
+    NPLUSONE_RAISE = False
+    NPLUSONE_WHITELIST = ['*']  # Whitelist tudo
+    import logging
+    NPLUSONE_LOGGER = logging.getLogger('nplusone')  # Logger real, não string
     
     # Permitir todos os hosts
     ALLOWED_HOSTS = ['*']

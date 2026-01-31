@@ -13,13 +13,13 @@ services:
     image: postgres:16-alpine
     container_name: ouvify_postgres_prod
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-ouvy}
-      POSTGRES_USER: ${POSTGRES_USER:-ouvy}
+      POSTGRES_DB: ${POSTGRES_DB:-ouvify}
+      POSTGRES_USER: ${POSTGRES_USER:-ouvify}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password required}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ouvy} -d ${POSTGRES_DB:-ouvy}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ouvify} -d ${POSTGRES_DB:-ouvify}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -69,7 +69,7 @@ services:
       dockerfile: Dockerfile
     container_name: ouvify_backend_prod
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvy}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvify}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvify}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY:?Secret key required}
       - DEBUG=False
@@ -158,7 +158,7 @@ services:
     container_name: ouvify_celery_worker_prod
     command: celery -A config worker -l info --concurrency=4
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvy}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvify}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvify}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY}
       - DJANGO_SETTINGS_MODULE=config.settings
@@ -189,7 +189,7 @@ services:
     container_name: ouvify_celery_beat_prod
     command: celery -A config beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     environment:
-      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvy}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvy}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-ouvify}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ouvify}
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY}
       - DJANGO_SETTINGS_MODULE=config.settings

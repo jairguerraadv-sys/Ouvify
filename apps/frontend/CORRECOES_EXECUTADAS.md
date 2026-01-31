@@ -1,4 +1,4 @@
-# ✅ CORREÇÕES UI/UX EXECUTADAS - OUVY
+# ✅ CORREÇÕES UI/UX EXECUTADAS - OUVIFY
 
 **Data:** 26 de Janeiro de 2026  
 **Status:** ✅ Concluído  
@@ -280,7 +280,7 @@ Todas as correções críticas e de alta prioridade foram implementadas com suce
 ### Cores Hardcoded Restantes
 ```bash
 # Executar verificação:
-cd /Users/jairneto/Desktop/ouvy_saas/apps/frontend
+cd /Users/jairneto/Desktop/Ouvify/apps/frontend
 
 # Blue-*
 grep -r "bg-blue-\|text-blue-\|border-blue-" app components --include="*.tsx" | wc -l

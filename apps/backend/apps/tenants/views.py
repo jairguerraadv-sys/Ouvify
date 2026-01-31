@@ -342,7 +342,7 @@ class CheckSubdominioView(APIView):
             )
         
         # Verificar palavras reservadas
-        reserved = ['www', 'api', 'admin', 'app', 'mail', 'ftp', 'smtp', 'ouvy', 'blog', 'docs', 'help', 'status']
+        reserved = ['www', 'api', 'admin', 'app', 'mail', 'ftp', 'smtp', 'ouvify', 'ouvy', 'blog', 'docs', 'help', 'status']
         if subdominio in reserved:
             return Response(
                 {

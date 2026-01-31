@@ -420,7 +420,7 @@ class FeedbackArquivo(TenantAwareModel):
     
     # Cloudinary field (automático se CLOUDINARY_URL configurado)
     arquivo = CloudinaryField(
-        folder='ouvy/feedback_arquivos',
+        folder='ouvify/feedback_arquivos',
         resource_type='auto',  # Aceita imagens, vídeos, documentos
         verbose_name='Arquivo',
         help_text='Arquivo anexado (imagem, PDF, documento)'

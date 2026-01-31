@@ -197,7 +197,7 @@ class UploadService:
             # Upload com transformações
             result = cloudinary.uploader.upload(
                 file,
-                folder=f"ouvy/tenants/{tenant_subdomain}",
+                folder=f"ouvify/tenants/{tenant_subdomain}",
                 public_id=f"logo_{tenant_subdomain}",
                 overwrite=True,
                 resource_type="image",
@@ -242,7 +242,7 @@ class UploadService:
             # Upload com transformações para favicon
             result = cloudinary.uploader.upload(
                 file,
-                folder=f"ouvy/tenants/{tenant_subdomain}",
+                folder=f"ouvify/tenants/{tenant_subdomain}",
                 public_id=f"favicon_{tenant_subdomain}",
                 overwrite=True,
                 resource_type="image",

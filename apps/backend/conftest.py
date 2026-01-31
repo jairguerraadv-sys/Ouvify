@@ -3,6 +3,15 @@ Fixtures globais para testes pytest do Ouvify
 """
 import os
 from pathlib import Path
+
+# IMPORTANTE: Configurar modo de teste ANTES de importar Django
+os.environ['TESTING'] = 'True'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+# Desabilitar nplusone - configuração via variável de ambiente
+os.environ['NPLUSONE_RAISE'] = 'False'
+os.environ['NPLUSONE_WHITELIST'] = '*'
+
 import django
 import pytest
 from django.conf import settings
@@ -12,9 +21,17 @@ from dotenv import load_dotenv
 env_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(env_path)
 
-# Configurar Django para modo de teste
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
-os.environ['TESTING'] = 'True'
+# Patch nplusone após Django estar configurado para evitar erros
+try:
+    import nplusone
+    from nplusone.core import notifiers
+    # Substituir o notifier por um noop
+    class NoopNotifier:
+        def notify(self, message):
+            pass
+    notifiers.Notifier = NoopNotifier
+except ImportError:
+    pass
 
 
 @pytest.fixture(scope='session')
@@ -25,6 +42,7 @@ def django_db_setup(django_db_blocker):
     settings.DATABASES['default'] = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',
+        'ATOMIC_REQUESTS': False,  # Required for SQLite in-memory
     }
     
     with django_db_blocker.unblock():

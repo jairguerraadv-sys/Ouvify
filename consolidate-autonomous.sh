@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🤖 CONSOLIDAÇÃO AUTÔNOMA DO MONOREPO OUVY SAAS
+# 🤖 CONSOLIDAÇÃO AUTÔNOMA DO MONOREPO OUVIFY
 # ================================================
 # Executa todas as 5 fases de consolidação automaticamente
 # Duração estimada: 5 horas
@@ -62,7 +62,7 @@ trap rollback ERR
 # Banner
 echo ""
 echo "╔════════════════════════════════════════════════════════════╗"
-echo "║  🤖 CONSOLIDAÇÃO AUTÔNOMA DO MONOREPO OUVY SAAS           ║"
+echo "║  🤖 CONSOLIDAÇÃO AUTÔNOMA DO MONOREPO OUVIFY              ║"
 echo "║  Duração estimada: 5 horas                                ║"
 echo "║  Início: $(date +'%H:%M:%S %d/%m/%Y')                               ║"
 echo "╚════════════════════════════════════════════════════════════╝"

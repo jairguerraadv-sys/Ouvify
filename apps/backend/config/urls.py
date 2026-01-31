@@ -100,7 +100,7 @@ urlpatterns = [
     path('ready/', readiness_check, name='readiness-check'),  # Readiness check endpoint
     
     # Admin Django - URL obscurecida para segurança (não usar /admin/)
-    path('painel-admin-ouvy-2026/', admin.site.urls),
+    path('painel-admin-ouvify-2026/', admin.site.urls),
     
     # Endpoint público para informações do tenant atual
     path('api/tenant-info/', TenantInfoView.as_view(), name='tenant-info'),

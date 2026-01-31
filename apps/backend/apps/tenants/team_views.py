@@ -229,7 +229,7 @@ class TeamInvitationViewSet(PermissionRequiredMixin, TenantFilterMixin, viewsets
         Envia email de convite com link único.
         Usa template HTML para melhor apresentação.
         """
-        invite_url = f"https://{invitation.client.subdominio}.ouvy.com/convite/{invitation.token}"
+        invite_url = f"https://{invitation.client.subdominio}.ouvify.com/convite/{invitation.token}"
         
         # Template context
         context = {
@@ -267,7 +267,7 @@ Ouvify - Gestão de Feedbacks White Label
             send_mail(
                 subject=f"🎉 Convite para {invitation.client.nome} no Ouvify",
                 message=text_message.strip(),
-                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@ouvy.com'),
+                from_email=getattr(settings, 'DEFAULT_FROM_EMAIL', 'noreply@ouvify.com'),
                 recipient_list=[invitation.email],
                 html_message=html_message,
                 fail_silently=False,

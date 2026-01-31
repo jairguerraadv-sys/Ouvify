@@ -11,7 +11,7 @@ Uso:
     locust -f locustfile.py --host=http://localhost:8000
 
     # Rodar contra staging
-    locust -f locustfile.py --host=https://ouvy-saas-production.up.railway.app
+    locust -f locustfile.py --host=https://ouvify-production.up.railway.app
 
     # Headless (CI/CD)
     locust -f locustfile.py --host=http://localhost:8000 --users 100 --spawn-rate 10 --run-time 60s --headless
@@ -41,7 +41,7 @@ class OuvifyUser(HttpUser):
     wait_time = between(1, 3)
     
     # Dados de teste
-    test_email = "loadtest@ouvy.com"
+    test_email = "loadtest@ouvify.com"
     test_password = "loadtest123"
     token = None
     tenant_id = None

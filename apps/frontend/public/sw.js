@@ -4,7 +4,7 @@
  * Ouvify - Notificações em tempo real
  */
 
-const CACHE_NAME = 'ouvy-push-v1';
+const CACHE_NAME = 'ouvify-push-v1';
 
 // Instalação do Service Worker
 self.addEventListener('install', (event) => {
@@ -49,7 +49,7 @@ self.addEventListener('push', (event) => {
     body: data.body,
     icon: data.icon || '/icon-192x192.png',
     badge: data.badge || '/badge-72x72.png',
-    tag: data.tag || `ouvy-notification-${Date.now()}`,
+    tag: data.tag || `ouvify-notification-${Date.now()}`,
     data: {
       url: data.url || '/',
       notification_id: data.data?.notification_id,

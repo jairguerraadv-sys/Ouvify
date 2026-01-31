@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # ============================================
-# 🚀 OUVY FRONTEND - Script de Pre-Deploy
+# 🚀 OUVIFY FRONTEND - Script de Pre-Deploy
 # ============================================
 # Execute antes de fazer deploy para produção
 # Uso: bash scripts/pre_deploy_check.sh
@@ -22,7 +22,7 @@ WARNINGS=0
 
 echo -e "${BLUE}"
 echo "╔══════════════════════════════════════════════════════╗"
-echo "║    🚀 OUVY Frontend - Verificação de Pre-Deploy      ║"
+echo "║    🚀 OUVIFY Frontend - Verificação de Pre-Deploy    ║"
 echo "╚══════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 

@@ -1,5 +1,5 @@
 # =============================================================================
-# OUVY SAAS - Monorepo Consolidated Requirements
+# OUVIFY SAAS - Monorepo Consolidated Requirements
 # =============================================================================
 # All Python dependencies for the project (backend, testing, tools)
 # =============================================================================

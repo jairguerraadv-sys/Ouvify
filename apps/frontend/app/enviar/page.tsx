@@ -140,7 +140,7 @@ export default function EnviarFeedbackPage() {
                       O servidor Django não está respondendo. Para testar o envio de feedbacks, inicie o backend:
                     </p>
                     <code className="block bg-muted text-secondary p-3 rounded-lg text-xs font-mono">
-                      cd ouvy_saas && bash run_server.sh
+                      cd apps/backend && python manage.py runserver
                     </code>
                   </div>
                 </div>

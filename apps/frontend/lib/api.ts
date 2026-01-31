@@ -5,7 +5,7 @@ import logger from './logger';
 // Configuração da API
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 
                 (process.env.NODE_ENV === 'production' 
-                  ? 'https://ouvy-saas-production.up.railway.app' 
+                  ? 'https://ouvify-production.up.railway.app' 
                   : 'http://127.0.0.1:8000');
 
 // Criar instância do axios

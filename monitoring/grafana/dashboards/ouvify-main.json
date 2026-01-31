@@ -635,7 +635,7 @@
   "refresh": "30s",
   "schemaVersion": 39,
   "tags": [
-    "ouvy",
+    "ouvify",
     "django",
     "nextjs"
   ],
@@ -649,7 +649,7 @@
   "timepicker": {},
   "timezone": "browser",
   "title": "Ouvify - Dashboard Principal",
-  "uid": "ouvy-main",
+  "uid": "ouvify-main",
   "version": 1,
   "weekStart": ""
 }

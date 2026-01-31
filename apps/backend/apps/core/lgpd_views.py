@@ -232,7 +232,7 @@ class DataExportView(APIView):
                 from django.http import HttpResponse
                 
                 response = HttpResponse(content_type='text/csv')
-                response['Content-Disposition'] = f'attachment; filename="ouvy_export_{user.username}_{datetime.now().strftime("%Y%m%d")}.csv"'
+                response['Content-Disposition'] = f'attachment; filename="ouvify_export_{user.username}_{datetime.now().strftime("%Y%m%d")}.csv"'
                 
                 writer = csv.writer(response)
                 
@@ -271,7 +271,7 @@ class DataExportView(APIView):
             else:
                 # Retornar como JSON
                 response = Response(export_data, status=status.HTTP_200_OK)
-                response['Content-Disposition'] = f'attachment; filename="ouvy_export_{user.username}_{datetime.now().strftime("%Y%m%d")}.json"'
+                response['Content-Disposition'] = f'attachment; filename="ouvify_export_{user.username}_{datetime.now().strftime("%Y%m%d")}.json"'
                 return response
                 
         except Exception as e:

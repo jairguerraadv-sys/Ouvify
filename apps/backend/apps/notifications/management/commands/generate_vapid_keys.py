@@ -105,13 +105,13 @@ class Command(BaseCommand):
             private_one_line = private_pem.replace('\n', '\\n')
             self.stdout.write(f'VAPID_PRIVATE_KEY="{private_one_line}"')
             self.stdout.write('')
-            self.stdout.write(f'VAPID_ADMIN_EMAIL=admin@ouvy.app')
+            self.stdout.write(f'VAPID_ADMIN_EMAIL=admin@ouvify.app')
         else:
             import json
             output = {
                 'public_key': public_base64,
                 'private_key': private_pem,
-                'admin_email': 'admin@ouvy.app'
+                'admin_email': 'admin@ouvify.app'
             }
             self.stdout.write(json.dumps(output, indent=2))
         

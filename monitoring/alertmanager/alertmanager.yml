@@ -61,7 +61,7 @@ receivers:
       - to: '${ALERT_EMAIL:-devops@ouvify.com.br}'
         send_resolved: true
         headers:
-          Subject: '[OUVY] {{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
+          Subject: '[OUVIFY] {{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
         html: |
           <h2>{{ .Status | toUpper }}: {{ .CommonLabels.alertname }}</h2>
           <p><strong>Severidade:</strong> {{ .CommonLabels.severity }}</p>

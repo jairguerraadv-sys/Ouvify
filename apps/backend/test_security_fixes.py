@@ -153,7 +153,7 @@ def test_database_indices():
 def main():
     """Executa todos os testes"""
     print("\n" + "="*80)
-    print("🛡️  VALIDAÇÃO DE CORREÇÕES DE SEGURANÇA - OUVY SAAS")
+    print("🛡️  VALIDAÇÃO DE CORREÇÕES DE SEGURANÇA - OUVIFY SAAS")
     print("="*80)
     print("Data: 27 de Janeiro de 2026")
     print("Versão: 1.0.0")

@@ -111,7 +111,7 @@ def get_reserved_subdomains() -> list[str]:
         'www', 'api', 'admin', 'app', 'mail', 'ftp', 'smtp', 'pop', 'imap',
         'webmail', 'email', 'static', 'assets', 'cdn', 'media', 'files',
         'blog', 'forum', 'shop', 'store', 'help', 'support', 'docs',
-        'ouvy', 'test', 'dev', 'staging', 'prod', 'production', 'localhost'
+        'ouvify', 'ouvy', 'test', 'dev', 'staging', 'prod', 'production', 'localhost'
     ]
 
 

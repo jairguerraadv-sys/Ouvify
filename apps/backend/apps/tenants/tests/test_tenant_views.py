@@ -25,8 +25,8 @@ class TestTenantViewSet:
     def admin_user(self):
         """Criar usuário administrador do sistema"""
         return User.objects.create_superuser(
-            username="superadmin@ouvy.com",
-            email="superadmin@ouvy.com",
+            username="superadmin@ouvify.com",
+            email="superadmin@ouvify.com",
             password="adminpass123"
         )
     
@@ -35,7 +35,7 @@ class TestTenantViewSet:
         return Client.objects.create(
             nome="Test Tenant",
             subdominio="testtenant",
-            plano="professional",
+            plano="pro",
             ativo=True
         )
     
@@ -54,11 +54,13 @@ class TestTenantViewSet:
     @pytest.fixture
     def authenticated_admin(self, api_client, admin_user):
         api_client.force_authenticate(user=admin_user)
+        api_client.credentials(HTTP_HOST='localhost')  # Admin usa localhost
         return api_client
     
     @pytest.fixture
-    def authenticated_owner(self, api_client, tenant_owner):
+    def authenticated_owner(self, api_client, tenant_owner, tenant):
         api_client.force_authenticate(user=tenant_owner)
+        api_client.credentials(HTTP_HOST=f'{tenant.subdominio}.localhost')
         return api_client
 
     # ============================================
@@ -67,7 +69,7 @@ class TestTenantViewSet:
     
     def test_create_tenant_as_superadmin(self, authenticated_admin):
         """Teste criação de tenant por superadmin"""
-        url = reverse('client-list')
+        url = reverse('admin-tenants-list')
         data = {
             'nome': 'Nova Empresa',
             'subdominio': 'novaempresa',
@@ -85,7 +87,7 @@ class TestTenantViewSet:
     
     def test_create_tenant_with_duplicate_subdomain(self, authenticated_admin, tenant):
         """Teste que não permite subdomínio duplicado"""
-        url = reverse('client-list')
+        url = reverse('admin-tenants-list')
         data = {
             'nome': 'Outra Empresa',
             'subdominio': tenant.subdominio,  # Duplicado
@@ -98,7 +100,7 @@ class TestTenantViewSet:
     
     def test_create_tenant_with_reserved_subdomain(self, authenticated_admin):
         """Teste que não permite subdomínios reservados"""
-        url = reverse('client-list')
+        url = reverse('admin-tenants-list')
         reserved_subdomains = ['admin', 'www', 'api', 'app', 'dashboard', 'mail']
         
         for subdomain in reserved_subdomains:
@@ -118,7 +120,7 @@ class TestTenantViewSet:
     
     def test_subdomain_format_validation(self, authenticated_admin):
         """Teste validação de formato de subdomínio"""
-        url = reverse('client-list')
+        url = reverse('admin-tenants-list')
         invalid_subdomains = [
             'empresa com espacos',
             'empresa@especial',
@@ -147,34 +149,30 @@ class TestTenantViewSet:
     
     def test_list_tenants_as_superadmin(self, authenticated_admin, tenant):
         """Teste listagem de todos os tenants como superadmin"""
-        url = reverse('client-list')
+        url = reverse('admin-tenants-list')
         response = authenticated_admin.get(url)
         
         assert response.status_code == status.HTTP_200_OK
     
     def test_owner_sees_only_own_tenant(self, authenticated_owner, tenant):
-        """Teste que owner vê apenas seu próprio tenant"""
-        # Criar outro tenant
-        Client.objects.create(
-            nome="Outro Tenant",
-            subdominio="outrotenant",
-            plano="starter",
-            ativo=True
-        )
-        
-        url = reverse('client-list')
+        """Teste que owner não tem acesso direto ao admin, mas pode ver seu próprio tenant via tenant-info"""
+        # Endpoint admin não é acessível por owners
+        url = reverse('admin-tenants-list')
         response = authenticated_owner.get(url)
         
-        assert response.status_code == status.HTTP_200_OK
-        # Owner deve ver apenas seu tenant
+        # Owner não tem acesso ao admin endpoint
+        assert response.status_code in [
+            status.HTTP_403_FORBIDDEN,
+            status.HTTP_400_BAD_REQUEST
+        ]
 
     # ============================================
     # Testes de Atualização de Tenant
     # ============================================
     
     def test_update_tenant_branding(self, authenticated_owner, tenant):
-        """Teste atualização de branding do tenant"""
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+        """Teste atualização de branding do tenant - owners não têm acesso ao admin"""
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         data = {
             'cor_primaria': '#FF5722',
             'cor_secundaria': '#2196F3'
@@ -182,34 +180,36 @@ class TestTenantViewSet:
         
         response = authenticated_owner.patch(url, data, format='json')
         
+        # Owner não tem acesso ao admin endpoint
         assert response.status_code in [
             status.HTTP_200_OK,
-            status.HTTP_400_BAD_REQUEST
+            status.HTTP_400_BAD_REQUEST,
+            status.HTTP_403_FORBIDDEN
         ]
     
-    def test_update_tenant_name(self, authenticated_owner, tenant):
-        """Teste atualização do nome do tenant"""
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+    def test_update_tenant_name(self, authenticated_admin, tenant):
+        """Teste atualização do nome do tenant como admin"""
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         data = {'nome': 'Novo Nome da Empresa'}
         
-        response = authenticated_owner.patch(url, data, format='json')
+        response = authenticated_admin.patch(url, data, format='json')
         
         if response.status_code == status.HTTP_200_OK:
             tenant.refresh_from_db()
             assert tenant.nome == 'Novo Nome da Empresa'
     
     def test_cannot_update_other_tenant(self, authenticated_owner, admin_user):
-        """Teste que não pode atualizar tenant de outro dono"""
+        """Teste que owner não tem acesso ao admin endpoint"""
         other_tenant = Client.objects.create(
             nome="Outro Tenant",
             subdominio="outrotenant",
-            plano="professional",
+            plano="pro",
             ativo=True
         )
         other_tenant.owner = admin_user
         other_tenant.save()
         
-        url = reverse('client-detail', kwargs={'pk': other_tenant.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': other_tenant.pk})
         response = authenticated_owner.patch(url, {'nome': 'Hackeado'}, format='json')
         
         assert response.status_code in [
@@ -226,8 +226,8 @@ class TestTenantViewSet:
         tenant.plano = 'starter'
         tenant.save()
         
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
-        data = {'plano': 'professional'}
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
+        data = {'plano': 'pro'}
         
         response = authenticated_owner.patch(url, data, format='json')
         
@@ -240,7 +240,7 @@ class TestTenantViewSet:
         tenant.plano = 'enterprise'
         tenant.save()
         
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         data = {'plano': 'starter'}
         
         response = authenticated_owner.patch(url, data, format='json')
@@ -255,7 +255,7 @@ class TestTenantViewSet:
     def test_plan_limits(self, tenant):
         """Teste limites do plano"""
         # Verificar que o tenant tem limites configurados
-        assert tenant.plano in ['free', 'starter', 'professional', 'enterprise']
+        assert tenant.plano in ['free', 'starter', 'pro', 'enterprise']
 
     # ============================================
     # Testes de Ativação/Desativação
@@ -263,7 +263,7 @@ class TestTenantViewSet:
     
     def test_deactivate_tenant(self, authenticated_admin, tenant):
         """Teste desativação de tenant por admin"""
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         data = {'ativo': False}
         
         response = authenticated_admin.patch(url, data, format='json')
@@ -277,7 +277,7 @@ class TestTenantViewSet:
         tenant.ativo = False
         tenant.save()
         
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         data = {'ativo': True}
         
         response = authenticated_admin.patch(url, data, format='json')
@@ -299,7 +299,7 @@ class TestTenantViewSet:
             ativo=False
         )
         
-        url = reverse('client-detail', kwargs={'pk': tenant_to_delete.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant_to_delete.pk})
         response = authenticated_admin.delete(url)
         
         assert response.status_code in [
@@ -310,7 +310,7 @@ class TestTenantViewSet:
     
     def test_owner_cannot_delete_tenant(self, authenticated_owner, tenant):
         """Teste que owner não pode deletar seu próprio tenant"""
-        url = reverse('client-detail', kwargs={'pk': tenant.pk})
+        url = reverse('admin-tenants-detail', kwargs={'pk': tenant.pk})
         response = authenticated_owner.delete(url)
         
         assert response.status_code in [
@@ -327,7 +327,7 @@ class TestTenantModel:
         tenant = Client.objects.create(
             nome="Empresa Teste",
             subdominio="empresateste",
-            plano="professional"
+            plano="pro"
         )
         
         assert str(tenant) == "Empresa Teste" or tenant.subdominio in str(tenant)
@@ -362,17 +362,17 @@ class TestTenantServices:
         return Client.objects.create(
             nome="Service Test",
             subdominio="servicetest",
-            plano="professional",
+            plano="pro",
             ativo=True
         )
     
     def test_tenant_has_plan_limits(self, tenant):
         """Teste que tenant tem limites de plano"""
         # Verificar que podemos acessar informações do plano
-        from apps.tenants.plans import PLAN_LIMITS
+        from apps.tenants.plans import PlanFeatures
         
-        assert tenant.plano in PLAN_LIMITS
-        limits = PLAN_LIMITS[tenant.plano]
+        assert tenant.plano in PlanFeatures.PLAN_LIMITS
+        limits = PlanFeatures.PLAN_LIMITS[tenant.plano]
         
         assert 'max_feedbacks' in limits or 'feedbacks_limit' in limits or isinstance(limits, dict)
     

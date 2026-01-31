@@ -20,7 +20,7 @@ datasources:
   - name: PostgreSQL
     type: postgres
     url: ${POSTGRES_HOST:-postgres}:5432
-    user: ${POSTGRES_USER:-ouvy}
+    user: ${POSTGRES_USER:-ouvify}
     secureJsonData:
       password: ${POSTGRES_PASSWORD}
     jsonData:

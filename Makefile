@@ -38,7 +38,7 @@ shell-backend: ## Abrir Django shell
 	docker-compose exec backend python manage.py shell
 
 shell-db: ## Abrir psql shell
-	docker-compose exec postgres psql -U ouvy -d ouvify_dev
+	docker-compose exec postgres psql -U ouvify -d ouvify_dev
 
 shell-frontend: ## Abrir shell no container frontend
 	docker-compose exec frontend sh
@@ -82,7 +82,7 @@ rebuild-index: ## Rebuild ElasticSearch index
 	docker-compose exec backend python manage.py search_index --rebuild
 
 backup-db: ## Backup do banco de dados
-	docker-compose exec postgres pg_dump -U ouvy ouvify_dev > backup_$$(date +%Y%m%d_%H%M%S).sql
+	docker-compose exec postgres pg_dump -U ouvify ouvify_dev > backup_$$(date +%Y%m%d_%H%M%S).sql
 
 restore-db: ## Restore backup (make restore-db FILE=backup.sql)
-	cat $(FILE) | docker-compose exec -T postgres psql -U ouvy ouvify_dev
+	cat $(FILE) | docker-compose exec -T postgres psql -U ouvify ouvify_dev

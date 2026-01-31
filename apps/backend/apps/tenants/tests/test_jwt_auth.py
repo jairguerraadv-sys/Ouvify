@@ -15,12 +15,25 @@ class JWTAuthTestCase(TestCase):
     """Testes de autenticação JWT"""
     
     def setUp(self):
+        from apps.tenants.models import Client
+        
         self.client = APIClient()
+        # Criar tenant de teste
+        self.tenant = Client.objects.create(
+            nome='Test Tenant',
+            subdominio='testjwt',
+            plano='pro',
+            ativo=True
+        )
         self.user = User.objects.create_user(
             username='testuser',
             email='test@example.com',
             password='testpass123'
         )
+        self.tenant.owner = self.user
+        self.tenant.save()
+        # Configurar HTTP_HOST para todas as requisições
+        self.client.credentials(HTTP_HOST='testjwt.localhost')
     
     def test_obtain_token_pair(self):
         """Testa obtenção de access + refresh token"""
@@ -74,8 +87,11 @@ class JWTAuthTestCase(TestCase):
         refresh = RefreshToken.for_user(self.user)
         access_token = str(refresh.access_token)
         
-        # Fazer requisição autenticada
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Fazer requisição autenticada (incluir HTTP_HOST)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {access_token}',
+            HTTP_HOST='testjwt.localhost'
+        )
         response = self.client.get('/api/users/me/')
         
         self.assertEqual(response.status_code, 200)
@@ -111,8 +127,11 @@ class JWTAuthTestCase(TestCase):
         # Aguardar expiração
         time.sleep(2)
         
-        # Tentar usar token expirado
-        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {access_token}')
+        # Tentar usar token expirado (incluir HTTP_HOST)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Bearer {access_token}',
+            HTTP_HOST='testjwt.localhost'
+        )
         response = self.client.get('/api/users/me/')
         
         self.assertEqual(response.status_code, 401)
@@ -126,7 +145,10 @@ class JWTAuthTestCase(TestCase):
         
         token = Token.objects.create(user=self.user)
         
-        self.client.credentials(HTTP_AUTHORIZATION=f'Token {token.key}')
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f'Token {token.key}',
+            HTTP_HOST='testjwt.localhost'
+        )
         response = self.client.get('/api/users/me/')
         
         self.assertEqual(response.status_code, 200)

@@ -5,7 +5,7 @@
 
 set -e
 
-echo "🚀 Starting Ouvy Backend Deploy..."
+echo "🚀 Starting Ouvify Backend Deploy..."
 
 # Run database migrations
 echo "📊 Running migrations..."

@@ -25,7 +25,7 @@ apps/
 ### 1. Aplicar Migrações
 
 ```bash
-cd /Users/jairneto/Desktop/ouvify_saas/ouvy_saas
+cd /Users/jairneto/Desktop/Ouvify/apps/backend
 python manage.py makemigrations
 python manage.py migrate
 ```

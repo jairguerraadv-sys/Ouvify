@@ -80,7 +80,7 @@ def send_push_notification(self, notification_id: int) -> Dict[str, Any]:
     
     # Obter VAPID keys
     vapid_private_key = getattr(settings, 'VAPID_PRIVATE_KEY', None)
-    vapid_admin_email = getattr(settings, 'VAPID_ADMIN_EMAIL', 'admin@ouvy.app')
+    vapid_admin_email = getattr(settings, 'VAPID_ADMIN_EMAIL', 'admin@ouvify.app')
     
     if not vapid_private_key:
         logger.error("VAPID_PRIVATE_KEY não configurada")

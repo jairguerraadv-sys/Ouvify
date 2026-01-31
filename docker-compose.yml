@@ -9,14 +9,14 @@ services:
     container_name: ouvify_postgres
     environment:
       POSTGRES_DB: ouvify_dev
-      POSTGRES_USER: ouvy
+      POSTGRES_USER: ouvify
       POSTGRES_PASSWORD: ouvify_dev_pass
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ouvy"]
+      test: ["CMD-SHELL", "pg_isready -U ouvify"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -80,7 +80,7 @@ services:
     environment:
       - DEBUG=True
       - SECRET_KEY=dev-secret-key-change-in-production
-      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
+      - DATABASE_URL=postgresql://ouvify:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -140,7 +140,7 @@ services:
       - ./apps/backend:/app
     environment:
       - DEBUG=True
-      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
+      - DATABASE_URL=postgresql://ouvify:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
@@ -166,7 +166,7 @@ services:
       - ./apps/backend:/app
     environment:
       - DEBUG=True
-      - DATABASE_URL=postgresql://ouvy:ouvify_dev_pass@postgres:5432/ouvify_dev
+      - DATABASE_URL=postgresql://ouvify:ouvify_dev_pass@postgres:5432/ouvify_dev
       - REDIS_URL=redis://redis:6379/0
       - CELERY_BROKER_URL=redis://redis:6379/1
       - CELERY_RESULT_BACKEND=redis://redis:6379/2
