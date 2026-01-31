@@ -108,7 +108,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-3xl font-bold text-secondary text-center mb-2">
             Bem-vindo de volta
-          </h1>"
+          </h1>
           <p className="text-muted-foreground text-center">
             Entre na sua conta <span className="text-gradient font-semibold">Ouvify</span>
           </p>
