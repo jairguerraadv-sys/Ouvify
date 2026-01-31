@@ -145,4 +145,24 @@ export {
   Countdown,
 } from './ActionFeedback';
 
+// Toast System (NEW)
+export {
+  ToastProvider,
+  useToast,
+  InlineToast,
+  ConfirmDialog,
+} from './toast-system';
+
+// Accessibility (NEW)
+export {
+  SkipLink,
+  VisuallyHidden,
+  LiveRegion,
+  FocusTrap,
+  FocusIndicator,
+  KeyboardNav,
+  Announce,
+  useAnnounce,
+} from './accessibility';
+
 // (exports duplicados e inválidos removidos)
