@@ -1,28 +1,28 @@
 {
-  "name": "ouvy-saas-monorepo",
+  "name": "ouvify-monorepo",
   "private": true,
   "workspaces": [
-    "ouvy_frontend",
+    "apps/frontend",
     "packages/*"
   ],
   "scripts": {
     "dev": "turbo run dev",
-    "dev:frontend": "turbo run dev --filter=ouvy_frontend",
-    "dev:backend": "cd ouvy_saas && python manage.py runserver",
+    "dev:frontend": "turbo run dev --filter=@ouvify/frontend",
+    "dev:backend": "cd apps/backend && python manage.py runserver",
     "build": "turbo run build",
-    "build:frontend": "turbo run build --filter=ouvy_frontend",
+    "build:frontend": "turbo run build --filter=@ouvify/frontend",
     "start": "turbo run start",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
     "type-check": "turbo run type-check",
     "test": "turbo run test",
-    "test:frontend": "turbo run test --filter=ouvy_frontend",
+    "test:frontend": "turbo run test --filter=@ouvify/frontend",
     "test:e2e": "turbo run test:e2e",
-    "test:backend": "cd ouvy_saas && python -m pytest",
+    "test:backend": "cd apps/backend && python -m pytest",
     "format": "turbo run format",
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "prepare": "husky",
-    "postinstall": "cd ouvy_frontend && npm install"
+    "postinstall": "cd apps/frontend && npm install"
   },
   "engines": {
     "node": ">=18.0.0",
