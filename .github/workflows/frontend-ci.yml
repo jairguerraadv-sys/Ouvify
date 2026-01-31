@@ -5,11 +5,15 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/frontend/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'turbo.json'
       - '.github/workflows/frontend-ci.yml'
   pull_request:
     branches: [main, develop]
     paths:
       - 'apps/frontend/**'
+      - 'packages/**'
 
 env:
   NODE_VERSION: '22'

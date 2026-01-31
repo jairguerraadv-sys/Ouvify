@@ -1,11 +1,11 @@
 {
   "include": [
-    "ouvy_saas",
+    "apps/backend",
     "test_*.py"
   ],
   "extraPaths": [
-    "ouvy_saas",
-    "ouvy_saas/apps"
+    "apps/backend",
+    "apps/backend/apps"
   ],
   "pythonVersion": "3.14",
   "pythonPlatform": "Darwin",

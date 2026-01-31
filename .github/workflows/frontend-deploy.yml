@@ -6,6 +6,8 @@ on:
     paths:
       - 'apps/frontend/**'
       - 'packages/**'
+      - 'package.json'
+      - 'turbo.json'
       - '.github/workflows/frontend-deploy.yml'
   workflow_dispatch:
 

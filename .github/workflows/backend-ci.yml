@@ -5,11 +5,14 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/backend/**'
+      - 'packages/**'
+      - 'requirements.txt'
       - '.github/workflows/backend-ci.yml'
   pull_request:
     branches: [main, develop]
     paths:
       - 'apps/backend/**'
+      - 'packages/**'
 
 env:
   PYTHON_VERSION: '3.12'
