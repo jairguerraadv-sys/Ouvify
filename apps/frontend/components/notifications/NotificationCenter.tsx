@@ -162,18 +162,18 @@ export function NotificationCenter() {
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
           "relative p-2 rounded-lg transition-colors",
-          "hover:bg-gray-100 dark:hover:bg-white",
-          isOpen && "bg-gray-100 dark:bg-white"
+          "hover:bg-background-secondary",
+          isOpen && "bg-background-secondary"
         )}
         aria-label={`Notificações${unreadCount > 0 ? ` (${unreadCount} não lidas)` : ''}`}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <Bell className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        <Bell className="w-5 h-5 text-text-secondary" />
         
         {/* Badge de não lidas */}
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-gray-900 bg-error-500 rounded-full">
+          <span className="absolute -top-0.5 -right-0.5 flex items-center justify-center min-w-5 h-5 px-1 text-xs font-bold text-text-inverse bg-error-500 rounded-full">
             {unreadCount > 99 ? '99+' : unreadCount}
           </span>
         )}
@@ -181,10 +181,10 @@ export function NotificationCenter() {
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-96 max-h-[32rem] bg-white dark:bg-white rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="absolute right-0 mt-2 w-96 max-h-[32rem] bg-background rounded-xl shadow-2xl border border-border-light overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-200">
           {/* Header */}
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 dark:border-gray-700">
-            <h2 className="font-semibold text-gray-900 dark:text-gray-900">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-border-light">
+            <h2 className="font-semibold text-text-primary">
               Notificações
             </h2>
             {unreadCount > 0 && (
@@ -202,23 +202,23 @@ export function NotificationCenter() {
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
-                <Bell className="w-12 h-12 text-gray-300 dark:text-gray-600 mb-3" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <Bell className="w-12 h-12 text-text-tertiary mb-3" />
+                <p className="text-sm text-text-secondary">
                   Nenhuma notificação ainda
                 </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                <p className="text-xs text-text-tertiary mt-1">
                   Você será notificado sobre novos feedbacks e atualizações
                 </p>
               </div>
             ) : (
-              <ul role="list" className="divide-y divide-gray-100 dark:divide-gray-800">
+              <ul role="list" className="divide-y divide-border-light">
                 {notifications.map((notification) => (
                   <li key={notification.id}>
                     <button
                       onClick={() => handleNotificationClick(notification)}
                       className={cn(
-                        "w-full text-left p-4 hover:bg-gray-50 dark:hover:bg-white/50 transition-colors",
-                        !notification.is_read && "bg-primary-50/50 dark:bg-white/10"
+                        "w-full text-left p-4 hover:bg-background-secondary transition-colors",
+                        !notification.is_read && "bg-primary-50/50 dark:bg-primary-900/20"
                       )}
                     >
                       <div className="flex gap-3">
@@ -233,8 +233,8 @@ export function NotificationCenter() {
                             <p className={cn(
                               "text-sm",
                               !notification.is_read 
-                                ? "font-semibold text-gray-900 dark:text-gray-900" 
-                                : "font-medium text-gray-700 dark:text-gray-300"
+                                ? "font-semibold text-text-primary" 
+                                : "font-medium text-text-secondary"
                             )}>
                               {notification.title}
                             </p>
@@ -245,17 +245,17 @@ export function NotificationCenter() {
                             )}
                           </div>
                           
-                          <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mt-0.5">
+                          <p className="text-sm text-text-secondary line-clamp-2 mt-0.5">
                             {notification.body}
                           </p>
                           
                           <div className="flex items-center gap-2 mt-2">
-                            <span className="text-xs text-gray-500 dark:text-gray-500">
+                            <span className="text-xs text-text-tertiary">
                               {notification.time_ago}
                             </span>
                             
                             {notification.url && (
-                              <ExternalLink className="w-3 h-3 text-gray-400" />
+                              <ExternalLink className="w-3 h-3 text-text-tertiary" />
                             )}
                           </div>
                         </div>
@@ -269,10 +269,10 @@ export function NotificationCenter() {
 
           {/* Footer */}
           {notifications.length > 0 && (
-            <div className="border-t border-gray-200 dark:border-gray-700 p-2">
+            <div className="border-t border-border-light p-2">
               <a
                 href="/notifications"
-                className="block w-full py-2 text-sm text-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-gray-50 dark:hover:bg-white rounded-lg transition-colors"
+                className="block w-full py-2 text-sm text-center text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 hover:bg-background-secondary rounded-lg transition-colors"
               >
                 Ver todas as notificações
               </a>

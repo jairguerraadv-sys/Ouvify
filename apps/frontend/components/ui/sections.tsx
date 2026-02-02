@@ -45,7 +45,7 @@ export function Hero({
       {backgroundPattern !== 'none' && (
         <>
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blur" />
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blur" style={{ animationDelay: '2s' }} />
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blur delay-2000" />
         </>
       )}
 

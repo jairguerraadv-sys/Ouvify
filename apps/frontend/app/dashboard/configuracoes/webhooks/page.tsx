@@ -1,7 +1,6 @@
 "use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +29,7 @@ import {
 import { toast } from "sonner";
 import api from "@/lib/api";
 import Link from "next/link";
+import { FlexBetween, MutedText } from "@/components/ui";
 import {
   Dialog,
   DialogContent,
@@ -88,9 +88,9 @@ interface AvailableEvent {
 
 export default function WebhooksPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <WebhooksContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -108,6 +108,8 @@ function WebhooksContent() {
   const [newUrl, setNewUrl] = useState("");
   const [selectedEvents, setSelectedEvents] = useState<string[]>([]);
   const [creating, setCreating] = useState(false);
+
+  // `DashboardLayout` já lida com `ProtectedRoute` e `Sidebar`
 
   useEffect(() => {
     loadWebhooks();
@@ -265,26 +267,24 @@ function WebhooksContent() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar user={user || undefined} />
-      
-      <main className="flex-1 p-6 space-y-6">
+    <div className="space-y-6">
         {/* Header */}
-        <header className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard/configuracoes" className="text-muted-foreground hover:text-foreground">
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="text-2xl font-semibold flex items-center gap-2">
-                <Webhook className="w-6 h-6" />
-                Webhooks
-              </h1>
-              <p className="text-muted-foreground text-sm">Configure integrações em tempo real</p>
+        <header>
+          <FlexBetween>
+            <div className="flex items-center gap-4">
+              <Link href="/dashboard/configuracoes" className="text-muted-foreground hover:text-foreground">
+                <ArrowLeft className="w-5 h-5" />
+              </Link>
+              <div>
+                <h1 className="text-2xl font-semibold flex items-center gap-2">
+                  <Webhook className="w-6 h-6" />
+                  Webhooks
+                </h1>
+                <MutedText block>Configure integrações em tempo real</MutedText>
+              </div>
             </div>
-          </div>
-          
-          <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
+
+            <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
             <DialogTrigger asChild>
               <Button>
                 <Plus className="w-4 h-4 mr-2" />
@@ -351,7 +351,8 @@ function WebhooksContent() {
                 </Button>
               </DialogFooter>
             </DialogContent>
-          </Dialog>
+            </Dialog>
+          </FlexBetween>
         </header>
 
         {/* Stats Cards */}
@@ -466,7 +467,6 @@ function WebhooksContent() {
             </div>
           </CardContent>
         </Card>
-      </main>
     </div>
   );
 }
@@ -503,8 +503,8 @@ function WebhookCard({
   return (
     <div className="border rounded-lg overflow-hidden">
       {/* Header */}
-      <div className="p-4 bg-white">
-        <div className="flex items-center justify-between">
+      <div className="p-4 bg-background">
+        <FlexBetween>
           <div className="flex items-center gap-3">
             <Switch 
               checked={webhook.is_active} 
@@ -512,7 +512,7 @@ function WebhookCard({
             />
             <div>
               <div className="flex items-center gap-2">
-                <code className="text-sm font-mono bg-slate-100 px-2 py-0.5 rounded">
+                <code className="text-sm font-mono bg-background-tertiary px-2 py-0.5 rounded">
                   {webhook.url}
                 </code>
                 <Button
@@ -547,7 +547,7 @@ function WebhookCard({
               {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
             </Button>
           </div>
-        </div>
+        </FlexBetween>
 
         {/* Stats */}
         <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
@@ -571,12 +571,12 @@ function WebhookCard({
 
       {/* Expanded Details */}
       {expanded && (
-        <div className="border-t bg-slate-50 p-4 space-y-4">
+        <div className="border-t bg-background-secondary p-4 space-y-4">
           {/* Secret */}
           <div>
             <Label className="text-sm font-medium">Secret (para validação de assinatura)</Label>
             <div className="flex items-center gap-2 mt-1">
-              <code className="flex-1 text-sm font-mono bg-white px-3 py-2 rounded border">
+              <code className="flex-1 text-sm font-mono bg-background px-3 py-2 rounded border">
                 {showSecret ? webhook.secret : '•'.repeat(32)}
               </code>
               <Button
@@ -612,9 +612,9 @@ function WebhookCard({
             ) : (
               <div className="mt-2 space-y-2">
                 {deliveries.slice(0, 5).map((delivery) => (
-                  <div
+                  <FlexBetween
                     key={delivery.id}
-                    className="flex items-center justify-between bg-white p-2 rounded border text-sm"
+                    className="bg-background p-2 rounded border text-sm"
                   >
                     <div className="flex items-center gap-2">
                       {delivery.success ? (
@@ -633,7 +633,7 @@ function WebhookCard({
                       )}
                       <span>{formatDate(delivery.created_at)}</span>
                     </div>
-                  </div>
+                  </FlexBetween>
                 ))}
               </div>
             )}

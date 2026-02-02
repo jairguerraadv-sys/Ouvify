@@ -80,7 +80,7 @@ function OnboardingTourInner({ restartTrigger, onActiveChange }: OnboardingTourI
           element: '[data-tour="public-link"]',
           popover: {
             title: '2️⃣ Compartilhe o Link Público',
-            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
+            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code class="onboarding-code">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
             side: 'bottom',
             align: 'start',
           },
@@ -117,9 +117,9 @@ function OnboardingTourInner({ restartTrigger, onActiveChange }: OnboardingTourI
           popover: {
             title: '✅ Pronto para Começar!',
             description: `Agora você está pronto para começar a receber feedbacks. Se tiver dúvidas:<br><br>
-              📧 Email: <a href="mailto:suporte@ouvify.com" style="color: #4F46E5;">suporte@ouvify.com</a><br>
+              📧 Email: <a href="mailto:suporte@ouvify.com" class="onboarding-link">suporte@ouvify.com</a><br>
               💬 Chat: Disponível no canto inferior direito<br>
-              📚 Documentação: <a href="https://docs.ouvify.com" target="_blank" style="color: #4F46E5;">docs.ouvify.com</a>`,
+              📚 Documentação: <a href="https://docs.ouvify.com" target="_blank" class="onboarding-link">docs.ouvify.com</a>`,
           },
         },
       ],
@@ -181,31 +181,7 @@ export function OnboardingTour() {
     ? JSON.parse(localStorage.getItem('tenant_data') || '{}')
     : null;
 
-  useEffect(() => {
-    // Só executa se usuário está logado e tenant existe
-    if (!user || !tenant || hasRun) return;
-
-    // Verifica se onboarding já foi completado
-    const onboardingCompleted = localStorage.getItem('onboarding_completed');
-    if (onboardingCompleted === 'true') return;
-
-    // Verifica se é usuário novo (criado há menos de 24h)
-    const createdAt = new Date(tenant.created_at);
-    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-    const isNewUser = createdAt > oneDayAgo;
-
-    if (!isNewUser) return;
-
-    // Aguarda 1 segundo para garantir que elementos estão renderizados
-    const timer = setTimeout(() => {
-      startTour();
-      setHasRun(true);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [user, tenant, hasRun]);
-
-  const startTour = () => {
+  const startTour = useCallback(() => {
     const driverObj = driver({
       showProgress: true,
       showButtons: ['next', 'previous', 'close'],
@@ -230,7 +206,7 @@ export function OnboardingTour() {
           element: '[data-tour="public-link"]',
           popover: {
             title: '2️⃣ Compartilhe o Link Público',
-            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code style="background: #f3f4f6; padding: 8px; border-radius: 4px; display: block; margin-top: 8px;">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
+            description: `Este é o link da sua página pública onde seus clientes podem enviar feedbacks: <br><br><code class="onboarding-code">${tenant?.subdominio || 'seudominio'}.ouvify.com/enviar</code><br><br>Compartilhe em emails, site, redes sociais, etc.`,
             side: 'bottom',
             align: 'start',
           },
@@ -262,16 +238,6 @@ export function OnboardingTour() {
             align: 'start',
           },
         },
-        {
-          element: 'body',
-          popover: {
-            title: '✅ Pronto para Começar!',
-            description: `Agora você está pronto para começar a receber feedbacks. Se tiver dúvidas:<br><br>
-              📧 Email: <a href="mailto:suporte@ouvify.com" style="color: #4F46E5;">suporte@ouvify.com</a><br>
-              💬 Chat: Disponível no canto inferior direito<br>
-              📚 Documentação: <a href="https://docs.ouvify.com" target="_blank" style="color: #4F46E5;">docs.ouvify.com</a>`,
-          },
-        },
       ],
       onDestroyStarted: () => {
         localStorage.setItem('onboarding_completed', 'true');
@@ -280,7 +246,31 @@ export function OnboardingTour() {
     });
 
     driverObj.drive();
-  };
+  }, [tenant?.subdominio, user?.name]);
+
+  useEffect(() => {
+    // Só executa se usuário está logado e tenant existe
+    if (!user || !tenant || hasRun) return;
+
+    // Verifica se onboarding já foi completado
+    const onboardingCompleted = localStorage.getItem('onboarding_completed');
+    if (onboardingCompleted === 'true') return;
+
+    // Verifica se é usuário novo (criado há menos de 24h)
+    const createdAt = new Date(tenant.created_at);
+    const oneDayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    const isNewUser = createdAt > oneDayAgo;
+
+    if (!isNewUser) return;
+
+    // Aguarda 1 segundo para garantir que elementos estão renderizados
+    const timer = setTimeout(() => {
+      startTour();
+      setHasRun(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [user, tenant, hasRun, startTour]);
 
   return null;
 }

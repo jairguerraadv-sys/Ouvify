@@ -1,12 +1,13 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState, useEffect, useMemo } from 'react';
 import { api } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { PageHeader } from '@/components/ui/page-header';
+import { FlexBetween, PageContent, PageLayout } from '@/components/ui';
 import { 
   TrendingUp, 
   MessageSquare, 
@@ -19,7 +20,7 @@ import {
   ArrowDownRight,
   Timer
 } from 'lucide-react';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { toast } from 'sonner';
 
 interface AnalyticsData {
@@ -54,14 +55,9 @@ interface AnalyticsData {
 
 export default function AnalyticsPage() {
   return (
-    <ProtectedRoute>
-      <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-        <Sidebar />
-        <main className="flex-1 p-6 overflow-auto">
-          <AnalyticsContent />
-        </main>
-      </div>
-    </ProtectedRoute>
+    <DashboardLayout>
+      <AnalyticsContent />
+    </DashboardLayout>
   );
 }
 
@@ -111,10 +107,10 @@ function AnalyticsContent() {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <AlertCircle className="w-16 h-16 text-error-500 mb-4" />
-        <h2 className="text-xl font-semibold text-slate-800 dark:text-slate-200 mb-2">
+        <h2 className="text-xl font-semibold text-text-primary mb-2">
           Analytics Indisponível
         </h2>
-        <p className="text-slate-600 dark:text-slate-400 text-center max-w-md mb-4">
+        <p className="text-text-secondary text-center max-w-md mb-4">
           {error}
         </p>
         <Button onClick={fetchAnalytics} variant="outline">
@@ -128,22 +124,22 @@ function AnalyticsContent() {
   if (!data) return null;
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">
-            📊 Analytics
-          </h1>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
-            Métricas e insights do período de {new Date(data.periodo.inicio).toLocaleDateString('pt-BR')} a {new Date(data.periodo.fim).toLocaleDateString('pt-BR')}
-          </p>
-        </div>
-        <Button onClick={fetchAnalytics} variant="outline" size="sm">
-          <RefreshCw className="w-4 h-4 mr-2" />
-          Atualizar
-        </Button>
-      </div>
+    <PageLayout variant="secondary" className="min-h-0">
+      <PageContent padding="none" maxWidth="full" className="space-y-8">
+        <PageHeader
+          title="📊 Analytics"
+          description={`Métricas e insights do período de ${new Date(data.periodo.inicio).toLocaleDateString('pt-BR')} a ${new Date(data.periodo.fim).toLocaleDateString('pt-BR')}`}
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: 'Analytics' },
+          ]}
+          action={{
+            label: 'Atualizar',
+            onClick: fetchAnalytics,
+            icon: RefreshCw,
+            variant: 'outline',
+          }}
+        />
 
       {/* KPIs Principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -216,7 +212,7 @@ function AnalyticsContent() {
                 label="Fechado" 
                 value={data.metricas_por_status.fechado} 
                 total={data.metricas_gerais.total_feedbacks}
-                color="bg-slate-500"
+                color="bg-neutral-500"
               />
             </div>
           </CardContent>
@@ -298,34 +294,35 @@ function AnalyticsContent() {
           <CardContent>
             <div className="space-y-3">
               {data.top_tenants.map((tenant, index) => (
-                <div 
+                <FlexBetween 
                   key={tenant.client__nome} 
-                  className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-white"
+                  className="p-3 rounded-lg bg-background-secondary"
                 >
                   <div className="flex items-center gap-3">
                     <span className={`
                       w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
                       ${index === 0 ? 'bg-warning-100 text-warning-700' : ''}
-                      ${index === 1 ? 'bg-slate-200 text-slate-700' : ''}
+                      ${index === 1 ? 'bg-neutral-200 text-neutral-700' : ''}
                       ${index === 2 ? 'bg-orange-100 text-orange-700' : ''}
-                      ${index > 2 ? 'bg-slate-100 text-slate-600' : ''}
+                      ${index > 2 ? 'bg-neutral-100 text-neutral-700' : ''}
                     `}>
                       {index + 1}
                     </span>
-                    <span className="font-medium text-slate-800 dark:text-slate-200">
+                    <span className="font-medium text-text-primary">
                       {tenant.client__nome}
                     </span>
                   </div>
                   <Badge variant="outline">
                     {tenant.total} feedbacks
                   </Badge>
-                </div>
+                </FlexBetween>
               ))}
             </div>
           </CardContent>
         </Card>
       )}
-    </div>
+      </PageContent>
+    </PageLayout>
   );
 }
 
@@ -341,10 +338,10 @@ interface KPICardProps {
 
 function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardProps) {
   const colorClasses = {
-    blue: 'bg-primary-50 text-primary-600 dark:bg-white/30 dark:text-primary-400',
+    blue: 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400',
     green: 'bg-success-50 text-success-600 dark:bg-success-900/30 dark:text-success-400',
     orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
-    purple: 'bg-secondary-50 text-secondary-600 dark:bg-white/30 dark:text-secondary-400',
+    purple: 'bg-secondary-50 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400',
     yellow: 'bg-warning-50 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400',
   };
 
@@ -363,10 +360,10 @@ function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardPr
           )}
         </div>
         <div className="mt-4">
-          <p className="text-sm text-slate-600 dark:text-slate-400">{label}</p>
-          <p className="text-3xl font-bold text-slate-900 dark:text-slate-100 mt-1">{value}</p>
+          <p className="text-sm text-text-secondary">{label}</p>
+          <p className="text-3xl font-bold text-text-primary mt-1">{value}</p>
           {subValue && (
-            <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{subValue}</p>
+            <p className="text-xs text-text-tertiary mt-1">{subValue}</p>
           )}
         </div>
       </CardContent>
@@ -384,19 +381,20 @@ interface MetricBarProps {
 
 function MetricBar({ label, value, total, color }: MetricBarProps) {
   const percentage = total > 0 ? (value / total) * 100 : 0;
+  const barStyle = { width: `${percentage}%` };
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between text-sm">
-        <span className="text-slate-600 dark:text-slate-400">{label}</span>
-        <span className="font-medium text-slate-800 dark:text-slate-200">
+      <FlexBetween className="text-sm">
+        <span className="text-text-secondary">{label}</span>
+        <span className="font-medium text-text-primary">
           {value} ({percentage.toFixed(1)}%)
         </span>
-      </div>
-      <div className="h-2 bg-slate-100 dark:bg-white rounded-full overflow-hidden">
+      </FlexBetween>
+      <div className="h-2 bg-background-tertiary rounded-full overflow-hidden">
         <div 
           className={`h-full ${color} rounded-full transition-all duration-500`}
-          style={{ width: `${percentage}%` }}
+          style={barStyle}
         />
       </div>
     </div>

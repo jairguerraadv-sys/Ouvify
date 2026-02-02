@@ -7,6 +7,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { H2, Paragraph } from '@/components/ui/typography';
+import { DecorativeBlob, FlexBetween, FlexRow, MutedText } from '@/components/ui';
 import { formatDate } from '@/lib/helpers';
 import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
 import { Search, Shield, Clock, CheckCircle, AlertCircle, Send, MessageSquare } from 'lucide-react';
@@ -158,10 +159,10 @@ export default function AcompanharPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white py-12 px-4 relative overflow-hidden">
+    <main className="min-h-screen bg-background py-12 px-4 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+      <DecorativeBlob tone="primary" placement="topLeftQuarter" />
+      <DecorativeBlob tone="secondary" placement="bottomRightQuarter" />
       
       <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
@@ -192,7 +193,7 @@ export default function AcompanharPage() {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-secondary">Buscar Protocolo</h3>
-                <p className="text-sm text-muted-foreground">Informe o código recebido</p>
+                  <MutedText block>Informe o código recebido</MutedText>
               </div>
             </div>
           </CardHeader>
@@ -251,20 +252,20 @@ export default function AcompanharPage() {
             )}
             
             {cooldownMs > 0 && (
-              <div className="mt-3 flex items-center gap-2 text-warning text-sm">
+              <FlexRow className="mt-3 text-warning text-sm">
                 <Clock className="w-4 h-4" />
                 <span>Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta</span>
-              </div>
+              </FlexRow>
             )}
           </CardContent>
         </Card>
 
         {/* Resultado da Consulta */}
         {feedback && (
-          <div className="bg-white rounded-lg shadow-xl overflow-hidden animate-fade-in">
+          <div className="bg-card rounded-lg shadow-xl overflow-hidden animate-fade-in">
             {/* Header do Card */}
-            <div className="bg-gradient-to-r from-primary to-primary-600 p-6 text-gray-900">
-              <div className="flex items-center justify-between">
+            <div className="bg-gradient-to-r from-primary to-primary-600 p-6 text-foreground">
+              <FlexBetween>
                 <div>
                   <p className="text-sm opacity-90 mb-1">Protocolo</p>
                   <p className="text-2xl font-bold font-mono">{feedback.protocolo}</p>
@@ -273,7 +274,7 @@ export default function AcompanharPage() {
                   <span className="text-lg mr-2">{getStatusIcon(feedback.status)}</span>
                   <span className="font-semibold">{feedback.status_display}</span>
                 </div>
-              </div>
+              </FlexBetween>
             </div>
 
             {/* Conteúdo do Card */}
@@ -317,11 +318,11 @@ export default function AcompanharPage() {
                   {/* Evento: Criado */}
                   <div className="relative">
                     <div className="absolute -left-8 w-4 h-4 rounded-full bg-success-500 border-2 border-white"></div>
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <p className="font-semibold text-gray-800">✅ Feedback Registrado</p>
-                      <p className="text-sm text-gray-600 mt-1">
+                    <div className="bg-muted rounded-lg p-4">
+                      <p className="font-semibold text-foreground">✅ Feedback Registrado</p>
+                      <MutedText block className="mt-1">
                         {formatDate(feedback.data_criacao, 'long')}
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
 
@@ -347,7 +348,7 @@ export default function AcompanharPage() {
                           <span className="text-lg mr-2">💬</span>
                           <p className="font-semibold text-secondary-800">Resposta da Empresa</p>
                         </div>
-                        <p className="text-gray-700 whitespace-pre-wrap mt-2">
+                        <p className="text-muted-foreground whitespace-pre-wrap mt-2">
                           {feedback.resposta_empresa}
                         </p>
                         {feedback.data_resposta && (
@@ -377,7 +378,7 @@ export default function AcompanharPage() {
               {/* Conversa Pública (se disponível) */}
               {Array.isArray(feedback?.interacoes) && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                  <h3 className="text-lg font-semibold text-foreground mb-4">
                     Conversas Públicas
                   </h3>
                   <div className="space-y-3">
@@ -387,15 +388,15 @@ export default function AcompanharPage() {
                         <div key={i.id} className="rounded border p-3 text-sm">
                           <div className="flex justify-between">
                             <span className="font-medium">{i.tipo === 'MENSAGEM_PUBLICA' ? i.autor_nome : 'Atualização de Status'}</span>
-                            <span className="text-xs text-gray-500">{i.data_formatada || i.data}</span>
+                            <span className="text-xs text-muted-foreground">{i.data_formatada || i.data}</span>
                           </div>
-                          <p className="mt-1 text-gray-800">{i.mensagem}</p>
+                          <p className="mt-1 text-foreground">{i.mensagem}</p>
                         </div>
                       ))}
                   </div>
                   {/* Entrada de nova mensagem (placeholder até endpoint público) */}
                   <div className="mt-4">
-                    <p className="text-xs text-gray-500 mb-2">Envie uma mensagem para a empresa</p>
+                    <p className="text-xs text-muted-foreground mb-2">Envie uma mensagem para a empresa</p>
                     <textarea className="w-full border rounded p-2" placeholder="Escreva sua mensagem..." rows={3} disabled />
                     <p className="text-xs text-orange-600 mt-2">Em breve: envio de mensagens públicas pelo protocolo.</p>
                   </div>
@@ -413,7 +414,7 @@ export default function AcompanharPage() {
               {/* Conversa Pública */}
               {feedback && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Conversa</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-4">Conversa</h3>
                   {feedback.interacoes && feedback.interacoes.length > 0 ? (
                     <div className="space-y-3">
                       {feedback.interacoes
@@ -424,18 +425,18 @@ export default function AcompanharPage() {
                               <span className="font-medium">
                                 {i.tipo === 'MENSAGEM_PUBLICA' ? i.autor_nome : 'Atualização de Status'}
                               </span>
-                              <span className="text-xs text-gray-500">{i.data_formatada}</span>
+                              <span className="text-xs text-muted-foreground">{i.data_formatada}</span>
                             </div>
-                            <p className="mt-1 text-gray-800">{i.mensagem}</p>
+                            <p className="mt-1 text-foreground">{i.mensagem}</p>
                           </div>
                         ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-500">Sem mensagens públicas ainda.</p>
+                    <MutedText block>Sem mensagens públicas ainda.</MutedText>
                   )}
                   {/* Entrada de nova mensagem */}
                   <div className="mt-4">
-                    <p className="text-xs text-gray-500 mb-2">Envie uma mensagem para a empresa</p>
+                    <p className="text-xs text-muted-foreground mb-2">Envie uma mensagem para a empresa</p>
                     <textarea
                       className="w-full border rounded p-2"
                       placeholder={`Escreva sua mensagem (máx. ${MAX_MESSAGE_LENGTH} caracteres)...`}
@@ -443,14 +444,14 @@ export default function AcompanharPage() {
                       value={publicMsg}
                       onChange={(e) => setPublicMsg(e.target.value.slice(0, MAX_MESSAGE_LENGTH))}
                     />
-                    <div className="mt-1 text-xs text-gray-500 text-right">
+                    <div className="mt-1 text-xs text-muted-foreground text-right">
                       {publicMsg.length}/{MAX_MESSAGE_LENGTH}
                     </div>
                     <div className="mt-2 flex justify-end">
                       <button
                         onClick={handleEnviarResposta}
                         disabled={isSending || !publicMsg.trim()}
-                        className="bg-primary text-gray-900 font-semibold px-4 py-2 rounded disabled:opacity-50"
+                        className="bg-primary text-foreground font-semibold px-4 py-2 rounded disabled:opacity-50"
                       >
                         {isSending ? 'Enviando...' : 'Enviar Mensagem'}
                       </button>

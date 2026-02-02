@@ -1,15 +1,16 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { OnboardingTour } from '@/components/OnboardingTour';
 import { OnboardingChecklist } from '@/components/dashboard/OnboardingChecklist';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/ui/page-header';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Separator } from '@/components/ui/separator';
+import { FlexBetween, PageContent, PageLayout } from '@/components/ui';
 import { useDashboardStats, useFeedbacks, useAnalytics } from '@/hooks/use-dashboard';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -34,9 +35,9 @@ import Link from 'next/link';
 
 export default function DashboardPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <DashboardContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -106,39 +107,25 @@ function DashboardContent() {
     if (tipoLower.includes('sugestão') || tipoLower.includes('sugestao')) return 'bg-success-100 text-success-600';
     if (tipoLower.includes('elogio')) return 'bg-secondary-100 text-secondary-600';
     if (tipoLower.includes('dúvida') || tipoLower.includes('duvida')) return 'bg-primary-100 text-primary-600';
-    return 'bg-gray-100 text-gray-600';
+    return 'bg-background-tertiary text-text-secondary';
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      {/* Sidebar */}
-      <Sidebar user={user || undefined} />
+    <PageLayout variant="secondary" className="min-h-0">
+      <PageContent padding="none" maxWidth="full">
+        <div>
+          <OnboardingTour />
+          <PageHeader
+            title="Viso Geral"
+            description={`Bem-vindo de volta, ${user?.name?.split(' ')[0] || 'Usurio'}!`}
+            action={{
+              label: 'Novo Relatrio',
+              icon: Plus,
+            }}
+          />
 
-      {/* Onboarding Components */}
-      <OnboardingTour />
-
-      {/* Main Content */}
-      <main className="flex-1 p-6 lg:p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-secondary-600 mb-2">
-                Visão Geral
-              </h1>
-              <p className="text-slate-600">
-                Bem-vindo de volta, {user?.name?.split(' ')[0] || 'Usuário'}!
-              </p>
-            </div>
-            <Button className="bg-primary-500 hover:bg-primary-600 text-gray-900">
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Relatório
-            </Button>
-          </div>
-        </div>
-
-        {/* Onboarding Checklist */}
-        <OnboardingChecklist />
+          {/* Onboarding Checklist */}
+          <OnboardingChecklist />
 
         {/* KPIs Grid */}
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
@@ -147,14 +134,14 @@ function DashboardContent() {
             return (
               <Card key={idx} className="hover:shadow-large transition-shadow">
                 <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm font-medium text-slate-600">
+                  <FlexBetween>
+                    <p className="text-sm font-medium text-text-secondary">
                       {kpi.title}
                     </p>
                     <div className={`p-2 rounded-lg ${kpi.color}`}>
                       <Icon className="h-5 w-5" />
                     </div>
-                  </div>
+                  </FlexBetween>
                 </CardHeader>
                 <CardContent>
                   {isLoading ? (
@@ -167,7 +154,7 @@ function DashboardContent() {
                       <div className="text-3xl font-bold text-secondary-600 mb-1">
                         {kpi.value}
                       </div>
-                      <div className="flex items-center gap-1 text-xs text-slate-600">
+                      <div className="flex items-center gap-1 text-xs text-text-secondary">
                         {kpi.trend === 'up' && <ArrowUpRight className="h-3 w-3 text-success-600" />}
                         {kpi.change}
                       </div>
@@ -237,7 +224,7 @@ function DashboardContent() {
                         <p className="text-sm font-medium text-secondary-600 leading-tight">
                           {feedback.tipo}: {feedback.titulo || 'Sem título'}
                         </p>
-                        <p className="text-xs text-slate-500 mt-0.5">
+                        <p className="text-xs text-text-tertiary mt-0.5">
                           {formatRelativeTime(feedback.data_criacao)}
                         </p>
                       </div>
@@ -245,7 +232,7 @@ function DashboardContent() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8 text-slate-500">
+                <div className="text-center py-8 text-text-tertiary">
                   <MessageSquare className="h-12 w-12 mx-auto mb-2 opacity-50" />
                   <p>Nenhuma atividade recente</p>
                 </div>
@@ -256,8 +243,8 @@ function DashboardContent() {
 
         {/* Feedbacks Table */}
         <Card>
-          <CardHeader className="border-b border-slate-200">
-            <div className="flex items-center justify-between">
+          <CardHeader className="border-b border-border-light">
+            <FlexBetween>
               <div>
                 <CardTitle>Feedbacks Recentes</CardTitle>
                 <CardDescription>Últimas mensagens recebidas</CardDescription>
@@ -268,13 +255,13 @@ function DashboardContent() {
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
               </Link>
-            </div>
+            </FlexBetween>
           </CardHeader>
           <CardContent className="pt-6">
             {feedbacksLoading ? (
               <div className="space-y-3">
                 {[1, 2, 3].map((i) => (
-                  <div key={i} className="p-4 rounded-lg border border-slate-200">
+                  <div key={i} className="p-4 rounded-lg border border-border-light">
                     <Skeleton className="h-4 w-32 mb-2" />
                     <Skeleton className="h-5 w-3/4 mb-2" />
                     <Skeleton className="h-3 w-24" />
@@ -289,10 +276,10 @@ function DashboardContent() {
                     href={`/dashboard/feedbacks/${feedback.protocolo}`}
                     className="block"
                   >
-                    <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 hover:border-primary-300 hover:bg-primary-50/30 transition-all group cursor-pointer">
+                    <FlexBetween className="p-4 rounded-lg border border-border-light hover:border-primary-300 hover:bg-primary-50/30 transition-all group cursor-pointer">
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded text-slate-700">
+                          <code className="text-xs font-mono bg-background-tertiary px-2 py-1 rounded text-text-secondary">
                             {feedback.protocolo}
                           </code>
                           <Badge variant="outline" className="text-xs">
@@ -302,7 +289,7 @@ function DashboardContent() {
                         <p className="text-sm font-medium text-secondary-600 truncate mb-1">
                           {feedback.titulo || 'Sem título'}
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs text-text-tertiary">
                           {formatRelativeTime(feedback.data_criacao)}
                         </p>
                       </div>
@@ -327,14 +314,14 @@ function DashboardContent() {
                           {feedback.status === 'em_analise' && '⏳ Análise'}
                           {feedback.status === 'pendente' && '○ Pendente'}
                         </Badge>
-                        <ChevronRight className="h-5 w-5 text-slate-400 group-hover:text-primary-500 transition-colors" />
+                        <ChevronRight className="h-5 w-5 text-text-tertiary group-hover:text-text-link transition-colors" />
                       </div>
-                    </div>
+                    </FlexBetween>
                   </Link>
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12 text-slate-500">
+              <div className="text-center py-12 text-text-tertiary">
                 <MessageSquare className="h-16 w-16 mx-auto mb-4 opacity-50" />
                 <p className="text-lg font-medium mb-2">Nenhum feedback ainda</p>
                 <p className="text-sm">Os feedbacks recebidos aparecerão aqui</p>
@@ -342,8 +329,9 @@ function DashboardContent() {
             )}
           </CardContent>
         </Card>
-      </main>
-    </div>
+        </div>
+      </PageContent>
+    </PageLayout>
   );
 }
 

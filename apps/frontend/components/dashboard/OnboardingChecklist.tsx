@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type CSSProperties } from 'react';
 import { CheckCircle, Circle, X, ExternalLink } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import Link from 'next/link';
@@ -92,6 +92,7 @@ export function OnboardingChecklist() {
   const progress = items.filter(i => i.completed).length;
   const total = items.length;
   const percentage = Math.round((progress / total) * 100);
+  const progressStyle = { width: `${percentage}%` } as React.CSSProperties;
 
   // Esconder checklist se foi dismissado ou se está 100% completo
   if (!visible || !tenant || percentage === 100) return null;
@@ -102,19 +103,19 @@ export function OnboardingChecklist() {
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6 shadow-sm">
+    <div className="bg-background border border-border-light rounded-lg p-6 mb-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-lg font-semibold text-text-primary">
             🚀 Complete sua configuração
           </h3>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-text-secondary">
             {progress} de {total} concluídos ({percentage}%)
           </p>
         </div>
         <button
           onClick={handleDismiss}
-          className="text-gray-400 hover:text-gray-600 transition-colors"
+          className="text-text-tertiary hover:text-text-secondary transition-colors"
           aria-label="Fechar checklist"
         >
           <X className="w-5 h-5" />
@@ -122,10 +123,10 @@ export function OnboardingChecklist() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full bg-gray-200 rounded-full h-2 mb-6">
+      <div className="w-full bg-background-tertiary rounded-full h-2 mb-6">
         <div
           className="bg-primary-600 h-2 rounded-full transition-all duration-500 ease-out"
-          style={{ width: `${percentage}%` }}
+          style={progressStyle}
         />
       </div>
 
@@ -136,7 +137,7 @@ export function OnboardingChecklist() {
             {item.completed ? (
               <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
             ) : (
-              <Circle className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+              <Circle className="w-5 h-5 text-text-tertiary flex-shrink-0 mt-0.5" />
             )}
             <div className="flex-1 min-w-0">
               {item.external ? (
@@ -145,7 +146,7 @@ export function OnboardingChecklist() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`text-sm font-medium hover:text-primary-600 transition-colors inline-flex items-center gap-1 ${
-                    item.completed ? 'text-gray-500 line-through' : 'text-gray-900'
+                    item.completed ? 'text-text-tertiary line-through' : 'text-text-primary'
                   }`}
                 >
                   {item.title}
@@ -155,13 +156,13 @@ export function OnboardingChecklist() {
                 <Link
                   href={item.link}
                   className={`text-sm font-medium hover:text-primary-600 transition-colors ${
-                    item.completed ? 'text-gray-500 line-through' : 'text-gray-900'
+                    item.completed ? 'text-text-tertiary line-through' : 'text-text-primary'
                   }`}
                 >
                   {item.title}
                 </Link>
               )}
-              <p className="text-xs text-gray-500 mt-0.5">{item.description}</p>
+              <p className="text-xs text-text-tertiary mt-0.5">{item.description}</p>
             </div>
           </li>
         ))}

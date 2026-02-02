@@ -30,6 +30,7 @@ import {
   Database,
   Settings
 } from 'lucide-react';
+import { Container, DecorativeBlob, FlexRow, InlineFlexRow } from '@/components/ui';
 import Link from 'next/link';
 
 interface Feature {
@@ -245,18 +246,19 @@ const INTEGRATION_FEATURES: Feature[] = [
 
 export default function RecursosPage() {
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        <DecorativeBlob tone="primary" placement="topRightQuarter" />
+        <DecorativeBlob tone="secondary" placement="bottomLeftQuarter" />
         
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
+        <section className="py-16 sm:py-24 relative z-10">
+          <Container>
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+            <InlineFlexRow className="px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">Recursos Completos</span>
-            </div>
+            </InlineFlexRow>
             <H1 className="mb-6 text-primary">
               Tudo que Você Precisa para<br />
               <span className="text-secondary">Gestão de Feedbacks</span>
@@ -277,7 +279,7 @@ export default function RecursosPage() {
             
             <div className="grid md:grid-cols-2 gap-8">
               {CORE_FEATURES.map((feature, idx) => (
-                <Card key={idx} className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-xl bg-white">
+                <Card key={idx} className="border-2 border-border hover:border-primary transition-all duration-300 hover:shadow-xl bg-card">
                   <CardHeader>
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -315,7 +317,7 @@ export default function RecursosPage() {
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {ADVANCED_FEATURES.map((feature, idx) => (
-                <Card key={idx} className="hover:shadow-lg transition-shadow border-border bg-white">
+                <Card key={idx} className="hover:shadow-lg transition-shadow border-border bg-card">
                   <CardHeader>
                     <div className="w-10 h-10 bg-secondary/10 rounded-xl flex items-center justify-center mb-3">
                       <feature.icon className="w-5 h-5 text-secondary" />
@@ -342,7 +344,7 @@ export default function RecursosPage() {
           <div className="mb-20">
             <div className="text-center mb-12">
               <H2 className="mb-4">Gestão de Workflow</H2>
-              <Paragraph className="text-gray-600">
+              <Paragraph className="text-muted-foreground">
                 Automatize e otimize seus processos
               </Paragraph>
             </div>
@@ -362,7 +364,7 @@ export default function RecursosPage() {
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
                           <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-xs text-gray-600">{detail}</span>
+                          <span className="text-xs text-muted-foreground">{detail}</span>
                         </li>
                       ))}
                     </ul>
@@ -376,7 +378,7 @@ export default function RecursosPage() {
           <div className="mb-20">
             <div className="text-center mb-12">
               <H2 className="mb-4">Integrações e APIs</H2>
-              <Paragraph className="text-gray-600">
+              <Paragraph className="text-muted-foreground">
                 Conecte com suas ferramentas favoritas
               </Paragraph>
             </div>
@@ -393,10 +395,10 @@ export default function RecursosPage() {
                   </CardHeader>
                   <CardContent>
                     <ul className="space-y-2">
-                      {feature.details.map((detail, i) => (
+{feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
                           <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-xs text-gray-600">{detail}</span>
+                          <span className="text-xs text-muted-foreground">{detail}</span>
                         </li>
                       ))}
                     </ul>
@@ -405,11 +407,12 @@ export default function RecursosPage() {
               ))}
             </div>
           </div>
+          </Container>
         </section>
 
         {/* Benefits Section */}
-        <section className="bg-white text-gray-900 py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-card text-foreground py-20">
+          <Container>
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Por Que Escolher o Ouvify?</h2>
               <p className="text-xl text-primary-100">
@@ -418,10 +421,10 @@ export default function RecursosPage() {
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">
-              <Card className="bg-white/10 border-white/20 text-gray-900">
+              <Card className="bg-card/10 border-border/20 text-foreground">
                 <CardHeader>
                   <TrendingUp className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-gray-900">+85% de Eficiência</CardTitle>
+                  <CardTitle className="text-foreground">+85% de Eficiência</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">
@@ -430,10 +433,10 @@ export default function RecursosPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 border-white/20 text-gray-900">
+              <Card className="bg-card/10 border-border/20 text-foreground">
                 <CardHeader>
                   <Eye className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-gray-900">100% de Transparência</CardTitle>
+                  <CardTitle className="text-foreground">100% de Transparência</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">
@@ -442,10 +445,10 @@ export default function RecursosPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-white/10 border-white/20 text-gray-900">
+              <Card className="bg-card/10 border-border/20 text-foreground">
                 <CardHeader>
                   <Shield className="w-10 h-10 mb-4" />
-                  <CardTitle className="text-gray-900">Conformidade LGPD</CardTitle>
+                  <CardTitle className="text-foreground">Conformidade LGPD</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-primary-100">
@@ -454,14 +457,14 @@ export default function RecursosPage() {
                 </CardContent>
               </Card>
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* CTA Section */}
         <section className="py-20">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <H2 className="mb-6">Pronto para Experimentar?</H2>
-            <Paragraph className="text-xl text-gray-600 mb-8">
+            <Paragraph className="text-xl text-muted-foreground mb-8">
               Teste todos os recursos gratuitamente por 14 dias. Sem cartão de crédito.
             </Paragraph>
             
@@ -478,19 +481,19 @@ export default function RecursosPage() {
               </Link>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8 mt-12 text-sm text-gray-500">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap justify-center gap-8 mt-12 text-sm text-muted-foreground">
+              <FlexRow>
                 <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Setup em 5 minutos</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </FlexRow>
+              <FlexRow>
                 <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Suporte em português</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </FlexRow>
+              <FlexRow>
                 <CheckCircle className="w-4 h-4 text-success-600" />
                 <span>Cancele quando quiser</span>
-              </div>
+              </FlexRow>
             </div>
           </div>
         </section>

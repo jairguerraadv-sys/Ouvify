@@ -1,6 +1,6 @@
 "use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -42,9 +42,9 @@ const FEEDBACK_STATUS = [
 
 export default function EditFeedbackPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <EditFeedbackContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -146,7 +146,7 @@ function EditFeedbackContent() {
     return (
       <div className="container mx-auto p-6 max-w-4xl">
         <Card className="p-6 text-center">
-          <p className="text-slate-600">Feedback não encontrado</p>
+          <p className="text-text-secondary">Feedback não encontrado</p>
           <Button className="mt-4" onClick={() => router.push('/dashboard/feedbacks')}>
             Voltar para Feedbacks
           </Button>
@@ -160,13 +160,13 @@ function EditFeedbackContent() {
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <Link href={`/dashboard/feedbacks/${protocolo}`}>
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" aria-label="Voltar para detalhes do feedback">
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Editar Feedback</h1>
-          <p className="text-sm text-slate-600">
+          <h1 className="text-2xl font-bold text-text-primary">Editar Feedback</h1>
+          <p className="text-sm text-text-secondary">
             Protocolo: {feedback.protocolo}
           </p>
         </div>
@@ -177,14 +177,14 @@ function EditFeedbackContent() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Tipo */}
           <div>
-            <label htmlFor="tipo" className="block text-sm font-medium text-slate-700 mb-2">
+            <label htmlFor="tipo" className="block text-sm font-medium text-text-secondary mb-2">
               Tipo de Feedback
             </label>
             <select
               id="tipo"
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-border-light bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-border-focus"
               required
             >
               {FEEDBACK_TIPOS.map((item) => (
@@ -197,7 +197,7 @@ function EditFeedbackContent() {
 
           {/* Título */}
           <div>
-            <label htmlFor="titulo" className="block text-sm font-medium text-slate-700 mb-2">
+            <label htmlFor="titulo" className="block text-sm font-medium text-text-secondary mb-2">
               Título <span className="text-error-500">*</span>
             </label>
             <Input
@@ -210,14 +210,14 @@ function EditFeedbackContent() {
               minLength={10}
               maxLength={200}
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-text-tertiary mt-1">
               {titulo.length}/200 caracteres
             </p>
           </div>
 
           {/* Descrição */}
           <div>
-            <label htmlFor="descricao" className="block text-sm font-medium text-slate-700 mb-2">
+            <label htmlFor="descricao" className="block text-sm font-medium text-text-secondary mb-2">
               Descrição <span className="text-error-500">*</span>
             </label>
             <Textarea
@@ -229,21 +229,21 @@ function EditFeedbackContent() {
               minLength={20}
               rows={6}
             />
-            <p className="text-xs text-slate-500 mt-1">
+            <p className="text-xs text-text-tertiary mt-1">
               {descricao.length} caracteres
             </p>
           </div>
 
           {/* Status */}
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-slate-700 mb-2">
+            <label htmlFor="status" className="block text-sm font-medium text-text-secondary mb-2">
               Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-3 py-2 border border-border-light bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-border-focus"
               required
             >
               {FEEDBACK_STATUS.map((item) => (
@@ -257,16 +257,16 @@ function EditFeedbackContent() {
           {/* Email de Contato (read-only) */}
           {feedback.email_contato && (
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-text-secondary mb-2">
                 Email de Contato
               </label>
               <Input
                 type="email"
                 value={feedback.email_contato}
                 disabled
-                className="bg-slate-50"
+                className="bg-background-secondary"
               />
-              <p className="text-xs text-slate-500 mt-1">
+              <p className="text-xs text-text-tertiary mt-1">
                 Este campo não pode ser editado
               </p>
             </div>

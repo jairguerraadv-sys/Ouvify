@@ -1,0 +1,10 @@
+
+> ouvify_frontend@0.1.0 audit:styles
+> tsx scripts/audit-styles.ts
+
+
+🔍 Encontrados 0 problemas de estilo
+
+
+✅ Relatório salvo em style-audit-report.json
+

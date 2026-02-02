@@ -4,6 +4,7 @@ import { useTenantTheme, useTenantName, useTenantLogo } from '@/hooks/use-tenant
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Building2, Palette } from 'lucide-react';
+import type { CSSProperties } from 'react';
 
 /**
  * Componente de exemplo que demonstra o uso do White Label
@@ -55,10 +56,15 @@ export function TenantBanner() {
       <CardContent>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
+            {(() => {
+              const colorStyle = { backgroundColor: theme.cor_primaria } as CSSProperties;
+              return (
             <div 
               className="w-8 h-8 rounded-full border-2 border-border"
-              style={{ backgroundColor: theme.cor_primaria }}
+                style={colorStyle}
             />
+              );
+            })()}
             <div>
               <p className="text-xs text-muted-foreground">Cor Primária</p>
               <p className="text-sm font-mono font-semibold">{theme.cor_primaria}</p>

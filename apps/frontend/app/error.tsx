@@ -30,7 +30,7 @@ export default function Error({
           Algo deu errado
         </h1>
         
-        <p className="text-lg text-gray-600 mb-8">
+        <p className="text-lg text-muted-foreground mb-8">
           Desculpe pelo inconveniente. Nossa equipe já foi notificada.
         </p>
 

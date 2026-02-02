@@ -1,0 +1,27 @@
+
+> ouvify_frontend@0.1.0 validate:contrast
+> tsx scripts/validate-color-contrast.ts
+
+
+🔎 WCAG Contrast Checks (light)
+
+✅ Body primary: 17.93:1 (min 7)
+✅ Body secondary: 4.74:1 (min 4.5)
+✅ Primary button (bg-primary-700/text-white): 4.77:1 (min 4.5)
+✅ Secondary button (bg-secondary-600/text-white): 5.22:1 (min 4.5)
+✅ Error button (bg-error-600/text-white): 5.02:1 (min 4.5)
+✅ Warning button: 8.38:1 (min 4.5)
+✅ Success button (bg-success-800/text-white): 5.08:1 (min 4.5)
+
+🔎 WCAG Contrast Checks (dark)
+
+✅ Body primary: 17.18:1 (min 7)
+✅ Body secondary: 7.11:1 (min 4.5)
+✅ Primary button (bg-primary-700/text-white): 4.77:1 (min 4.5)
+✅ Secondary button (bg-secondary-600/text-white): 5.22:1 (min 4.5)
+✅ Error button (bg-error-600/text-white): 5.02:1 (min 4.5)
+✅ Warning button: 8.38:1 (min 4.5)
+✅ Success button (bg-success-800/text-white): 5.08:1 (min 4.5)
+
+✅ Todos os contrastes atendem WCAG AA.
+

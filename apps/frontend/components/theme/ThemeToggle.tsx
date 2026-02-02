@@ -30,7 +30,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
     return (
       <button
         className={cn(
-          "p-2 rounded-lg bg-gray-100 dark:bg-white",
+          "p-2 rounded-lg bg-background-secondary",
           className
         )}
         aria-label="Carregando tema"
@@ -60,14 +60,13 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
         onClick={toggleTheme}
         className={cn(
           "p-2 rounded-lg transition-colors",
-          "hover:bg-gray-100 dark:hover:bg-white",
-          "focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2",
-          "dark:focus:ring-offset-gray-900",
+          "hover:bg-background-secondary",
+          "focus:outline-none focus:ring-2 focus:ring-border-focus focus:ring-offset-2 focus:ring-offset-background",
           className
         )}
         aria-label={resolvedTheme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
       >
-        <Icon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        <Icon className="w-5 h-5 text-text-secondary" />
       </button>
     );
   }
@@ -75,7 +74,7 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
   // Menu dropdown com todas as opções
   return (
     <div className={cn("relative inline-block", className)}>
-      <div className="flex items-center gap-1 p-1 bg-gray-100 dark:bg-white rounded-lg">
+      <div className="flex items-center gap-1 p-1 bg-background-secondary rounded-lg">
         <ThemeButton
           active={theme === 'light'}
           onClick={() => setTheme('light')}
@@ -113,8 +112,8 @@ function ThemeButton({ active, onClick, icon, label }: ThemeButtonProps) {
       className={cn(
         "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
         active
-          ? "bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm"
-          : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+          ? "bg-background text-text-primary shadow-sm"
+          : "text-text-secondary hover:text-text-primary"
       )}
       aria-label={label}
       aria-pressed={active}

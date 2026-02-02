@@ -68,15 +68,15 @@ export function PricingCard({
       className={cn(
         'relative border-2 transition-all duration-300',
         plan.is_popular
-          ? 'border-primary shadow-xl scale-105 bg-white'
-          : 'border-border hover:border-primary/50 bg-white',
+          ? 'border-primary shadow-xl scale-105 bg-background'
+          : 'border-border hover:border-primary/50 bg-background',
         className
       )}
     >
       {/* Popular Badge */}
       {plan.is_popular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-          <Badge className="bg-primary-600 text-gray-900">Mais Popular</Badge>
+          <Badge className="bg-primary-600 text-text-inverse">Mais Popular</Badge>
         </div>
       )}
 
@@ -95,10 +95,10 @@ export function PricingCard({
         <div className="mb-4">
           {!plan.is_free && plan.price_cents > 0 ? (
             <div>
-              <span className="text-4xl font-bold text-gray-900">
+              <span className="text-4xl font-bold text-text-primary">
                 R$ {displayPrice}
               </span>
-              <span className="text-gray-500">/mês</span>
+              <span className="text-text-tertiary">/mês</span>
               {yearlySavings > 0 && (
                 <p className="text-sm text-success-600 mt-1">
                   Economize R$ {yearlySavings.toFixed(0)}/ano
@@ -107,12 +107,12 @@ export function PricingCard({
             </div>
           ) : plan.is_free ? (
             <div>
-              <span className="text-4xl font-bold text-gray-900">Grátis</span>
-              <span className="text-gray-500"> para sempre</span>
+              <span className="text-4xl font-bold text-text-primary">Grátis</span>
+              <span className="text-text-tertiary"> para sempre</span>
             </div>
           ) : (
             <div>
-              <span className="text-2xl font-bold text-gray-900">Sob consulta</span>
+              <span className="text-2xl font-bold text-text-primary">Sob consulta</span>
             </div>
           )}
         </div>
@@ -148,15 +148,15 @@ export function PricingCard({
           {plan.features.map((feature, idx) => (
             <div key={idx} className="flex gap-3 items-start">
               <Check className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-700">{feature}</span>
+              <span className="text-sm text-text-secondary">{feature}</span>
             </div>
           ))}
           
           {/* Not Included */}
           {showNotIncluded.map((feature, idx) => (
             <div key={`not-${idx}`} className="flex gap-3 items-start opacity-50">
-              <X className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-500">{feature}</span>
+              <X className="w-5 h-5 text-text-tertiary flex-shrink-0 mt-0.5" />
+              <span className="text-sm text-text-tertiary">{feature}</span>
             </div>
           ))}
         </div>
@@ -164,10 +164,10 @@ export function PricingCard({
         {/* Limits Display */}
         {plan.limits && Object.keys(plan.limits).length > 0 && (
           <div className="mt-6 pt-4 border-t">
-            <p className="text-xs font-semibold text-gray-500 uppercase mb-2">Limites</p>
+            <p className="text-xs font-semibold text-text-tertiary uppercase mb-2">Limites</p>
             <div className="space-y-1">
               {Object.entries(plan.limits).map(([key, value]) => (
-                <div key={key} className="flex justify-between text-xs text-gray-600">
+                <div key={key} className="flex justify-between text-xs text-text-secondary">
                   <span>{formatLimitKey(key)}</span>
                   <span className="font-medium">
                     {value === -1 ? 'Ilimitado' : value.toLocaleString('pt-BR')}

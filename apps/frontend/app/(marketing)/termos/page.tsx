@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Metadata } from 'next';
+import { DecorativeBlob } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Termos de Uso | Ouvify - Plataforma de Feedback',
@@ -15,8 +16,8 @@ export default function TermosPage() {
   return (
     <main className="min-h-screen bg-white relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+      <DecorativeBlob tone="primary" placement="topRightQuarter" />
+      <DecorativeBlob tone="secondary" placement="bottomLeftQuarter" />
         
         <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10">
           <div className="space-y-8">

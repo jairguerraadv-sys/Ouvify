@@ -1,219 +1,54 @@
-/**
- * 🎨 OUVIFY DESIGN TOKENS
- * Centralized design system constants for consistent UI/UX
- * 
- * Usage:
- * import { colors, spacing, typography } from '@/lib/design-tokens';
- */
+import {
+  colors as baseColors,
+  spacing,
+  typography,
+  borderRadius,
+  shadows as baseShadows,
+} from "@/styles/design-tokens";
 
-// ============================================
-// 🎨 COLORS
-// ============================================
-
-export const colors = {
-  // Brand Colors
+const colors = {
   brand: {
-    primary: {
-      50: '#F0F9FF',
-      100: '#E0F2FE',
-      200: '#BAE6FD',
-      300: '#7DD3FC',
-      400: '#38BDF8',
-      500: '#0EA5E9',  // Main
-      600: '#0284C7',  // Hover
-      700: '#0369A1',
-      800: '#075985',
-      900: '#0C4A6E',
-      DEFAULT: '#0EA5E9',
-    },
-    secondary: {
-      50: '#FAF5FF',
-      100: '#F3E8FF',
-      200: '#E9D5FF',
-      300: '#D8B4FE',
-      400: '#C084FC',
-      500: '#A855F7',  // Main
-      600: '#9333EA',  // Hover
-      700: '#7E22CE',
-      800: '#6B21A8',
-      900: '#581C87',
-      DEFAULT: '#A855F7',
-    },
+    primary: baseColors.primary,
+    secondary: baseColors.secondary,
   },
-
-  // Semantic Colors
   semantic: {
     success: {
-      light: '#DCFCE7',
-      main: '#22C55E',
-      dark: '#16A34A',
-      contrast: '#FFFFFF',
+      light: baseColors.success[100],
+      main: baseColors.success[500],
+      dark: baseColors.success[700],
+      contrast: `hsl(var(--background))`,
     },
     warning: {
-      light: '#FEF3C7',
-      main: '#F59E0B',
-      dark: '#D97706',
-      contrast: '#111827',
+      light: baseColors.warning[100],
+      main: baseColors.warning[500],
+      dark: baseColors.warning[700],
+      contrast: `hsl(var(--foreground))`,
     },
     error: {
-      light: '#FEE2E2',
-      main: '#EF4444',
-      dark: '#DC2626',
-      contrast: '#FFFFFF',
+      light: baseColors.error[100],
+      main: baseColors.error[500],
+      dark: baseColors.error[700],
+      contrast: `hsl(var(--background))`,
     },
     info: {
-      light: '#CFFAFE',
-      main: '#06B6D4',
-      dark: '#0891B2',
-      contrast: '#FFFFFF',
+      light: baseColors.info[100],
+      main: baseColors.info[500],
+      dark: baseColors.info[700],
+      contrast: `hsl(var(--background))`,
     },
   },
-
-  // Neutral Colors
   neutral: {
-    white: '#FFFFFF',
-    black: '#000000',
-    gray: {
-      50: '#F9FAFB',
-      100: '#F3F4F6',
-      200: '#E5E7EB',
-      300: '#D1D5DB',
-      400: '#9CA3AF',
-      500: '#6B7280',
-      600: '#4B5563',
-      700: '#374151',
-      800: '#1F2937',
-      900: '#111827',
-    },
+    white: baseColors.neutral[0],
+    black: baseColors.neutral[950],
+    gray: baseColors.neutral,
   },
 } as const;
 
-// ============================================
-// 📐 SPACING
-// ============================================
-
-export const spacing = {
-  // Base unit: 4px
-  px: '1px',
-  0: '0',
-  0.5: '2px',
-  1: '4px',
-  1.5: '6px',
-  2: '8px',
-  2.5: '10px',
-  3: '12px',
-  3.5: '14px',
-  4: '16px',
-  5: '20px',
-  6: '24px',
-  7: '28px',
-  8: '32px',
-  9: '36px',
-  10: '40px',
-  11: '44px',
-  12: '48px',
-  14: '56px',
-  16: '64px',
-  20: '80px',
-  24: '96px',
-  28: '112px',
-  32: '128px',
-  36: '144px',
-  40: '160px',
-  44: '176px',
-  48: '192px',
-  52: '208px',
-  56: '224px',
-  60: '240px',
-  64: '256px',
-  72: '288px',
-  80: '320px',
-  96: '384px',
+const shadows = {
+  ...baseShadows,
 } as const;
 
-// ============================================
-// 🔤 TYPOGRAPHY
-// ============================================
-
-export const typography = {
-  fontFamily: {
-    sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
-    heading: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
-    mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-  },
-  
-  fontSize: {
-    xs: { size: '12px', lineHeight: '16px' },
-    sm: { size: '14px', lineHeight: '20px' },
-    base: { size: '16px', lineHeight: '24px' },
-    lg: { size: '18px', lineHeight: '28px' },
-    xl: { size: '20px', lineHeight: '28px' },
-    '2xl': { size: '24px', lineHeight: '32px' },
-    '3xl': { size: '30px', lineHeight: '36px' },
-    '4xl': { size: '36px', lineHeight: '40px' },
-    '5xl': { size: '48px', lineHeight: '1' },
-    '6xl': { size: '60px', lineHeight: '1' },
-    '7xl': { size: '72px', lineHeight: '1' },
-  },
-
-  fontWeight: {
-    thin: 100,
-    extralight: 200,
-    light: 300,
-    normal: 400,
-    medium: 500,
-    semibold: 600,
-    bold: 700,
-    extrabold: 800,
-    black: 900,
-  },
-
-  letterSpacing: {
-    tighter: '-0.05em',
-    tight: '-0.025em',
-    normal: '0em',
-    wide: '0.025em',
-    wider: '0.05em',
-    widest: '0.1em',
-  },
-} as const;
-
-// ============================================
-// 📦 BORDER RADIUS
-// ============================================
-
-export const borderRadius = {
-  none: '0',
-  sm: '4px',
-  DEFAULT: '6px',
-  md: '6px',
-  lg: '8px',
-  xl: '12px',
-  '2xl': '16px',
-  '3xl': '24px',
-  full: '9999px',
-} as const;
-
-// ============================================
-// 🌑 SHADOWS
-// ============================================
-
-export const shadows = {
-  none: 'none',
-  sm: '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
-  DEFAULT: '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
-  md: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-  lg: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-  xl: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-  '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-  inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-  
-  // Brand shadows (colored)
-  primary: '0 4px 14px 0 rgba(59, 130, 246, 0.39)',
-  secondary: '0 4px 14px 0 rgba(168, 85, 247, 0.39)',
-  success: '0 4px 14px 0 rgba(34, 197, 94, 0.39)',
-  error: '0 4px 14px 0 rgba(239, 68, 68, 0.39)',
-} as const;
+export { colors, spacing, typography, borderRadius, shadows };
 
 // ============================================
 // ⏱️ TRANSITIONS

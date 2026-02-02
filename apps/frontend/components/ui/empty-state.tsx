@@ -88,13 +88,13 @@ const variantConfig: Record<EmptyStateVariant, {
     icon: Inbox,
     title: 'Nada aqui ainda',
     description: 'Não há dados para exibir no momento.',
-    iconColor: 'text-gray-400',
+    iconColor: 'text-text-tertiary',
   },
   'no-data': {
     icon: FolderOpen,
     title: 'Sem dados',
     description: 'Não encontramos nenhum dado para exibir.',
-    iconColor: 'text-gray-400',
+    iconColor: 'text-text-tertiary',
   },
   'no-results': {
     icon: Search,
@@ -130,7 +130,7 @@ const variantConfig: Record<EmptyStateVariant, {
     icon: Settings,
     title: '',
     description: '',
-    iconColor: 'text-gray-400',
+    iconColor: 'text-text-tertiary',
   },
 };
 
@@ -249,7 +249,7 @@ export function EmptyState({
       {/* Icon */}
       <div 
         className={cn(
-          'flex items-center justify-center rounded-full bg-gray-100 mb-4',
+          'flex items-center justify-center rounded-full bg-background-tertiary mb-4',
           sizes.iconWrapper
         )}
       >
@@ -267,7 +267,7 @@ export function EmptyState({
         {displayTitle && (
           <h3 
             className={cn(
-              'font-semibold font-heading text-gray-900',
+              'font-semibold font-heading text-text-primary',
               sizes.title
             )}
           >
@@ -277,10 +277,7 @@ export function EmptyState({
         
         {displayDescription && (
           <p 
-            className={cn(
-              'text-gray-500',
-              sizes.description
-            )}
+            className={cn('text-text-secondary', sizes.description)}
           >
             {displayDescription}
           </p>
@@ -320,8 +317,8 @@ export function EmptyState({
       
       {/* Copy text display (legacy feature) */}
       {copyText && (
-        <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700">
-          <code className="text-sm text-gray-700 dark:text-gray-300 break-all">
+        <div className="mt-4 p-3 bg-background-secondary dark:bg-background rounded-md border border-border-light dark:border-border-light">
+          <code className="text-sm text-text-secondary dark:text-text-secondary break-all">
             {copyText}
           </code>
         </div>

@@ -113,7 +113,7 @@ export function NotificationPermissionPrompt() {
 
   return (
     <div 
-      className="fixed bottom-4 right-4 max-w-sm bg-white dark:bg-white rounded-xl shadow-2xl p-6 border-2 border-primary-500 z-50 animate-in slide-in-from-bottom-4 duration-300"
+      className="fixed bottom-4 right-4 max-w-sm bg-background rounded-xl shadow-2xl p-6 border-2 border-primary-500 z-50 animate-in slide-in-from-bottom-4 duration-300"
       role="dialog"
       aria-labelledby="notification-prompt-title"
       aria-describedby="notification-prompt-description"
@@ -121,7 +121,7 @@ export function NotificationPermissionPrompt() {
       {/* Botão Fechar */}
       <button
         onClick={handleDismiss}
-        className="absolute top-3 right-3 p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-white rounded-lg transition-colors"
+        className="absolute top-3 right-3 p-1.5 text-text-tertiary hover:text-text-secondary hover:bg-background-secondary rounded-lg transition-colors"
         aria-label="Fechar"
       >
         <X className="w-4 h-4" />
@@ -129,7 +129,7 @@ export function NotificationPermissionPrompt() {
       
       <div className="flex items-start gap-4">
         {/* Ícone */}
-        <div className="flex-shrink-0 p-3 bg-primary-100 dark:bg-white/30 rounded-full">
+        <div className="flex-shrink-0 p-3 bg-primary-100 dark:bg-primary-900/20 rounded-full">
           <Bell className="w-6 h-6 text-primary-600 dark:text-primary-400" />
         </div>
         
@@ -137,7 +137,7 @@ export function NotificationPermissionPrompt() {
           {/* Título */}
           <h3 
             id="notification-prompt-title"
-            className="font-semibold text-lg text-gray-900 dark:text-gray-900 mb-2"
+            className="font-semibold text-lg text-text-primary mb-2"
           >
             Ativar Notificações?
           </h3>
@@ -145,7 +145,7 @@ export function NotificationPermissionPrompt() {
           {/* Descrição */}
           <p 
             id="notification-prompt-description"
-            className="text-sm text-gray-600 dark:text-gray-400 mb-4"
+            className="text-sm text-text-secondary mb-4"
           >
             Receba alertas em tempo real sobre novos feedbacks, atualizações de status e mensagens importantes.
           </p>
@@ -162,7 +162,7 @@ export function NotificationPermissionPrompt() {
             <button
               onClick={handleAllow}
               disabled={isLoading}
-              className="flex-1 px-4 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 px-4 py-2.5 bg-primary-600 text-white text-sm font-medium rounded-lg hover:bg-primary-700 focus:ring-2 focus:ring-border-focus focus:ring-offset-2 focus:ring-offset-background transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -176,7 +176,7 @@ export function NotificationPermissionPrompt() {
             <button
               onClick={handleDismiss}
               disabled={isLoading}
-              className="px-4 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors disabled:opacity-50"
+              className="px-4 py-2.5 bg-background-secondary text-text-secondary text-sm font-medium rounded-lg hover:bg-background-tertiary focus:ring-2 focus:ring-border-focus focus:ring-offset-2 focus:ring-offset-background transition-colors disabled:opacity-50"
             >
               Agora não
             </button>

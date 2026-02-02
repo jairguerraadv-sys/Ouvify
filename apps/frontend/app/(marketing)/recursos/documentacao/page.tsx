@@ -26,22 +26,22 @@ export default function DocumentacaoPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="text-sm">
             <Link href="/" className="text-primary-600 hover:underline">Início</Link>
-            <span className="mx-2 text-gray-400">/</span>
+            <span className="mx-2 text-muted-foreground">/</span>
             <Link href="/recursos" className="text-primary-600 hover:underline">Recursos</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-600">Documentação</span>
+            <span className="mx-2 text-muted-foreground">/</span>
+            <span className="text-muted-foreground">Documentação</span>
           </nav>
         </div>
       </div>
 
       {/* Hero */}
-      <section className="bg-white text-gray-900 py-16">
+      <section className="bg-card text-foreground py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">📚</span>
@@ -62,7 +62,7 @@ export default function DocumentacaoPage() {
             <input
               type="text"
               placeholder="Buscar na documentação..."
-              className="w-full px-6 py-4 rounded-xl border-2 border-gray-300 focus:border-secondary-500 focus:outline-none text-lg"
+              className="w-full px-6 py-4 rounded-xl border-2 border-border focus:border-secondary-500 focus:outline-none text-lg"
             />
             <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl">🔍</span>
           </div>
@@ -71,20 +71,20 @@ export default function DocumentacaoPage() {
         {/* Guias Principais */}
         {guias.map((section) => (
           <section key={section.category} className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">{section.category}</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">{section.category}</h2>
             
             <div className="grid md:grid-cols-3 gap-6">
               {section.items.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition group"
+                  className="bg-card rounded-xl p-6 shadow-md hover:shadow-xl transition group"
                 >
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-secondary-600 transition">
+                    <h3 className="text-lg font-semibold text-foreground group-hover:text-secondary-600 transition">
                       {item.title}
                     </h3>
-                    <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                    <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
                       {item.time}
                     </span>
                   </div>
@@ -99,29 +99,29 @@ export default function DocumentacaoPage() {
 
         {/* Vídeo Tutoriais */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">🎥 Vídeo Tutoriais</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">🎥 Vídeo Tutoriais</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-white flex items-center justify-center">
+            <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+              <div className="aspect-video bg-card flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Tour Completo da Plataforma</h3>
-                <p className="text-gray-600 mb-4">Conheça todas as funcionalidades em 10 minutos</p>
+                <p className="text-muted-foreground mb-4">Conheça todas as funcionalidades em 10 minutos</p>
                 <Link href="/docs/videos/tour" className="text-secondary-600 font-medium hover:underline">
                   Assistir agora →
                 </Link>
               </div>
             </div>
 
-            <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
-              <div className="aspect-video bg-white flex items-center justify-center">
+            <div className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-xl transition">
+              <div className="aspect-video bg-card flex items-center justify-center">
                 <span className="text-6xl">▶️</span>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2">Integrando com sua Aplicação</h3>
-                <p className="text-gray-600 mb-4">Aprenda a integrar o Ouvify via API</p>
+                <p className="text-muted-foreground mb-4">Aprenda a integrar o Ouvify via API</p>
                 <Link href="/docs/videos/integracao" className="text-secondary-600 font-medium hover:underline">
                   Assistir agora →
                 </Link>
@@ -132,28 +132,28 @@ export default function DocumentacaoPage() {
 
         {/* API Reference */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">⚙️ Referência da API</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">⚙️ Referência da API</h2>
           
-          <div className="bg-white text-gray-900 rounded-xl p-8">
+          <div className="bg-card text-foreground rounded-xl p-8">
             <h3 className="text-2xl font-bold mb-4">REST API v1.0</h3>
-            <p className="text-gray-300 mb-6">
+            <p className="text-muted-foreground mb-6">
               Documentação técnica completa com exemplos de código em Python, JavaScript, PHP e mais.
             </p>
             
             <div className="grid md:grid-cols-2 gap-4 mb-6">
-              <div className="bg-white rounded-lg p-4">
-                <div className="text-sm text-gray-400 mb-1">Base URL</div>
+              <div className="bg-muted rounded-lg p-4">
+                <div className="text-sm text-muted-foreground mb-1">Base URL</div>
                 <code className="text-success-400">https://api.ouvify.com/v1</code>
               </div>
-              <div className="bg-white rounded-lg p-4">
-                <div className="text-sm text-gray-400 mb-1">Autenticação</div>
+              <div className="bg-muted rounded-lg p-4">
+                <div className="text-sm text-muted-foreground mb-1">Autenticação</div>
                 <code className="text-primary-400">Bearer Token (JWT)</code>
               </div>
             </div>
 
             <Link
               href="/docs/api"
-              className="inline-block bg-secondary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+              className="inline-block bg-secondary-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
             >
               Ver Documentação da API →
             </Link>
@@ -162,11 +162,11 @@ export default function DocumentacaoPage() {
 
         {/* SDKs */}
         <section className="mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-6">📦 SDKs Oficiais</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-6">📦 SDKs Oficiais</h2>
           
           <div className="grid md:grid-cols-4 gap-4">
             {['JavaScript', 'Python', 'PHP', 'Ruby'].map((lang) => (
-              <div key={lang} className="bg-white rounded-lg p-6 shadow-md text-center hover:shadow-xl transition">
+              <div key={lang} className="bg-card rounded-lg p-6 shadow-md text-center hover:shadow-xl transition">
                 <div className="text-3xl mb-3">💻</div>
                 <h3 className="font-semibold mb-2">{lang}</h3>
                 <Link href={`/docs/sdk/${lang.toLowerCase()}`} className="text-secondary-600 text-sm hover:underline">
@@ -179,22 +179,22 @@ export default function DocumentacaoPage() {
 
         {/* CTA */}
         <div className="bg-secondary-50 border border-secondary-200 rounded-xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <h3 className="text-2xl font-bold text-foreground mb-4">
             Precisa de ajuda personalizada?
           </h3>
-          <p className="text-gray-700 mb-6">
+          <p className="text-muted-foreground mb-6">
             Nossa equipe de suporte está disponível para ajudar você.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-secondary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+              className="bg-secondary-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
             >
               Falar com Suporte
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-secondary-600 px-8 py-3 rounded-lg font-medium border-2 border-secondary-600 hover:bg-secondary-50 transition"
+              className="bg-card text-secondary-600 px-8 py-3 rounded-lg font-medium border-2 border-secondary-600 hover:bg-secondary-50 transition"
             >
               ← Voltar para Recursos
             </Link>

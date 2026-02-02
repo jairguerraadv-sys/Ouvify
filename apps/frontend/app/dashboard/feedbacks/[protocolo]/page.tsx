@@ -1,6 +1,6 @@
 "use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { useParams, useRouter } from "next/navigation";
 import { useFeedbackDetails } from "@/hooks/use-feedback-details";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { FlexBetween } from "@/components/ui";
 import { useState, useRef } from "react";
 import { 
   Paperclip, 
@@ -33,7 +34,7 @@ function StatusBadge({ status }: { status: string }) {
     pendente: { bg: "bg-warning-100", text: "text-warning-800", label: "Pendente" },
     em_analise: { bg: "bg-primary-100", text: "text-primary-800", label: "Em Análise" },
     resolvido: { bg: "bg-success-100", text: "text-success-800", label: "Resolvido" },
-    fechado: { bg: "bg-gray-100", text: "text-gray-800", label: "Fechado" },
+    fechado: { bg: "bg-neutral-100", text: "text-neutral-800", label: "Fechado" },
   };
   const variant = variants[status] || variants.pendente;
   return (
@@ -45,9 +46,9 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function FeedbackTicketPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <FeedbackTicketContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -260,10 +261,10 @@ function FeedbackTicketContent() {
     const isImage = arquivo.tipo_mime?.startsWith('image/');
     
     return (
-      <div className="mt-2 p-3 bg-slate-50 rounded-lg border border-slate-200">
+      <div className="mt-2 p-3 bg-background-secondary rounded-lg border border-border-light">
         <div className="flex items-center gap-3">
           {isImage ? (
-            <div className="relative w-16 h-16 rounded overflow-hidden bg-slate-200">
+            <div className="relative w-16 h-16 rounded overflow-hidden bg-background-tertiary">
               <img 
                 src={arquivo.url} 
                 alt={arquivo.nome_original}
@@ -277,10 +278,10 @@ function FeedbackTicketContent() {
           )}
           
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-slate-700 truncate">
+            <p className="text-sm font-medium text-text-primary truncate">
               {arquivo.nome_original}
             </p>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-text-tertiary">
               {arquivo.tamanho_mb} MB • {arquivo.tipo_mime?.split('/')[1]?.toUpperCase()}
             </p>
           </div>
@@ -290,9 +291,9 @@ function FeedbackTicketContent() {
             download={arquivo.nome_original}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 hover:bg-slate-200 rounded-lg transition-colors"
+            className="p-2 hover:bg-background-tertiary rounded-lg transition-colors"
           >
-            <Download className="w-4 h-4 text-slate-600" />
+            <Download className="w-4 h-4 text-text-secondary" />
           </a>
         </div>
         
@@ -309,14 +310,14 @@ function FeedbackTicketContent() {
   return (
     <main className="flex-1 p-6 space-y-6 overflow-y-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <FlexBetween>
         <div className="flex items-center gap-3">
           <Button variant="secondary" onClick={() => router.back()}>
             ← Voltar
           </Button>
           <div>
             <h1 className="text-2xl font-semibold">{data.titulo}</h1>
-            <p className="text-sm text-slate-600 mt-1">
+            <p className="text-sm text-text-secondary mt-1">
               Protocolo: {data.protocolo} | Criado em {new Date(data.data_criacao).toLocaleDateString('pt-BR')}
             </p>
           </div>
@@ -354,13 +355,13 @@ function FeedbackTicketContent() {
             )}
           </Button>
         </div>
-      </div>
+      </FlexBetween>
       
       {/* Alterar Status */}
       <div className="flex items-center gap-3">
-        <label className="text-sm font-medium text-slate-700">Alterar Status:</label>
+        <label className="text-sm font-medium text-text-secondary">Alterar Status:</label>
         <select
-          className="border rounded px-3 py-2 text-sm bg-white"
+          className="border border-border-light rounded px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-border-focus"
           value={alterandoStatus ?? data.status}
           onChange={(e) => onChangeStatus(e.target.value)}
           disabled={!!alterandoStatus}
@@ -385,7 +386,7 @@ function FeedbackTicketContent() {
             {/* Arquivos do feedback original */}
             {data.arquivos && data.arquivos.length > 0 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-slate-700 mb-2">Anexos:</p>
+                <p className="text-sm font-medium text-text-secondary mb-2">Anexos:</p>
                 <div className="space-y-2">
                   {data.arquivos.map((arquivo: any) => (
                     <div key={arquivo.id}>{renderArquivo(arquivo)}</div>
@@ -426,7 +427,7 @@ function FeedbackTicketContent() {
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
                         {isInterna && <Lock className="w-4 h-4 text-amber-600" />}
-                        <span className="font-medium text-slate-700">
+                        <span className="font-medium text-text-primary">
                           {isInterna ? "Nota Interna (Privada)" : i.autor_nome}
                         </span>
                       </div>
@@ -487,17 +488,17 @@ function FeedbackTicketContent() {
 
             {/* Preview do arquivo selecionado */}
             {selectedFile && (
-              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200">
+              <div className="flex items-center gap-3 p-3 bg-background-secondary rounded-lg border border-border-light">
                 {selectedFile.type.startsWith('image/') ? (
-                  <ImageIcon className="w-8 h-8 text-slate-400" />
+                  <ImageIcon className="w-8 h-8 text-text-tertiary" />
                 ) : (
-                  <File className="w-8 h-8 text-slate-400" />
+                  <File className="w-8 h-8 text-text-tertiary" />
                 )}
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-700 truncate">
+                  <p className="text-sm font-medium text-text-primary truncate">
                     {selectedFile.name}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-text-tertiary">
                     {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
@@ -536,10 +537,10 @@ function FeedbackTicketContent() {
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
                 rows={4}
-                className={`w-full border rounded-lg p-3 pr-12 resize-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${
+                className={`w-full border rounded-lg p-3 pr-12 resize-none focus:ring-2 focus:ring-border-focus focus:border-transparent transition-all ${
                   isInternalNote 
                     ? 'border-amber-300 bg-amber-50/50' 
-                    : 'border-slate-300 bg-white'
+                    : 'border-border-light bg-background'
                 }`}
                 placeholder={
                   isInternalNote
@@ -562,7 +563,7 @@ function FeedbackTicketContent() {
                 variant="ghost"
                 size="sm"
                 onClick={() => fileInputRef.current?.click()}
-                className="absolute bottom-3 right-3 text-slate-500 hover:text-primary"
+                className="absolute bottom-3 right-3 text-text-tertiary hover:text-primary"
                 title="Anexar arquivo"
               >
                 <Paperclip className="w-5 h-5" />
@@ -608,7 +609,7 @@ function FeedbackTicketContent() {
             <div className="text-sm space-y-2">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Protocolo:</span>
-                <code className="font-mono text-xs bg-slate-100 px-2 py-1 rounded">
+                <code className="font-mono text-xs bg-background-tertiary px-2 py-1 rounded">
                   {data.protocolo}
                 </code>
               </div>
@@ -622,7 +623,7 @@ function FeedbackTicketContent() {
               </div>
               {data.anonimo && (
                 <div className="pt-2 border-t">
-                  <Badge variant="outline" className="bg-slate-50">
+                  <Badge variant="outline" className="bg-background-secondary">
                     <Lock className="w-3 h-3 mr-1" />
                     Anônimo
                   </Badge>

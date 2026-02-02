@@ -2,7 +2,7 @@
 
 > Sistema unificado de design para o Ouvify - Plataforma SaaS de Gestão de Feedbacks
 
-**Versão:** 2.0.0  
+**Versão:** 2.1.0  
 **Última atualização:** Janeiro 2026
 
 ---
@@ -320,6 +320,70 @@ import { Breadcrumb } from '@/components/ui/breadcrumb';
 
 ## 📐 Padrões de Layout
 
+### Layout Utilities (Novos na v2.1)
+
+Componentes utilitários para layouts comuns:
+
+```tsx
+import { 
+  FlexRow, 
+  FlexCol, 
+  FlexBetween, 
+  FlexCenter,
+  Container, 
+  Stack, 
+  MutedText, 
+  IconWrapper,
+  Spinner,
+  Section 
+} from '@/components/ui';
+
+// FlexRow - linha horizontal centralizada
+<FlexRow gap="3">
+  <Icon />
+  <span>Label</span>
+</FlexRow>
+
+// FlexBetween - espaço entre elementos
+<FlexBetween>
+  <Title>Feedbacks</Title>
+  <Button>Novo</Button>
+</FlexBetween>
+
+// Container - wrapper responsivo
+<Container size="7xl" padding>
+  <Content />
+</Container>
+
+// Stack - elementos verticais com espaçamento
+<Stack gap="4">
+  <Card />
+  <Card />
+  <Card />
+</Stack>
+
+// MutedText - texto secundário padronizado
+<MutedText size="sm">Descrição secundária</MutedText>
+
+// IconWrapper - ícones consistentes
+<IconWrapper size="md" color="primary">
+  <CheckIcon />
+</IconWrapper>
+
+// Spinner - loading inline
+<Button disabled>
+  <Spinner size="sm" />
+  Salvando...
+</Button>
+
+// Section - seção com padding
+<Section padding="lg">
+  <Container>
+    <Content />
+  </Container>
+</Section>
+```
+
 ### Page Layout
 
 ```tsx
@@ -478,13 +542,21 @@ apps/frontend/
 ├── components/ui/
 │   ├── button.tsx           # Botões
 │   ├── card.tsx             # Cards
-│   ├── form-field.tsx       # Campos de formulário
+│   ├── form-field.tsx       # Campos de formulário (Form, FormField, FormSection, FormActions, FormRow)
 │   ├── page-layout.tsx      # Layouts de página
+│   ├── layout-utils.tsx     # 🆕 Utilitários (FlexRow, Container, Stack, MutedText, Spinner)
 │   ├── loading-state.tsx    # Estados de loading
 │   ├── empty-state.tsx      # Estados vazios
 │   ├── status-badge.tsx     # Badges de status
 │   ├── breadcrumb.tsx       # Breadcrumbs
+│   ├── accessibility.tsx    # Componentes de acessibilidade
+│   ├── toast-system.tsx     # Sistema de toasts
+│   ├── typography.tsx       # Componentes de tipografia (H1-H6, Paragraph, etc.)
+│   ├── skeleton.tsx         # Skeleton loaders
 │   └── index.ts             # Exports centralizados
+├── scripts/
+│   ├── audit-styles.ts      # Auditoria de classes deprecated
+│   └── detect-duplicate-styles.ts  # 🆕 Detecção de duplicações
 └── app/
     └── globals.css          # CSS global e variáveis
 ```

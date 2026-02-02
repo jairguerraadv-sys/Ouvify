@@ -7,22 +7,22 @@ export const metadata = {
 
 export default function SegurancaPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="text-sm">
             <Link href="/" className="text-primary-600 hover:underline">Início</Link>
-            <span className="mx-2 text-gray-400">/</span>
+            <span className="mx-2 text-muted-foreground">/</span>
             <Link href="/recursos" className="text-primary-600 hover:underline">Recursos</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-600">Segurança</span>
+            <span className="mx-2 text-muted-foreground">/</span>
+            <span className="text-muted-foreground">Segurança</span>
           </nav>
         </div>
       </div>
 
       {/* Hero */}
-      <section className="bg-white text-gray-900 py-16">
+      <section className="bg-card text-foreground py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">🔒</span>
@@ -40,7 +40,7 @@ export default function SegurancaPage() {
         
         {/* Introdução */}
         <div className="prose prose-lg max-w-none mb-12">
-          <p className="text-xl text-gray-700 leading-relaxed">
+          <p className="text-xl text-muted-foreground leading-relaxed">
             Na Ouvify, levamos a segurança dos dados muito a sério. Implementamos múltiplas 
             camadas de proteção para garantir que suas informações e as de seus clientes 
             estejam sempre seguras.
@@ -49,22 +49,22 @@ export default function SegurancaPage() {
 
         {/* Medidas de Segurança */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Medidas de Proteção</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-8">Medidas de Proteção</h2>
           
           <div className="space-y-6">
             {/* Item 1 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-primary-600">
+            <div className="bg-card rounded-xl p-6 shadow-md border-l-4 border-primary-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🔐</span>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
                     Criptografia SSL/TLS
                   </h3>
-                  <p className="text-gray-700 mb-3">
+                  <p className="text-muted-foreground mb-3">
                     Todas as comunicações entre seu navegador e nossos servidores são 
                     criptografadas usando TLS 1.3, o protocolo mais moderno disponível.
                   </p>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-2 text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-success-500 mt-1">✓</span>
                       <span>Certificado SSL de 256 bits</span>
@@ -83,18 +83,18 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 2 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-secondary-600">
+            <div className="bg-card rounded-xl p-6 shadow-md border-l-4 border-secondary-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">💾</span>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
                     Backup Automático
                   </h3>
-                  <p className="text-gray-700 mb-3">
+                  <p className="text-muted-foreground mb-3">
                     Realizamos backups diários automáticos de todos os seus dados, com 
                     retenção de 30 dias para recuperação em caso de necessidade.
                   </p>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-2 text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-success-500 mt-1">✓</span>
                       <span>Backup incremental a cada 6 horas</span>
@@ -113,18 +113,18 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 3 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-success-600">
+            <div className="bg-card rounded-xl p-6 shadow-md border-l-4 border-success-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🛡️</span>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
                     Conformidade LGPD e GDPR
                   </h3>
-                  <p className="text-gray-700 mb-3">
+                  <p className="text-muted-foreground mb-3">
                     Estamos em total conformidade com as legislações de proteção de dados 
                     brasileira (LGPD) e europeia (GDPR).
                   </p>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-2 text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-success-500 mt-1">✓</span>
                       <span>Dados armazenados em servidores no Brasil</span>
@@ -143,18 +143,18 @@ export default function SegurancaPage() {
             </div>
 
             {/* Item 4 */}
-            <div className="bg-white rounded-xl p-6 shadow-md border-l-4 border-error-600">
+            <div className="bg-card rounded-xl p-6 shadow-md border-l-4 border-error-600">
               <div className="flex items-start gap-4">
                 <span className="text-4xl">🔑</span>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  <h3 className="text-xl font-semibold text-foreground mb-2">
                     Autenticação de Dois Fatores (2FA)
                   </h3>
-                  <p className="text-gray-700 mb-3">
+                  <p className="text-muted-foreground mb-3">
                     Proteção adicional para sua conta através de autenticação em duas etapas 
                     via aplicativo ou SMS.
                   </p>
-                  <ul className="space-y-2 text-gray-600">
+                  <ul className="space-y-2 text-muted-foreground">
                     <li className="flex items-start gap-2">
                       <span className="text-success-500 mt-1">✓</span>
                       <span>Suporte a Google Authenticator e Authy</span>
@@ -176,31 +176,31 @@ export default function SegurancaPage() {
 
         {/* Certificações */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Certificações e Compliance</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-8">Certificações e Compliance</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white rounded-xl p-6 border border-primary-200">
+            <div className="bg-card rounded-xl p-6 border border-primary-200">
               <h3 className="text-lg font-semibold text-primary-900 mb-3">🇧🇷 LGPD Compliant</h3>
               <p className="text-primary-800">
                 100% em conformidade com a Lei Geral de Proteção de Dados Pessoais (Lei nº 13.709/2018).
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-secondary-200">
+            <div className="bg-card rounded-xl p-6 border border-secondary-200">
               <h3 className="text-lg font-semibold text-secondary-900 mb-3">🇪🇺 GDPR Compliant</h3>
               <p className="text-secondary-800">
                 Conformidade com o Regulamento Geral de Proteção de Dados da União Europeia.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-success-200">
+            <div className="bg-card rounded-xl p-6 border border-success-200">
               <h3 className="text-lg font-semibold text-success-900 mb-3">🛡️ ISO 27001 (em processo)</h3>
               <p className="text-success-800">
                 Certificação internacional de gestão de segurança da informação em andamento.
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-6 border border-error-200">
+            <div className="bg-card rounded-xl p-6 border border-error-200">
               <h3 className="text-lg font-semibold text-error-900 mb-3">💳 PCI DSS Level 1</h3>
               <p className="text-error-800">
                 Conformidade com padrões de segurança da indústria de cartões de pagamento.
@@ -211,9 +211,9 @@ export default function SegurancaPage() {
 
         {/* Monitoramento */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">Monitoramento 24/7</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-8">Monitoramento 24/7</h2>
           
-          <div className="bg-white text-gray-900 rounded-xl p-8">
+          <div className="bg-card text-foreground rounded-xl p-8">
             <p className="text-lg mb-6">
               Nossa equipe de segurança monitora continuamente todos os sistemas para 
               detectar e responder a ameaças em tempo real.
@@ -222,15 +222,15 @@ export default function SegurancaPage() {
             <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <div className="text-3xl font-bold text-success-400 mb-2">99.9%</div>
-                <p className="text-gray-300">Uptime garantido</p>
+                <p className="text-muted-foreground">Uptime garantido</p>
               </div>
               <div>
                 <div className="text-3xl font-bold text-primary-400 mb-2">&lt; 15min</div>
-                <p className="text-gray-300">Tempo de resposta a incidentes</p>
+                <p className="text-muted-foreground">Tempo de resposta a incidentes</p>
               </div>
               <div>
                 <div className="text-3xl font-bold text-secondary-400 mb-2">24/7</div>
-                <p className="text-gray-300">Monitoramento ativo</p>
+                <p className="text-muted-foreground">Monitoramento ativo</p>
               </div>
             </div>
           </div>
@@ -238,23 +238,23 @@ export default function SegurancaPage() {
 
         {/* CTA */}
         <div className="bg-primary-50 border border-primary-200 rounded-xl p-8 text-center">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <h3 className="text-2xl font-bold text-foreground mb-4">
             Quer saber mais sobre nossa segurança?
           </h3>
-          <p className="text-gray-700 mb-6">
+          <p className="text-muted-foreground mb-6">
             Nossa equipe está disponível para responder todas as suas perguntas sobre 
             proteção de dados e compliance.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-primary-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+              className="bg-primary-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
             >
               Falar com Especialista
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-primary-600 px-8 py-3 rounded-lg font-medium border-2 border-primary-600 hover:bg-primary-50 transition"
+              className="bg-card text-primary-600 px-8 py-3 rounded-lg font-medium border-2 border-primary-600 hover:bg-primary-50 transition"
             >
               ← Voltar para Recursos
             </Link>

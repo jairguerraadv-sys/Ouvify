@@ -1,7 +1,6 @@
 "use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,12 +15,69 @@ import { Save, Upload, Building2, Palette, Settings, Image as ImageIcon, Loader2
 import { uploadBrandingImages, updateBrandingSettings, validateImageFile, createImagePreview, revokeImagePreview } from "@/lib/branding-upload";
 import { toast } from "sonner";
 import Link from "next/link";
+import { FlexBetween, MutedText } from "@/components/ui";
+
+const DEFAULT_PRIMARY_HSL = "199 89% 48%";
+const DEFAULT_SECONDARY_HSL = "271 91% 65%";
+const DEFAULT_TEXT_HSL = "0 0% 15%";
+
+const hslStringToHex = (hsl: string) => {
+  const [h, s, l] = hsl
+    .replace(/%/g, "")
+    .split(" ")
+    .map((v) => parseFloat(v));
+
+  const sNormalized = s / 100;
+  const lNormalized = l / 100;
+
+  const c = (1 - Math.abs(2 * lNormalized - 1)) * sNormalized;
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+  const m = lNormalized - c / 2;
+
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  if (h >= 0 && h < 60) {
+    r = c;
+    g = x;
+  } else if (h >= 60 && h < 120) {
+    r = x;
+    g = c;
+  } else if (h >= 120 && h < 180) {
+    g = c;
+    b = x;
+  } else if (h >= 180 && h < 240) {
+    g = x;
+    b = c;
+  } else if (h >= 240 && h < 300) {
+    r = x;
+    b = c;
+  } else {
+    r = c;
+    b = x;
+  }
+
+  const toHex = (value: number) => {
+    const hex = Math.round((value + m) * 255).toString(16).padStart(2, "0");
+    return hex;
+  };
+
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+};
+
+const normalizeColorInput = (value: string | null | undefined, fallbackHsl: string) => {
+  if (!value) return hslStringToHex(fallbackHsl);
+  if (/^#[0-9A-Fa-f]{6}$/.test(value)) return value;
+  if (/^\d{1,3}\s\d{1,3}%\s\d{1,3}%$/.test(value.trim())) return hslStringToHex(value.trim());
+  return hslStringToHex(fallbackHsl);
+};
 
 export default function ConfiguracoesPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <ConfiguracoesContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -30,9 +86,9 @@ function ConfiguracoesContent() {
   const theme = useTenantTheme();
   const { restartTour } = useOnboarding();
   const [tenant, setTenant] = useState<any>(null);
-  const [corPrimaria, setCorPrimaria] = useState('#3B82F6');
-  const [corSecundaria, setCorSecundaria] = useState('#10B981');
-  const [corTexto, setCorTexto] = useState('#1F2937');
+  const [corPrimaria, setCorPrimaria] = useState(() => normalizeColorInput(null, DEFAULT_PRIMARY_HSL));
+  const [corSecundaria, setCorSecundaria] = useState(() => normalizeColorInput(null, DEFAULT_SECONDARY_HSL));
+  const [corTexto, setCorTexto] = useState(() => normalizeColorInput(null, DEFAULT_TEXT_HSL));
   const [fonteCustomizada, setFonteCustomizada] = useState('Inter');
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -52,9 +108,9 @@ function ConfiguracoesContent() {
 
   useEffect(() => {
     if (theme) {
-      setCorPrimaria(theme.cor_primaria || '#3B82F6');
-      setCorSecundaria(theme.cor_secundaria || '#10B981');
-      setCorTexto(theme.cor_texto || '#1F2937');
+      setCorPrimaria(normalizeColorInput(theme.cor_primaria, DEFAULT_PRIMARY_HSL));
+      setCorSecundaria(normalizeColorInput(theme.cor_secundaria, DEFAULT_SECONDARY_HSL));
+      setCorTexto(normalizeColorInput(theme.cor_texto, DEFAULT_TEXT_HSL));
       setFonteCustomizada(theme.fonte_customizada || 'Inter');
       setLogoPreview(theme.logo || null);
       setFaviconPreview(theme.favicon || null);
@@ -137,18 +193,17 @@ function ConfiguracoesContent() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar user={user || undefined} />
-      
-      <main className="flex-1 p-6 space-y-6">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold flex items-center gap-2">
-              <Settings className="w-6 h-6" />
-              Configurações
-            </h1>
-            <p className="text-muted-foreground text-sm">Personalize sua experiência</p>
-          </div>
+    <div className="space-y-6">
+        <header>
+          <FlexBetween>
+            <div>
+              <h1 className="text-2xl font-semibold flex items-center gap-2">
+                <Settings className="w-6 h-6" />
+                Configurações
+              </h1>
+              <MutedText block>Personalize sua experiência</MutedText>
+            </div>
+          </FlexBetween>
         </header>
 
         {/* ✅ Banner com preview do White Label */}
@@ -202,9 +257,10 @@ function ConfiguracoesContent() {
                 </label>
                 {logoPreview && (
                   <div className="mb-3 p-4 bg-muted rounded-lg">
-                    <div 
-                      className="logo-tenant w-32 h-32 mx-auto"
-                      style={{ backgroundImage: `url(${logoPreview})` }}
+                    <img
+                      src={logoPreview}
+                      alt="Pré-visualização da logo"
+                      className="logo-tenant w-32 h-32 mx-auto object-contain"
                     />
                   </div>
                 )}
@@ -305,7 +361,7 @@ function ConfiguracoesContent() {
                       value={corPrimaria}
                       onChange={(e) => setCorPrimaria(e.target.value)}
                       className="font-mono" 
-                      placeholder="#3B82F6"
+                      placeholder="hsl(var(--primary))"
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -328,7 +384,7 @@ function ConfiguracoesContent() {
                       value={corSecundaria}
                       onChange={(e) => setCorSecundaria(e.target.value)}
                       className="font-mono" 
-                      placeholder="#10B981"
+                      placeholder="hsl(var(--secondary))"
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -351,7 +407,7 @@ function ConfiguracoesContent() {
                       value={corTexto}
                       onChange={(e) => setCorTexto(e.target.value)}
                       className="font-mono" 
-                      placeholder="#1F2937"
+                      placeholder="hsl(var(--foreground))"
                     />
                   </div>
                   <p className="text-xs text-muted-foreground mt-1">
@@ -524,7 +580,6 @@ function ConfiguracoesContent() {
           />
         </div>
       </div>
-    </main>
   </div>
   );
 }

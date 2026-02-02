@@ -1,25 +1,25 @@
-import { test as base, expect, APIRequestContext } from '@playwright/test';
+import { test as base, expect, APIRequestContext, Page } from '@playwright/test';
 
 type TestFixtures = {
-  authenticatedPage: any;
+  authenticatedPage: Page;
   apiRequest: APIRequestContext;
 };
 
 export const test = base.extend<TestFixtures>({
   // Fixture para API requests
-  apiRequest: async ({ playwright }, use) => {
+  apiRequest: async ({ playwright }, provide) => {
     const apiRequest = await playwright.request.newContext({
       baseURL: 'http://localhost:8000/api',
       extraHTTPHeaders: {
         'X-Tenant-ID': 'empresaa'
       }
     });
-    await use(apiRequest);
+    await provide(apiRequest);
     await apiRequest.dispose();
   },
 
   // Fixture para página autenticada
-  authenticatedPage: async ({ page }: { page: any }, use: any) => {
+  authenticatedPage: async ({ page }, provide) => {
     // Fazer login antes de cada teste
     await page.goto('/login');
 
@@ -36,7 +36,7 @@ export const test = base.extend<TestFixtures>({
     });
 
     // Usar a página autenticada
-    await use(page);
+    await provide(page);
   },
 });
 

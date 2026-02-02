@@ -44,9 +44,9 @@ export function Sidebar({ user }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="flex h-screen w-64 flex-col border-r border-slate-200 bg-white">
+    <div className="flex h-screen w-64 flex-col border-r border-border-light bg-background">
       {/* Logo */}
-      <div className="flex h-16 items-center justify-center border-b border-slate-200 px-6">
+      <div className="flex h-16 items-center justify-center border-b border-border-light px-6">
         <Logo size="md" />
       </div>
 
@@ -65,12 +65,12 @@ export function Sidebar({ user }: SidebarProps) {
                 'group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all',
                 isActive
                   ? 'bg-primary-50 text-primary-600'
-                  : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                  : 'text-text-secondary hover:bg-background-secondary hover:text-text-primary'
               )}
             >
               <Icon className={cn(
                 'h-5 w-5 transition-colors',
-                isActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600'
+                isActive ? 'text-primary-600' : 'text-text-tertiary group-hover:text-text-secondary'
               )} />
               {item.name}
             </Link>
@@ -82,7 +82,7 @@ export function Sidebar({ user }: SidebarProps) {
 
       {/* Plan Card */}
       <div className="p-4">
-        <div className="rounded-lg border border-slate-200 bg-gradient-to-br from-primary-50 to-secondary-50 p-4">
+        <div className="rounded-lg border border-border-light bg-gradient-to-br from-primary-50 to-secondary-50 p-4">
           <div className="flex items-center gap-2 mb-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600">
               <Sparkles className="h-4 w-4 text-white" />
@@ -94,7 +94,7 @@ export function Sidebar({ user }: SidebarProps) {
               </Badge>
             </div>
           </div>
-          <p className="text-xs text-slate-600 mb-3">
+          <p className="text-xs text-text-secondary mb-3">
             Recursos ilimitados até 15/02/2026
           </p>
           <Button size="sm" className="w-full bg-primary-500 hover:bg-primary-600 text-white text-xs h-8">
@@ -104,7 +104,7 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* User Profile */}
-      <div className="border-t border-slate-200 p-4">
+      <div className="border-t border-border-light p-4">
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">
             <AvatarImage src={user?.avatar} alt={user?.name || 'User'} />
@@ -113,17 +113,17 @@ export function Sidebar({ user }: SidebarProps) {
             </AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-secondary-600 truncate">
+            <p className="text-sm font-semibold text-text-primary truncate">
               {user?.name || 'Usuário'}
             </p>
-            <p className="text-xs text-slate-500 truncate">
+            <p className="text-xs text-text-tertiary truncate">
               {user?.email || 'email@example.com'}
             </p>
           </div>
           <Button 
             variant="ghost" 
             size="icon" 
-            className="h-8 w-8 text-slate-400 hover:text-slate-600"
+            className="h-8 w-8 text-text-tertiary hover:text-text-secondary"
             onClick={async () => {
               if (confirm('Deseja realmente sair?')) {
                 await logout();

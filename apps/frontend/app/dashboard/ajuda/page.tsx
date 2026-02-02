@@ -1,10 +1,10 @@
 "use client";
 
-import { ProtectedRoute } from "@/components/ProtectedRoute";
-import { Sidebar } from "@/components/dashboard/sidebar";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { PageHeader } from "@/components/ui/page-header";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboarding } from "@/components/OnboardingTour";
 import { useState } from "react";
@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
+import { FlexBetween } from "@/components/ui";
 
 interface FAQItem {
   question: string;
@@ -107,9 +108,9 @@ const getCategoryIcon = (category: string) => {
 
 export default function AjudaPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <AjudaContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -136,19 +137,15 @@ function AjudaContent() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar user={user || undefined} />
-
-      <main className="flex-1 p-6 space-y-6">
-        <header>
-          <h1 className="text-2xl font-semibold flex items-center gap-2">
-            <HelpCircle className="w-6 h-6" />
-            Central de Ajuda
-          </h1>
-          <p className="text-muted-foreground text-sm">
-            Encontre respostas rápidas ou entre em contato conosco
-          </p>
-        </header>
+    <div className="space-y-6">
+      <PageHeader
+        title="Central de Ajuda"
+        description="Encontre respostas rápidas ou entre em contato conosco"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/dashboard' },
+          { label: 'Ajuda' },
+        ]}
+      />
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -277,24 +274,26 @@ function AjudaContent() {
                 <div key={index} className="border-b last:border-b-0">
                   <button
                     onClick={() => toggleItem(index)}
-                    className="w-full p-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors"
+                    className="w-full p-4 text-left hover:bg-muted/50 transition-colors"
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
-                        {getCategoryIcon(item.category)}
+                    <FlexBetween>
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                          {getCategoryIcon(item.category)}
+                        </div>
+                        <div>
+                          <p className="font-medium text-sm">{item.question}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {item.category}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="font-medium text-sm">{item.question}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {item.category}
-                        </p>
-                      </div>
-                    </div>
-                    {expandedItems.includes(index) ? (
-                      <ChevronUp className="w-5 h-5 text-muted-foreground" />
-                    ) : (
-                      <ChevronDown className="w-5 h-5 text-muted-foreground" />
-                    )}
+                      {expandedItems.includes(index) ? (
+                        <ChevronUp className="w-5 h-5 text-muted-foreground" />
+                      ) : (
+                        <ChevronDown className="w-5 h-5 text-muted-foreground" />
+                      )}
+                    </FlexBetween>
                   </button>
                   {expandedItems.includes(index) && (
                     <div className="px-4 pb-4 pl-[60px]">
@@ -338,7 +337,6 @@ function AjudaContent() {
             </div>
           </div>
         </Card>
-      </main>
     </div>
   );
 }

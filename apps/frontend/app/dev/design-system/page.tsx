@@ -18,6 +18,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { colors, typography, spacing, borderRadius, shadows } from '@/lib/design-tokens';
+import { cn } from '@/lib/utils';
+import { Container, FlexBetween, FlexRow, MutedText } from '@/components/ui';
 import { 
   CheckCircle, 
   AlertTriangle, 
@@ -46,18 +48,19 @@ export default function DesignSystemPage() {
   const ColorSwatch = ({ color, name, hex }: { color: string; name: string; hex: string }) => (
     <button
       onClick={() => copyToClipboard(hex, name)}
-      className="group relative flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors"
+      className="group relative flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors"
     >
-      <div
-        className="w-16 h-16 rounded-lg shadow-sm border border-gray-200 transition-transform group-hover:scale-105"
-        style={{ backgroundColor: hex }}
-      />
+      <div className="w-16 h-16 rounded-lg shadow-sm border border-border transition-transform group-hover:scale-105 overflow-hidden">
+        <svg viewBox="0 0 64 64" className="w-full h-full" role="presentation">
+          <rect width="64" height="64" fill={hex} />
+        </svg>
+      </div>
       <div className="text-center">
-        <p className="text-xs font-medium text-gray-900">{name}</p>
-        <p className="text-[10px] text-gray-500">{hex}</p>
+        <p className="text-xs font-medium text-foreground">{name}</p>
+        <p className="text-[10px] text-muted-foreground">{hex}</p>
       </div>
       {copiedColor === name && (
-        <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded">
+        <div className="absolute -top-2 left-1/2 -translate-x-1/2 bg-foreground text-background text-xs px-2 py-1 rounded">
           Copied!
         </div>
       )}
@@ -65,30 +68,30 @@ export default function DesignSystemPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
+      <header className="bg-card border-b border-border sticky top-0 z-50">
+        <Container className="py-4">
+          <FlexBetween>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500 to-secondary-500 flex items-center justify-center">
                 <span className="text-white font-bold text-lg">O</span>
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">Ouvify Design System</h1>
-                <p className="text-sm text-gray-500">v1.0 • Janeiro 2026</p>
+                <h1 className="text-xl font-bold text-foreground">Ouvify Design System</h1>
+                <MutedText block>v1.0 • Janeiro 2026</MutedText>
               </div>
             </div>
             <Badge variant="outline" className="hidden sm:flex">
               Development Preview
             </Badge>
-          </div>
-        </div>
+          </FlexBetween>
+        </Container>
       </header>
 
       {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="bg-card border-b border-border">
+        <Container>
           <Tabs defaultValue="colors" className="w-full">
             <TabsList className="w-full justify-start bg-transparent h-12 p-0 gap-6">
               <TabsTrigger value="colors" className="data-[state=active]:border-b-2 data-[state=active]:border-primary-500 rounded-none bg-transparent">
@@ -224,21 +227,21 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div>
-                        <p className="text-sm text-gray-500 mb-2">Sans (Body) - Inter</p>
+                        <MutedText block className="mb-2">Sans (Body) - Inter</MutedText>
                         <p className="text-2xl font-sans">
                           The quick brown fox jumps over the lazy dog.
                         </p>
                       </div>
                       <Separator />
                       <div>
-                        <p className="text-sm text-gray-500 mb-2">Heading - Poppins</p>
+                        <MutedText block className="mb-2">Heading - Poppins</MutedText>
                         <p className="text-2xl font-heading">
                           The quick brown fox jumps over the lazy dog.
                         </p>
                       </div>
                       <Separator />
                       <div>
-                        <p className="text-sm text-gray-500 mb-2">Mono - JetBrains Mono</p>
+                        <MutedText block className="mb-2">Mono - JetBrains Mono</MutedText>
                         <p className="text-lg font-mono">
                           const message = &quot;Hello, Ouvify!&quot;;
                         </p>
@@ -253,47 +256,47 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">7xl</span>
+                        <span className="text-xs text-muted-foreground w-16">7xl</span>
                         <span className="text-7xl font-bold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">6xl</span>
+                        <span className="text-xs text-muted-foreground w-16">6xl</span>
                         <span className="text-6xl font-bold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">5xl</span>
+                        <span className="text-xs text-muted-foreground w-16">5xl</span>
                         <span className="text-5xl font-bold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">4xl</span>
+                        <span className="text-xs text-muted-foreground w-16">4xl</span>
                         <span className="text-4xl font-bold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">3xl</span>
+                        <span className="text-xs text-muted-foreground w-16">3xl</span>
                         <span className="text-3xl font-semibold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">2xl</span>
+                        <span className="text-xs text-muted-foreground w-16">2xl</span>
                         <span className="text-2xl font-semibold">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">xl</span>
+                        <span className="text-xs text-muted-foreground w-16">xl</span>
                         <span className="text-xl">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">lg</span>
+                        <span className="text-xs text-muted-foreground w-16">lg</span>
                         <span className="text-lg">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">base</span>
+                        <span className="text-xs text-muted-foreground w-16">base</span>
                         <span className="text-base">Aa (16px default)</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">sm</span>
+                        <span className="text-xs text-muted-foreground w-16">sm</span>
                         <span className="text-sm">Aa</span>
                       </div>
                       <div className="flex items-baseline gap-4">
-                        <span className="text-xs text-gray-500 w-16">xs</span>
+                        <span className="text-xs text-muted-foreground w-16">xs</span>
                         <span className="text-xs">Aa</span>
                       </div>
                     </CardContent>
@@ -325,7 +328,7 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="space-y-3">
-                        <p className="text-sm font-medium text-gray-700">Variantes</p>
+                        <p className="text-sm font-medium text-foreground">Variantes</p>
                         <div className="flex flex-wrap gap-3">
                           <Button variant="default">Default</Button>
                           <Button variant="secondary">Secondary</Button>
@@ -339,17 +342,17 @@ export default function DesignSystemPage() {
                       </div>
                       <Separator />
                       <div className="space-y-3">
-                        <p className="text-sm font-medium text-gray-700">Tamanhos</p>
+                        <p className="text-sm font-medium text-foreground">Tamanhos</p>
                         <div className="flex flex-wrap items-center gap-3">
                           <Button size="sm">Small</Button>
                           <Button size="default">Default</Button>
                           <Button size="lg">Large</Button>
-                          <Button size="icon"><Settings className="h-4 w-4" /></Button>
+                          <Button size="icon" aria-label="Configurações"><Settings className="h-4 w-4" /></Button>
                         </div>
                       </div>
                       <Separator />
                       <div className="space-y-3">
-                        <p className="text-sm font-medium text-gray-700">Estados</p>
+                        <p className="text-sm font-medium text-foreground">Estados</p>
                         <div className="flex flex-wrap items-center gap-3">
                           <Button>Normal</Button>
                           <Button disabled>Disabled</Button>
@@ -451,7 +454,7 @@ export default function DesignSystemPage() {
                           </CardHeader>
                           <CardContent>
                             <p className="text-3xl font-bold">R$ 0</p>
-                            <p className="text-sm text-gray-500">/mês</p>
+                            <MutedText block>/mês</MutedText>
                           </CardContent>
                           <CardFooter>
                             <Button variant="outline" className="w-full">Selecionar</Button>
@@ -465,7 +468,7 @@ export default function DesignSystemPage() {
                           </CardHeader>
                           <CardContent>
                             <p className="text-3xl font-bold text-primary-600">R$ 99</p>
-                            <p className="text-sm text-gray-500">/mês</p>
+                            <MutedText block>/mês</MutedText>
                           </CardContent>
                           <CardFooter>
                             <Button className="w-full">Selecionar</Button>
@@ -478,7 +481,7 @@ export default function DesignSystemPage() {
                           </CardHeader>
                           <CardContent>
                             <p className="text-3xl font-bold">Sob consulta</p>
-                            <p className="text-sm text-gray-500">&nbsp;</p>
+                            <MutedText block>&nbsp;</MutedText>
                           </CardContent>
                           <CardFooter>
                             <Button variant="outline" className="w-full">Contato</Button>
@@ -526,14 +529,14 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent className="space-y-6">
                       <div className="flex items-center gap-8">
-                        <div className="flex items-center gap-2">
+                        <FlexRow>
                           <Switch id="notifications" />
                           <Label htmlFor="notifications">Notificações</Label>
-                        </div>
-                        <div className="flex items-center gap-2">
+                        </FlexRow>
+                        <FlexRow>
                           <Checkbox id="terms" />
                           <Label htmlFor="terms">Aceito os termos</Label>
-                        </div>
+                        </FlexRow>
                       </div>
                       <div className="space-y-2">
                         <Label>Progresso ({progress}%)</Label>
@@ -699,13 +702,13 @@ export default function DesignSystemPage() {
                           <TabsTrigger value="settings">Configurações</TabsTrigger>
                         </TabsList>
                         <TabsContent value="overview" className="p-4 border rounded-lg mt-2">
-                          <p className="text-sm text-gray-600">Conteúdo da aba Visão Geral.</p>
+                          <MutedText block>Conteúdo da aba Visão Geral.</MutedText>
                         </TabsContent>
                         <TabsContent value="analytics" className="p-4 border rounded-lg mt-2">
-                          <p className="text-sm text-gray-600">Conteúdo da aba Analytics.</p>
+                          <MutedText block>Conteúdo da aba Analytics.</MutedText>
                         </TabsContent>
                         <TabsContent value="settings" className="p-4 border rounded-lg mt-2">
-                          <p className="text-sm text-gray-600">Conteúdo da aba Configurações.</p>
+                          <MutedText block>Conteúdo da aba Configurações.</MutedText>
                         </TabsContent>
                       </Tabs>
                     </CardContent>
@@ -724,16 +727,30 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24].map((scale) => (
-                          <div key={scale} className="flex items-center gap-4">
-                            <span className="text-sm text-gray-500 w-8">{scale}</span>
-                            <div
-                              className="h-4 bg-primary-500 rounded"
-                              style={{ width: `${scale * 4}px` }}
-                            />
-                            <span className="text-xs text-gray-400">{scale * 4}px</span>
-                          </div>
-                        ))}
+                        {[1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20, 24].map((scale) => {
+                          const widthClasses: Record<number, string> = {
+                            1: "w-1",
+                            2: "w-2",
+                            3: "w-3",
+                            4: "w-4",
+                            5: "w-5",
+                            6: "w-6",
+                            8: "w-8",
+                            10: "w-10",
+                            12: "w-12",
+                            16: "w-16",
+                            20: "w-20",
+                            24: "w-24",
+                          };
+
+                          return (
+                            <div key={scale} className="flex items-center gap-4">
+                              <MutedText className="w-8">{scale}</MutedText>
+                              <div className={cn("h-4 bg-primary-500 rounded", widthClasses[scale])} />
+                              <span className="text-xs text-muted-foreground">{scale * 4}px</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </CardContent>
                   </Card>
@@ -745,16 +762,27 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-6">
-                        {Object.entries(borderRadius).map(([name, value]) => (
-                          <div key={name} className="flex flex-col items-center gap-2">
-                            <div
-                              className="w-16 h-16 bg-primary-500"
-                              style={{ borderRadius: value }}
-                            />
-                            <span className="text-xs text-gray-600">{name}</span>
-                            <span className="text-[10px] text-gray-400">{value}</span>
-                          </div>
-                        ))}
+                        {Object.entries(borderRadius).map(([name, value]) => {
+                          const radiusClassMap: Record<string, string> = {
+                            none: "rounded-none",
+                            sm: "rounded-sm",
+                            DEFAULT: "rounded",
+                            md: "rounded-md",
+                            lg: "rounded-lg",
+                            xl: "rounded-xl",
+                            "2xl": "rounded-2xl",
+                            "3xl": "rounded-3xl",
+                            full: "rounded-full",
+                          };
+
+                          return (
+                            <div key={name} className="flex flex-col items-center gap-2">
+                              <div className={cn("w-16 h-16 bg-primary-500", radiusClassMap[name] || "rounded")}></div>
+                              <span className="text-xs text-muted-foreground">{name}</span>
+                              <span className="text-[10px] text-muted-foreground">{value}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </CardContent>
                   </Card>
@@ -766,15 +794,23 @@ export default function DesignSystemPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                        {['sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl'].map((name) => (
-                          <div key={name} className="flex flex-col items-center gap-2">
-                            <div
-                              className="w-20 h-20 bg-white rounded-lg"
-                              style={{ boxShadow: shadows[name as keyof typeof shadows] }}
-                            />
-                            <span className="text-xs text-gray-600">{name}</span>
-                          </div>
-                        ))}
+                        {['sm', 'DEFAULT', 'md', 'lg', 'xl', '2xl'].map((name) => {
+                          const shadowClassMap: Record<string, string> = {
+                            sm: "shadow-sm",
+                            DEFAULT: "shadow",
+                            md: "shadow-md",
+                            lg: "shadow-lg",
+                            xl: "shadow-xl",
+                            "2xl": "shadow-2xl",
+                          };
+
+                          return (
+                            <div key={name} className="flex flex-col items-center gap-2">
+                              <div className={cn("w-20 h-20 bg-card rounded-lg", shadowClassMap[name])} />
+                              <span className="text-xs text-muted-foreground">{name}</span>
+                            </div>
+                          );
+                        })}
                       </div>
                     </CardContent>
                   </Card>
@@ -782,16 +818,16 @@ export default function DesignSystemPage() {
               </TabsContent>
             </div>
           </Tabs>
-        </div>
+        </Container>
       </nav>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 py-6 mt-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-sm text-gray-500">
+      <footer className="bg-card border-t border-border py-6 mt-8">
+        <Container className="text-center">
+          <MutedText block>
             Ouvify Design System • Built with Next.js, Tailwind CSS & shadcn/ui
-          </p>
-        </div>
+          </MutedText>
+        </Container>
       </footer>
     </div>
   );

@@ -27,6 +27,7 @@ import {
 import { Logo } from '@/components/ui/logo';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { FlexBetween } from '@/components/ui/layout-utils';
 
 interface TenantDetails {
   id: number;
@@ -115,10 +116,10 @@ function TenantDetailsContent() {
 
   if (!tenant) {
     return (
-      <div className="min-h-screen bg-slate-950 text-gray-900 flex items-center justify-center">
-        <Card className="bg-white border-gray-200 p-8 text-center">
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+        <Card className="bg-card border-border p-8 text-center">
           <h2 className="text-xl font-semibold mb-2">Tenant não encontrado</h2>
-          <p className="text-slate-400 mb-4">O tenant solicitado não existe ou foi removido.</p>
+          <p className="text-muted-foreground mb-4">O tenant solicitado não existe ou foi removido.</p>
           <Button onClick={() => router.push('/admin')}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para Lista
@@ -129,35 +130,35 @@ function TenantDetailsContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-900">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+          <FlexBetween>
             <div className="flex items-center gap-4">
               <Logo size="sm" />
-              <span className="text-slate-400">/</span>
-              <span className="text-slate-400">Admin</span>
-              <span className="text-slate-400">/</span>
-              <span className="text-gray-900 font-medium">Tenant #{tenant.id}</span>
+              <span className="text-muted-foreground">/</span>
+              <span className="text-muted-foreground">Admin</span>
+              <span className="text-muted-foreground">/</span>
+              <span className="text-foreground font-medium">Tenant #{tenant.id}</span>
             </div>
             <Button variant="outline" onClick={() => router.push('/admin')}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
-          </div>
+          </FlexBetween>
         </div>
       </div>
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Tenant Header Card */}
-        <Card className="bg-white border-gray-200 mb-8">
+        <Card className="bg-card border-border mb-8">
           <CardContent className="p-6">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-6">
                 {/* Logo ou Avatar */}
-                <div className="w-20 h-20 rounded-xl bg-white flex items-center justify-center overflow-hidden">
+                <div className="w-20 h-20 rounded-xl bg-muted flex items-center justify-center overflow-hidden">
                   {tenant.logo ? (
                     <img 
                       src={tenant.logo} 
@@ -165,14 +166,14 @@ function TenantDetailsContent() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <Building className="w-10 h-10 text-slate-500" />
+                    <Building className="w-10 h-10 text-muted-foreground" />
                   )}
                 </div>
 
                 {/* Info Principal */}
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900 mb-1">{tenant.nome}</h1>
-                  <p className="text-slate-400 flex items-center gap-2">
+                  <h1 className="text-2xl font-bold text-foreground mb-1">{tenant.nome}</h1>
+                  <p className="text-muted-foreground flex items-center gap-2">
                     <Globe className="w-4 h-4" />
                     {tenant.subdominio}.ouvify.com
                   </p>
@@ -205,7 +206,7 @@ function TenantDetailsContent() {
                 <Button
                   variant="outline"
                   onClick={() => window.open(`https://${tenant.subdominio}.ouvify.com/enviar`, '_blank')}
-                  className="border-slate-700 text-slate-300 hover:bg-white"
+                  className="border-border text-muted-foreground hover:bg-muted"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Ver Página Pública
@@ -230,7 +231,7 @@ function TenantDetailsContent() {
         {/* Grid de Informações */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {/* Informações de Contato */}
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Mail className="w-5 h-5 text-primary-400" />
@@ -245,7 +246,7 @@ function TenantDetailsContent() {
           </Card>
 
           {/* Informações de Conta */}
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Calendar className="w-5 h-5 text-success-400" />
@@ -274,7 +275,7 @@ function TenantDetailsContent() {
           </Card>
 
           {/* Informações de Pagamento */}
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-secondary-400" />
@@ -327,13 +328,13 @@ function TenantDetailsContent() {
 
         {/* White-label Preview */}
         {(tenant.cor_primaria || tenant.cor_secundaria) && (
-          <Card className="bg-white border-gray-200">
+          <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Palette className="w-5 h-5 text-pink-400" />
                 Configuração White-label
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-muted-foreground">
                 Cores personalizadas configuradas pelo tenant
               </CardDescription>
             </CardHeader>
@@ -341,13 +342,14 @@ function TenantDetailsContent() {
               <div className="flex items-center gap-8">
                 {tenant.cor_primaria && (
                   <div>
-                    <p className="text-xs text-slate-400 mb-2">Cor Primária</p>
+                    <p className="text-xs text-muted-foreground mb-2">Cor Primária</p>
                     <div className="flex items-center gap-3">
-                      <div 
-                        className="w-12 h-12 rounded-lg border border-slate-700"
-                        style={{ backgroundColor: tenant.cor_primaria }}
-                      />
-                      <span className="font-mono text-sm text-slate-300">
+                      <div className="w-12 h-12 rounded-lg border border-border overflow-hidden" aria-label="Cor primária">
+                        <svg viewBox="0 0 48 48" className="w-full h-full" role="presentation">
+                          <rect width="48" height="48" fill={tenant.cor_primaria} />
+                        </svg>
+                      </div>
+                      <span className="font-mono text-sm text-muted-foreground">
                         {tenant.cor_primaria}
                       </span>
                     </div>
@@ -355,13 +357,14 @@ function TenantDetailsContent() {
                 )}
                 {tenant.cor_secundaria && (
                   <div>
-                    <p className="text-xs text-slate-400 mb-2">Cor Secundária</p>
+                    <p className="text-xs text-muted-foreground mb-2">Cor Secundária</p>
                     <div className="flex items-center gap-3">
-                      <div 
-                        className="w-12 h-12 rounded-lg border border-slate-700"
-                        style={{ backgroundColor: tenant.cor_secundaria }}
-                      />
-                      <span className="font-mono text-sm text-slate-300">
+                      <div className="w-12 h-12 rounded-lg border border-border overflow-hidden" aria-label="Cor secundária">
+                        <svg viewBox="0 0 48 48" className="w-full h-full" role="presentation">
+                          <rect width="48" height="48" fill={tenant.cor_secundaria} />
+                        </svg>
+                      </div>
+                      <span className="font-mono text-sm text-muted-foreground">
                         {tenant.cor_secundaria}
                       </span>
                     </div>
@@ -379,10 +382,10 @@ function TenantDetailsContent() {
 // Componente auxiliar para linhas de informação
 function InfoRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-sm text-slate-400">{label}</span>
-      <span className="text-sm font-medium text-gray-900">{value}</span>
-    </div>
+    <FlexBetween>
+      <span className="text-sm text-muted-foreground">{label}</span>
+      <span className="text-sm font-medium text-foreground">{value}</span>
+    </FlexBetween>
   );
 }
 
@@ -404,15 +407,15 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   };
 
   return (
-    <Card className="bg-white border-gray-200">
+    <Card className="bg-card border-border">
       <CardContent className="p-6">
         <div className="flex items-center gap-4">
           <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
             <Icon className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-sm text-slate-400">{label}</p>
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
+            <p className="text-sm text-muted-foreground">{label}</p>
+            <p className="text-2xl font-bold text-foreground">{value}</p>
           </div>
         </div>
       </CardContent>
@@ -423,24 +426,24 @@ function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
 // Loading Skeleton
 function TenantDetailsSkeleton() {
   return (
-    <div className="min-h-screen bg-slate-950 text-gray-900">
-      <div className="border-b border-gray-200">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4">
-          <Skeleton className="h-8 w-64 bg-white" />
+          <Skeleton className="h-8 w-64 bg-muted" />
         </div>
       </div>
       
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <Card className="bg-white border-gray-200 mb-8">
+        <Card className="bg-card border-border mb-8">
           <CardContent className="p-6">
             <div className="flex items-center gap-6">
-              <Skeleton className="w-20 h-20 rounded-xl bg-white" />
+              <Skeleton className="w-20 h-20 rounded-xl bg-muted" />
               <div className="space-y-2">
-                <Skeleton className="h-8 w-48 bg-white" />
-                <Skeleton className="h-4 w-32 bg-white" />
+                <Skeleton className="h-8 w-48 bg-muted" />
+                <Skeleton className="h-4 w-32 bg-muted" />
                 <div className="flex gap-2">
-                  <Skeleton className="h-6 w-16 bg-white" />
-                  <Skeleton className="h-6 w-16 bg-white" />
+                  <Skeleton className="h-6 w-16 bg-muted" />
+                  <Skeleton className="h-6 w-16 bg-muted" />
                 </div>
               </div>
             </div>
@@ -449,14 +452,14 @@ function TenantDetailsSkeleton() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="bg-white border-gray-200">
+            <Card key={i} className="bg-card border-border">
               <CardHeader>
-                <Skeleton className="h-6 w-24 bg-white" />
+                <Skeleton className="h-6 w-24 bg-muted" />
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  <Skeleton className="h-4 w-full bg-white" />
-                  <Skeleton className="h-4 w-full bg-white" />
+                  <Skeleton className="h-4 w-full bg-muted" />
+                  <Skeleton className="h-4 w-full bg-muted" />
                 </div>
               </CardContent>
             </Card>

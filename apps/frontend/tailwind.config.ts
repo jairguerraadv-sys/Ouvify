@@ -27,11 +27,30 @@ const config: Config = {
         info: colors.info,
         neutral: colors.neutral,
 
+        // Semantic tokens (hex from design tokens)
+        text: colors.text,
+
+        // Keep shadcn/ui variable color as DEFAULT, add token shades
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          light: colors.border.light,
+          dark: colors.border.dark,
+          focus: colors.border.focus,
+        },
+
+        background: {
+          DEFAULT: "hsl(var(--background))",
+          secondary: colors.background.secondary,
+          tertiary: colors.background.tertiary,
+          inverse: colors.background.inverse,
+        },
+
         // Backward-compat: map gray -> neutral
         gray: colors.neutral,
 
         // App + shadcn-style semantic tokens (from CSS variables)
-        background: "hsl(var(--background))",
+        // Backward-compat: keep existing shadcn/ui semantic keys
+        // (bg-background and bg-background-secondary work via the object above)
         foreground: "hsl(var(--foreground))",
         card: {
           DEFAULT: "hsl(var(--card))",
@@ -53,7 +72,6 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
       },

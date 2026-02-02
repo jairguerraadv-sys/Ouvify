@@ -187,18 +187,18 @@ function ToastItem({ toast, onClose }: ToastItemProps) {
       <div className="flex items-start gap-3">
         <Icon className={cn('w-5 h-5 flex-shrink-0 mt-0.5', style.iconColor)} />
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-gray-900">{toast.title}</p>
+          <p className="font-medium text-text-primary">{toast.title}</p>
           {toast.description && (
-            <p className="mt-1 text-sm text-gray-600">{toast.description}</p>
+            <p className="mt-1 text-sm text-text-secondary">{toast.description}</p>
           )}
         </div>
         <button
           type="button"
           onClick={onClose}
-          className="flex-shrink-0 p-1 rounded hover:bg-black/5 transition-colors"
+          className="flex-shrink-0 p-1 rounded hover:bg-background-secondary transition-colors"
           aria-label="Fechar notificação"
         >
-          <X className="w-4 h-4 text-gray-500" />
+          <X className="w-4 h-4 text-text-tertiary" />
         </button>
       </div>
     </div>
@@ -235,19 +235,19 @@ export function InlineToast({ type, title, description, onClose, className }: In
       <div className="flex items-start gap-3">
         <Icon className={cn('w-5 h-5 flex-shrink-0 mt-0.5', style.iconColor)} />
         <div className="flex-1 min-w-0">
-          <p className="font-medium text-gray-900">{title}</p>
+          <p className="font-medium text-text-primary">{title}</p>
           {description && (
-            <p className="mt-1 text-sm text-gray-600">{description}</p>
+            <p className="mt-1 text-sm text-text-secondary">{description}</p>
           )}
         </div>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="flex-shrink-0 p-1 rounded hover:bg-black/5 transition-colors"
+            className="flex-shrink-0 p-1 rounded hover:bg-background-secondary transition-colors"
             aria-label="Fechar"
           >
-            <X className="w-4 h-4 text-gray-500" />
+            <X className="w-4 h-4 text-text-tertiary" />
           </button>
         )}
       </div>
@@ -307,15 +307,15 @@ export function ConfirmDialog({
         aria-describedby={description ? "confirm-description" : undefined}
         className={cn(
           'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50',
-          'w-full max-w-md bg-white rounded-xl shadow-xl p-6',
+          'w-full max-w-md bg-background rounded-xl shadow-xl p-6 border border-border-light',
           'animate-in zoom-in-95 fade-in-0 duration-200'
         )}
       >
-        <h2 id="confirm-title" className="text-lg font-semibold text-gray-900">
+        <h2 id="confirm-title" className="text-lg font-semibold text-text-primary">
           {title}
         </h2>
         {description && (
-          <p id="confirm-description" className="mt-2 text-gray-600">
+          <p id="confirm-description" className="mt-2 text-text-secondary">
             {description}
           </p>
         )}
@@ -327,8 +327,8 @@ export function ConfirmDialog({
             disabled={loading}
             className={cn(
               'px-4 py-2 text-sm font-medium rounded-lg',
-              'text-gray-700 bg-white border border-gray-300',
-              'hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500',
+              'text-text-secondary bg-background border border-border-light',
+              'hover:bg-background-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-border-focus focus:ring-offset-background',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >

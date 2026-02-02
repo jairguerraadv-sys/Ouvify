@@ -36,7 +36,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
           <li key={index} className="flex items-center gap-2">
             {index > 0 && (
               <ChevronRight 
-                className="w-4 h-4 text-gray-400" 
+                className="w-4 h-4 text-text-tertiary" 
                 aria-hidden="true" 
               />
             )}
@@ -49,7 +49,7 @@ export function Breadcrumb({ items, className }: BreadcrumbProps) {
               </Link>
             ) : (
               <span 
-                className="text-gray-600 font-medium"
+                className="text-text-secondary font-medium"
                 aria-current="page"
               >
                 {item.label}

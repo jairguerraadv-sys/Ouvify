@@ -8,6 +8,7 @@ import { Logo, LogoAuth } from '@/components/ui/logo';
 import { Card, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { DecorativeBlob } from '@/components/ui';
 import { TooltipFormField } from '@/components/ui/Tooltip';
 import { api, getErrorMessage } from '@/lib/api';
 import { validateForm, validateSubdomain } from '@/lib/validation';
@@ -289,11 +290,11 @@ export default function CadastroPage() {
   if (success) {
     return (
       <main className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500/20 rounded-full blur-3xl animate-wave-pulse" />
+        <DecorativeBlob className="top-1/4 left-1/4 bg-primary-500/20 opacity-100 animate-wave-pulse" />
         <Card variant="elevated" className="w-full max-w-md text-center relative z-10 animate-scale-in shadow-elegant">
           <CardHeader>
             <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
-              <CheckCircle className="w-12 h-12 text-gray-900" />
+              <CheckCircle className="w-12 h-12 text-foreground" />
             </div>
             <h2 className="text-3xl font-bold text-secondary-900 mb-2">
               Conta Criada!
@@ -316,8 +317,8 @@ export default function CadastroPage() {
   return (
     <main className="min-h-screen bg-gradient-mesh pt-12 pb-12 px-4">
       {/* Elementos decorativos */}
-      <div className="absolute top-40 right-1/4 w-96 h-96 bg-primary-500/10 rounded-full blur-3xl animate-float" />
-      <div className="absolute bottom-40 left-1/4 w-96 h-96 bg-primary-600/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+      <DecorativeBlob placement="topRightQuarter" className="top-40 bg-primary-500/10 opacity-100 animate-float" />
+      <DecorativeBlob placement="bottomLeftQuarter" className="bottom-40 bg-primary-600/10 opacity-100 animate-float delay-2000" />
       
       <div className="max-w-md mx-auto relative z-10">
         {/* Header */}
@@ -497,7 +498,7 @@ export default function CadastroPage() {
                   </div>
                 )}
                 
-                <div className="mt-2 flex items-center justify-between">
+                <div className="mt-2">
                   {subdominioStatus === 'checking' && (
                     <span className="text-sm text-secondary-500 flex items-center gap-2 font-medium">
                       <Loader className="w-4 h-4 animate-spin" />
@@ -554,7 +555,7 @@ export default function CadastroPage() {
         </Card>
 
         {/* Benefícios */}
-        <div className="mt-10 space-y-3 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+        <div className="mt-10 space-y-3 animate-fade-in delay-200">
           <p className="text-sm text-secondary-700 font-semibold mb-4">✨ Incluso no plano:</p>
           <div className="flex items-center gap-3 group">
             <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">

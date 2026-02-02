@@ -316,6 +316,7 @@ export function ResponseTemplateManager() {
                           variant="ghost"
                           size="icon"
                           onClick={() => setEditingTemplate(template)}
+                          aria-label="Editar template"
                         >
                           <Edit className="h-4 w-4" />
                         </Button>
@@ -337,6 +338,7 @@ export function ResponseTemplateManager() {
                       variant="ghost"
                       size="icon"
                       onClick={() => deleteTemplate(template.id)}
+                      aria-label="Excluir template"
                     >
                       <Trash2 className="h-4 w-4 text-destructive" />
                     </Button>

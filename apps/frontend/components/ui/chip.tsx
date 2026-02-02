@@ -34,7 +34,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
       success: 'bg-success-100 text-success-700 hover:bg-success-200',
       warning: 'bg-warning-100 text-warning-700 hover:bg-warning-200',
       error: 'bg-error-100 text-error-700 hover:bg-error-200',
-      default: 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700',
+      default: 'bg-background-secondary text-text-secondary hover:bg-background-tertiary',
     };
 
     return (
@@ -56,7 +56,7 @@ const Chip = React.forwardRef<HTMLDivElement, ChipProps>(
         {onRemove && !disabled && (
           <button
             onClick={onRemove}
-            className="ml-1 p-0.5 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-primary-500 rounded-full transition-all duration-200"
+            className="ml-1 p-0.5 hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-1 focus-visible:ring-border-focus rounded-full transition-all duration-200"
             aria-label="Remove"
             type="button"
           >

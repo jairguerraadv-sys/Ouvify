@@ -13,6 +13,7 @@ import "./globals.css"; // ✅ Import DEVE estar aqui, no topo
 
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   preload: true,
   fallback: ["system-ui", "arial"],
@@ -21,7 +22,7 @@ const inter = Inter({
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["500", "600", "700", "800"],
   display: "swap",
   preload: true,
   variable: "--font-poppins",
@@ -86,13 +87,17 @@ export default async function RootLayout({
   const nonce = headersList.get('x-nonce') || '';
 
   return (
-    <html lang="pt-br" suppressHydrationWarning>
+    <html
+      lang="pt-BR"
+      className={`${inter.variable} ${poppins.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1, maximum-scale=5"
         />
-        <meta name="theme-color" content="#3B82F6" />
+        <meta name="theme-color" content="hsl(217 91% 60%)" />
         <meta name="csp-nonce" content={nonce} />
         
         {/* ✅ NOVO: Estilos globais para White Label */}
@@ -133,13 +138,18 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans`}>
+      <body className="font-sans antialiased">
         <CSPNonceProvider nonce={nonce}>
           <ThemeProvider>
             <AuthProvider>
               <OnboardingProvider>
                 <ThemeLoader />
-                {children}
+                <a href="#main-content" className="skip-to-content">
+                  Pular para o conteúdo
+                </a>
+                <main id="main-content" tabIndex={-1}>
+                  {children}
+                </main>
                 <Toaster />
                 <Sonner 
                   position="top-right" 

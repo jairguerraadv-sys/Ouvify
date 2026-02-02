@@ -49,17 +49,17 @@ export function ConfirmDialog({
 
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="bg-white border-gray-200">
+      <AlertDialogContent className="bg-background border-border-light">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-gray-900">{title}</AlertDialogTitle>
-          <AlertDialogDescription className="text-slate-400">
+          <AlertDialogTitle className="text-text-primary">{title}</AlertDialogTitle>
+          <AlertDialogDescription className="text-text-tertiary">
             {description}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel
             onClick={handleCancel}
-            className="bg-white text-slate-200 border-slate-700 hover:bg-slate-700 hover:text-gray-900"
+            className="bg-background text-text-secondary border-border-light hover:bg-background-secondary"
             disabled={loading}
           >
             {cancelText}
@@ -69,8 +69,8 @@ export function ConfirmDialog({
             disabled={loading}
             className={cn(
               variant === "destructive"
-                ? "bg-error-600 text-gray-900 hover:bg-error-700"
-                : "bg-primary text-primary-foreground hover:bg-primary/90"
+                ? "bg-error-600 text-white hover:bg-error-700"
+                : "bg-primary-700 text-white hover:bg-primary-800"
             )}
           >
             {loading ? (

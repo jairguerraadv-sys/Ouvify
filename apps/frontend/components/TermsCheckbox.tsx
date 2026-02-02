@@ -43,12 +43,12 @@ export default function TermsCheckbox({
             checked={isChecked}
             onChange={handleChange}
             required={required}
-            className={`h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 ${
+            className={`h-4 w-4 text-primary-600 border-border-light rounded focus:ring-border-focus ${
               error ? 'border-error-500' : ''
             }`}
           />
         </div>
-        <label htmlFor={name} className="ml-3 text-sm text-gray-700">
+        <label htmlFor={name} className="ml-3 text-sm text-text-secondary">
           {label}{' '}
           <Link
             href={termsUrl}

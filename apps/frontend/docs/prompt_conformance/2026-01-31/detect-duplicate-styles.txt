@@ -1,0 +1,206 @@
+
+🔍 Detectando duplicações de estilos CSS/Tailwind...
+
+📁 Analisando 131 arquivos...
+
+════════════════════════════════════════════════════════════
+📊 RELATÓRIO DE DUPLICAÇÕES DE ESTILOS
+════════════════════════════════════════════════════════════
+
+⚠️  Encontradas 39 combinações de classes duplicadas
+
+🔝 TOP 20 CLASSES MAIS DUPLICADAS:
+
+
+1. Usado em 4 arquivos:
+   Classes: "-translate-y-1/2 absolute h-5 left-3 text-muted-foreground top-1/2 w-5"
+   Arquivos:
+     - app/recuperar-senha/page.tsx
+     - app/login/page.tsx
+     - app/acompanhar/page.tsx
+     - app/recuperar-senha/confirmar/page.tsx
+
+2. Usado em 4 arquivos:
+   Classes: "flex-shrink-0 h-5 mt-0.5 text-success-600 w-5"
+   Arquivos:
+     - app/demo/page.tsx
+     - app/(marketing)/precos/page.tsx
+     - components/dashboard/OnboardingChecklist.tsx
+     - components/billing/PricingCard.tsx
+
+3. Usado em 4 arquivos:
+   Classes: "lg:px-8 max-w-4xl mx-auto px-4 sm:px-6"
+   Arquivos:
+     - app/(marketing)/precos/page.tsx
+     - app/(marketing)/lgpd/page.tsx
+     - app/(marketing)/recursos/faq/page.tsx
+     - app/(marketing)/recursos/seguranca/page.tsx
+
+4. Usado em 3 arquivos:
+   Classes: "flex gap-1 items-center text-muted-foreground text-xs"
+   Arquivos:
+     - app/enviar/page.tsx
+     - app/acompanhar/page.tsx
+     - components/data/ExportImport.tsx
+
+5. Usado em 3 arquivos:
+   Classes: "container max-w-4xl mx-auto px-4 py-16 relative z-10"
+   Arquivos:
+     - app/(marketing)/termos/page.tsx
+     - app/(marketing)/privacidade/page.tsx
+     - app/(marketing)/cookies/page.tsx
+
+6. Usado em 3 arquivos:
+   Classes: "bg-white border border-border p-8 rounded-2xl shadow-lg space-y-4 text-center"
+   Arquivos:
+     - app/(marketing)/termos/page.tsx
+     - app/(marketing)/privacidade/page.tsx
+     - app/(marketing)/cookies/page.tsx
+
+7. Usado em 3 arquivos:
+   Classes: "border-t flex flex-col gap-4 items-center justify-center pt-8 sm:flex-row"
+   Arquivos:
+     - app/(marketing)/termos/page.tsx
+     - app/(marketing)/privacidade/page.tsx
+     - app/(marketing)/cookies/page.tsx
+
+8. Usado em 3 arquivos:
+   Classes: "lg:px-8 max-w-4xl mx-auto px-4 py-16 sm:px-6"
+   Arquivos:
+     - app/(marketing)/lgpd/page.tsx
+     - app/(marketing)/recursos/faq/page.tsx
+     - app/(marketing)/recursos/seguranca/page.tsx
+
+9. Usado em 3 arquivos:
+   Classes: "block font-medium mb-2 text-sm text-text-secondary"
+   Arquivos:
+     - app/dashboard/feedbacks/[protocolo]/edit/page.tsx
+     - components/BrandingPreview.tsx
+     - components/ui/input.tsx
+
+10. Usado em 3 arquivos:
+   Classes: "flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
+   Arquivos:
+     - components/ui/page-header.tsx
+     - components/dashboard/DashboardLayout.tsx
+     - components/audit/AuditLogTable.tsx
+
+11. Usado em 2 arquivos:
+   Classes: "flex flex-col gap-4 justify-center sm:flex-row"
+   Arquivos:
+     - app/not-found.tsx
+     - app/error.tsx
+
+12. Usado em 2 arquivos:
+   Classes: "bg-white flex items-center justify-center min-h-screen p-4"
+   Arquivos:
+     - app/recuperar-senha/page.tsx
+     - app/recuperar-senha/confirmar/page.tsx
+
+13. Usado em 2 arquivos:
+   Classes: "gap-2 hover:text-primary inline-flex items-center mb-6 text-muted-foreground tex..."
+   Arquivos:
+     - app/recuperar-senha/page.tsx
+     - app/recuperar-senha/confirmar/page.tsx
+
+14. Usado em 2 arquivos:
+   Classes: "bg-error/10 border border-error/20 flex gap-2 items-start p-3 rounded-lg"
+   Arquivos:
+     - app/recuperar-senha/page.tsx
+     - app/recuperar-senha/confirmar/page.tsx
+
+15. Usado em 2 arquivos:
+   Classes: "flex-shrink-0 h-5 mt-0.5 text-error w-5"
+   Arquivos:
+     - app/recuperar-senha/page.tsx
+     - app/recuperar-senha/confirmar/page.tsx
+
+16. Usado em 2 arquivos:
+   Classes: "group-hover:translate-x-1 h-5 ml-2 transition-transform w-5"
+   Arquivos:
+     - app/login/page.tsx
+     - app/(marketing)/page.tsx
+
+17. Usado em 2 arquivos:
+   Classes: "bg-gradient-to-br border-b border-border from-primary/5 to-primary/10"
+   Arquivos:
+     - app/enviar/page.tsx
+     - app/acompanhar/page.tsx
+
+18. Usado em 2 arquivos:
+   Classes: "bg-primary/10 flex h-12 items-center justify-center rounded-xl w-12"
+   Arquivos:
+     - app/enviar/page.tsx
+     - app/acompanhar/page.tsx
+
+19. Usado em 2 arquivos:
+   Classes: "flex gap-1 items-center mt-1 text-error text-sm"
+   Arquivos:
+     - app/enviar/page.tsx
+     - app/cadastro/page.tsx
+
+20. Usado em 2 arquivos:
+   Classes: "flex gap-2 items-center text-error text-sm"
+   Arquivos:
+     - app/enviar/page.tsx
+     - app/acompanhar/page.tsx
+
+════════════════════════════════════════════════════════════
+💡 SUGESTÕES DE COMPONENTIZAÇÃO
+════════════════════════════════════════════════════════════
+
+Classes usadas 3+ vezes que podem virar componentes:
+
+1. Sugestão: Component
+   Usado em: 4 lugares
+   Classes: -translate-y-1/2 absolute h-5 left-3 text-muted-foreground t...
+
+2. Sugestão: Component
+   Usado em: 4 lugares
+   Classes: flex-shrink-0 h-5 mt-0.5 text-success-600 w-5...
+
+3. Sugestão: Component
+   Usado em: 4 lugares
+   Classes: lg:px-8 max-w-4xl mx-auto px-4 sm:px-6...
+
+4. Sugestão: FlexRow ou FlexCenter
+   Usado em: 3 lugares
+   Classes: flex gap-1 items-center text-muted-foreground text-xs...
+
+5. Sugestão: Component
+   Usado em: 3 lugares
+   Classes: container max-w-4xl mx-auto px-4 py-16 relative z-10...
+
+6. Sugestão: Card ou Container
+   Usado em: 3 lugares
+   Classes: bg-white border border-border p-8 rounded-2xl shadow-lg spac...
+
+7. Sugestão: FlexRow ou FlexCenter
+   Usado em: 3 lugares
+   Classes: border-t flex flex-col gap-4 items-center justify-center pt-...
+
+8. Sugestão: Component
+   Usado em: 3 lugares
+   Classes: lg:px-8 max-w-4xl mx-auto px-4 py-16 sm:px-6...
+
+9. Sugestão: Typography (Text/Heading)
+   Usado em: 3 lugares
+   Classes: block font-medium mb-2 text-sm text-text-secondary...
+
+10. Sugestão: FlexRow ou FlexCenter
+   Usado em: 3 lugares
+   Classes: flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-b...
+
+════════════════════════════════════════════════════════════
+📈 RESUMO
+════════════════════════════════════════════════════════════
+
+Total de arquivos analisados: 131
+Total de padrões de classes únicos: 477
+Padrões duplicados (2+ usos): 39
+Candidatos a componentização (3+ usos): 10
+Candidatos críticos (5+ usos): 0
+
+✅ STATUS: Codebase bem componentizado!
+
+

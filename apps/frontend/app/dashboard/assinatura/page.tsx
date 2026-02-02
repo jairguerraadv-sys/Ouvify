@@ -1,12 +1,13 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Skeleton } from '@/components/ui/skeleton';
+import { FlexBetween, PageContent, PageLayout } from '@/components/ui';
 import useSWR from 'swr';
 import { api } from '@/lib/api';
 import { formatDate } from '@/lib/helpers';
@@ -40,9 +41,9 @@ const fetcher = async (url: string): Promise<Subscription> => {
 
 export default function AssinaturaPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <AssinaturaContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -100,16 +101,13 @@ function AssinaturaContent() {
   // Estado de erro
   if (error) {
     return (
-      <div className="flex min-h-screen bg-slate-50">
-        <Sidebar user={user || undefined} />
-        <main className="flex-1 p-8">
-          <Alert variant="error">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-              Erro ao carregar informações da assinatura. Tente novamente ou entre em contato com o suporte.
-            </AlertDescription>
-          </Alert>
-        </main>
+      <div className="p-8">
+        <Alert variant="error">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            Erro ao carregar informações da assinatura. Tente novamente ou entre em contato com o suporte.
+          </AlertDescription>
+        </Alert>
       </div>
     );
   }
@@ -117,22 +115,19 @@ function AssinaturaContent() {
   // Estado de loading
   if (isLoading || !subscription) {
     return (
-      <div className="flex min-h-screen bg-slate-50">
-        <Sidebar user={user || undefined} />
-        <main className="flex-1 p-8">
-          <div className="max-w-4xl mx-auto space-y-6">
-            <Skeleton className="h-12 w-64" />
-            <Card>
-              <CardHeader>
-                <Skeleton className="h-6 w-48" />
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Skeleton className="h-20 w-full" />
-                <Skeleton className="h-20 w-full" />
-              </CardContent>
-            </Card>
-          </div>
-        </main>
+      <div className="p-8">
+        <div className="max-w-4xl mx-auto space-y-6">
+          <Skeleton className="h-12 w-64" />
+          <Card>
+            <CardHeader>
+              <Skeleton className="h-6 w-48" />
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-20 w-full" />
+            </CardContent>
+          </Card>
+        </div>
       </div>
     );
   }
@@ -161,7 +156,7 @@ function AssinaturaContent() {
     },
     incomplete: { 
       label: 'Incompleta', 
-      className: 'bg-gray-100 text-gray-700',
+      className: 'bg-neutral-100 text-neutral-700',
       icon: AlertTriangle
     },
   };
@@ -170,20 +165,18 @@ function AssinaturaContent() {
   const StatusIcon = status.icon;
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      <Sidebar user={user || undefined} />
-      
-      <main className="flex-1 p-6 lg:p-8">
+    <PageLayout variant="secondary" className="min-h-0">
+      <PageContent padding="none" maxWidth="full">
         <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
-          <div>
-            <h1 className="text-3xl font-bold text-secondary-600 mb-2">
-              Minha Assinatura
-            </h1>
-            <p className="text-slate-600">
-              Gerencie sua assinatura e forma de pagamento
-            </p>
-          </div>
+          <PageHeader
+            title="Minha Assinatura"
+            description="Gerencie sua assinatura e forma de pagamento"
+            breadcrumbs={[
+              { label: 'Dashboard', href: '/dashboard' },
+              { label: 'Assinatura' },
+            ]}
+          />
 
           {/* Alert para pagamento pendente */}
           {subscription.status === 'past_due' && (
@@ -209,34 +202,34 @@ function AssinaturaContent() {
           {/* Status Card */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
+              <FlexBetween>
                 <CardTitle>Status da Assinatura</CardTitle>
                 <Badge className={status.className}>
                   <StatusIcon className="h-3 w-3 mr-1" />
                   {status.label}
                 </Badge>
-              </div>
+              </FlexBetween>
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1">
-                  <p className="text-sm text-slate-600">Plano Atual</p>
+                  <p className="text-sm text-text-secondary">Plano Atual</p>
                   <p className="text-xl font-semibold">{subscription.plan_name}</p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-slate-600">Valor</p>
+                  <p className="text-sm text-text-secondary">Valor</p>
                   <p className="text-xl font-semibold">
                     {subscription.currency.toUpperCase()} {(subscription.amount / 100).toFixed(2)}/mês
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-slate-600">Período Atual</p>
+                  <p className="text-sm text-text-secondary">Período Atual</p>
                   <p className="text-base font-medium">
                     {formatDate(subscription.current_period_start)} - {formatDate(subscription.current_period_end)}
                   </p>
                 </div>
                 <div className="space-y-1">
-                  <p className="text-sm text-slate-600">Próxima Cobrança</p>
+                  <p className="text-sm text-text-secondary">Próxima Cobrança</p>
                   <p className="text-base font-medium">
                     {subscription.cancel_at_period_end 
                       ? 'Nenhuma (cancelada)' 
@@ -327,7 +320,7 @@ function AssinaturaContent() {
             <CardHeader>
               <CardTitle>Informações</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm text-slate-600">
+            <CardContent className="space-y-3 text-sm text-text-secondary">
               <p>
                 • Ao cancelar, você mantém acesso até o final do período pago.
               </p>
@@ -342,8 +335,8 @@ function AssinaturaContent() {
               </p>
             </CardContent>
           </Card>
-        </div>
-      </main>
-    </div>
+            </div>
+          </PageContent>
+        </PageLayout>
   );
 }

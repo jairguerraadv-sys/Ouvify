@@ -55,10 +55,11 @@ export function PageHeader({
     <div className={cn('space-y-4 pb-4', className)}>
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
-        <nav className="flex items-center gap-1 text-sm text-muted-foreground">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-muted-foreground">
           <Link
             href="/"
             className="hover:text-foreground transition-colors"
+            aria-label="Início"
           >
             <Home className="h-4 w-4" />
           </Link>
@@ -89,6 +90,7 @@ export function PageHeader({
               size="icon"
               onClick={handleBack}
               className="shrink-0"
+              aria-label="Voltar"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>

@@ -6,6 +6,8 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo, LogoAuth } from "@/components/ui/logo";
+import { DecorativeBlob, FlexBetween } from "@/components/ui/layout-utils";
+import { MutedText } from "@/components/ui";
 import { ArrowRight, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { isValidEmail } from "@/lib/validation";
@@ -77,8 +79,8 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 right-1/4 w-72 h-72 bg-primary/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      <DecorativeBlob size="sm" placement="topLeftQuarter" className="animate-pulse opacity-100" />
+      <DecorativeBlob size="sm" placement="bottomRightQuarter" className="animate-pulse delay-1000 opacity-100" />
       
       <Card variant="elevated" className="w-full max-w-md relative z-10 animate-scale-in">
         <CardHeader>
@@ -131,7 +133,7 @@ export default function LoginPage() {
 
           {/* Senha */}
           <div className="space-y-2">
-            <div className="flex items-center justify-between">
+            <FlexBetween>
               <label className="block text-sm font-semibold text-secondary">
                 Senha
               </label>
@@ -142,7 +144,7 @@ export default function LoginPage() {
               >
                 Esqueceu?
               </Link>
-            </div>
+            </FlexBetween>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
               <Input
@@ -178,7 +180,7 @@ export default function LoginPage() {
           </Button>
 
           {/* Cadastro Link */}
-          <p className="text-center text-sm text-muted-foreground">
+          <MutedText block className="text-center">
             Não tem uma conta?{" "}
             <Link
               href="/cadastro"
@@ -187,7 +189,7 @@ export default function LoginPage() {
             >
               Cadastre-se grátis
             </Link>
-          </p>
+          </MutedText>
         </form>
       </Card>
     </main>

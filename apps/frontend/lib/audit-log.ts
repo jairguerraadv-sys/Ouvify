@@ -216,7 +216,7 @@ export function getActionColor(action: string): string {
   if (action.includes('SECURITY') || action.includes('SUSPICIOUS')) {
     return 'bg-error-200 text-error-900';
   }
-  return 'bg-gray-100 text-gray-800';
+  return 'bg-muted text-foreground';
 }
 
 /**

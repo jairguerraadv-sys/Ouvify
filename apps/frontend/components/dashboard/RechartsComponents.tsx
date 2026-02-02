@@ -25,14 +25,14 @@ import {
 } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
-// Theme colors
+// Theme colors via CSS variables to avoid hardcoded hex values
 const COLORS = {
-  primary: '#FF7F00',
-  secondary: '#1E3A5F',
-  success: '#22C55E',
-  warning: '#F59E0B',
-  error: '#EF4444',
-  info: '#3B82F6',
+  primary: 'hsl(var(--primary))',
+  secondary: 'hsl(var(--secondary))',
+  success: 'hsl(var(--success))',
+  warning: 'hsl(var(--warning))',
+  error: 'hsl(var(--error))',
+  info: 'hsl(var(--info))',
 };
 
 const PIE_COLORS = [COLORS.primary, COLORS.secondary, COLORS.success, COLORS.warning, COLORS.error];
@@ -90,22 +90,15 @@ export function FeedbackTrendChart({ data }: { data: FeedbackTrendData[] }) {
               dataKey="month" 
               axisLine={false} 
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             />
             <YAxis 
               axisLine={false} 
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             />
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: '#fff', 
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-              }}
-            />
+            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
+            <Tooltip />
             <Area 
               type="monotone" 
               dataKey="denuncias" 
@@ -155,7 +148,7 @@ export function FeedbackTypeChart({ data }: { data: FeedbackTypeData[] }) {
               cy="50%"
               innerRadius={60}
               outerRadius={80}
-              fill="#8884d8"
+              fill={COLORS.secondary}
               paddingAngle={5}
               dataKey="value"
               label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
@@ -183,14 +176,14 @@ export function StatusBarChart({ data }: { data: StatusData[] }) {
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={data} layout="vertical" margin={{ top: 5, right: 30, left: 60, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="#e2e8f0" />
-            <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 12 }} />
+            <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="hsl(var(--border))" />
+            <XAxis type="number" axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }} />
             <YAxis 
               type="category" 
               dataKey="name" 
               axisLine={false} 
               tickLine={false} 
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
               width={80}
             />
             <Tooltip />
@@ -213,26 +206,20 @@ export function ResponseTimeChart({ data }: { data: ResponseTimeData[] }) {
       <CardContent>
         <ResponsiveContainer width="100%" height={250}>
           <LineChart data={data} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
             <XAxis 
               dataKey="day" 
               axisLine={false} 
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
             />
             <YAxis 
               axisLine={false} 
               tickLine={false}
-              tick={{ fill: '#64748b', fontSize: 12 }}
+              tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
               unit="h"
             />
-            <Tooltip 
-              contentStyle={{ 
-                backgroundColor: '#fff', 
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px'
-              }}
-            />
+            <Tooltip />
             <Legend />
             <Line 
               type="monotone" 
@@ -270,7 +257,7 @@ export function ActivityHeatmap({ data }: { data: HeatmapData[] }) {
   const hours = ['00h', '06h', '12h', '18h'];
   
   const getColor = (value: number) => {
-    if (value === 0) return 'bg-gray-100';
+    if (value === 0) return 'bg-background-tertiary';
     if (value <= 2) return 'bg-primary-100';
     if (value <= 5) return 'bg-primary-300';
     if (value <= 10) return 'bg-primary-500';
@@ -285,7 +272,7 @@ export function ActivityHeatmap({ data }: { data: HeatmapData[] }) {
       </CardHeader>
       <CardContent>
         <div className="flex gap-1">
-          <div className="flex flex-col gap-1 text-xs text-gray-500 pr-2">
+          <div className="flex flex-col gap-1 text-xs text-text-tertiary pr-2">
             {hours.map(h => <span key={h} className="h-6 flex items-center">{h}</span>)}
           </div>
           {days.map(day => (
@@ -300,13 +287,13 @@ export function ActivityHeatmap({ data }: { data: HeatmapData[] }) {
                   />
                 );
               })}
-              <span className="text-xs text-gray-500 mt-1">{day}</span>
+              <span className="text-xs text-text-tertiary mt-1">{day}</span>
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 mt-4 text-xs text-gray-500">
+        <div className="flex items-center gap-2 mt-4 text-xs text-text-tertiary">
           <span>Menos</span>
-          <div className="w-4 h-4 bg-gray-100 rounded" />
+          <div className="w-4 h-4 bg-background-tertiary rounded" />
           <div className="w-4 h-4 bg-primary-100 rounded" />
           <div className="w-4 h-4 bg-primary-300 rounded" />
           <div className="w-4 h-4 bg-primary-500 rounded" />

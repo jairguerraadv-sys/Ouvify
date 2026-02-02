@@ -7,7 +7,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { type CSSProperties } from 'react';
 import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
@@ -80,13 +80,15 @@ export function CardSkeleton({ className }: SkeletonProps) {
 }
 
 export function TableRowSkeleton({ columns = 5, className }: SkeletonProps & { columns?: number }) {
+  const cellStyle = { width: `${100 / columns}%` } as CSSProperties;
+
   return (
     <div className={cn('flex gap-4 p-4 border-b', className)}>
       {Array.from({ length: columns }).map((_, i) => (
         <div
           key={i}
           className="h-4 bg-muted rounded animate-pulse"
-          style={{ width: `${100 / columns}%` }}
+          style={cellStyle}
         />
       ))}
     </div>

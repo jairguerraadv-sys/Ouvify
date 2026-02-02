@@ -31,9 +31,9 @@ export function PageLayout({
   variant = 'secondary' 
 }: PageLayoutProps) {
   const bgClass = {
-    default: 'bg-white',
-    secondary: 'bg-gray-50',
-    tertiary: 'bg-gray-100',
+    default: 'bg-background',
+    secondary: 'bg-background-secondary',
+    tertiary: 'bg-background-tertiary',
   };
 
   return (
@@ -121,8 +121,8 @@ export function PageSection({
 }: PageSectionProps) {
   const variantClass = {
     default: '',
-    muted: 'bg-gray-50 rounded-lg p-6',
-    card: 'bg-white rounded-lg border border-gray-200 p-6 shadow-sm',
+    muted: 'bg-background-secondary rounded-lg p-6',
+    card: 'bg-background rounded-lg border border-border-light p-6 shadow-sm',
   };
 
   return (
@@ -130,10 +130,10 @@ export function PageSection({
       {(title || description) && (
         <div className="mb-6">
           {title && (
-            <h2 className="text-xl font-semibold text-gray-900">{title}</h2>
+            <h2 className="text-xl font-semibold text-text-primary">{title}</h2>
           )}
           {description && (
-            <p className="mt-1 text-sm text-gray-600">{description}</p>
+            <p className="mt-1 text-sm text-text-secondary">{description}</p>
           )}
         </div>
       )}
@@ -211,7 +211,7 @@ export function PageDivider({ className, spacing = 'md' }: PageDividerProps) {
 
   return (
     <hr className={cn(
-      'border-t border-gray-200',
+      'border-t border-border-light',
       spacingClass[spacing],
       className
     )} />

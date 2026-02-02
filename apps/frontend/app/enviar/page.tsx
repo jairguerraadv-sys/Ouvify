@@ -10,6 +10,7 @@ import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { H2, Paragraph } from '@/components/ui/typography';
+import { DecorativeBlob, FlexRow, MutedText } from '@/components/ui';
 import { Shield, Lock, AlertCircle, MessageSquare, Send } from 'lucide-react';
 import Link from 'next/link';
 import type { FeedbackType } from '@/lib/types';
@@ -102,8 +103,8 @@ export default function EnviarFeedbackPage() {
     <>
       <main className="min-h-screen bg-white py-12 px-4 relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        <DecorativeBlob tone="primary" placement="topRightQuarter" />
+        <DecorativeBlob tone="secondary" placement="bottomLeftQuarter" />
         
         <div className="max-w-3xl mx-auto relative z-10">
           
@@ -112,17 +113,19 @@ export default function EnviarFeedbackPage() {
             <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
               <Logo size="xl" />
             </Link>
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
-              <Shield className="w-4 h-4 text-primary" />
-              <span className="text-sm font-medium text-primary">
+            <div className="mb-4">
+              <Badge variant="primary" size="lg" className="gap-2 border border-primary/20 bg-primary/10">
+                <Shield className="w-4 h-4" />
                 Canal Seguro e Confidencial
-              </span>
+              </Badge>
             </div>
             <H2 className="text-primary mb-3">
               📢 Canal de <span className="text-secondary">Ouvidoria</span>
             </H2>
-            <Paragraph className="text-muted-foreground">
-              Sua voz importa. Compartilhe sua experiência de forma segura e anônima.
+            <Paragraph>
+              <MutedText size="inherit">
+                Sua voz importa. Compartilhe sua experiência de forma segura e anônima.
+              </MutedText>
             </Paragraph>
           </div>
 
@@ -136,9 +139,9 @@ export default function EnviarFeedbackPage() {
                     <p className="font-semibold text-secondary mb-2">
                       Backend Offline
                     </p>
-                    <p className="text-sm text-muted-foreground mb-3">
+                    <MutedText block className="mb-3">
                       O servidor Django não está respondendo. Para testar o envio de feedbacks, inicie o backend:
-                    </p>
+                    </MutedText>
                     <code className="block bg-muted text-secondary p-3 rounded-lg text-xs font-mono">
                       cd apps/backend && python manage.py runserver
                     </code>
@@ -157,7 +160,7 @@ export default function EnviarFeedbackPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-secondary">Formulário de Manifestação</h3>
-                  <p className="text-sm text-muted-foreground">Preencha os campos abaixo</p>
+                  <MutedText block>Preencha os campos abaixo</MutedText>
                 </div>
               </div>
             </CardHeader>
@@ -239,10 +242,10 @@ export default function EnviarFeedbackPage() {
                   className="mt-1 h-4 w-4 text-primary focus:ring-primary border-border rounded"
                 />
                 <label htmlFor="anonimo" className="flex-1 cursor-pointer">
-                  <div className="flex items-center gap-2 mb-1">
+                  <FlexRow className="mb-1">
                     <Lock className="w-4 h-4 text-primary" />
                     <span className="font-semibold text-secondary text-sm">Enviar anonimamente</span>
-                  </div>
+                  </FlexRow>
                   <p className="text-sm text-muted-foreground">
                     Sua identidade será completamente protegida. Não será possível responder diretamente.
                   </p>
@@ -306,9 +309,9 @@ export default function EnviarFeedbackPage() {
 
               {/* Link para Acompanhar */}
               <div className="text-center pt-4 border-t border-border">
-                <p className="text-sm text-muted-foreground mb-2">
+                <MutedText block className="mb-2">
                   Já enviou uma manifestação?
-                </p>
+                </MutedText>
                 <Link 
                   href="/acompanhar" 
                   className="text-primary hover:text-primary-dark font-semibold inline-flex items-center gap-2 group transition-colors"

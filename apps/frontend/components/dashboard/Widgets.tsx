@@ -56,7 +56,7 @@ export function StatWidget({
                     'flex items-center text-xs font-medium',
                     trend === 'up' && 'text-success-600',
                     trend === 'down' && 'text-error-600',
-                    trend === 'neutral' && 'text-gray-500'
+                    trend === 'neutral' && 'text-text-tertiary'
                   )}>
                     {trend === 'up' && <TrendingUp className="h-3 w-3 mr-1" />}
                     {trend === 'down' && <TrendingDown className="h-3 w-3 mr-1" />}

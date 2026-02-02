@@ -30,26 +30,29 @@ import {
   AuditAnalytics,
   SessionStats,
 } from '@/lib/audit-log';
+import { colors } from '@/styles/design-tokens';
 
 interface AnalyticsDashboardProps {
   className?: string;
 }
 
-// Cores para gráficos - Design System Ouvify
+// Cores do Design System
 const COLORS = {
-  primary: '#3B82F6',    // Azul
-  secondary: '#A855F7',  // Roxo
-  success: '#22C55E',
-  warning: '#F59E0B',
-  error: '#EF4444',
-  info: '#06B6D4',
+  primary: colors.primary[500],
+  primaryDark: colors.primary[700],
+  secondary: colors.secondary[500],
+  success: colors.success[500],
+  warning: colors.warning[500],
+  error: colors.error[500],
+  info: colors.info[500],
+  critical: colors.error[600],
 };
 
 const SEVERITY_COLORS: Record<string, string> = {
   INFO: COLORS.info,
   WARNING: COLORS.warning,
   ERROR: COLORS.error,
-  CRITICAL: '#DC2626',
+  CRITICAL: COLORS.critical,
 };
 
 const PIE_COLORS = [COLORS.primary, COLORS.secondary, COLORS.success, COLORS.warning, COLORS.error];
@@ -173,10 +176,6 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                 <Tooltip
                   labelFormatter={(value) => new Date(value).toLocaleDateString('pt-BR')}
                   formatter={(value) => [String(value ?? 0), 'Eventos']}
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                  }}
                 />
                 <Area
                   type="monotone"
@@ -209,10 +208,6 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                 />
                 <Tooltip
                   formatter={(value) => [String(value ?? 0), 'Eventos']}
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                  }}
                 />
                 <Bar dataKey="count" fill={COLORS.primary} radius={[0, 4, 4, 0]} />
               </BarChart>
@@ -247,10 +242,6 @@ export function AnalyticsDashboard({ className }: AnalyticsDashboardProps) {
                 </Pie>
                 <Tooltip
                   formatter={(value) => [String(value ?? 0), '']}
-                  contentStyle={{
-                    backgroundColor: 'hsl(var(--card))',
-                    border: '1px solid hsl(var(--border))',
-                  }}
                 />
                 <Legend />
               </PieChart>

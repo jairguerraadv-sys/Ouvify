@@ -26,9 +26,9 @@ const badgeVariants = cva(
         info:
           "bg-info-100 text-info-700",
         gray:
-          "bg-gray-100 text-gray-700",
+          "bg-background-secondary text-text-secondary",
         outline:
-          "border border-gray-300 text-gray-700 bg-transparent",
+          "border border-border-light text-text-secondary bg-transparent",
       },
       size: {
         sm: "px-2 py-0.5 text-xs",

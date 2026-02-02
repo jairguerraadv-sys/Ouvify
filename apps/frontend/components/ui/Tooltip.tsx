@@ -28,11 +28,11 @@ export function Tooltip({
           <TooltipPrimitive.Content
             side={side}
             align={align}
-            className="bg-white text-gray-900 px-3 py-2 rounded-md text-sm max-w-xs shadow-lg z-50 animate-in fade-in-0 zoom-in-95"
+            className="bg-background text-text-primary border border-border-light px-3 py-2 rounded-md text-sm max-w-xs shadow-lg z-50 animate-in fade-in-0 zoom-in-95"
             sideOffset={5}
           >
             {content}
-            <TooltipPrimitive.Arrow className="fill-gray-900" />
+            <TooltipPrimitive.Arrow className="fill-border-light" />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>
@@ -54,11 +54,11 @@ export function TooltipFormField({
 }) {
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+      <label className="block text-sm font-medium text-text-secondary flex items-center gap-2">
         {label}
         {required && <span className="text-error-500">*</span>}
         <Tooltip content={tooltip}>
-          <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-gray-200 text-gray-600 text-xs cursor-help hover:bg-gray-300 transition-colors">
+          <span className="inline-flex items-center justify-center w-4 h-4 rounded-full bg-background-tertiary text-text-secondary text-xs cursor-help hover:bg-background-secondary transition-colors">
             ?
           </span>
         </Tooltip>

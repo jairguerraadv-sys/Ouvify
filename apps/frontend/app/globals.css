@@ -11,7 +11,7 @@
 
   html {
     @apply scroll-smooth antialiased;
-    background-color: #FFFFFF; /* Branco global */
+    @apply bg-background;
   }
 
   body {
@@ -47,7 +47,7 @@
   /* ===== ESTADOS INTERATIVOS ===== */
   
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary-500 ring-offset-2 rounded;
+    @apply outline-none ring-2 ring-border-focus ring-offset-2 rounded;
   }
 
   button:disabled {
@@ -78,17 +78,57 @@
   
   /* Gradiente APENAS para texto */
   .text-gradient-brand {
-    background: linear-gradient(135deg, #0EA5E9 0%, #A855F7 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-primary {
-    background: linear-gradient(135deg, #0EA5E9 0%, #0284C7 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dark)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .loading-dots > span:nth-child(1) {
+    animation-delay: 0ms;
+  }
+
+  /* Onboarding popover styles injected via HTML strings */
+  .onboarding-code {
+    background: var(--muted);
+    padding: 8px;
+    border-radius: 4px;
+    display: block;
+    margin-top: 8px;
+    color: var(--foreground);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+
+  .onboarding-link {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
+  .delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+
+  .delay-200 {
+    animation-delay: 0.2s;
+  }
+
+  .loading-dots > span:nth-child(2) {
+    animation-delay: 150ms;
+  }
+
+  .loading-dots > span:nth-child(3) {
+    animation-delay: 300ms;
   }
 
   /* Container padrão */
@@ -132,67 +172,85 @@
 }
 
 /* ===== Design System Ouvify - HSL Variables ===== */
+/* ===== shadcn/ui (HSL) variables ===== */
 :root {
-  /* 🎨 CORES PRIMÁRIAS - SKY BLUE (#0EA5E9) */
-  --primary: 199 89% 48%;            /* #0EA5E9 */
-  --primary-foreground: 0 0% 100%;   /* Branco */
-  --primary-light: 199 95% 62%;      /* ~#38BDF8 */
-  --primary-dark: 201 96% 40%;       /* ~#0284C7 */
+  /* 🎨 CORES PRIMÁRIAS */
+  --primary: 199 89% 48%;
+  --primary-foreground: 0 0% 100%;
+  --primary-light: 199 95% 62%;
+  --primary-dark: 201 96% 40%;
   
-  /* 🎯 SECUNDÁRIA - ROXO CRIATIVO (#A855F7) */
-  --secondary: 271 91% 65%;          /* #A855F7 Roxo */
-  --secondary-foreground: 0 0% 100%; /* Branco */
-  --secondary-light: 270 95% 75%;    /* #C084FC Light variant */
-  --secondary-dark: 272 72% 47%;     /* #9333EA Dark/Hover */
+  /* 🎯 SECUNDÁRIA */
+  --secondary: 271 91% 65%;
+  --secondary-foreground: 0 0% 100%;
+  --secondary-light: 270 95% 75%;
+  --secondary-dark: 272 72% 47%;
   
-  --accent: 271 91% 65%;             /* Roxo (secundária) */
+  --accent: 271 91% 65%;
   --accent-foreground: 0 0% 100%;
   
   /* 🎯 NEUTROS & BACKGROUNDS */
-  --background: 0 0% 100%;           /* Branco puro */
-  --foreground: 222 47% 11%;         /* #111827 Gray-900 */
+  --background: 0 0% 100%;
+  --foreground: 0 0% 9%;
   
-  --muted: 210 40% 96%;              /* #F9FAFB Gray-50 */
-  --muted-foreground: 215 16% 47%;   /* #6B7280 Gray-500 */
+  --muted: 210 40% 96%;
+  --muted-foreground: 0 0% 45%;
   
-  --card: 0 0% 100%;                 /* Branco */
-  --card-foreground: 222 47% 11%;    /* Gray-900 */
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
   
-  --popover: 0 0% 100%;              /* Branco */
-  --popover-foreground: 222 47% 11%; /* Gray-900 */
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
   
   /* ✅ SEMÂNTICAS - STATUS & FEEDBACK */
-  --success: 142 71% 45%;            /* #22C55E Verde */
+  --success: 142 71% 45%;
   --success-foreground: 0 0% 100%;
-  --warning: 38 92% 50%;             /* #F59E0B Amarelo */
+  --warning: 38 92% 50%;
   --warning-foreground: 222 47% 11%;
-  --error: 0 84% 60%;                /* #EF4444 Vermelho */
+  --error: 0 84% 60%;
   --error-foreground: 0 0% 100%;
-  --info: 189 94% 43%;               /* #06B6D4 Ciano */
+  --info: 217 91% 60%;
   --info-foreground: 0 0% 100%;
   
   /* 🚨 DESTRUCTIVE */
-  --destructive: 0 84% 60%;          /* #EF4444 Vermelho */
+  --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
   
   /* 🔗 INPUTS & BORDERS */
-  --input: 220 14% 96%;              /* #F3F4F6 Gray-100 */
-  --border: 220 13% 91%;             /* #E5E7EB Gray-200 */
-  --ring: 199 89% 48%;               /* Primary (Sky) */
+  --input: 220 14% 96%;
+  --border: 220 13% 91%;
+  --ring: 199 89% 48%;
   
   --radius: 0.5rem;
 }
 
 /* Dark Mode (compatibilidade) */
 .dark {
-  --background: 222 47% 11%;
-  --foreground: 210 40% 98%;
-  --muted: 217 33% 17%;
-  --muted-foreground: 215 20% 65%;
-  --input: 217 33% 17%;
-  --border: 217 33% 17%;
-  --card: 222 47% 11%;
-  --card-foreground: 210 40% 98%;
-  --popover: 222 47% 11%;
-  --popover-foreground: 210 40% 98%;
+  --background: 0 0% 9%;
+  --foreground: 0 0% 98%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 64%;
+  --input: 0 0% 15%;
+  --border: 0 0% 15%;
+  --card: 0 0% 9%;
+  --card-foreground: 0 0% 98%;
+  --popover: 0 0% 9%;
+  --popover-foreground: 0 0% 98%;
+}
+
+/* ===== Acessibilidade: Skip to content ===== */
+@layer utilities {
+  .skip-to-content {
+    @apply sr-only focus:not-sr-only;
+    @apply focus:fixed focus:top-4 focus:left-4;
+    @apply focus:z-50 focus:bg-primary-500 focus:text-white;
+    @apply focus:px-4 focus:py-2 focus:rounded-md;
+  }
+
+  /* Touch targets (WCAG): mínimo 44x44px em dispositivos touch */
+  @media (pointer: coarse) {
+    .touch-target {
+      @apply min-h-11 min-w-11;
+    }
+  }
 }

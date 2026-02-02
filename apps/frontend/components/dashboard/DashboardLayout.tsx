@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
 // ============================================
@@ -32,7 +33,7 @@ export function DashboardHeader({
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className="mb-2">
-          <ol className="flex items-center gap-2 text-sm text-gray-500">
+          <ol className="flex items-center gap-2 text-sm text-text-tertiary">
             {breadcrumbs.map((crumb, index) => (
               <li key={index} className="flex items-center gap-2">
                 {index > 0 && <span aria-hidden="true">/</span>}
@@ -44,7 +45,7 @@ export function DashboardHeader({
                     {crumb.label}
                   </a>
                 ) : (
-                  <span className="text-gray-900 font-medium">{crumb.label}</span>
+                  <span className="text-text-primary font-medium">{crumb.label}</span>
                 )}
               </li>
             ))}
@@ -54,11 +55,11 @@ export function DashboardHeader({
       
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold text-text-primary">
             {title}
           </h1>
           {subtitle && (
-            <p className="mt-1 text-gray-500">
+            <p className="mt-1 text-text-secondary">
               {subtitle}
             </p>
           )}
@@ -101,12 +102,12 @@ export function DashboardSection({
         <div className="flex items-center justify-between mb-4">
           <div>
             {title && (
-              <h2 className="text-lg font-semibold text-gray-900">
+              <h2 className="text-lg font-semibold text-text-primary">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="mt-0.5 text-sm text-gray-500">
+              <p className="mt-0.5 text-sm text-text-secondary">
                 {description}
               </p>
             )}
@@ -187,11 +188,11 @@ export function DashboardCard({
 }: DashboardCardProps) {
   return (
     <div className={cn(
-      'bg-white border border-gray-200 rounded-xl shadow-sm',
+      'bg-background border border-border-light rounded-xl shadow-sm',
       className
     )}>
       {(title || icon || actions) && (
-        <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border-light">
           <div className="flex items-center gap-3">
             {icon && (
               <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-50 text-primary-600">
@@ -200,12 +201,12 @@ export function DashboardCard({
             )}
             <div>
               {title && (
-                <h3 className="font-semibold text-gray-900">
+                <h3 className="font-semibold text-text-primary">
                   {title}
                 </h3>
               )}
               {description && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-text-secondary">
                   {description}
                 </p>
               )}
@@ -252,20 +253,20 @@ export function DashboardStat({
   const trendColors = {
     up: 'text-success-600 bg-success-50',
     down: 'text-error-600 bg-error-50',
-    neutral: 'text-gray-600 bg-gray-50',
+    neutral: 'text-text-secondary bg-background-secondary',
   };
   
   return (
     <div className={cn(
-      'bg-white border border-gray-200 rounded-xl p-5 shadow-sm',
+      'bg-background border border-border-light rounded-xl p-5 shadow-sm',
       className
     )}>
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-gray-500">
+          <p className="text-sm font-medium text-text-tertiary">
             {label}
           </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
+          <p className="mt-1 text-2xl font-bold text-text-primary">
             {value}
           </p>
         </div>
@@ -319,15 +320,15 @@ export function DashboardEmpty({
       className
     )}>
       {icon && (
-        <div className="w-16 h-16 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 mb-4">
+        <div className="w-16 h-16 flex items-center justify-center rounded-full bg-background-secondary text-text-tertiary mb-4">
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+      <h3 className="text-lg font-semibold text-text-primary mb-1">
         {title}
       </h3>
       {description && (
-        <p className="text-gray-500 max-w-sm mb-4">
+        <p className="text-text-secondary max-w-sm mb-4">
           {description}
         </p>
       )}
@@ -350,10 +351,12 @@ interface DashboardLayoutProps {
  * Inclui sidebar e área de conteúdo principal
  */
 export function DashboardLayout({ children, className }: DashboardLayoutProps) {
+  const { user } = useAuth();
+
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-gray-50">
-        <Sidebar />
+      <div className="flex min-h-screen bg-background-secondary">
+        <Sidebar user={user || undefined} />
         <main className={cn(
           'flex-1 overflow-auto',
           'px-6 py-8',

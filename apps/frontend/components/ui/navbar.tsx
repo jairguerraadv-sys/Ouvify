@@ -4,6 +4,7 @@ import React, { useState, useCallback } from 'react';
 import { cn } from '@/lib/utils';
 import { Logo, LogoHeader } from './logo';
 import { Menu, X } from 'lucide-react';
+import { Container } from './layout-utils';
 
 interface NavLink {
   label: string;
@@ -45,12 +46,12 @@ export const NavBar = React.memo(function NavBar({
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <Container>
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Logo size="sm" />
 
-          {/* Desktop Links */}"
+          {/* Desktop Links */}
           {links.length > 0 && (
             <div className="hidden md:flex items-center gap-8">
               {links.map((link) => (
@@ -61,7 +62,7 @@ export const NavBar = React.memo(function NavBar({
                     'text-sm font-semibold transition-all duration-300 py-2 px-1 border-b-2 relative group',
                     link.active
                       ? 'text-primary border-primary' 
-                      : 'text-gray-700 border-transparent hover:text-primary hover:border-primary/50'
+                      : 'text-text-secondary border-transparent hover:text-primary hover:border-primary/50'
                   )}
                   aria-current={link.active ? 'page' : undefined}
                 >
@@ -83,8 +84,8 @@ export const NavBar = React.memo(function NavBar({
             <button
               onClick={toggleMobile}
               className={cn(
-                'md:hidden text-gray-700 hover:text-primary transition-colors duration-200 p-2 hover:bg-muted rounded-md',
-                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring'
+                'md:hidden text-text-secondary hover:text-primary transition-colors duration-200 p-2 hover:bg-muted rounded-md',
+                'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus'
               )}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
@@ -93,6 +94,7 @@ export const NavBar = React.memo(function NavBar({
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
+
         </div>
 
         {/* Mobile Menu */}
@@ -111,7 +113,7 @@ export const NavBar = React.memo(function NavBar({
                   'block text-sm font-medium transition-all duration-200 py-2 px-4 rounded-md',
                   link.active
                     ? 'text-primary bg-primary/10'
-                    : 'text-gray-700 hover:text-primary hover:bg-muted'
+                    : 'text-text-secondary hover:text-primary hover:bg-muted'
                 )}
                 onClick={closeMobile}
                 aria-current={link.active ? 'page' : undefined}
@@ -121,7 +123,7 @@ export const NavBar = React.memo(function NavBar({
             ))}
           </div>
         )}
-      </div>
+      </Container>
     </nav>
   );
 });

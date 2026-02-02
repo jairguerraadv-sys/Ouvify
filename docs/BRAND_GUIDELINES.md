@@ -23,17 +23,16 @@ Este documento estabelece as diretrizes de uso da marca Ouvify, incluindo logoti
 
 | Variante | Uso Recomendado | Arquivo |
 |----------|-----------------|---------|
-| **Full** | Headers, materiais impressos, apresentações | `logo-full.png` |
-| **Icon** | Favicon, app icon, espaços reduzidos | `logo-icon.png` |
-| **Text** | Quando o ícone já está visível | `logo-text.png` |
+| **Full** | Headers, materiais impressos, apresentações | `public/logo/logo-full.png` |
+| **Icon** | Favicon, app icon, espaços reduzidos | `public/logo/logo-icon.png` |
+| **Text** | Quando o ícone já está visível | `public/logo/logo-text.png` |
 
 ### Versões de Cor
 
 | Versão | Uso | Background Recomendado |
 |--------|-----|------------------------|
 | **Default** | Uso geral | Fundos claros (#FFFFFF, #F8FAFC) |
-| **White** | Fundos escuros | Fundos escuros (#1E293B, #0F172A) |
-| **Gradient** | Destaque, hero sections | Fundos neutros |
+| **White** | Fundos escuros | Aplicado via filtro CSS no componente `Logo` |
 
 ### Tamanhos Padrão
 

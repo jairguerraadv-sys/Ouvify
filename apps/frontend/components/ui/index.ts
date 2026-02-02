@@ -165,4 +165,35 @@ export {
   useAnnounce,
 } from './accessibility';
 
+// Layout Utilities (Phase 5)
+export {
+  Flex,
+  FlexRow,
+  InlineFlexRow,
+  FlexCol,
+  FlexBetween,
+  FlexCenter,
+  Container,
+  DecorativeBlob,
+  Stack,
+  MutedText,
+  IconWrapper,
+  Spinner,
+  Section,
+} from './layout-utils';
+
+export type {
+  FlexProps,
+  ContainerProps,
+  DecorativeBlobProps,
+  DecorativeBlobTone,
+  DecorativeBlobSize,
+  DecorativeBlobPlacement,
+  StackProps,
+  MutedTextProps,
+  IconWrapperProps,
+  SpinnerProps,
+  SectionProps,
+} from './layout-utils';
+
 // (exports duplicados e inválidos removidos)

@@ -62,6 +62,34 @@ export function FormField({
   hideLabel = false,
 }: FormFieldProps) {
   const isHorizontal = labelPosition === 'left';
+
+  const childIsElement = React.isValidElement(children);
+  const childProps = childIsElement ? (children.props as Record<string, unknown>) : null;
+  const fieldId = (childIsElement && typeof childProps?.id === 'string' && (childProps.id as string).length > 0)
+    ? (childProps.id as string)
+    : name;
+  const helperId = helper ? `${fieldId}-help` : undefined;
+  const errorId = error ? `${fieldId}-error` : undefined;
+
+  const describedByParts = [
+    childIsElement && typeof childProps?.['aria-describedby'] === 'string'
+      ? (childProps['aria-describedby'] as string)
+      : undefined,
+    helperId,
+    errorId,
+  ].filter(Boolean) as string[];
+
+  const ariaDescribedBy = describedByParts.length > 0 ? describedByParts.join(' ') : undefined;
+
+  const enhancedChildren = childIsElement
+    ? React.cloneElement(children as React.ReactElement<any>, {
+        id: childProps?.id ?? fieldId,
+        required: (required ?? false) || Boolean(childProps?.required),
+        'aria-required': (required ?? false) || Boolean(childProps?.['aria-required']),
+        'aria-invalid': Boolean(error) || Boolean(childProps?.['aria-invalid']),
+        'aria-describedby': ariaDescribedBy,
+      })
+    : children;
   
   return (
     <div className={cn(
@@ -70,7 +98,7 @@ export function FormField({
       className
     )}>
       <Label 
-        htmlFor={name} 
+        htmlFor={fieldId} 
         className={cn(
           'flex items-center gap-1.5',
           isHorizontal && 'sm:w-1/3 sm:pt-2',
@@ -85,7 +113,7 @@ export function FormField({
           <Tooltip content={tooltip}>
             <button 
               type="button" 
-              className="text-gray-400 hover:text-gray-500"
+              className="text-text-tertiary hover:text-text-secondary rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-focus focus-visible:ring-offset-2"
               aria-label={`Ajuda: ${tooltip}`}
             >
               <HelpCircle className="h-4 w-4" />
@@ -95,11 +123,11 @@ export function FormField({
       </Label>
       
       <div className={cn(isHorizontal && 'sm:flex-1')}>
-        {children}
+        {enhancedChildren}
         
         {/* Helper text */}
         {helper && !error && (
-          <p className="mt-1.5 text-xs text-gray-500">
+          <p id={helperId} className="mt-1.5 text-xs text-text-tertiary">
             {helper}
           </p>
         )}
@@ -107,6 +135,7 @@ export function FormField({
         {/* Error message */}
         {error && (
           <p 
+            id={errorId}
             className="mt-1.5 text-xs text-error-600 flex items-center gap-1"
             role="alert"
             aria-live="polite"
@@ -193,12 +222,12 @@ export function FormSection({
       {(title || description) && (
         <div className="mb-4">
           {title && (
-            <legend className="text-lg font-semibold text-gray-900">
+            <legend className="text-lg font-semibold text-text-primary">
               {title}
             </legend>
           )}
           {description && (
-            <p className="mt-1 text-sm text-gray-600">
+            <p className="mt-1 text-sm text-text-secondary">
               {description}
             </p>
           )}
@@ -244,7 +273,7 @@ export function FormActions({
     <div className={cn(
       'flex flex-wrap items-center gap-3 pt-4',
       alignClass[align],
-      bordered && 'border-t border-gray-200 mt-6',
+      bordered && 'border-t border-border-light mt-6',
       className
     )}>
       {children}

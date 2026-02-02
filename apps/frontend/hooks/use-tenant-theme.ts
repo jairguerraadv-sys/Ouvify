@@ -57,7 +57,7 @@ export function useTenantTheme() {
         return {
           nome: 'Ouvify',
           subdominio: 'default',
-          cor_primaria: '#00BCD4', // Cyan padrão
+          cor_primaria: '199 89% 48%', // HSL padrão (Sky Blue)
           logo: null,
         };
       }
@@ -71,6 +71,56 @@ export function useTenantTheme() {
     }
   );
 
+  // Helpers
+  const isHex = (value: string) => /^#[0-9A-Fa-f]{6}$/.test(value);
+  const isHsl = (value: string) => /^\d{1,3}\s\d{1,3}%\s\d{1,3}%$/.test(value.trim());
+
+  const hexToHSL = (hex: string): string => {
+    const cleaned = hex.replace('#', '');
+    const r = parseInt(cleaned.substring(0, 2), 16) / 255;
+    const g = parseInt(cleaned.substring(2, 4), 16) / 255;
+    const b = parseInt(cleaned.substring(4, 6), 16) / 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const l = (max + min) / 2;
+    let h = 0;
+    let s = 0;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case r:
+          h = (g - b) / d + (g < b ? 6 : 0);
+          break;
+        case g:
+          h = (b - r) / d + 2;
+          break;
+        case b:
+          h = (r - g) / d + 4;
+          break;
+      }
+
+      h /= 6;
+    }
+
+    return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`;
+  };
+
+  const toHsl = (value: string | null | undefined, fallback: string) => {
+    if (!value) return fallback;
+    if (isHsl(value)) return value.trim();
+    if (isHex(value)) return hexToHSL(value);
+    logger.warn(`Cor inválida recebida: ${value}, usando fallback`);
+    return fallback;
+  };
+
+  const DEFAULT_PRIMARY_HSL = '199 89% 48%';
+  const DEFAULT_SECONDARY_HSL = '271 91% 65%';
+  const DEFAULT_FOREGROUND_HSL = '0 0% 9%';
+
   // Aplicar cores do tema nas CSS variables quando os dados mudarem
   useEffect(() => {
     if (!theme) return;
@@ -78,94 +128,24 @@ export function useTenantTheme() {
     // Criar uma cópia do tema para evitar modificar o objeto original
     const validatedTheme = { ...theme };
 
-    // Validar que cor_primaria é um hex válido
-    const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_primaria);
-    
-    if (!isValidHex) {
-      logger.error(`Cor primária inválida: ${validatedTheme.cor_primaria}, usando padrão #00BCD4`);
-      validatedTheme.cor_primaria = '#00BCD4';
-    }
-
-    // Converter hex para HSL para uso nas CSS variables do Tailwind
-    const hexToHSL = (hex: string): string => {
-      // Remover # se presente
-      hex = hex.replace('#', '');
-      
-      // Converter para RGB
-      const r = parseInt(hex.substring(0, 2), 16) / 255;
-      const g = parseInt(hex.substring(2, 4), 16) / 255;
-      const b = parseInt(hex.substring(4, 6), 16) / 255;
-      
-      // Encontrar min e max
-      const max = Math.max(r, g, b);
-      const min = Math.min(r, g, b);
-      let h = 0;
-      let s = 0;
-      const l = (max + min) / 2;
-      
-      if (max !== min) {
-        const d = max - min;
-        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-        
-        switch (max) {
-          case r:
-            h = ((g - b) / d + (g < b ? 6 : 0)) / 6;
-            break;
-          case g:
-            h = ((b - r) / d + 2) / 6;
-            break;
-          case b:
-            h = ((r - g) / d + 4) / 6;
-            break;
-        }
-      }
-      
-      // Converter para graus, porcentagem
-      h = Math.round(h * 360);
-      s = Math.round(s * 100);
-      const lum = Math.round(l * 100);
-      
-      return `${h} ${s}% ${lum}%`;
-    };
-
     try {
-      const hslColor = hexToHSL(validatedTheme.cor_primaria);
-      
-      // Aplicar cor primária
+      const hslColor = toHsl(validatedTheme.cor_primaria, DEFAULT_PRIMARY_HSL);
+
       document.documentElement.style.setProperty('--primary', hslColor);
-      
-      // Gerar variações da cor primária
+
       const [h, s, l] = hslColor.split(' ');
       const luminosity = parseInt(l);
       const lightLum = Math.min(luminosity + 20, 95);
       const darkLum = Math.max(luminosity - 20, 10);
-      
+
       document.documentElement.style.setProperty('--primary-light', `${h} ${s} ${lightLum}%`);
       document.documentElement.style.setProperty('--primary-dark', `${h} ${s} ${darkLum}%`);
-      
-      // Aplicar cor secundária (se fornecida pelo backend)
-      if (validatedTheme.cor_secundaria) {
-        const isValidSecondary = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_secundaria);
-        if (isValidSecondary) {
-          const hslSecondary = hexToHSL(validatedTheme.cor_secundaria);
-          document.documentElement.style.setProperty('--secondary', hslSecondary);
-        } else {
-          logger.warn('Cor secundária inválida, usando padrão');
-        }
-      } else {
-        // Cor secundária derivada (complementar)
-        const secondaryHue = (parseInt(h) + 180) % 360;
-        document.documentElement.style.setProperty('--secondary', `${secondaryHue} ${s} ${darkLum}%`);
-      }
-      
-      // Aplicar cor de texto (se fornecida)
-      if (validatedTheme.cor_texto) {
-        const isValidText = /^#[0-9A-Fa-f]{6}$/.test(validatedTheme.cor_texto);
-        if (isValidText) {
-          const hslText = hexToHSL(validatedTheme.cor_texto);
-          document.documentElement.style.setProperty('--foreground', hslText);
-        }
-      }
+
+      const secondaryHsl = toHsl(validatedTheme.cor_secundaria, DEFAULT_SECONDARY_HSL);
+      document.documentElement.style.setProperty('--secondary', secondaryHsl);
+
+      const textHsl = toHsl(validatedTheme.cor_texto, DEFAULT_FOREGROUND_HSL);
+      document.documentElement.style.setProperty('--foreground', textHsl);
       
       // Aplicar fonte customizada (se fornecida)
       if (validatedTheme.fonte_customizada) {

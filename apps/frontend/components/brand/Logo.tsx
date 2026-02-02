@@ -34,14 +34,14 @@ interface LogoProps {
 // SIZE CONFIGURATIONS
 // ============================================
 
-// Dimensões para logo completo (proporção ~2:1)
+// Dimensões para logo completo
 const fullSizeMap = {
-  xs: { height: 24, width: 48 },     // Mobile menu, badges
-  sm: { height: 32, width: 64 },     // Header mobile
-  md: { height: 40, width: 80 },     // Header desktop
-  lg: { height: 48, width: 96 },     // Auth pages
-  xl: { height: 64, width: 128 },    // Error pages
-  '2xl': { height: 80, width: 160 }, // Hero sections
+  xs: { height: 24, width: 80 },
+  sm: { height: 32, width: 100 },
+  md: { height: 40, width: 130 },
+  lg: { height: 56, width: 180 },
+  xl: { height: 80, width: 260 },
+  '2xl': { height: 96, width: 320 },
 };
 
 // Dimensões para apenas ícone (proporção 1:1)
@@ -54,14 +54,14 @@ const iconSizeMap = {
   '2xl': { height: 64, width: 64 },
 };
 
-// Dimensões para apenas texto (proporção ~4:1)
+// Dimensões para apenas texto
 const textSizeMap = {
-  xs: { height: 16, width: 64 },
-  sm: { height: 20, width: 80 },
-  md: { height: 24, width: 96 },
-  lg: { height: 32, width: 128 },
-  xl: { height: 40, width: 160 },
-  '2xl': { height: 48, width: 192 },
+  xs: { height: 20, width: 72 },
+  sm: { height: 24, width: 96 },
+  md: { height: 32, width: 128 },
+  lg: { height: 40, width: 160 },
+  xl: { height: 48, width: 192 },
+  '2xl': { height: 56, width: 224 },
 };
 
 // ============================================
@@ -105,23 +105,17 @@ export function Logo({
   const { height, width } = sizeMap[size];
   
   // Determinar arquivo de imagem
-  // Por enquanto usa logo.png, mas estrutura permite variantes futuras
   const getLogoSrc = () => {
-    // Estrutura preparada para múltiplos arquivos:
-    // /logo/logo-full.svg, /logo/logo-icon.svg, /logo/logo-text.svg
-    // /logo/logo-full-white.svg, etc.
-    
-    // Fallback para logo atual enquanto não há variantes
-    if (variant === 'full') {
-      return color === 'white' ? '/logo/logo-white.png' : '/logo.png';
-    }
-    if (variant === 'icon') {
-      return color === 'white' ? '/logo/icon-white.png' : '/logo/icon.png';
-    }
-    if (variant === 'text') {
-      return color === 'white' ? '/logo/text-white.png' : '/logo/text.png';
-    }
-    return '/logo.png';
+    // Prefer SVG assets (Phase 2 prompt requirement). Keep PNGs as fallback via onError.
+    // White variant uses a dedicated SVG wrapper to avoid relying purely on CSS filters.
+    if (color === 'white' && variant === 'full') return '/logo/logo-white.svg';
+    if (variant === 'icon') return '/logo/logo-icon.svg';
+    if (variant === 'text') return '/logo/logo-text.svg';
+    return '/logo/logo-full.svg';
+  };
+
+  const getPngFallback = () => {
+    return '/logo/logo-full.png';
   };
 
   const logoContent = (
@@ -139,15 +133,17 @@ export function Logo({
         height={height}
         className={cn(
           'object-contain',
+          color === 'white' && 'invert brightness-0',
           href && animated && 'transition-transform duration-200 group-hover:scale-105'
         )}
         priority={priority}
-        quality={90}
+        quality={75}
         // Fallback se imagem não existir
         onError={(e) => {
           const target = e.target as HTMLImageElement;
-          if (target.src !== '/logo.png') {
-            target.src = '/logo.png';
+          const fallback = getPngFallback();
+          if (!target.src.endsWith(fallback)) {
+            target.src = fallback;
           }
         }}
       />
@@ -317,7 +313,7 @@ export function PoweredByOuvify({
     <div className={cn(
       'flex items-center gap-1.5',
       textSize,
-      'text-gray-400',
+      'text-text-tertiary',
       className
     )}>
       <span>Powered by</span>

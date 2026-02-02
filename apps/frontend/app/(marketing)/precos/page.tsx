@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { H1, H2, Paragraph } from '@/components/ui/typography';
+import { Container, DecorativeBlob, FlexRow, InlineFlexRow, MutedText } from '@/components/ui';
 import { api, getErrorMessage } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { 
@@ -224,18 +225,19 @@ export default function PrecosPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
+    <div className="min-h-screen bg-background relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        <DecorativeBlob tone="primary" placement="topLeftQuarter" />
+        <DecorativeBlob tone="secondary" placement="bottomRightQuarter" />
         
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
+        <section className="py-16 sm:py-24 relative z-10">
+          <Container>
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
+            <InlineFlexRow className="px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
               <Zap className="w-4 h-4 text-primary" />
               <span className="text-sm font-medium text-primary">Preços Transparentes</span>
-            </div>
+            </InlineFlexRow>
             <H1 className="mb-6 text-primary">
               Planos que Crescem <span className="text-secondary">com Você</span>
             </H1>
@@ -253,7 +255,7 @@ export default function PrecosPage() {
                 className="relative inline-flex h-6 w-11 items-center rounded-full bg-border transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <span
-                  className={`inline-block h-4 w-4 transform rounded-full bg-white shadow-md transition-transform ${
+                  className={`inline-block h-4 w-4 transform rounded-full bg-card shadow-md transition-transform ${
                     billingPeriod === 'yearly' ? 'translate-x-6' : 'translate-x-1'
                   }`}
                 />
@@ -279,13 +281,13 @@ export default function PrecosPage() {
                   key={plan.id}
                   className={`relative border-2 ${
                     plan.popular 
-                      ? 'border-primary shadow-xl scale-105 bg-white' 
-                      : 'border-border hover:border-primary/50 bg-white'
+                      ? 'border-primary shadow-xl scale-105 bg-card' 
+                      : 'border-border hover:border-primary/50 bg-card'
                   } transition-all duration-300`}
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary-600 text-gray-900">Mais Popular</Badge>
+                      <Badge className="bg-primary-600 text-foreground">Mais Popular</Badge>
                     </div>
                   )}
                   
@@ -302,10 +304,10 @@ export default function PrecosPage() {
                     <div className="mb-4">
                       {plan.price > 0 ? (
                         <div>
-                          <span className="text-4xl font-bold text-gray-900">
+                          <span className="text-4xl font-bold text-foreground">
                             {plan.currency}{displayPrice}
                           </span>
-                          <span className="text-gray-500">{plan.billing}</span>
+                          <span className="text-muted-foreground">{plan.billing}</span>
                           {billingPeriod === 'yearly' && (
                             <p className="text-sm text-success-600 mt-1">
                               Economize R$ {(plan.price - displayPrice) * 12}/ano
@@ -314,12 +316,12 @@ export default function PrecosPage() {
                         </div>
                       ) : plan.id === 'free' ? (
                         <div>
-                          <span className="text-4xl font-bold text-gray-900">Grátis</span>
-                          <span className="text-gray-500"> para sempre</span>
+                          <span className="text-4xl font-bold text-foreground">Grátis</span>
+                          <span className="text-muted-foreground"> para sempre</span>
                         </div>
                       ) : (
                         <div>
-                          <span className="text-2xl font-bold text-gray-900">{plan.billing}</span>
+                          <span className="text-2xl font-bold text-foreground">{plan.billing}</span>
                         </div>
                       )}
                     </div>
@@ -346,14 +348,14 @@ export default function PrecosPage() {
                       {plan.features.map((feature, idx) => (
                         <div key={idx} className="flex gap-3 items-start">
                           <Check className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-gray-700">{feature}</span>
+                          <MutedText>{feature}</MutedText>
                         </div>
                       ))}
                       
                       {plan.notIncluded && plan.notIncluded.map((feature, idx) => (
                         <div key={`not-${idx}`} className="flex gap-3 items-start opacity-50">
-                          <X className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-gray-500">{feature}</span>
+                          <X className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                          <MutedText>{feature}</MutedText>
                         </div>
                       ))}
                     </div>
@@ -365,33 +367,34 @@ export default function PrecosPage() {
 
           {/* Trust Section */}
           <div className="text-center mb-16">
-            <div className="flex flex-wrap justify-center gap-8 items-center text-sm text-gray-600">
-              <div className="flex items-center gap-2">
+            <div className="flex flex-wrap justify-center gap-8 items-center text-sm text-muted-foreground">
+              <FlexRow>
                 <Check className="w-5 h-5 text-success-600" />
                 <span>14 dias de teste grátis</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </FlexRow>
+              <FlexRow>
                 <Check className="w-5 h-5 text-success-600" />
                 <span>Sem cartão de crédito</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </FlexRow>
+              <FlexRow>
                 <Check className="w-5 h-5 text-success-600" />
                 <span>Cancele quando quiser</span>
-              </div>
-              <div className="flex items-center gap-2">
+              </FlexRow>
+              <FlexRow>
                 <Check className="w-5 h-5 text-success-600" />
                 <span>Suporte em português</span>
-              </div>
+              </FlexRow>
             </div>
           </div>
+          </Container>
         </section>
 
         {/* Comparison Table */}
-        <section className="bg-white py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-card py-16">
+          <Container>
             <div className="text-center mb-12">
               <H2 className="mb-4">Compare os Planos</H2>
-              <Paragraph className="text-gray-600">
+              <Paragraph className="text-muted-foreground">
                 Veja todos os recursos lado a lado
               </Paragraph>
             </div>
@@ -416,7 +419,7 @@ export default function PrecosPage() {
                     <td className="text-center py-4 px-4">Ilimitado</td>
                     <td className="text-center py-4 px-4">Ilimitado</td>
                   </tr>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                     <td className="py-4 px-4">Usuários</td>
                     <td className="text-center py-4 px-4">1</td>
                     <td className="text-center py-4 px-4">5</td>
@@ -430,21 +433,21 @@ export default function PrecosPage() {
                     <td className="text-center py-4 px-4">100GB</td>
                     <td className="text-center py-4 px-4">Customizado</td>
                   </tr>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                     <td className="py-4 px-4">White Label</td>
-                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-gray-300 mx-auto" /></td>
+                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-muted-foreground mx-auto" /></td>
                     <td className="text-center py-4 px-4">Parcial</td>
                     <td className="text-center py-4 px-4"><Check className="w-5 h-5 text-success-600 mx-auto" /></td>
                     <td className="text-center py-4 px-4"><Check className="w-5 h-5 text-success-600 mx-auto" /></td>
                   </tr>
                   <tr className="border-b">
                     <td className="py-4 px-4">API de Integração</td>
-                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-gray-300 mx-auto" /></td>
-                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-gray-300 mx-auto" /></td>
+                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-muted-foreground mx-auto" /></td>
+                    <td className="text-center py-4 px-4"><X className="w-5 h-5 text-muted-foreground mx-auto" /></td>
                     <td className="text-center py-4 px-4"><Check className="w-5 h-5 text-success-600 mx-auto" /></td>
                     <td className="text-center py-4 px-4"><Check className="w-5 h-5 text-success-600 mx-auto" /></td>
                   </tr>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                     <td className="py-4 px-4">Suporte</td>
                     <td className="text-center py-4 px-4">Email</td>
                     <td className="text-center py-4 px-4">Prioritário</td>
@@ -454,7 +457,7 @@ export default function PrecosPage() {
                 </tbody>
               </table>
             </div>
-          </div>
+          </Container>
         </section>
 
         {/* FAQ Section */}
@@ -474,7 +477,7 @@ export default function PrecosPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-gray-600 pl-8">{item.answer}</p>
+                    <p className="text-muted-foreground pl-8">{item.answer}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -483,7 +486,7 @@ export default function PrecosPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-white text-gray-900 py-16">
+        <section className="bg-card text-foreground py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <Zap className="w-12 h-12 mx-auto mb-4" />
             <h2 className="text-3xl font-bold mb-4">
@@ -499,7 +502,7 @@ export default function PrecosPage() {
                 </Button>
               </Link>
               <Link href="/demo">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-gray-900 hover:bg-white/10">
+                <Button size="lg" variant="outline" className="bg-transparent border-border text-foreground hover:bg-muted">
                   Agendar Demo
                 </Button>
               </Link>

@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Logo } from '@/components/ui/logo';
+import { MutedText } from '@/components/ui';
 import { ArrowLeft, Mail, CheckCircle, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { api, getErrorMessage } from '@/lib/api';
@@ -56,12 +57,12 @@ export default function RecuperarSenhaPage() {
             <CardTitle className="text-2xl text-center mb-2">
               {success ? 'E-mail Enviado!' : 'Recuperar Senha'}
             </CardTitle>
-            <p className="text-center text-muted-foreground text-sm">
+            <MutedText block className="text-center">
               {success 
                 ? 'Verifique sua caixa de entrada'
                 : 'Insira seu e-mail para receber as instruções'
               }
-            </p>
+            </MutedText>
           </CardHeader>
 
           <CardContent>
@@ -73,13 +74,13 @@ export default function RecuperarSenhaPage() {
                   </div>
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">
+                  <MutedText block>
                     Enviamos um link de recuperação para:
-                  </p>
+                  </MutedText>
                   <p className="font-semibold text-secondary">{email}</p>
-                  <p className="text-xs text-muted-foreground mt-4">
+                  <MutedText block size="xs" className="mt-4">
                     Não recebeu? Verifique sua pasta de spam ou tente novamente em alguns minutos.
-                  </p>
+                  </MutedText>
                 </div>
                 <Link href="/login" className="w-full">
                   <Button 
@@ -125,7 +126,7 @@ export default function RecuperarSenhaPage() {
                   size="lg"
                 >
                   {loading ? (
-                    <span className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-2">
                       <span className="animate-spin rounded-full h-4 w-4 border-2 border-background border-t-transparent" />
                       Enviando...
                     </span>
@@ -135,24 +136,24 @@ export default function RecuperarSenhaPage() {
                 </Button>
 
                 <div className="text-center">
-                  <p className="text-xs text-muted-foreground">
+                  <MutedText block size="xs">
                     Lembrou sua senha?{' '}
                     <Link href="/login" className="text-primary font-medium hover:underline">
                       Fazer login
                     </Link>
-                  </p>
+                  </MutedText>
                 </div>
               </form>
             )}
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-muted-foreground mt-6">
+        <MutedText block size="xs" className="text-center mt-6">
           Problemas com recuperação?{' '}
           <a href="mailto:support@ouvify.com" className="text-primary hover:underline">
             Entre em contato
           </a>
-        </p>
+        </MutedText>
       </div>
     </main>
   );

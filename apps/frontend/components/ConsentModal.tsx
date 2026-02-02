@@ -106,13 +106,13 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
 
       {/* Modal */}
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <div className="mx-auto max-w-2xl w-full bg-white rounded-xl shadow-2xl">
+        <div className="mx-auto max-w-2xl w-full bg-background rounded-xl shadow-2xl border border-border-light">
           <div className="p-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl font-bold text-text-primary mb-4">
               📋 Atualização de Termos
             </h2>
 
-            <p className="text-gray-600 mb-6">
+            <p className="text-text-secondary mb-6">
               Nossos termos foram atualizados. Por favor, revise e aceite para 
               continuar usando a plataforma.
             </p>
@@ -142,13 +142,13 @@ export default function ConsentModal({ apiUrl = '' }: ConsentModalProps) {
               <button
                 onClick={handleAccept}
                 disabled={loading || !consents.terms || !consents.privacy || !consents.lgpd}
-                className="w-full bg-primary-600 text-gray-900 py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-primary-700 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? 'Salvando...' : 'Aceitar e Continuar'}
               </button>
             </div>
 
-            <p className="text-xs text-gray-500 text-center mt-4">
+            <p className="text-xs text-text-tertiary text-center mt-4">
               Você deve aceitar os termos atualizados para continuar usando o Ouvify.
             </p>
           </div>

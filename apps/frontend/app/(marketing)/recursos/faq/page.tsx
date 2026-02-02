@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import { FlexBetween } from '@/components/ui/layout-utils';
 
 const faqs = [
   {
@@ -86,22 +87,22 @@ export default function FAQPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-muted">
       {/* Breadcrumb */}
-      <div className="bg-white border-b">
+      <div className="bg-card border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="text-sm">
             <Link href="/" className="text-primary-600 hover:underline">Início</Link>
-            <span className="mx-2 text-gray-400">/</span>
+            <span className="mx-2 text-muted-foreground">/</span>
             <Link href="/recursos" className="text-primary-600 hover:underline">Recursos</Link>
-            <span className="mx-2 text-gray-400">/</span>
-            <span className="text-gray-600">FAQ</span>
+            <span className="mx-2 text-muted-foreground">/</span>
+            <span className="text-muted-foreground">FAQ</span>
           </nav>
         </div>
       </div>
 
       {/* Hero */}
-      <section className="bg-white text-gray-900 py-16">
+      <section className="bg-card text-foreground py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4 mb-6">
             <span className="text-6xl">❓</span>
@@ -119,7 +120,7 @@ export default function FAQPage() {
           <input
             type="text"
             placeholder="Buscar pergunta..."
-            className="w-full px-6 py-4 rounded-xl border-2 border-gray-300 focus:border-success-500 focus:outline-none text-lg shadow-lg"
+            className="w-full px-6 py-4 rounded-xl border-2 border-border focus:border-success-500 focus:outline-none text-lg shadow-lg"
           />
           <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl">🔍</span>
         </div>
@@ -130,7 +131,7 @@ export default function FAQPage() {
         
         {faqs.map((section) => (
           <section key={section.category} className="mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">{section.category}</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-6">{section.category}</h2>
             
             <div className="space-y-4">
               {section.questions.map((faq, index) => {
@@ -140,20 +141,22 @@ export default function FAQPage() {
                 return (
                   <div
                     key={index}
-                    className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition"
+                    className="bg-card border border-border rounded-xl overflow-hidden hover:shadow-md transition"
                   >
                     <button
                       onClick={() => toggleItem(itemId)}
-                      className="w-full p-6 text-left flex items-center justify-between"
+                      className="w-full p-6 text-left"
                     >
-                      <span className="font-semibold text-lg text-gray-900 pr-4">{faq.q}</span>
-                      <span className={`text-success-600 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
-                        ▼
-                      </span>
+                      <FlexBetween className="w-full">
+                        <span className="font-semibold text-lg text-foreground pr-4">{faq.q}</span>
+                        <span className={`text-success-600 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
+                          ▼
+                        </span>
+                      </FlexBetween>
                     </button>
                     {isOpen && (
                       <div className="px-6 pb-6">
-                        <p className="text-gray-700 leading-relaxed">
+                        <p className="text-muted-foreground leading-relaxed">
                           {faq.a}
                         </p>
                       </div>
@@ -167,22 +170,22 @@ export default function FAQPage() {
 
         {/* CTA Contato */}
         <div className="bg-success-50 border border-success-200 rounded-xl p-8 text-center mt-12">
-          <h3 className="text-2xl font-bold text-gray-900 mb-4">
+          <h3 className="text-2xl font-bold text-foreground mb-4">
             Não encontrou a resposta que procurava?
           </h3>
-          <p className="text-gray-700 mb-6">
+          <p className="text-muted-foreground mb-6">
             Nossa equipe está pronta para ajudar você com qualquer dúvida.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-success-600 text-gray-900 px-8 py-3 rounded-lg font-medium hover:bg-success-700 transition"
+              className="bg-success-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-success-700 transition"
             >
               Entrar em Contato
             </Link>
             <Link
               href="/recursos"
-              className="bg-white text-success-600 px-8 py-3 rounded-lg font-medium border-2 border-success-600 hover:bg-success-50 transition"
+              className="bg-card text-success-600 px-8 py-3 rounded-lg font-medium border-2 border-success-600 hover:bg-success-50 transition"
             >
               ← Voltar para Recursos
             </Link>

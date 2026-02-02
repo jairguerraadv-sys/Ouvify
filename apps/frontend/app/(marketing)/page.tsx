@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo } from 'react';
+import { Container, DecorativeBlob, FlexBetween, FlexRow, InlineFlexRow } from '@/components/ui';
 
 export default function LandingPage() {
   const features = useMemo(() => [
@@ -58,21 +59,21 @@ export default function LandingPage() {
   return (
     <>
       {/* Hero Section */}
-      <section className="relative bg-white overflow-hidden">
+      <section className="relative bg-background overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50 -z-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30 -z-10" />
+        <DecorativeBlob tone="primary" placement="topRightEdge" className="-z-10" />
+        <DecorativeBlob tone="secondary" placement="bottomLeftEdge" className="-z-10" />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <Container className="py-20 lg:py-32">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Content */}
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
+              <InlineFlexRow className="px-4 py-2 bg-primary/10 border border-primary/20 rounded-full">
                 <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
                 <span className="text-sm font-medium text-primary">
                   ✓ 100% conforme com LGPD e ISO 27001
                 </span>
-              </div>
+              </InlineFlexRow>
 
               <H1 className="text-primary">
                 Seu Canal de Ética <span className="text-secondary">Profissional</span>
@@ -109,23 +110,23 @@ export default function LandingPage() {
               <div className="absolute inset-0 bg-gradient-to-r from-primary/30 to-primary/10 rounded-3xl blur-3xl opacity-30 -z-10" />
               
               {/* Dashboard Card */}
-              <div className="relative bg-white rounded-3xl shadow-xl p-8 border border-border">
+              <div className="relative bg-card rounded-3xl shadow-xl p-8 border border-border">
                 {/* Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-3">
+                <FlexBetween className="mb-6">
+                  <FlexRow gap="3">
                     <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
-                      <BarChart3 className="w-5 h-5 text-gray-900" />
+                      <BarChart3 className="w-5 h-5 text-foreground" />
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-secondary">Dashboard</p>
                       <p className="text-xs text-muted-foreground">Visão em tempo real</p>
                     </div>
-                  </div>
+                  </FlexRow>
                   <div className="flex items-center gap-1">
                     <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
                     <span className="text-xs text-muted-foreground">Online</span>
                   </div>
-                </div>
+                </FlexBetween>
 
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -186,12 +187,12 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Features Section */}
       <section id="produto" className="py-20 lg:py-32 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Container>
           <div className="text-center mb-16">
             <Badge variant="primary" size="md" className="mb-4">
               Funcionalidades Completas
@@ -209,7 +210,7 @@ export default function LandingPage() {
                 <Card key={`feature-${idx}`} variant="elevated" className="group hover:-translate-y-1 transition-all">
                   <CardContent className="pt-6">
                     <div className="w-12 h-12 bg-gradient-primary rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                      <Icon className="w-6 h-6 text-gray-900" />
+                      <Icon className="w-6 h-6 text-foreground" />
                     </div>
                     <h3 className="text-lg font-bold text-secondary mb-2">
                       {feature.title}
@@ -222,12 +223,12 @@ export default function LandingPage() {
               );
             })}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Benefits Section */}
-      <section id="seguranca" className="py-20 lg:py-32 bg-secondary text-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="seguranca" className="py-20 lg:py-32 bg-secondary text-foreground">
+        <Container>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left: Visual Card */}
             <div className="relative">
@@ -235,15 +236,15 @@ export default function LandingPage() {
               
               <Card variant="default" className="bg-secondary-light border-secondary-light/50">
                 <CardHeader>
-                  <div className="flex items-center gap-3">
+                  <FlexRow gap="3">
                     <div className="w-12 h-12 bg-gradient-to-br from-success to-success rounded-lg flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-gray-900" />
+                      <Shield className="w-6 h-6 text-foreground" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-secondary-foreground">Certificações</h3>
                       <p className="text-xs text-secondary-foreground/70">Conformidade Total</p>
                     </div>
-                  </div>
+                  </FlexRow>
                 </CardHeader>
 
                 <CardContent className="space-y-3">
@@ -262,27 +263,27 @@ export default function LandingPage() {
                     <span className="text-xs">Ativo</span>
                   </Badge>
 
-                  <div className="flex items-center justify-between p-4 bg-white/50 rounded-xl border border-slate-200">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-5 h-5 text-slate-600" />
+                  <FlexBetween className="p-4 bg-card/50 rounded-xl border border-border">
+                    <FlexRow gap="3">
+                      <Shield className="w-5 h-5 text-muted-foreground" />
                       <span className="font-semibold text-secondary-600">Backup Automático</span>
-                    </div>
-                    <span className="text-xs text-slate-700 font-medium">Diário</span>
-                  </div>
+                    </FlexRow>
+                    <span className="text-xs text-muted-foreground font-medium">Diário</span>
+                  </FlexBetween>
                 </CardContent>
               </Card>
             </div>
 
             {/* Right: Content */}
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-success/10 border border-success/30 rounded-full">
+              <InlineFlexRow className="px-4 py-2 bg-success/10 border border-success/30 rounded-full">
                 <Shield className="w-4 h-4 text-success" />
                 <span className="text-sm font-semibold text-success">
                   Máxima Segurança
                 </span>
-              </div>
+              </InlineFlexRow>
 
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 Proteção e conformidade
                 <span className="block text-primary">em primeiro lugar</span>
               </h2>
@@ -298,7 +299,7 @@ export default function LandingPage() {
                     <div className="w-6 h-6 bg-primary/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
                       <CheckCircle className="w-4 h-4 text-primary" />
                     </div>
-                    <p className="font-medium text-gray-900">{benefit}</p>
+                    <p className="font-medium text-foreground">{benefit}</p>
                   </div>
                 ))}
               </div>
@@ -313,22 +314,22 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* CTA Section */}
-      <section id="precos" className="relative bg-gray-50 text-gray-900 py-20 lg:py-32 overflow-hidden border-t border-b border-gray-200">
+      <section id="precos" className="relative bg-muted text-foreground py-20 lg:py-32 overflow-hidden border-t border-b border-border">
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50 -z-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30 -z-10" />
+        <DecorativeBlob tone="primary" placement="topRightEdge" className="-z-10" />
+        <DecorativeBlob tone="secondary" placement="bottomLeftEdge" className="-z-10" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8 relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-full shadow-sm">"
+          <InlineFlexRow className="px-4 py-2 bg-card border border-border rounded-full shadow-sm">
             <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
             <span className="text-sm font-medium">
               Teste grátis por 14 dias, sem cartão de crédito
             </span>
-          </div>
+          </InlineFlexRow>
 
           <h2 className="text-4xl lg:text-6xl font-bold leading-tight">
             Pronto para começar?
@@ -353,7 +354,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-2 border-white text-gray-900 hover:bg-white hover:text-secondary rounded-full px-8"
+                className="border-2 border-border text-foreground hover:bg-card hover:text-secondary rounded-full px-8"
               >
                 Agendar Demo
               </Button>
@@ -362,18 +363,18 @@ export default function LandingPage() {
 
           {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-8 pt-8 text-secondary-foreground/70">
-            <div className="flex items-center gap-2">
+            <FlexRow>
               <CheckCircle className="w-5 h-5 text-primary" />
               <span className="text-sm">Sem cartão de crédito</span>
-            </div>
-            <div className="flex items-center gap-2">
+            </FlexRow>
+            <FlexRow>
               <CheckCircle className="w-5 h-5 text-primary" />
               <span className="text-sm">Cancele quando quiser</span>
-            </div>
-            <div className="flex items-center gap-2">
+            </FlexRow>
+            <FlexRow>
               <CheckCircle className="w-5 h-5 text-primary" />
               <span className="text-sm">Suporte em português</span>
-            </div>
+            </FlexRow>
           </div>
         </div>
       </section>

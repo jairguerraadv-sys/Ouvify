@@ -1,13 +1,14 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState, useMemo, useCallback } from 'react';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { EmptyState } from '@/components/ui/empty-state';
+import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { PageContent, PageLayout } from '@/components/ui';
 import { useFeedbacks } from '@/hooks/use-dashboard';
 import { useDebounce } from '@/hooks/use-common';
 import { useAuth } from '@/contexts/AuthContext';
@@ -44,9 +45,9 @@ import {
 
 export default function FeedbacksPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <FeedbacksContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -92,7 +93,7 @@ function FeedbacksContent() {
       },
       pendente: {
         label: 'Pendente',
-        className: 'bg-slate-100 text-slate-700 hover:bg-slate-100',
+        className: 'bg-neutral-100 text-neutral-700 hover:bg-neutral-100',
         icon: <AlertCircle className="h-3 w-3 mr-1" />
       }
     };
@@ -116,25 +117,21 @@ function FeedbacksContent() {
       'Infraestrutura': 'bg-secondary-100 text-secondary-700'
     };
 
-    return colors[categoria] || 'bg-slate-100 text-slate-700';
+    return colors[categoria] || 'bg-neutral-100 text-neutral-700';
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50">
-      {/* Sidebar */}
-      <Sidebar user={user ?? undefined} />
-
-      {/* Main Content */}
-      <main className="flex-1 p-6 lg:p-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-secondary-600 mb-2">
-            Feedbacks
-          </h1>
-          <p className="text-slate-600">
-            Gerencie todas as denúncias, sugestões e elogios recebidos
-          </p>
-        </div>
+    <PageLayout variant="secondary" className="min-h-0">
+      <PageContent padding="none" maxWidth="full">
+        <div>
+          <PageHeader
+            title="Feedbacks"
+            description="Gerencie todas as denúncias, sugestões e elogios recebidos"
+            breadcrumbs={[
+              { label: 'Dashboard', href: '/dashboard' },
+              { label: 'Feedbacks' },
+            ]}
+          />
 
         {/* Filters Card */}
         <Card className="mb-6">
@@ -142,7 +139,7 @@ function FeedbacksContent() {
             <div className="flex flex-col md:flex-row gap-4">
               {/* Search */}
               <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
                 <Input
                   placeholder="Buscar por protocolo ou assunto..."
                   value={searchInput}
@@ -197,15 +194,15 @@ function FeedbacksContent() {
             {isLoading ? (
               <div className="text-center py-12">
                 <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                <p className="text-slate-600">Carregando feedbacks...</p>
+                <p className="text-text-secondary">Carregando feedbacks...</p>
               </div>
             ) : error ? (
               <div className="text-center py-12">
                 <AlertCircle className="h-12 w-12 text-error-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-slate-700 mb-2">
+                <h3 className="text-lg font-semibold text-text-primary mb-2">
                   Erro ao carregar feedbacks
                 </h3>
-                <p className="text-slate-500">{error}</p>
+                <p className="text-text-tertiary">{error}</p>
               </div>
             ) : filteredFeedbacks.length === 0 ? (
               // Empty state diferente se é filtro ou se realmente não tem feedbacks
@@ -231,7 +228,7 @@ function FeedbacksContent() {
                 />
               )
             ) : (
-              <div className="rounded-lg border border-slate-200 overflow-hidden">
+              <div className="rounded-lg border border-border-light overflow-hidden">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -245,9 +242,9 @@ function FeedbacksContent() {
                   </TableHeader>
                   <TableBody>
                     {filteredFeedbacks.map((feedback) => (
-                      <TableRow key={feedback.id} className="hover:bg-slate-50">
+                      <TableRow key={feedback.id} className="hover:bg-background-secondary">
                         <TableCell>
-                          <code className="text-xs font-mono bg-slate-100 px-2 py-1 rounded">
+                          <code className="text-xs font-mono bg-background-tertiary px-2 py-1 rounded">
                             {feedback.protocolo}
                           </code>
                         </TableCell>
@@ -256,7 +253,7 @@ function FeedbacksContent() {
                             <p className="font-medium text-secondary-600 text-sm">
                               {feedback.titulo}
                             </p>
-                            <p className="text-xs text-slate-500 mt-0.5">
+                            <p className="text-xs text-text-tertiary mt-0.5">
                               {feedback.tipo}
                             </p>
                           </div>
@@ -269,7 +266,7 @@ function FeedbacksContent() {
                             {feedback.categoria}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-sm text-slate-600">
+                        <TableCell className="text-sm text-text-secondary">
                           {formatDate(feedback.data_criacao, 'short')}
                         </TableCell>
                         <TableCell>
@@ -278,7 +275,7 @@ function FeedbacksContent() {
                         <TableCell className="text-right">
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Abrir ações do feedback">
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
@@ -304,7 +301,8 @@ function FeedbacksContent() {
             )}
           </CardContent>
         </Card>
-      </main>
-    </div>
+        </div>
+      </PageContent>
+    </PageLayout>
   );
 }

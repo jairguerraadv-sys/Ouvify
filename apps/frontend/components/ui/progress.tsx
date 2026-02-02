@@ -36,6 +36,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     ...props
   }, ref) => {
     const percentage = Math.min((value / max) * 100, 100);
+    const widthStyle = { width: `${percentage}%` } as React.CSSProperties;
     
     return (
       <div
@@ -70,7 +71,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
               variantStyles[variant],
               animated && 'animate-pulse-subtle'
             )}
-            style={{ width: `${percentage}%` }}
+              style={widthStyle}
           />
         </div>
       </div>

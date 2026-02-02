@@ -120,10 +120,10 @@ export default function AcceptInvitePage({ params }: Props) {
         <Card className="w-full max-w-md text-center">
           <CardContent className="pt-6">
             <CheckCircle2 className="w-16 h-16 text-success-500 mx-auto mb-4" />
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
               Convite Aceito! 🎉
             </h2>
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Bem-vindo à equipe! Redirecionando para o dashboard...
             </p>
           </CardContent>
@@ -195,7 +195,7 @@ export default function AcceptInvitePage({ params }: Props) {
                 minLength={8}
                 disabled={loading}
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Use letras, números e caracteres especiais para maior segurança
               </p>
             </div>
@@ -233,7 +233,7 @@ export default function AcceptInvitePage({ params }: Props) {
             </Button>
             
             {/* Info */}
-            <p className="text-xs text-center text-gray-500 mt-4">
+            <p className="text-xs text-center text-muted-foreground mt-4">
               Ao aceitar, você concorda com os{' '}
               <a href="/termos" className="text-primary-600 hover:underline">
                 Termos de Uso

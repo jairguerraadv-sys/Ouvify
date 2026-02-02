@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { Cookie, Settings, Lock, BarChart3, Target, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DecorativeBlob, FlexRow, InlineFlexRow, MutedText } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Política de Cookies | Ouvify - Plataforma de Feedback',
@@ -47,8 +48,8 @@ export default function CookiesPage() {
   return (
     <main className="min-h-screen bg-white relative overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+      <DecorativeBlob tone="primary" placement="topRightQuarter" />
+      <DecorativeBlob tone="secondary" placement="bottomLeftQuarter" />
       
       <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10">
         <div className="space-y-8">
@@ -62,13 +63,13 @@ export default function CookiesPage() {
             <h1 className="text-4xl font-bold text-primary">
               Política de Cookies
             </h1>
-            <p className="text-muted-foreground">
+            <MutedText block size="inherit">
               Última atualização: 23 de janeiro de 2026
-            </p>
-            <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+            </MutedText>
+            <MutedText block className="max-w-2xl mx-auto">
               Esta política explica como usamos cookies e tecnologias similares 
               para melhorar sua experiência na plataforma Ouvify.
-            </p>
+            </MutedText>
           </div>
 
           {/* O que são cookies */}
@@ -77,15 +78,15 @@ export default function CookiesPage() {
               <h2 className="text-2xl font-semibold text-secondary">
                 O que são Cookies?
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
+              <MutedText block size="inherit" className="leading-relaxed">
                 Cookies são pequenos arquivos de texto que são armazenados no seu dispositivo 
                 (computador, tablet ou celular) quando você visita um site. Eles são amplamente 
                 usados para fazer os sites funcionarem de forma mais eficiente e fornecer 
                 informações aos proprietários do site.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
+              </MutedText>
+              <MutedText block size="inherit" className="leading-relaxed">
                 No Ouvify, usamos cookies para:
-              </p>
+              </MutedText>
               <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                 <li>Manter você conectado à sua conta</li>
                 <li>Lembrar suas preferências e configurações</li>
@@ -115,24 +116,24 @@ export default function CookiesPage() {
                         <Icon className={`w-6 h-6 ${type.required ? 'text-primary' : 'text-secondary'}`} />
                       </div>
                       <div>
-                        <div className="flex items-center gap-2">
+                        <FlexRow gap="2">
                           <h3 className="font-semibold text-lg">{type.name}</h3>
                           {type.required && (
                             <span className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
                               Obrigatório
                             </span>
                           )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">{type.description}</p>
+                        </FlexRow>
+                        <MutedText block>{type.description}</MutedText>
                       </div>
                     </div>
                     <div className="pl-14">
-                      <p className="text-sm font-medium text-muted-foreground mb-2">Exemplos:</p>
+                      <MutedText block className="font-medium mb-2">Exemplos:</MutedText>
                       <div className="flex flex-wrap gap-2">
                         {type.examples.map((example) => (
                           <span 
                             key={example}
-                            className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
+                            className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded"
                           >
                             {example}
                           </span>
@@ -148,37 +149,39 @@ export default function CookiesPage() {
           {/* Gerenciamento */}
           <div className="bg-white rounded-2xl p-8 shadow-lg border border-border space-y-6">
             <section className="space-y-4">
-              <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                <Settings className="w-6 h-6" />
-                Gerenciar Cookies
+              <h2 className="text-2xl font-semibold text-secondary">
+                <InlineFlexRow gap="2">
+                  <Settings className="w-6 h-6" />
+                  Gerenciar Cookies
+                </InlineFlexRow>
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
+              <MutedText block size="inherit" className="leading-relaxed">
                 Você pode controlar e gerenciar cookies de várias maneiras:
-              </p>
+              </MutedText>
               
               <div className="space-y-4 pl-4">
                 <div>
                   <h4 className="font-semibold">Configurações do Navegador</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <MutedText block>
                     A maioria dos navegadores permite que você recuse ou aceite cookies, 
                     exclua cookies existentes e defina preferências para determinados sites.
-                  </p>
+                  </MutedText>
                 </div>
                 
                 <div>
                   <h4 className="font-semibold">Banner de Cookies</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <MutedText block>
                     Ao visitar nosso site pela primeira vez, você verá um banner onde pode 
                     personalizar suas preferências de cookies.
-                  </p>
+                  </MutedText>
                 </div>
                 
                 <div>
                   <h4 className="font-semibold">Configurações da Conta</h4>
-                  <p className="text-sm text-muted-foreground">
+                  <MutedText block>
                     Se você tem uma conta Ouvify, pode gerenciar suas preferências de privacidade 
                     nas configurações do perfil.
-                  </p>
+                  </MutedText>
                 </div>
               </div>
               
@@ -197,10 +200,10 @@ export default function CookiesPage() {
               <h2 className="text-2xl font-semibold text-secondary">
                 Cookies de Terceiros
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
+              <MutedText block size="inherit" className="leading-relaxed">
                 Alguns cookies são colocados por serviços de terceiros que aparecem em nossas páginas. 
                 Trabalhamos com os seguintes parceiros:
-              </p>
+              </MutedText>
               
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
@@ -251,16 +254,16 @@ export default function CookiesPage() {
               <h2 className="text-2xl font-semibold text-secondary">
                 Dúvidas?
               </h2>
-              <p className="text-muted-foreground leading-relaxed">
+              <MutedText block size="inherit" className="leading-relaxed">
                 Se você tiver alguma dúvida sobre nossa política de cookies, entre em contato:
-              </p>
+              </MutedText>
               <div className="bg-secondary/5 rounded-lg p-4 space-y-2">
-                <p className="text-muted-foreground">
+                <MutedText block size="inherit">
                   <strong>Email:</strong>{' '}
                   <a href="mailto:privacidade@ouvify.com" className="text-primary hover:underline">
                     privacidade@ouvify.com
                   </a>
-                </p>
+                </MutedText>
               </div>
             </section>
           </div>

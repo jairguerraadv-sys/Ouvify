@@ -12,10 +12,10 @@ const Card = React.memo(React.forwardRef<
   }
 >(({ className, variant = 'default', hover = false, padding, ...props }, ref) => {
   const variantStyles = {
-    default: 'rounded-xl border border-gray-200 bg-white text-gray-900 shadow-md',
-    elevated: 'rounded-xl bg-white text-gray-900 shadow-lg border border-gray-100',
-    outlined: 'rounded-xl border-2 border-primary-200 bg-white text-gray-900',
-    ghost: 'rounded-xl border border-gray-100 bg-transparent text-gray-900',
+    default: 'rounded-xl border border-border-light bg-background text-text-primary shadow-md',
+    elevated: 'rounded-xl bg-background text-text-primary shadow-lg border border-border-light',
+    outlined: 'rounded-xl border-2 border-primary-200 bg-background text-text-primary',
+    ghost: 'rounded-xl border border-border-light bg-transparent text-text-primary',
   };
 
   const paddingStyles = {
@@ -61,7 +61,7 @@ const CardTitle = React.memo(React.forwardRef<
 >(({ className, ...props }, ref) => (
   <h3
     ref={ref}
-    className={cn("text-2xl font-bold font-heading text-gray-900", className)}
+    className={cn("text-2xl font-bold font-heading text-text-primary", className)}
     {...props}
   />
 )));
@@ -73,7 +73,7 @@ const CardDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <p
     ref={ref}
-    className={cn("text-gray-600", className)}
+    className={cn("text-text-secondary", className)}
     {...props}
   />
 ))
@@ -93,7 +93,7 @@ const CardFooter = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn("flex items-center gap-3 p-6 pt-4 border-t border-gray-200", className)}
+    className={cn("flex items-center gap-3 p-6 pt-4 border-t border-border-light", className)}
     {...props}
   />
 ))

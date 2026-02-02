@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge';
 import { H1, H2, Paragraph } from '@/components/ui/typography';
 import { NavBar } from '@/components/ui/navbar';
 import { Footer } from '@/components/ui/footer';
+import { Container, DecorativeBlob, MutedText } from '@/components/ui';
 import { 
   CheckCircle, 
   Clock, 
@@ -98,10 +99,10 @@ export default function DemoPage() {
           }
         />
         
-        <div className="min-h-screen bg-white flex items-center justify-center px-4 relative overflow-hidden">
+        <div className="min-h-screen bg-background flex items-center justify-center px-4 relative overflow-hidden">
           {/* Decorative elements */}
-          <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-          <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-success/10 rounded-full blur-3xl opacity-30" />
+          <DecorativeBlob tone="primary" placement="topRightQuarter" />
+          <DecorativeBlob tone="success" placement="bottomLeftQuarter" />
           
           <Card className="max-w-2xl w-full text-center border-border shadow-xl relative z-10">
             <CardHeader className="space-y-4">
@@ -152,13 +153,14 @@ export default function DemoPage() {
         }
       />
 
-      <div className="min-h-screen bg-white relative overflow-hidden">
+      <div className="min-h-screen bg-background relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+        <DecorativeBlob tone="primary" placement="topLeftQuarter" />
+        <DecorativeBlob tone="secondary" placement="bottomRightQuarter" />
         
         {/* Hero Section */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
+        <section className="py-16 sm:py-24 relative z-10">
+          <Container>
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
               <Eye className="w-4 h-4 text-primary" />
@@ -175,7 +177,7 @@ export default function DemoPage() {
           {/* Features Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
             {demoFeatures.map((feature, idx) => (
-              <Card key={idx} className="border-2 border-border hover:border-primary transition-colors bg-white">
+              <Card key={idx} className="border-2 border-border hover:border-primary transition-colors bg-card">
                 <CardHeader>
                   <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-3">
                     <feature.icon className="w-6 h-6 text-primary" />
@@ -190,7 +192,7 @@ export default function DemoPage() {
           {/* Demo Request Form */}
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Form */}
-            <Card className="border-2 border-border bg-white shadow-lg">
+            <Card className="border-2 border-border bg-card shadow-lg">
               <CardHeader>
                 <CardTitle className="text-secondary">Solicite uma Demonstração</CardTitle>
                 <CardDescription className="text-muted-foreground">
@@ -289,9 +291,9 @@ export default function DemoPage() {
                     )}
                   </Button>
 
-                  <p className="text-xs text-gray-500 text-center">
+                  <MutedText block size="xs" className="text-center">
                     Respeitamos sua privacidade. Seus dados estão seguros e não serão compartilhados.
-                  </p>
+                  </MutedText>
                 </form>
               </CardContent>
             </Card>
@@ -311,7 +313,7 @@ export default function DemoPage() {
                   ].map((item, idx) => (
                     <div key={idx} className="flex gap-3">
                       <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-gray-700">{item}</span>
+                      <span className="text-muted-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -322,10 +324,10 @@ export default function DemoPage() {
                   <div className="flex gap-3 mb-3">
                     <Clock className="w-5 h-5 text-primary-600 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Duração: 30 minutos</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-semibold text-foreground mb-1">Duração: 30 minutos</h4>
+                      <MutedText block>
                         Demonstração personalizada com tempo para perguntas
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                 </CardContent>
@@ -336,20 +338,21 @@ export default function DemoPage() {
                   <div className="flex gap-3 mb-3">
                     <Eye className="w-5 h-5 text-success-600 flex-shrink-0" />
                     <div>
-                      <h4 className="font-semibold text-gray-900 mb-1">Teste Grátis por 14 dias</h4>
-                      <p className="text-sm text-gray-600">
+                      <h4 className="font-semibold text-foreground mb-1">Teste Grátis por 14 dias</h4>
+                      <MutedText block>
                         Após a demo, experimente a plataforma sem compromisso
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                 </CardContent>
               </Card>
             </div>
           </div>
+          </Container>
         </section>
 
         {/* CTA Section */}
-        <section className="bg-white text-gray-900 py-16">
+        <section className="bg-card text-foreground py-16">
           <div className="max-w-4xl mx-auto px-4 text-center">
             <h2 className="text-3xl font-bold mb-4">
               Prefere começar agora?
@@ -364,7 +367,7 @@ export default function DemoPage() {
                 </Button>
               </Link>
               <Link href="/precos">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-gray-900 hover:bg-white/10">
+                <Button size="lg" variant="outline" className="bg-transparent border-border text-foreground hover:bg-muted">
                   Ver Planos e Preços
                 </Button>
               </Link>

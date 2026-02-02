@@ -29,12 +29,14 @@ interface HeaderProps {
 
 export function Header({ title, subtitle, description, action, user }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-slate-200 bg-white">
+    <header className="sticky top-0 z-30 border-b border-border-light bg-background">
       <div className="flex h-16 items-center justify-between px-6">
         {/* Left */}
         <div>
-          <h1 className="text-2xl font-bold font-heading text-slate-900">{title}</h1>
-          {(subtitle || description) && <p className="text-sm text-slate-600">{subtitle || description}</p>}
+          <h1 className="text-2xl font-bold font-heading text-text-primary">{title}</h1>
+          {(subtitle || description) && (
+            <p className="text-sm text-text-secondary">{subtitle || description}</p>
+          )}
         </div>
 
         {/* Right */}
@@ -53,7 +55,7 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
           <Button 
             variant="ghost" 
             size="icon" 
-            className="text-slate-600"
+            className="text-text-secondary"
             aria-label="Notificações"
           >
             <Bell className="h-5 w-5" />
@@ -64,7 +66,7 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
             <DropdownMenuTrigger asChild>
               <Button 
                 variant="ghost" 
-                className="text-slate-600 gap-2"
+                className="text-text-secondary gap-2"
                 aria-label="Menu do usuário"
               >
                 <span className="hidden sm:inline text-sm">{user?.name}</span>
@@ -73,8 +75,8 @@ export function Header({ title, subtitle, description, action, user }: HeaderPro
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
               <div className="px-2 py-1.5">
-                <p className="text-sm font-medium text-slate-900">{user?.name}</p>
-                <p className="text-xs text-slate-600">{user?.email}</p>
+                <p className="text-sm font-medium text-text-primary">{user?.name}</p>
+                <p className="text-xs text-text-secondary">{user?.email}</p>
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem>

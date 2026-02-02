@@ -75,7 +75,7 @@ export function LoadingState({
       />
       {text && (
         <p className={cn(
-          'text-gray-600 font-medium',
+          'text-text-secondary font-medium',
           textSizeClasses[size]
         )}>
           {text}
@@ -88,7 +88,7 @@ export function LoadingState({
   if (fullScreen) {
     return (
       <div 
-        className="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
         role="status"
         aria-live="polite"
       >
@@ -147,7 +147,7 @@ export function LoadingSpinner({
  */
 export function LoadingDots({ className }: { className?: string }) {
   return (
-    <span className={cn('inline-flex items-center gap-1', className)} aria-hidden="true">
+    <span className={cn('loading-dots inline-flex items-center gap-1', className)} aria-hidden="true">
       {[0, 1, 2].map((i) => (
         <span
           key={i}
@@ -155,9 +155,6 @@ export function LoadingDots({ className }: { className?: string }) {
             'w-1.5 h-1.5 rounded-full bg-current',
             'animate-pulse'
           )}
-          style={{
-            animationDelay: `${i * 150}ms`,
-          }}
         />
       ))}
     </span>

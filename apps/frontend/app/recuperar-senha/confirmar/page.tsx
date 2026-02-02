@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Logo } from '@/components/ui/logo';
+import { MutedText } from '@/components/ui';
 import { ArrowLeft, CheckCircle, Lock, AlertCircle, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { api, getErrorMessage } from '@/lib/api';
@@ -78,9 +79,9 @@ function ConfirmarRecuperacaoContent() {
                 </div>
                 <div>
                   <h2 className="text-xl font-semibold mb-2">Link Inválido</h2>
-                  <p className="text-sm text-muted-foreground mb-6">
+                  <MutedText block className="mb-6">
                     Este link de recuperação é inválido ou expirou.
-                  </p>
+                  </MutedText>
                 </div>
                 <Link href="/recuperar-senha">
                   <Button className="w-full">
@@ -114,12 +115,12 @@ function ConfirmarRecuperacaoContent() {
             <CardTitle className="text-2xl text-center mb-2">
               {success ? 'Senha Redefinida!' : 'Nova Senha'}
             </CardTitle>
-            <p className="text-center text-muted-foreground text-sm">
+            <MutedText block className="text-center">
               {success 
                 ? 'Sua senha foi alterada com sucesso'
                 : 'Crie uma nova senha para sua conta'
               }
-            </p>
+            </MutedText>
           </CardHeader>
 
           <CardContent>
@@ -131,9 +132,9 @@ function ConfirmarRecuperacaoContent() {
                   </div>
                 </div>
                 <div className="text-center space-y-2">
-                  <p className="text-sm text-muted-foreground">
+                  <MutedText block>
                     Você será redirecionado para o login em instantes...
-                  </p>
+                  </MutedText>
                 </div>
                 <Link href="/login">
                   <Button

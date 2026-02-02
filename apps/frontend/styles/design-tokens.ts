@@ -10,139 +10,81 @@
  */
 
 // ============================================
-// PALETA DE CORES
+// PALETA DE CORES (baseada em tokens HSL)
 // ============================================
 
+const mixWith = (baseVar: string, target: string, amount: number) =>
+  `color-mix(in srgb, hsl(var(${baseVar})) ${100 - amount}%, ${target} ${amount}%)`;
+
+const createScale = (baseVar: string) => ({
+  50: mixWith(baseVar, "white", 90),
+  100: mixWith(baseVar, "white", 80),
+  200: mixWith(baseVar, "white", 65),
+  300: mixWith(baseVar, "white", 50),
+  400: mixWith(baseVar, "white", 35),
+  500: `hsl(var(${baseVar}))`,
+  600: mixWith(baseVar, "black", 15),
+  700: mixWith(baseVar, "black", 25),
+  800: mixWith(baseVar, "black", 35),
+  900: mixWith(baseVar, "black", 45),
+  DEFAULT: `hsl(var(${baseVar}))`,
+});
+
+const createNeutralScale = () => ({
+  0: `hsl(var(--background))`,
+  50: mixWith("--foreground", "white", 94),
+  100: mixWith("--foreground", "white", 88),
+  200: mixWith("--foreground", "white", 78),
+  300: mixWith("--foreground", "white", 68),
+  400: mixWith("--foreground", "white", 50),
+  500: `hsl(var(--muted-foreground))`,
+  600: mixWith("--foreground", "black", 10),
+  700: mixWith("--foreground", "black", 20),
+  800: mixWith("--foreground", "black", 30),
+  900: `hsl(var(--foreground))`,
+  950: mixWith("--foreground", "black", 45),
+  DEFAULT: `hsl(var(--muted-foreground))`,
+});
+
 export const colors = {
-  // Cores Primárias (Identidade da marca - Sky Blue #0ea5e9)
-  primary: {
-    50: '#F0F9FF',   // backgrounds sutis
-    100: '#E0F2FE',  // hover states
-    200: '#BAE6FD',
-    300: '#7DD3FC',
-    400: '#38BDF8',
-    500: '#0EA5E9',  // Base - cor principal da marca
-    600: '#0284C7',  // Hover
-    700: '#0369A1',
-    800: '#075985',
-    900: '#0C4A6E',
-    DEFAULT: '#0EA5E9',
-  },
-  
-  // Cores Secundárias (Roxo Criativo)
-  secondary: {
-    50: '#FAF5FF',
-    100: '#F3E8FF',
-    200: '#E9D5FF',
-    300: '#D8B4FE',
-    400: '#C084FC',
-    500: '#A855F7',  // Base
-    600: '#9333EA',  // Hover
-    700: '#7E22CE',
-    800: '#6B21A8',
-    900: '#581C87',
-    DEFAULT: '#A855F7',
-  },
-  
-  // Cores de Feedback (Status e alertas)
-  success: {
-    50: '#F0FDF4',
-    100: '#DCFCE7',
-    200: '#BBF7D0',
-    300: '#86EFAC',
-    400: '#4ADE80',
-    500: '#22C55E',  // Base - verde sucesso
-    600: '#16A34A',  // Hover
-    700: '#15803D',
-    800: '#166534',
-    900: '#14532D',
-    DEFAULT: '#22C55E',
-  },
-  
-  warning: {
-    50: '#FFFBEB',
-    100: '#FEF3C7',
-    200: '#FDE68A',
-    300: '#FCD34D',
-    400: '#FBBF24',
-    500: '#F59E0B',  // Base - amarelo/laranja aviso
-    600: '#D97706',  // Hover
-    700: '#B45309',
-    800: '#92400E',
-    900: '#78350F',
-    DEFAULT: '#F59E0B',
-  },
-  
-  error: {
-    50: '#FEF2F2',
-    100: '#FEE2E2',
-    200: '#FECACA',
-    300: '#FCA5A5',
-    400: '#F87171',
-    500: '#EF4444',  // Base - vermelho erro
-    600: '#DC2626',  // Hover
-    700: '#B91C1C',
-    800: '#991B1B',
-    900: '#7F1D1D',
-    DEFAULT: '#EF4444',
-  },
-  
-  info: {
-    50: '#ECFEFF',
-    100: '#CFFAFE',
-    200: '#A5F3FC',
-    300: '#67E8F9',
-    400: '#22D3EE',
-    500: '#06B6D4',  // Base - ciano informação
-    600: '#0891B2',  // Hover
-    700: '#0E7490',
-    800: '#155E75',
-    900: '#164E63',
-    DEFAULT: '#06B6D4',
-  },
-  
-  // Cores Neutras (Textos, backgrounds, bordas)
-  neutral: {
-    0: '#FFFFFF',     // Branco puro
-    50: '#F9FAFB',    // Quase branco - backgrounds
-    100: '#F3F4F6',   // Cinza muito claro
-    200: '#E5E7EB',   // Cinza claro - bordas sutis
-    300: '#D1D5DB',   // Cinza médio claro
-    400: '#9CA3AF',   // Cinza médio - texto desabilitado
-    500: '#6B7280',   // Cinza - texto secundário
-    600: '#4B5563',   // Cinza escuro - texto normal
-    700: '#374151',   // Muito escuro - texto importante
-    800: '#1F2937',   // Quase preto - headings
-    900: '#111827',   // Preto - texto principal
-    950: '#030712',   // Preto total
-    DEFAULT: '#6B7280',
-  },
-  
-  // Cores de Background
+  // Identidade
+  primary: createScale("--primary"),
+  secondary: createScale("--secondary"),
+
+  // Feedback
+  success: createScale("--success"),
+  warning: createScale("--warning"),
+  error: createScale("--error"),
+  info: createScale("--info"),
+
+  // Neutros
+  neutral: createNeutralScale(),
+
+  // Backgrounds
   background: {
-    primary: '#FFFFFF',      // Fundo principal (branco)
-    secondary: '#F9FAFB',    // Fundo secundário (cinza claríssimo)
-    tertiary: '#F3F4F6',     // Fundo terciário (cinza claro)
-    inverse: '#111827',      // Fundo escuro (para contraste)
+    primary: `hsl(var(--background))`,
+    secondary: mixWith("--background", "white", 4),
+    tertiary: mixWith("--background", "white", 8),
+    inverse: `hsl(var(--foreground))`,
   },
-  
-  // Cores de Texto (com contraste garantido WCAG AA)
+
+  // Texto
   text: {
-    primary: '#111827',      // Texto principal (preto) - Contraste 16:1
-    secondary: '#4B5563',    // Texto secundário (cinza escuro) - Contraste 7:1
-    tertiary: '#6B7280',     // Texto terciário (cinza) - Contraste 4.5:1
-    inverse: '#FFFFFF',      // Texto em fundos escuros
-    disabled: '#9CA3AF',     // Texto desabilitado
-    link: '#0EA5E9',         // Links
-    linkHover: '#0284C7',    // Links hover
+    primary: `hsl(var(--foreground))`,
+    secondary: mixWith("--foreground", "white", 15),
+    tertiary: mixWith("--foreground", "white", 30),
+    inverse: `hsl(var(--background))`,
+    disabled: `hsl(var(--muted-foreground))`,
+    link: `hsl(var(--primary))`,
+    linkHover: mixWith("--primary", "black", 12),
   },
-  
-  // Cores de Borda
+
+  // Borda
   border: {
-    light: '#E5E7EB',        // Bordas sutis
-    DEFAULT: '#D1D5DB',      // Bordas padrão
-    dark: '#9CA3AF',         // Bordas escuras
-    focus: '#0EA5E9',        // Bordas de foco
+    light: `hsl(var(--border))`,
+    DEFAULT: `hsl(var(--border))`,
+    dark: mixWith("--border", "black", 15),
+    focus: `hsl(var(--ring))`,
   },
 } as const;
 
@@ -323,16 +265,23 @@ export const layout = {
 // ============================================
 // SHADOWS
 // ============================================
+const shadowBase = 'hsl(var(--foreground) / 0.08)';
+const shadowMid = 'hsl(var(--foreground) / 0.12)';
+const shadowStrong = 'hsl(var(--foreground) / 0.2)';
 
 export const shadows = {
   none: 'none',
-  sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
-  DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
-  md: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-  lg: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
-  xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-  '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
-  inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
+  sm: `0 1px 2px 0 ${shadowBase}`,
+  DEFAULT: `0 1px 3px 0 ${shadowMid}, 0 1px 2px -1px ${shadowMid}`,
+  md: `0 4px 6px -1px ${shadowMid}, 0 2px 4px -2px ${shadowMid}`,
+  lg: `0 10px 15px -3px ${shadowMid}, 0 4px 6px -4px ${shadowMid}`,
+  xl: `0 20px 25px -5px ${shadowStrong}, 0 8px 10px -6px ${shadowMid}`,
+  '2xl': `0 25px 50px -12px ${shadowStrong}`,
+  inner: `inset 0 2px 4px 0 ${shadowBase}`,
+  primary: '0 4px 14px 0 hsl(var(--primary) / 0.35)',
+  secondary: '0 4px 14px 0 hsl(var(--secondary) / 0.35)',
+  success: '0 4px 14px 0 hsl(var(--success) / 0.35)',
+  error: '0 4px 14px 0 hsl(var(--error) / 0.35)',
 } as const;
 
 // ============================================

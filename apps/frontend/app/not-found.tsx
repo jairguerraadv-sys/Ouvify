@@ -5,7 +5,7 @@ import { Home, ArrowLeft } from 'lucide-react';
 
 export default function NotFound() {
   return (
-    <div className="bg-white min-h-screen flex items-center justify-center px-4">
+    <div className="bg-background min-h-screen flex items-center justify-center px-4">
       <div className="text-center max-w-2xl">
         
         {/* ✅ Logo grande */}
@@ -18,11 +18,11 @@ export default function NotFound() {
           404
         </h1>
         
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl font-bold text-text-primary mb-4">
           Página não encontrada
         </h2>
         
-        <p className="text-lg text-gray-600 mb-8">
+        <p className="text-lg text-text-secondary mb-8">
           Desculpe, a página que você está procurando não existe ou foi movida.
         </p>
 

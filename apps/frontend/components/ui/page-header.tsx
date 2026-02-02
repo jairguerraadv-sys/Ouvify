@@ -105,21 +105,21 @@ export function PageHeader({
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <nav 
-          className="flex items-center gap-2 text-sm text-gray-500 mb-3"
+          className="flex items-center gap-2 text-sm text-text-tertiary mb-3"
           aria-label="Breadcrumb"
         >
           {breadcrumbs.map((crumb, index) => (
             <React.Fragment key={index}>
-              {index > 0 && <span className="text-gray-300">/</span>}
+              {index > 0 && <span className="text-border-dark">/</span>}
               {crumb.href ? (
                 <Link 
                   href={crumb.href}
-                  className="hover:text-primary-600 transition-colors"
+                  className="hover:text-text-link transition-colors"
                 >
                   {crumb.label}
                 </Link>
               ) : (
-                <span className="text-gray-900 font-medium">{crumb.label}</span>
+                <span className="text-text-primary font-medium">{crumb.label}</span>
               )}
             </React.Fragment>
           ))}
@@ -130,7 +130,7 @@ export function PageHeader({
       {backHref && (
         <Link 
           href={backHref}
-          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-primary-600 transition-colors mb-3"
+          className="inline-flex items-center gap-1 text-sm text-text-tertiary hover:text-text-link transition-colors mb-3"
         >
           <ArrowLeft className="w-4 h-4" />
           {backLabel}
@@ -141,13 +141,13 @@ export function PageHeader({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold font-heading text-gray-900">
+            <h1 className="text-2xl font-bold font-heading text-text-primary">
               {title}
             </h1>
             {badge}
           </div>
           {description && (
-            <p className="text-gray-500 text-sm sm:text-base">
+            <p className="text-text-secondary text-sm sm:text-base">
               {description}
             </p>
           )}
@@ -183,7 +183,7 @@ export function DashboardPageHeader({
       title={title}
       description={description}
       action={action}
-      className="border-b border-gray-200 pb-6"
+      className="border-b border-border-light pb-6"
     >
       {children}
     </PageHeader>

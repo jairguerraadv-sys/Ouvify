@@ -13,6 +13,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+
+    // Editor/temporary backup files (should not be linted)
+    "**/.!*",
   ]),
   // TypeScript rules enhancement
   {

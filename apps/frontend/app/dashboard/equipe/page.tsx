@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import { FlexBetween } from '@/components/ui';
 import { 
   UserPlus, 
   Mail, 
@@ -168,9 +169,9 @@ export default function TeamManagementPage() {
       OWNER: 'bg-purple-100 text-purple-800',
       ADMIN: 'bg-primary-100 text-primary-800',
       MODERATOR: 'bg-success-100 text-success-800',
-      VIEWER: 'bg-gray-100 text-gray-800',
+      VIEWER: 'bg-neutral-100 text-neutral-800',
     };
-    return colors[role] || 'bg-gray-100 text-gray-800';
+    return colors[role] || 'bg-neutral-100 text-neutral-800';
   };
 
   const getRoleIcon = (role: string) => {
@@ -193,11 +194,11 @@ export default function TeamManagementPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-2">
+          <h1 className="text-3xl font-bold text-text-primary flex items-center gap-2">
             <Users className="w-8 h-8" />
             Gestão de Equipe
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-text-secondary mt-1">
             Gerencie membros e convites da sua equipe
           </p>
         </div>
@@ -268,23 +269,23 @@ export default function TeamManagementPage() {
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-4">
-            <div className="text-sm text-gray-600">Membros Ativos</div>
+            <div className="text-sm text-text-secondary">Membros Ativos</div>
             <div className="text-2xl font-bold">{stats.active_members}</div>
-            <div className="text-xs text-gray-500">de {stats.team_limit} máximo ({stats.plan})</div>
+            <div className="text-xs text-text-tertiary">de {stats.team_limit} máximo ({stats.plan})</div>
           </Card>
           
           <Card className="p-4">
-            <div className="text-sm text-gray-600">Proprietários</div>
+            <div className="text-sm text-text-secondary">Proprietários</div>
             <div className="text-2xl font-bold text-purple-600">{stats.members_by_role.owner}</div>
           </Card>
           
           <Card className="p-4">
-            <div className="text-sm text-gray-600">Administradores</div>
+            <div className="text-sm text-text-secondary">Administradores</div>
             <div className="text-2xl font-bold text-primary-600">{stats.members_by_role.admin}</div>
           </Card>
           
           <Card className="p-4">
-            <div className="text-sm text-gray-600">Moderadores</div>
+            <div className="text-sm text-text-secondary">Moderadores</div>
             <div className="text-2xl font-bold text-success-600">{stats.members_by_role.moderator}</div>
           </Card>
         </div>
@@ -298,16 +299,16 @@ export default function TeamManagementPage() {
         
         <div className="divide-y">
           {members.map((member) => (
-            <div key={member.id} className="p-6 flex items-center justify-between hover:bg-gray-50">
+            <FlexBetween key={member.id} className="p-6 hover:bg-background-secondary">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
                   {member.user.first_name.charAt(0)}{member.user.last_name.charAt(0)}
                 </div>
                 
                 <div>
-                  <div className="font-medium text-gray-900">{member.user.full_name}</div>
-                  <div className="text-sm text-gray-500">{member.user.email}</div>
-                  <div className="text-xs text-gray-400 mt-1">
+                  <div className="font-medium text-text-primary">{member.user.full_name}</div>
+                  <div className="text-sm text-text-tertiary">{member.user.email}</div>
+                  <div className="text-xs text-text-tertiary mt-1">
                     Entrou em {new Date(member.joined_at || member.invited_at).toLocaleDateString('pt-BR')}
                   </div>
                 </div>
@@ -329,7 +330,7 @@ export default function TeamManagementPage() {
                   </Button>
                 )}
               </div>
-            </div>
+            </FlexBetween>
           ))}
         </div>
       </Card>
@@ -343,18 +344,18 @@ export default function TeamManagementPage() {
           
           <div className="divide-y">
             {invitations.map((invitation) => (
-              <div key={invitation.id} className="p-6 flex items-center justify-between">
+              <FlexBetween key={invitation.id} className="p-6">
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 rounded-full bg-warning-100 flex items-center justify-center">
                     <Clock className="w-6 h-6 text-warning-600" />
                   </div>
                   
                   <div>
-                    <div className="font-medium text-gray-900">{invitation.email}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="font-medium text-text-primary">{invitation.email}</div>
+                    <div className="text-sm text-text-tertiary">
                       Convidado em {new Date(invitation.created_at).toLocaleDateString('pt-BR')}
                     </div>
-                    <div className="text-xs text-gray-400">
+                    <div className="text-xs text-text-tertiary">
                       {invitation.is_expired ? (
                         <span className="text-error-600">Expirado</span>
                       ) : (
@@ -377,7 +378,7 @@ export default function TeamManagementPage() {
                     <X className="w-4 h-4 text-error-600" />
                   </Button>
                 </div>
-              </div>
+              </FlexBetween>
             ))}
           </div>
         </Card>

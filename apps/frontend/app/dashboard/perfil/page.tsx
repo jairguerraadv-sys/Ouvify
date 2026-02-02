@@ -1,22 +1,22 @@
 'use client';
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { useState } from 'react';
-import { Sidebar } from '@/components/dashboard/sidebar';
+import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { DashboardHeader } from '@/components/dashboard/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { FlexBetween } from '@/components/ui';
 import { User, Mail, Building, Calendar, Shield, Camera, Sparkles, Download, Trash2, AlertTriangle } from 'lucide-react';
 import { api, getErrorMessage } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function PerfilPage() {
   return (
-    <ProtectedRoute>
+    <DashboardLayout>
       <PerfilContent />
-    </ProtectedRoute>
+    </DashboardLayout>
   );
 }
 
@@ -122,18 +122,14 @@ function PerfilContent() {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-slate-50">
-      <Sidebar user={user || undefined} />
+    <div className="space-y-6">
+      <DashboardHeader 
+        title="Meu Perfil"
+        description="Gerencie suas informações pessoais"
+        user={user || undefined}
+      />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader 
-          title="Meu Perfil"
-          description="Gerencie suas informações pessoais"
-          user={user || undefined}
-        />
-
-        <main className="flex-1 overflow-y-auto p-6 lg:p-8">
-          <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-4xl mx-auto space-y-6">
             {/* Profile Header Card */}
             <Card variant="elevated">
               <CardContent className="pt-6">
@@ -142,11 +138,11 @@ function PerfilContent() {
                   <div className="relative group">
                     <Avatar className="w-32 h-32 border-4 border-primary/10">
                       <AvatarImage src={userData.avatar} alt={userData.name} />
-                      <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary-dark text-gray-900">
+                      <AvatarFallback className="text-3xl bg-gradient-to-br from-primary to-primary-dark text-primary-foreground">
                         {userData.name.split(' ').map(n => n[0]).join('')}
                       </AvatarFallback>
                     </Avatar>
-                    <button className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark text-gray-900 rounded-full p-2 shadow-lg transition-colors opacity-0 group-hover:opacity-100">
+                    <button className="absolute bottom-0 right-0 bg-primary hover:bg-primary-dark text-primary-foreground rounded-full p-2 shadow-lg transition-colors opacity-0 group-hover:opacity-100">
                       <Camera className="w-4 h-4" />
                     </button>
                   </div>
@@ -260,7 +256,7 @@ function PerfilContent() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between py-3 border-b">
+                <FlexBetween className="py-3 border-b">
                   <div>
                     <p className="font-medium text-secondary">Alterar Senha</p>
                     <p className="text-sm text-muted-foreground">Última alteração há 30 dias</p>
@@ -268,8 +264,8 @@ function PerfilContent() {
                   <Button variant="outline" size="sm">
                     Alterar
                   </Button>
-                </div>
-                <div className="flex items-center justify-between py-3 border-b">
+                </FlexBetween>
+                <FlexBetween className="py-3 border-b">
                   <div>
                     <p className="font-medium text-secondary">Autenticação em Dois Fatores</p>
                     <p className="text-sm text-muted-foreground">Adicione uma camada extra de segurança</p>
@@ -277,8 +273,8 @@ function PerfilContent() {
                   <Button variant="outline" size="sm">
                     Ativar
                   </Button>
-                </div>
-                <div className="flex items-center justify-between py-3">
+                </FlexBetween>
+                <FlexBetween className="py-3">
                   <div>
                     <p className="font-medium text-secondary">Sessões Ativas</p>
                     <p className="text-sm text-muted-foreground">Gerencie dispositivos conectados</p>
@@ -286,7 +282,7 @@ function PerfilContent() {
                   <Button variant="outline" size="sm">
                     Ver Sessões
                   </Button>
-                </div>
+                </FlexBetween>
               </CardContent>
             </Card>
 
@@ -379,8 +375,6 @@ function PerfilContent() {
                 </div>
               </CardContent>
             </Card>
-          </div>
-        </main>
       </div>
     </div>
   );

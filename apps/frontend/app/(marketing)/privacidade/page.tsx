@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Shield, Eye, Lock, Database, UserCheck, FileText } from 'lucide-react';
 import { Metadata } from 'next';
+import { DecorativeBlob, InlineFlexRow, MutedText } from '@/components/ui';
 
 export const metadata: Metadata = {
   title: 'Política de Privacidade | Ouvify - Plataforma de Feedback',
@@ -16,8 +17,8 @@ export default function PrivacidadePage() {
   return (
     <main className="min-h-screen bg-white relative overflow-hidden">
         {/* Decorative elements */}
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl opacity-50" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl opacity-30" />
+      <DecorativeBlob tone="primary" placement="topLeftQuarter" />
+      <DecorativeBlob tone="secondary" placement="bottomRightQuarter" />
         
         <div className="container mx-auto px-4 py-16 max-w-4xl relative z-10">
           <div className="space-y-8">
@@ -31,13 +32,13 @@ export default function PrivacidadePage() {
               <h1 className="text-4xl font-bold text-primary">
                 Política de Privacidade
               </h1>
-              <p className="text-muted-foreground">
+              <MutedText block size="inherit">
                 Última atualização: 14 de janeiro de 2026
-              </p>
-              <p className="text-sm text-muted-foreground max-w-2xl mx-auto">
+              </MutedText>
+              <MutedText block className="max-w-2xl mx-auto">
                 No Ouvify, levamos sua privacidade a sério. Esta política descreve como coletamos, 
                 usamos, armazenamos e protegemos seus dados pessoais.
-              </p>
+              </MutedText>
             </div>
 
             {/* Resumo Visual */}
@@ -63,15 +64,17 @@ export default function PrivacidadePage() {
             <div className="prose prose-lg max-w-none space-y-6 bg-white rounded-2xl p-8 shadow-lg border border-border">
               {/* Seção 1 */}
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                  <Database className="w-6 h-6" />
-                  1. Dados que Coletamos
+                <h2 className="text-2xl font-semibold text-secondary">
+                  <InlineFlexRow gap="2">
+                    <Database className="w-6 h-6" />
+                    1. Dados que Coletamos
+                  </InlineFlexRow>
                 </h2>
                 
                 <h3 className="text-xl font-semibold text-secondary mt-4">1.1 Clientes (Empresas)</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Ao criar uma conta como Cliente, coletamos:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li><strong>Dados de cadastro:</strong> Nome, email, nome da empresa, subdomínio</li>
                   <li><strong>Dados de pagamento:</strong> Processados pelo Stripe (não armazenamos cartões)</li>
@@ -80,9 +83,9 @@ export default function PrivacidadePage() {
                 </ul>
 
                 <h3 className="text-xl font-semibold text-secondary mt-4">1.2 Usuários Finais (Enviadores de Feedback)</h3>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Ao enviar um feedback, coletamos:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li><strong>Conteúdo do feedback:</strong> Mensagem, tipo (denúncia/sugestão/elogio)</li>
                   <li><strong>Dados opcionais:</strong> Nome, email, telefone (se fornecidos)</li>
@@ -94,13 +97,15 @@ export default function PrivacidadePage() {
 
               {/* Seção 2 */}
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                  <Eye className="w-6 h-6" />
-                  2. Como Usamos seus Dados
+                <h2 className="text-2xl font-semibold text-secondary">
+                  <InlineFlexRow gap="2">
+                    <Eye className="w-6 h-6" />
+                    2. Como Usamos seus Dados
+                  </InlineFlexRow>
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Utilizamos os dados coletados para:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li><strong>Fornecer o serviço:</strong> Processar feedbacks, gerar protocolos, enviar notificações</li>
                   <li><strong>Gerenciar sua conta:</strong> Autenticação, configurações, preferências</li>
@@ -114,57 +119,59 @@ export default function PrivacidadePage() {
 
               {/* Seção 3 */}
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                  <Lock className="w-6 h-6" />
-                  3. Como Protegemos seus Dados
+                <h2 className="text-2xl font-semibold text-secondary">
+                  <InlineFlexRow gap="2">
+                    <Lock className="w-6 h-6" />
+                    3. Como Protegemos seus Dados
+                  </InlineFlexRow>
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Implementamos medidas técnicas e organizacionais para proteger seus dados:
-                </p>
+                </MutedText>
                 <div className="bg-secondary/5 rounded-lg p-6 space-y-3">
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-success rounded-full mt-2" />
                     <div>
                       <strong className="text-secondary">Criptografia:</strong>
-                      <p className="text-sm text-muted-foreground">
+                      <MutedText block>
                         SSL/TLS para dados em trânsito, criptografia em repouso no banco de dados
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-success rounded-full mt-2" />
                     <div>
                       <strong className="text-secondary">Autenticação:</strong>
-                      <p className="text-sm text-muted-foreground">
+                      <MutedText block>
                         Tokens seguros, hashing de senhas, proteção contra força bruta
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-success rounded-full mt-2" />
                     <div>
                       <strong className="text-secondary">Isolamento:</strong>
-                      <p className="text-sm text-muted-foreground">
+                      <MutedText block>
                         Dados de cada Cliente são isolados (multitenancy seguro)
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-success rounded-full mt-2" />
                     <div>
                       <strong className="text-secondary">Backups:</strong>
-                      <p className="text-sm text-muted-foreground">
+                      <MutedText block>
                         Backups automáticos diários com retenção de 30 dias
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
                     <div className="w-2 h-2 bg-success rounded-full mt-2" />
                     <div>
                       <strong className="text-secondary">Monitoramento:</strong>
-                      <p className="text-sm text-muted-foreground">
+                      <MutedText block>
                         Logs de acesso, detecção de anomalias, alertas de segurança
-                      </p>
+                      </MutedText>
                     </div>
                   </div>
                 </div>
@@ -175,9 +182,9 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   4. Compartilhamento de Dados
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   <strong>Não vendemos seus dados.</strong> Podemos compartilhar dados apenas com:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li><strong>Prestadores de serviço:</strong> Stripe (pagamentos), Railway (hosting), Vercel (frontend)</li>
                   <li><strong>Por exigência legal:</strong> Autoridades competentes, mediante ordem judicial</li>
@@ -187,54 +194,56 @@ export default function PrivacidadePage() {
 
               {/* Seção 5 */}
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                  <UserCheck className="w-6 h-6" />
-                  5. Seus Direitos (LGPD)
+                <h2 className="text-2xl font-semibold text-secondary">
+                  <InlineFlexRow gap="2">
+                    <UserCheck className="w-6 h-6" />
+                    5. Seus Direitos (LGPD)
+                  </InlineFlexRow>
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   De acordo com a LGPD, você tem direito a:
-                </p>
+                </MutedText>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Acesso</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Solicitar cópia dos seus dados
-                    </p>
+                    </MutedText>
                   </div>
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Correção</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Atualizar dados incorretos
-                    </p>
+                    </MutedText>
                   </div>
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Exclusão</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Deletar sua conta e dados
-                    </p>
+                    </MutedText>
                   </div>
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Portabilidade</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Exportar dados em formato legível
-                    </p>
+                    </MutedText>
                   </div>
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Revogação</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Retirar consentimento a qualquer momento
-                    </p>
+                    </MutedText>
                   </div>
                   <div className="bg-primary/5 rounded-lg p-4">
                     <strong className="text-secondary">✓ Informação</strong>
-                    <p className="text-sm text-muted-foreground mt-1">
+                    <MutedText block className="mt-1">
                       Saber quem acessa seus dados
-                    </p>
+                    </MutedText>
                   </div>
                 </div>
-                <p className="text-muted-foreground leading-relaxed mt-4">
+                <MutedText block size="inherit" className="leading-relaxed mt-4">
                   Para exercer seus direitos, entre em contato: <strong>privacidade@ouvify.com</strong>
-                </p>
+                </MutedText>
               </section>
 
               {/* Seção 6 */}
@@ -242,17 +251,17 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   6. Cookies e Tecnologias Similares
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Utilizamos cookies essenciais para:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Manter você autenticado durante a sessão</li>
                   <li>Lembrar suas preferências (ex: modo escuro)</li>
                   <li>Analisar o uso da plataforma (analytics anônimos)</li>
                 </ul>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Você pode desabilitar cookies no seu navegador, mas isso pode afetar a funcionalidade.
-                </p>
+                </MutedText>
               </section>
 
               {/* Seção 7 */}
@@ -260,9 +269,9 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   7. Retenção de Dados
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Mantemos seus dados pelo tempo necessário para fornecer o serviço:
-                </p>
+                </MutedText>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li><strong>Conta ativa:</strong> Enquanto sua assinatura estiver ativa</li>
                   <li><strong>Conta cancelada:</strong> 90 dias após cancelamento (para possível reativação)</li>
@@ -276,11 +285,11 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   8. Transferência Internacional
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Nossos servidores estão localizados em provedores certificados. Alguns prestadores 
                   de serviço (como Stripe) podem processar dados fora do Brasil, sempre com 
                   garantias adequadas de proteção.
-                </p>
+                </MutedText>
               </section>
 
               {/* Seção 9 */}
@@ -288,10 +297,10 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   9. Menores de Idade
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   O Ouvify não coleta intencionalmente dados de menores de 18 anos. Se identificarmos 
                   dados de menores, tomaremos medidas para deletá-los.
-                </p>
+                </MutedText>
               </section>
 
               {/* Seção 10 */}
@@ -299,38 +308,40 @@ export default function PrivacidadePage() {
                 <h2 className="text-2xl font-semibold text-secondary">
                   10. Alterações nesta Política
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Podemos atualizar esta Política periodicamente. Notificaremos mudanças significativas 
                   por email ou através da plataforma. A data da última atualização está sempre visível 
                   no topo desta página.
-                </p>
+                </MutedText>
               </section>
 
               {/* Seção 11 */}
               <section className="space-y-4">
-                <h2 className="text-2xl font-semibold text-secondary flex items-center gap-2">
-                  <FileText className="w-6 h-6" />
-                  11. Contato - Encarregado de Dados (DPO)
+                <h2 className="text-2xl font-semibold text-secondary">
+                  <InlineFlexRow gap="2">
+                    <FileText className="w-6 h-6" />
+                    11. Contato - Encarregado de Dados (DPO)
+                  </InlineFlexRow>
                 </h2>
-                <p className="text-muted-foreground leading-relaxed">
+                <MutedText block size="inherit" className="leading-relaxed">
                   Para questões sobre privacidade e proteção de dados:
-                </p>
+                </MutedText>
                 <div className="bg-secondary/5 rounded-lg p-6 space-y-3">
-                  <p className="text-muted-foreground">
+                  <MutedText block size="inherit">
                     <strong>Email do DPO:</strong>{' '}
                     <a href="mailto:privacidade@ouvify.com" className="text-primary hover:underline">
                       privacidade@ouvify.com
                     </a>
-                  </p>
-                  <p className="text-muted-foreground">
+                  </MutedText>
+                  <MutedText block size="inherit">
                     <strong>Suporte Geral:</strong>{' '}
                     <a href="mailto:support@ouvify.com" className="text-primary hover:underline">
                       support@ouvify.com
                     </a>
-                  </p>
-                  <p className="text-sm text-muted-foreground mt-4">
+                  </MutedText>
+                  <MutedText block className="mt-4">
                     Responderemos suas solicitações em até 15 dias úteis, conforme a LGPD.
-                  </p>
+                  </MutedText>
                 </div>
               </section>
             </div>

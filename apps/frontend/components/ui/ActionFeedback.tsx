@@ -116,7 +116,7 @@ export function StatusIndicator({
     error: 'bg-error-500',
     warning: 'bg-warning-500',
     loading: 'bg-primary-500',
-    idle: 'bg-gray-400',
+    idle: 'bg-border-dark',
   };
 
   return (
