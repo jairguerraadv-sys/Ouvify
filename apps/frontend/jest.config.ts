@@ -30,10 +30,20 @@ const config: Config = {
     '!**/node_modules/**',
     '!**/.next/**',
   ],
+  coverageThreshold: {
+    global: {
+      statements: 60,
+      branches: 50,
+      functions: 60,
+      lines: 60,
+    },
+  },
   testMatch: [
     '**/__tests__/**/*.(test|spec).[jt]s?(x)',
     '**/*.(test|spec).[jt]s?(x)',
   ],
+  maxWorkers: 2,
+  workerIdleMemoryLimit: '512MB',
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
