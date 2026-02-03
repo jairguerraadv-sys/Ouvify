@@ -1,0 +1,19 @@
+# =============================================================================
+# OUVIFY SAAS - Backend Requirements (DEV)
+# =============================================================================
+# Dependências para desenvolvimento local: debug, qualidade e auditoria.
+# =============================================================================
+
+-r base.txt
+
+# Performance Analysis & Debug (dev only)
+nplusone==1.0.0  # N+1 query detection
+django-debug-toolbar==5.0.1  # Development debugging
+
+# Security tooling (dev/CI)
+bandit==1.9.3
+safety==3.7.0
+safety-schemas==0.0.16
+
+# Code Quality
+pre_commit==4.5.1

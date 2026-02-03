@@ -10,31 +10,13 @@ Testa:
 - Round-robin de atribuição
 """
 
-import os
 import pytest
 from datetime import timedelta
 from django.utils import timezone
 from unittest.mock import MagicMock, patch
 
-os.environ['TESTING'] = 'true'
-
 from apps.feedbacks.models import Feedback
 from apps.core.utils import set_current_tenant
-
-
-@pytest.fixture(autouse=True)
-def skip_celery_tasks(monkeypatch):
-    """Mocka tasks Celery."""
-    monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
-    
-    import apps.notifications.tasks as notif_tasks
-    monkeypatch.setattr(notif_tasks, 'send_feedback_created_push', MagicMock())
-    monkeypatch.setattr(notif_tasks, 'send_status_update_push', MagicMock())
-    monkeypatch.setattr(notif_tasks, 'send_push_notification', MagicMock())
-    
-    import apps.feedbacks.tasks as fb_tasks
-    monkeypatch.setattr(fb_tasks, 'send_new_feedback_email', MagicMock())
-    monkeypatch.setattr(fb_tasks, 'send_assignment_email', MagicMock())
 
 
 @pytest.fixture

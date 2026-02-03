@@ -57,17 +57,15 @@ class FeedbackAPITestCase(TestCase):
 
         # Verificar se o feedback foi criado
         data = response.json()
-        print(f"DEBUG: Response data: {data}")
         self.assertIn('protocolo', data)
         self.assertEqual(data['tipo'], 'denuncia')
         self.assertEqual(data['titulo'], 'Denúncia de Teste')
         self.assertTrue(data['anonimo'])
 
-        # Por enquanto, pular verificação no banco devido a problemas com banco em memória
-        # TODO: Corrigir isolamento de tenant nos testes
-        # feedback = Feedback.objects.get(protocolo=data['protocolo'], client=self.tenant)
-        # self.assertEqual(feedback.client, self.tenant)
-        # self.assertEqual(feedback.tipo, 'denuncia')
+        # Verificar no banco usando all_tenants() (fora do contexto de tenant no thread-local)
+        feedback = Feedback.objects.all_tenants().get(protocolo=data['protocolo'], client=self.tenant)
+        self.assertEqual(feedback.client, self.tenant)
+        self.assertEqual(feedback.tipo, 'denuncia')
 
     def test_create_feedback_authenticated(self):
         """Teste: Criar feedback como usuário autenticado"""
@@ -110,34 +108,58 @@ class FeedbackAPITestCase(TestCase):
             content_type='application/json',
             **self.headers
         )
+
+        self.assertEqual(create_response.status_code, 201)
         
         protocolo = create_response.json()['protocolo']
 
         # Consultar protocolo
         url = reverse('feedback-consultar-protocolo')
         response = self.client.get(
-            f"{url}?codigo={protocolo}",
+            f"{url}?protocolo={protocolo}",
             **self.headers
         )
 
-        # TODO: Corrigir endpoint de consulta para aceitar tenant
-        # self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data['protocolo'], protocolo)
 
     def test_protocolo_not_found(self):
         """Teste: Consultar protocolo inexistente"""
         url = reverse('feedback-consultar-protocolo')
         response = self.client.get(
-            f"{url}?codigo=INVALID-PROTOCOL",
+            f"{url}?protocolo=INVALID-PROTOCOL",
             **self.headers
         )
 
-        # TODO: Corrigir endpoint de consulta para aceitar tenant
-        # self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     def test_tenant_isolation(self):
         """Teste: Isolamento entre tenants"""
-        # TODO: Implementar teste de isolamento quando queries de tenant estiverem funcionando
-        pass
+        # Criar um segundo tenant
+        tenant2 = TenantClient.objects.create(
+            nome="Empresa 2",
+            subdominio="empresa2",
+            plano="starter",
+            ativo=True,
+        )
+
+        # Criar feedback no tenant2
+        feedback_t2 = Feedback.objects.all_tenants().create(
+            client=tenant2,
+            tipo="reclamacao",
+            titulo="Reclamação Tenant2",
+            descricao="Texto",
+            anonimo=True,
+        )
+
+        # Consultar o protocolo do tenant2 com header do tenant1 deve retornar 404
+        url = reverse('feedback-consultar-protocolo')
+        response = self.client.get(
+            f"{url}?protocolo={feedback_t2.protocolo}",
+            **self.headers,
+        )
+        self.assertEqual(response.status_code, 404)
 
     def test_rate_limiting(self):
         """Teste: Rate limiting na consulta de protocolo"""

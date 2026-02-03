@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
 import { DashboardHeader } from '@/components/dashboard/header';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,6 +11,21 @@ import { FlexBetween } from '@/components/ui';
 import { User, Mail, Building, Calendar, Shield, Camera, Sparkles, Download, Trash2, AlertTriangle } from 'lucide-react';
 import { api, getErrorMessage } from '@/lib/api';
 import { useAuth } from '@/contexts/AuthContext';
+
+type UserMeResponse = {
+  id: number;
+  name: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  data_cadastro: string;
+  empresa: string | null;
+  tenant_id: number | null;
+  tenant_subdominio: string | null;
+  plano: string | null;
+  cargo: string | null;
+};
 
 export default function PerfilPage() {
   return (
@@ -26,16 +41,49 @@ function PerfilContent() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const { user } = useAuth();
 
-  // Dados do usuário real do AuthContext
+  const [me, setMe] = useState<UserMeResponse | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const response = await api.get<UserMeResponse>('/api/users/me/');
+        if (mounted) setMe(response);
+      } catch (error) {
+        // Não bloquear a tela: ainda dá para renderizar com AuthContext
+        console.error('Erro ao carregar /api/users/me/:', error);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  const cadastroLabel = useMemo(() => {
+    const iso = me?.data_cadastro;
+    if (!iso) return '—';
+    const date = new Date(iso);
+    if (Number.isNaN(date.getTime())) return '—';
+    return date.toLocaleDateString('pt-BR');
+  }, [me?.data_cadastro]);
+
+  const planoLabel = useMemo(() => {
+    const plano = (me?.plano || '').trim();
+    if (!plano) return '—';
+    return plano.charAt(0).toUpperCase() + plano.slice(1);
+  }, [me?.plano]);
+
   const userData = {
-    name: user?.name || 'Usuário',
-    email: user?.email || '',
+    name: me?.name || user?.name || 'Usuário',
+    email: me?.email || user?.email || '',
     avatar: user?.avatar || '',
-    empresa: user?.empresa || 'Não informado',
-    cargo: 'Administrador', // TODO: Adicionar campo cargo ao backend
-    cadastro: 'Recente', // TODO: Adicionar data de cadastro ao backend
-    plano: 'Pro', // TODO: Buscar do backend via API
-    status: 'Ativo'
+    empresa: me?.empresa || user?.empresa || 'Não informado',
+    cargo: me?.cargo || 'Usuário',
+    cadastro: cadastroLabel,
+    plano: planoLabel,
+    status: 'Ativo',
   };
 
   const handleExportData = async () => {

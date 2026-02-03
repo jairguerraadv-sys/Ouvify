@@ -4,7 +4,7 @@
 # ============================================
 
 # Stage 1: Builder
-FROM python:3.12-slim AS builder
+FROM python:3.11-slim AS builder
 
 WORKDIR /app
 
@@ -19,16 +19,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
 
-# Install Python dependencies
-COPY requirements.txt .
+# Install Python dependencies (prod)
+COPY requirements/prod.txt requirements/prod.txt
+COPY requirements/base.txt requirements/base.txt
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt && \
+    pip install --no-cache-dir -r requirements/prod.txt && \
     pip install --no-cache-dir gunicorn
 
 # ============================================
 # Stage 2: Production
 # ============================================
-FROM python:3.12-slim AS production
+FROM python:3.11-slim AS production
 
 # Create non-root user for security
 RUN groupadd -r ouvify && useradd -r -g ouvify ouvify
