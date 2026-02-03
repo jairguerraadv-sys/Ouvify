@@ -16,6 +16,9 @@ import django
 import pytest
 from django.conf import settings
 from dotenv import load_dotenv
+from unittest.mock import MagicMock
+
+from apps.core.utils import set_current_tenant
 
 # Carregar variáveis de ambiente do .env
 env_path = Path(__file__).resolve().parent / '.env'
@@ -101,6 +104,14 @@ def tenant_factory(db):
         )
     
     return create_tenant
+
+
+@pytest.fixture
+def tenant(db, tenant_factory):
+    """Cria tenant de teste e configura contexto multi-tenant."""
+    t = tenant_factory()
+    set_current_tenant(t)
+    return t
 
 
 @pytest.fixture
@@ -206,3 +217,18 @@ def reset_sequences(db):
     """Reset sequences após cada teste (se necessário)."""
     yield
     # Cleanup pode ser adicionado aqui se necessário
+
+
+@pytest.fixture(autouse=True)
+def skip_celery_tasks(monkeypatch):
+    """Mocka tasks Celery para evitar conexão com Redis/Celery durante testes."""
+    monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
+
+    import apps.notifications.tasks as notif_tasks
+    monkeypatch.setattr(notif_tasks, 'send_feedback_created_push', MagicMock())
+    monkeypatch.setattr(notif_tasks, 'send_status_update_push', MagicMock())
+    monkeypatch.setattr(notif_tasks, 'send_push_notification', MagicMock())
+
+    import apps.feedbacks.tasks as fb_tasks
+    monkeypatch.setattr(fb_tasks, 'send_new_feedback_email', MagicMock())
+    monkeypatch.setattr(fb_tasks, 'send_assignment_email', MagicMock())

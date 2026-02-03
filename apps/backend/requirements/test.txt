@@ -1,0 +1,17 @@
+# =============================================================================
+# OUVIFY SAAS - Backend Requirements (TEST)
+# =============================================================================
+# Dependências para testes automatizados (unit/integration) e cobertura.
+# =============================================================================
+
+-r base.txt
+
+# Testing
+pytest==9.0.2
+pytest-cov==7.0.0
+pytest-django==4.11.1
+coverage==7.13.1
+pytest-env
+
+# Load/Perf testing (opcional; usado em pipelines específicas)
+locust>=2.43.1

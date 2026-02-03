@@ -757,18 +757,46 @@ class UserMeView(APIView):
     
     def get(self, request):
         user = request.user
-        
-        # Buscar tenant do usuário
-        try:
-            tenant = Client.objects.get(owner=user)
+
+        # Preferir o tenant resolvido pelo middleware (suporta TeamMember e subdomínio/header)
+        tenant = getattr(request, 'tenant', None)
+
+        # Fallback: se não houver tenant no request, tentar obter pelo owner
+        if tenant is None:
+            try:
+                tenant = Client.objects.get(owner=user)
+            except Client.DoesNotExist:
+                tenant = None
+
+        tenant_data = None
+        if tenant is not None:
             tenant_data = {
                 'id': tenant.id,  # type: ignore[attr-defined]
                 'nome': tenant.nome,
                 'subdominio': tenant.subdominio,
+                'plano': getattr(tenant, 'plano', None),
             }
-        except Client.DoesNotExist:
-            tenant_data = None
-        
+
+        # Determinar cargo (role) do usuário no contexto do tenant
+        cargo = None
+        if getattr(user, 'is_superuser', False):
+            cargo = 'Super Admin'
+        elif tenant is not None and getattr(tenant, 'owner_id', None) == getattr(user, 'id', None):
+            cargo = 'Proprietário'
+        elif tenant is not None:
+            try:
+                from apps.tenants.models import TeamMember
+
+                membership = TeamMember.objects.filter(
+                    user=user,
+                    client=tenant,
+                    status=TeamMember.ACTIVE,
+                ).first()
+                if membership:
+                    cargo = membership.get_role_display()
+            except Exception:
+                cargo = None
+
         return Response({
             'id': user.id,
             'name': user.get_full_name() or user.username,
@@ -780,6 +808,8 @@ class UserMeView(APIView):
             'empresa': tenant_data['nome'] if tenant_data else None,
             'tenant_id': tenant_data['id'] if tenant_data else None,
             'tenant_subdominio': tenant_data['subdominio'] if tenant_data else None,
+            'plano': tenant_data['plano'] if tenant_data else None,
+            'cargo': cargo,
         }, status=status.HTTP_200_OK)
     
     def patch(self, request):

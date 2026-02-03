@@ -2,45 +2,18 @@
  * Testes da página de Feedbacks
  * Cobertura: Listagem, filtros, busca, estados, interações
  */
+import { authenticatedAuthContextMock, createNextNavigationMock, protectedRouteMock } from './mocks/pageTestMocks';
 import { render } from '@testing-library/react';
 import { screen, waitFor, fireEvent, within } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 import FeedbacksPage from '@/app/dashboard/feedbacks/page';
 
-jest.mock('@/components/ProtectedRoute', () => ({
-  ProtectedRoute: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-}));
+jest.mock('@/components/ProtectedRoute', () => protectedRouteMock());
 
 // Mock dos módulos necessários
-jest.mock('next/navigation', () => ({
-  useRouter: jest.fn(() => ({
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-    back: jest.fn(),
-  })),
-  usePathname: jest.fn(() => '/dashboard/feedbacks'),
-  useSearchParams: jest.fn(() => new URLSearchParams()),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock('/dashboard/feedbacks'));
 
-jest.mock('@/contexts/AuthContext', () => ({
-  useAuth: jest.fn(() => ({
-    isAuthenticated: true,
-    isLoading: false,
-    user: {
-      id: 1,
-      email: 'test@example.com',
-      name: 'Test User',
-    },
-    tenant: {
-      id: 1,
-      nome: 'Test Company',
-      subdominio: 'testcompany',
-      plano: 'professional',
-    },
-  })),
-  AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-}));
+jest.mock('@/contexts/AuthContext', () => authenticatedAuthContextMock());
 
 const mockFeedbacks = [
   {

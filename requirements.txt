@@ -1,8 +1,13 @@
 # =============================================================================
 # OUVIFY SAAS - Monorepo Requirements (Wrapper)
 # =============================================================================
-# Source of truth lives in `apps/backend/requirements.txt`.
-# This wrapper exists for repo-root tooling that expects `requirements.txt`.
+# Wrapper para ferramentas que assumem `requirements.txt` na raiz.
+#
+# Por padrão, apontamos para PROD (runtime) para evitar instalar dependências
+# de teste/auditoria em ambientes que não precisam delas.
+#
+# Dev local: `apps/backend/requirements.txt` (inclui dev)
+# Testes/CI: `apps/backend/requirements/test.txt`
 # =============================================================================
 
--r apps/backend/requirements.txt
+-r apps/backend/requirements/prod.txt
