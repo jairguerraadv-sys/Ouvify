@@ -22,6 +22,10 @@ import {
 import Link from 'next/link';
 import { useMemo } from 'react';
 import { Container, DecorativeBlob, FlexBetween, FlexRow, InlineFlexRow } from '@/components/ui';
+import { PricingTable } from '@/components/landing/PricingTable';
+import { Testimonials } from '@/components/landing/Testimonials';
+import { FAQ } from '@/components/landing/FAQ';
+import { StructuredDataScripts } from '@/components/landing/StructuredData';
 
 export default function LandingPage() {
   const features = useMemo(() => [
@@ -58,6 +62,8 @@ export default function LandingPage() {
 
   return (
     <>
+      <StructuredDataScripts />
+      
       {/* Hero Section */}
       <section className="relative bg-background overflow-hidden">
         {/* Decorative elements */}
@@ -317,8 +323,74 @@ export default function LandingPage() {
         </Container>
       </section>
 
-      {/* CTA Section */}
-      <section id="precos" className="relative bg-muted text-foreground py-20 lg:py-32 overflow-hidden border-t border-b border-border">
+      {/* Pricing Section */}
+      <section id="precos" className="py-20 lg:py-32 bg-background">
+        <Container>
+          <div className="text-center mb-16">
+            <Badge variant="primary" size="md" className="mb-4">
+              Planos e Preços
+            </Badge>
+            <H2 className="mb-4">Escolha o plano ideal para sua empresa</H2>
+            <Lead className="max-w-2xl mx-auto">
+              Comece grátis por 14 dias. Sem cartão de crédito. Cancele quando quiser.
+            </Lead>
+          </div>
+
+          <PricingTable />
+
+          <p className="text-center text-muted-foreground mt-12">
+            Todos os planos incluem: SSL gratuito · Backup diário · Atualizações automáticas · Conformidade LGPD
+          </p>
+        </Container>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="casos-de-sucesso" className="py-20 lg:py-32 bg-muted">
+        <Container>
+          <div className="text-center mb-16">
+            <Badge variant="success" size="md" className="mb-4">
+              Casos de Sucesso
+            </Badge>
+            <H2 className="mb-4">O que nossos clientes dizem</H2>
+            <Lead className="max-w-2xl mx-auto">
+              Mais de 50 empresas já confiam no Ouvify para gerenciar seus canais de ética
+            </Lead>
+          </div>
+
+          <Testimonials />
+        </Container>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 lg:py-32 bg-background">
+        <Container>
+          <div className="text-center mb-16">
+            <Badge variant="default" size="md" className="mb-4">
+              Perguntas Frequentes
+            </Badge>
+            <H2 className="mb-4">Dúvidas? Temos as respostas</H2>
+            <Lead className="max-w-2xl mx-auto">
+              Tudo o que você precisa saber sobre o Ouvify
+            </Lead>
+          </div>
+
+          <FAQ />
+
+          <div className="text-center mt-12">
+            <p className="text-muted-foreground mb-4">
+              Não encontrou sua resposta?
+            </p>
+            <Link href="/contato">
+              <Button size="lg" variant="outline">
+                Entre em Contato
+              </Button>
+            </Link>
+          </div>
+        </Container>
+      </section>
+
+      {/* Final CTA Section */}
+      <section className="relative bg-muted text-foreground py-20 lg:py-32 overflow-hidden border-t border-b border-border">
         {/* Decorative elements */}
         <DecorativeBlob tone="primary" placement="topRightEdge" className="-z-10" />
         <DecorativeBlob tone="secondary" placement="bottomLeftEdge" className="-z-10" />
