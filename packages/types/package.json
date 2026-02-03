@@ -5,8 +5,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "node_modules/.bin/tsc",
-    "dev": "node_modules/.bin/tsc --watch",
+    "build": "npx -p typescript@^5.3.3 tsc",
+    "dev": "npx -p typescript@^5.3.3 tsc --watch",
     "clean": "rm -rf dist"
   },
   "devDependencies": {
