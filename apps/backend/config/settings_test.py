@@ -10,6 +10,18 @@ from .settings import *
 # CONFIGURAÇÕES DE TESTE E2E
 # ============================================
 
+# Forçar SQLite para testes (evita connect_timeout e outras opções do PostgreSQL)
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': ':memory:',
+        'ATOMIC_REQUESTS': False,
+        'CONN_MAX_AGE': 0,  # Sem pool de conexões
+        'OPTIONS': {},  # Sem opções extras (evita connect_timeout)
+        'TEST': {},
+    }
+}
+
 # Desabilitar rate limiting para testes
 REST_FRAMEWORK['DEFAULT_THROTTLE_RATES'] = {
     'anon': '100000/minute',  # Praticamente ilimitado

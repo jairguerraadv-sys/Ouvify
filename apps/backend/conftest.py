@@ -39,14 +39,27 @@ except ImportError:
 
 @pytest.fixture(scope='session')
 def django_db_setup(django_db_blocker):
-    """Setup do banco de dados para testes."""
+    """Setup do banco de dados para testes - força SQLite em memória."""
     from django.core.management import call_command
+    from django.conf import settings as django_settings
     
-    settings.DATABASES['default'] = {
+    # Substituir completamente a configuração do banco para usar SQLite em memória
+    # Força a configuração em múltiplos lugares para garantir que seja usada
+    sqlite_config = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',
-        'ATOMIC_REQUESTS': False,  # Required for SQLite in-memory
+        'ATOMIC_REQUESTS': False,
+        'CONN_MAX_AGE': 0,  # Sem pool de conexões para SQLite
+        'OPTIONS': {},  # Sem opções extras (evita connect_timeout)
+        'TEST': {},
     }
+    
+    # Atualiza DATABASES em settings
+    settings.DATABASES = {'default': sqlite_config}
+    
+    # Força também no django.conf.settings (caso esteja usando diretamente)
+    if hasattr(django_settings, 'DATABASES'):
+        django_settings.DATABASES = {'default': sqlite_config}
     
     with django_db_blocker.unblock():
         call_command('migrate', '--run-syncdb', verbosity=0)
