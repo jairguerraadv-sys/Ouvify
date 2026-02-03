@@ -18,6 +18,8 @@ from django.conf import settings
 from dotenv import load_dotenv
 from unittest.mock import MagicMock
 
+from apps.core.utils import set_current_tenant
+
 # Carregar variáveis de ambiente do .env
 env_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(env_path)
@@ -102,6 +104,14 @@ def tenant_factory(db):
         )
     
     return create_tenant
+
+
+@pytest.fixture
+def tenant(db, tenant_factory):
+    """Cria tenant de teste e configura contexto multi-tenant."""
+    t = tenant_factory()
+    set_current_tenant(t)
+    return t
 
 
 @pytest.fixture

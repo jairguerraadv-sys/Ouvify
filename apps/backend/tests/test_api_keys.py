@@ -16,16 +16,6 @@ from datetime import timedelta
 from django.utils import timezone
 from unittest.mock import MagicMock, patch
 
-from apps.core.utils import set_current_tenant
-
-
-@pytest.fixture
-def tenant(db, tenant_factory):
-    """Cria tenant de teste."""
-    tenant = tenant_factory()
-    set_current_tenant(tenant)
-    return tenant
-
 
 @pytest.mark.django_db
 class TestAPIKeyGeneration:

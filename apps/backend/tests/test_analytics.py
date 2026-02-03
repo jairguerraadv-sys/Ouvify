@@ -24,14 +24,6 @@ from apps.core.utils import set_current_tenant
 
 
 @pytest.fixture
-def tenant(db, tenant_factory):
-    """Cria tenant de teste."""
-    tenant = tenant_factory()
-    set_current_tenant(tenant)
-    return tenant
-
-
-@pytest.fixture
 def user_with_tenant(db, user_factory, tenant):
     """Cria usuário associado ao tenant."""
     user = user_factory()
