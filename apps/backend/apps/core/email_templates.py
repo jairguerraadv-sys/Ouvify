@@ -2,6 +2,8 @@
 Email Templates - Ouvify
 Base template with responsive design and consistent branding
 """
+import html
+
 
 def get_base_template(content: str, preheader: str = "") -> str:
     """Base HTML template for all emails"""
@@ -204,10 +206,15 @@ def get_base_template(content: str, preheader: str = "") -> str:
 
 def welcome_email(user_name: str, tenant_name: str, login_url: str) -> dict:
     """Email de boas-vindas após cadastro"""
+    # Escape user input to prevent XSS
+    user_name_safe = html.escape(user_name)
+    tenant_name_safe = html.escape(tenant_name)
+    login_url_safe = html.escape(login_url)
+    
     content = f"""
-        <h1>Bem-vindo ao Ouvify, {user_name}! 🎉</h1>
+        <h1>Bem-vindo ao Ouvify, {user_name_safe}! 🎉</h1>
         <p>
-            Estamos muito felizes em ter você e a <strong>{tenant_name}</strong> conosco!
+            Estamos muito felizes em ter você e a <strong>{tenant_name_safe}</strong> conosco!
         </p>
         <p>
             O Ouvify é a plataforma completa para gestão de feedbacks que vai transformar
@@ -222,7 +229,7 @@ def welcome_email(user_name: str, tenant_name: str, login_url: str) -> dict:
                ✓ Comece a coletar feedbacks</p>
         </div>
         
-        <a href="{login_url}" class="button">Acessar Painel</a>
+        <a href="{login_url_safe}" class="button">Acessar Painel</a>
         
         <p>
             Se precisar de ajuda, nossa equipe está sempre disponível. Basta responder
@@ -236,7 +243,7 @@ def welcome_email(user_name: str, tenant_name: str, login_url: str) -> dict:
     """
     
     return {
-        'subject': f'Bem-vindo ao Ouvify, {user_name}!',
+        'subject': f'Bem-vindo ao Ouvify, {user_name_safe}!',
         'html': get_base_template(content, f"Comece a transformar feedbacks em resultados com o Ouvify"),
         'preheader': 'Comece a transformar feedbacks em resultados'
     }
