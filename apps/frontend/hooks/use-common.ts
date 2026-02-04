@@ -134,10 +134,8 @@ export function useMediaQuery(query: string): boolean {
         return () => media.removeEventListener("change", handler);
       }
 
-      // @ts-expect-error - Safari antigo
       media.addListener(handler);
       return () => {
-        // @ts-expect-error - Safari antigo
         media.removeListener(handler);
       };
     },
