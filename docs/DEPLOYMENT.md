@@ -21,6 +21,56 @@ Este guia descreve como fazer deploy do Ouvify em produção usando Railway (bac
                               └───────────┘        └───────────┘        └───────────┘
 ```
 
+                              ---
+
+                              ## Politica de Branches e Deploy (GitHub + Vercel + Render + Railway)
+
+                              Objetivo: evitar deploys acidentais fora da `main`, reduzir o volume de deployments
+                              de Preview e manter o repositorio limpo.
+
+                              ### Regras recomendadas
+
+                              - **Producao**: somente `main`.
+                              - **Preview**: apenas PRs ativas (desabilitar previews para pushes diretos em branches).
+                              - **Limpeza de branches**: excluir branches ja mergeadas em `main`.
+                              - **Retencao de Preview**: manter apenas os ultimos 7 dias (ou janela definida pelo time).
+
+                              ### Onde isso esta configurado hoje
+
+                              - **Vercel**: configuracao de deploy via GitHub e headers em [vercel.json](vercel.json)
+                                e [apps/frontend/vercel.json](apps/frontend/vercel.json). Preview e Production sao
+                                definidos no painel da Vercel (Production Branch = `main`).
+                              - **Render**: `branch: main` em [render.yaml](render.yaml).
+                              - **Railway**: deploy manual/automatico por push em `main` (ver [deploy-feature.sh](deploy-feature.sh)).
+
+                              ### Como reduzir Preview Deployments na Vercel
+
+                              1. Vercel Dashboard → Project Settings → Git.
+                              2. **Production Branch**: `main`.
+                              3. **Preview Deployments**: desabilitar para pushes diretos em branches.
+                              4. Manter Preview apenas para PRs (opcao "Only for Pull Requests").
+
+                              ### Limpeza de branches (GitHub)
+
+                              ```bash
+                              git fetch --prune
+                              git branch -r --merged origin/main
+                              git push origin --delete <branch>
+                              ```
+
+                              ### Limpeza de deployments antigos (GitHub API)
+
+                              > Requer permissao admin no repo. Se falhar com 403, use um token com `repo_deployment`.
+
+                              ```bash
+                              gh api repos/OWNER/REPO/deployments --paginate \
+                                -q '.[] | [.id, .environment, .ref, .created_at] | @tsv'
+
+                              gh api -X DELETE repos/OWNER/REPO/deployments/DEPLOYMENT_ID
+                              ```
+
+                              ---
+
 ---
 
 ## 1. Deploy do Backend (Railway)
@@ -39,6 +89,7 @@ Este guia descreve como fazer deploy do Ouvify em produção usando Railway (bac
 No dashboard do Railway, adicione:
 
 **PostgreSQL:**
+
 ```
 1. Clique em "+ New"
 2. Selecione "Database" → "PostgreSQL"
@@ -46,6 +97,7 @@ No dashboard do Railway, adicione:
 ```
 
 **Redis:**
+
 ```
 1. Clique em "+ New"
 2. Selecione "Database" → "Redis"
@@ -128,6 +180,7 @@ cmd = 'python manage.py migrate --noinput && gunicorn config.wsgi --bind 0.0.0.0
 ### 1.5 Configurar Health Checks
 
 No Railway, configure:
+
 - **Health Check Path:** `/health/`
 - **Restart Policy:** Always
 
@@ -206,9 +259,12 @@ O arquivo já está configurado em `apps/frontend/vercel.json`:
     {
       "source": "/(.*)",
       "headers": [
-        {"key": "X-Content-Type-Options", "value": "nosniff"},
-        {"key": "X-Frame-Options", "value": "DENY"},
-        {"key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload"}
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "DENY" },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
       ]
     }
   ]
@@ -299,12 +355,14 @@ NEXT_PUBLIC_SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 Os workflows já estão em `.github/workflows/`:
 
 **backend-ci.yml:**
+
 - Lint (Black, Flake8)
 - Security scan (Bandit, Safety)
 - Testes com PostgreSQL
 - Deploy automático
 
 **frontend-ci.yml:**
+
 - Lint (ESLint)
 - Type check (TypeScript)
 - Testes (Jest)
@@ -339,20 +397,24 @@ curl https://ouvify.vercel.app/api/health  # Se implementado
 ### 6.2 Logs
 
 **Railway:**
+
 - Dashboard → Service → Logs (tempo real)
 - Download de logs históricos disponível
 
 **Vercel:**
+
 - Dashboard → Functions → Logs
 - Runtime Logs para edge functions
 
 ### 6.3 Métricas
 
 **Railway:**
+
 - CPU, Memory, Network no dashboard
 - Configurar alertas de uso
 
 **Vercel:**
+
 - Analytics de Web Vitals
 - Edge Function metrics
 
@@ -492,4 +554,4 @@ railway run python manage.py migrate --fake <app> <migration>
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_
