@@ -45,6 +45,9 @@ if os.getenv("TESTING", "False").lower() in ("true", "1", "yes"):
 else:
     TESTING_MODE = False
 
+# Desabilitar APPEND_SLASH em modo de teste para evitar redirects 301 nos testes
+APPEND_SLASH = not TESTING_MODE
+
 # =============================================================================
 # CONFIGURAÇÕES DE SEGURANÇA
 # =============================================================================
