@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
 /**
  * Toggle para alternar entre temas (Light/Dark/System)
  */
 
-import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes';
-import { Sun, Moon, Monitor } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useSyncExternalStore } from "react";
+import { useTheme } from "next-themes";
+import { Sun, Moon, Monitor } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ThemeToggleProps {
   /** Mostra menu dropdown com todas as opções */
@@ -17,22 +17,19 @@ interface ThemeToggleProps {
 }
 
 export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
-  const [mounted, setMounted] = useState(false);
   const { theme, setTheme, resolvedTheme } = useTheme();
 
-  // Evita hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const isClient = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
-  if (!mounted) {
+  if (!isClient) {
     // Placeholder durante hidratação
     return (
       <button
-        className={cn(
-          "p-2 rounded-lg bg-background-secondary",
-          className
-        )}
+        className={cn("p-2 rounded-lg bg-background-secondary", className)}
         aria-label="Carregando tema"
         disabled
       >
@@ -43,15 +40,15 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
 
   // Toggle simples entre light e dark
   const toggleTheme = () => {
-    if (resolvedTheme === 'dark') {
-      setTheme('light');
+    if (resolvedTheme === "dark") {
+      setTheme("light");
     } else {
-      setTheme('dark');
+      setTheme("dark");
     }
   };
 
   // Ícone baseado no tema atual
-  const Icon = resolvedTheme === 'dark' ? Moon : Sun;
+  const Icon = resolvedTheme === "dark" ? Moon : Sun;
 
   if (!showMenu) {
     // Botão simples de toggle
@@ -62,9 +59,11 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
           "p-2 rounded-lg transition-colors",
           "hover:bg-background-secondary",
           "focus:outline-none focus:ring-2 focus:ring-border-focus focus:ring-offset-2 focus:ring-offset-background",
-          className
+          className,
         )}
-        aria-label={resolvedTheme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
+        aria-label={
+          resolvedTheme === "dark" ? "Ativar modo claro" : "Ativar modo escuro"
+        }
       >
         <Icon className="w-5 h-5 text-text-secondary" />
       </button>
@@ -76,20 +75,20 @@ export function ThemeToggle({ showMenu = false, className }: ThemeToggleProps) {
     <div className={cn("relative inline-block", className)}>
       <div className="flex items-center gap-1 p-1 bg-background-secondary rounded-lg">
         <ThemeButton
-          active={theme === 'light'}
-          onClick={() => setTheme('light')}
+          active={theme === "light"}
+          onClick={() => setTheme("light")}
           icon={<Sun className="w-4 h-4" />}
           label="Claro"
         />
         <ThemeButton
-          active={theme === 'dark'}
-          onClick={() => setTheme('dark')}
+          active={theme === "dark"}
+          onClick={() => setTheme("dark")}
           icon={<Moon className="w-4 h-4" />}
           label="Escuro"
         />
         <ThemeButton
-          active={theme === 'system'}
-          onClick={() => setTheme('system')}
+          active={theme === "system"}
+          onClick={() => setTheme("system")}
           icon={<Monitor className="w-4 h-4" />}
           label="Sistema"
         />
@@ -113,7 +112,7 @@ function ThemeButton({ active, onClick, icon, label }: ThemeButtonProps) {
         "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium transition-colors",
         active
           ? "bg-background text-text-primary shadow-sm"
-          : "text-text-secondary hover:text-text-primary"
+          : "text-text-secondary hover:text-text-primary",
       )}
       aria-label={label}
       aria-pressed={active}
@@ -127,4 +126,4 @@ function ThemeButton({ active, onClick, icon, label }: ThemeButtonProps) {
 /**
  * Hook para usar o tema em componentes
  */
-export { useTheme } from 'next-themes';
+export { useTheme } from "next-themes";

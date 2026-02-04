@@ -1,4 +1,5 @@
 .PHONY: help build up down restart logs shell-backend shell-frontend migrate test-backend test-frontend
+.PHONY: repo-audit repo-audit-cover
 
 # Cores para output
 GREEN  := $(shell tput -Txterm setaf 2)
@@ -86,3 +87,9 @@ backup-db: ## Backup do banco de dados
 
 restore-db: ## Restore backup (make restore-db FILE=backup.sql)
 	cat $(FILE) | docker-compose exec -T postgres psql -U ouvify ouvify_dev
+
+repo-audit: ## Rodar audit determinístico FE↔BE (gera tmp/repo_audit)
+	python scripts/repo_audit/run_api_audit.py
+
+repo-audit-cover: ## Rodar audit e gerar coverage TS a partir de orphans_backend
+	python scripts/repo_audit/run_api_audit.py --write-fe-coverage

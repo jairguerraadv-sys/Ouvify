@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect, type CSSProperties } from 'react';
-import { CheckCircle, Circle, X, ExternalLink } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import Link from 'next/link';
+import { useState, useEffect, useMemo } from "react";
+import { CheckCircle, Circle, X, ExternalLink } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import Link from "next/link";
 
 interface ChecklistItem {
   id: string;
@@ -15,15 +15,71 @@ interface ChecklistItem {
 }
 
 export function OnboardingChecklist() {
-  const { user } = useAuth();
-  const [items, setItems] = useState<ChecklistItem[]>([]);
-  const [visible, setVisible] = useState(true);
+  useAuth();
+  const [visible, setVisible] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return localStorage.getItem("checklist_dismissed") !== "true";
+  });
   const [feedbackCount, setFeedbackCount] = useState(0);
-  
+
   // Pegar tenant do localStorage
-  const tenant = typeof window !== 'undefined'
-    ? JSON.parse(localStorage.getItem('tenant_data') || '{}')
-    : null;
+  const tenant = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    try {
+      return JSON.parse(localStorage.getItem("tenant_data") || "{}");
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const items = useMemo<ChecklistItem[]>(() => {
+    if (!tenant) return [];
+
+    const hasLogo = tenant.logo != null && tenant.logo !== "";
+    const hasColors = tenant.cor_primaria != null && tenant.cor_primaria !== "";
+    const hasFeedbacks = feedbackCount > 0;
+    const hasUpgrade = tenant.plano !== "free";
+
+    return [
+      {
+        id: "logo",
+        title: "Configure seu logo",
+        description:
+          "Adicione o logo da sua empresa na página de configurações",
+        completed: hasLogo,
+        link: "/dashboard/configuracoes",
+      },
+      {
+        id: "colors",
+        title: "Personalize as cores",
+        description: "Defina a identidade visual da sua plataforma",
+        completed: hasColors,
+        link: "/dashboard/configuracoes",
+      },
+      {
+        id: "feedback",
+        title: "Receba seu primeiro feedback",
+        description: "Compartilhe o link público ou crie um feedback de teste",
+        completed: hasFeedbacks,
+        link: `https://${tenant.subdominio}.ouvify.com/enviar`,
+        external: true,
+      },
+      {
+        id: "share",
+        title: "Compartilhe o link público",
+        description: "Divulgue seu canal de feedback com clientes",
+        completed: false, // Não há como detectar isso automaticamente
+        link: "/dashboard",
+      },
+      {
+        id: "upgrade",
+        title: "Considere fazer upgrade (opcional)",
+        description: "Desbloqueie funcionalidades premium como relatórios",
+        completed: hasUpgrade,
+        link: "/dashboard/assinatura",
+      },
+    ];
+  }, [tenant, feedbackCount]);
 
   useEffect(() => {
     if (!tenant) return;
@@ -31,65 +87,17 @@ export function OnboardingChecklist() {
     // Buscar quantidade de feedbacks (opcional - pode ser removido se causar problemas)
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks/`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
       },
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         setFeedbackCount(Array.isArray(data) ? data.length : 0);
       })
       .catch(() => setFeedbackCount(0));
+  }, [tenant]);
 
-    // Verificar progresso do onboarding
-    const hasLogo = tenant.logo != null && tenant.logo !== '';
-    const hasColors = tenant.cor_primaria != null && tenant.cor_primaria !== '';
-    const hasFeedbacks = feedbackCount > 0;
-    const hasUpgrade = tenant.plano !== 'free';
-    const checklistDismissed = localStorage.getItem('checklist_dismissed') === 'true';
-    
-    setVisible(!checklistDismissed);
-
-    setItems([
-      {
-        id: 'logo',
-        title: 'Configure seu logo',
-        description: 'Adicione o logo da sua empresa na página de configurações',
-        completed: hasLogo,
-        link: '/dashboard/configuracoes',
-      },
-      {
-        id: 'colors',
-        title: 'Personalize as cores',
-        description: 'Defina a identidade visual da sua plataforma',
-        completed: hasColors,
-        link: '/dashboard/configuracoes',
-      },
-      {
-        id: 'feedback',
-        title: 'Receba seu primeiro feedback',
-        description: 'Compartilhe o link público ou crie um feedback de teste',
-        completed: hasFeedbacks,
-        link: `https://${tenant.subdominio}.ouvify.com/enviar`,
-        external: true,
-      },
-      {
-        id: 'share',
-        title: 'Compartilhe o link público',
-        description: 'Divulgue seu canal de feedback com clientes',
-        completed: false, // Não há como detectar isso automaticamente
-        link: '/dashboard',
-      },
-      {
-        id: 'upgrade',
-        title: 'Considere fazer upgrade (opcional)',
-        description: 'Desbloqueie funcionalidades premium como relatórios',
-        completed: hasUpgrade,
-        link: '/dashboard/assinatura',
-      },
-    ]);
-  }, [tenant, feedbackCount]);
-
-  const progress = items.filter(i => i.completed).length;
+  const progress = items.filter((i) => i.completed).length;
   const total = items.length;
   const percentage = Math.round((progress / total) * 100);
   const progressStyle = { width: `${percentage}%` } as React.CSSProperties;
@@ -98,7 +106,7 @@ export function OnboardingChecklist() {
   if (!visible || !tenant || percentage === 100) return null;
 
   const handleDismiss = () => {
-    localStorage.setItem('checklist_dismissed', 'true');
+    localStorage.setItem("checklist_dismissed", "true");
     setVisible(false);
   };
 
@@ -132,7 +140,7 @@ export function OnboardingChecklist() {
 
       {/* Checklist items */}
       <ul className="space-y-3">
-        {items.map(item => (
+        {items.map((item) => (
           <li key={item.id} className="flex items-start gap-3">
             {item.completed ? (
               <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
@@ -146,7 +154,9 @@ export function OnboardingChecklist() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className={`text-sm font-medium hover:text-primary-600 transition-colors inline-flex items-center gap-1 ${
-                    item.completed ? 'text-text-tertiary line-through' : 'text-text-primary'
+                    item.completed
+                      ? "text-text-tertiary line-through"
+                      : "text-text-primary"
                   }`}
                 >
                   {item.title}
@@ -156,13 +166,17 @@ export function OnboardingChecklist() {
                 <Link
                   href={item.link}
                   className={`text-sm font-medium hover:text-primary-600 transition-colors ${
-                    item.completed ? 'text-text-tertiary line-through' : 'text-text-primary'
+                    item.completed
+                      ? "text-text-tertiary line-through"
+                      : "text-text-primary"
                   }`}
                 >
                   {item.title}
                 </Link>
               )}
-              <p className="text-xs text-text-tertiary mt-0.5">{item.description}</p>
+              <p className="text-xs text-text-tertiary mt-0.5">
+                {item.description}
+              </p>
             </div>
           </li>
         ))}

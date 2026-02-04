@@ -1,0 +1,130 @@
+# Ouvify Auditor Profile (ROMA-DSPy)
+#
+# Objetivo: executar auditorias técnicas focadas em leitura/inspeção de código e docs,
+# com mínima dependência de ferramentas externas.
+#
+# Observação importante:
+# - O schema de profile do ROMA é essencialmente configuração de agentes/toolkits.
+# - As "instruções de alto nível" específicas do Ouvify são passadas no goal/context
+#   via romaClient (scripts/roma/roma_client.py) e scripts de auditoria.
+
+agents:
+  atomizer:
+    llm:
+      model: openai/gpt-4o-mini
+      temperature: 0.2
+      max_tokens: 8000
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.atomizer_seed:ATOMIZER_DEMOS"
+
+  planner:
+    llm:
+      model: openai/gpt-4o-mini
+      temperature: 0.3
+      max_tokens: 32000
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.planner_seed:PLANNER_DEMOS"
+    agent_config:
+      max_subtasks: 16
+
+    # Mantemos busca na web DESABILITADA por padrão para auditoria offline.
+    toolkits: []
+
+  executor:
+    llm:
+      model: openai/gpt-4o-mini
+      temperature: 0.4
+      max_tokens: 64000
+    prediction_strategy: react
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.executor_seed:EXECUTOR_DEMOS"
+    agent_config:
+      max_executions: 12
+
+    toolkits:
+      - class_name: FileToolkit
+        enabled: true
+        toolkit_config:
+          enable_delete: false
+          max_file_size: 15728640 # 15MB
+
+      - class_name: CalculatorToolkit
+        enabled: true
+
+      # E2B é opcional e costuma exigir API key; desligado para reduzir fricção.
+      - class_name: E2BToolkit
+        enabled: false
+        toolkit_config:
+          timeout: 600
+          max_lifetime_hours: 2
+          auto_reinitialize: true
+
+  aggregator:
+    llm:
+      model: openai/gpt-4o-mini
+      temperature: 0.0
+      max_tokens: 32000
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.aggregator_seed:AGGREGATOR_DEMOS"
+
+  verifier:
+    llm:
+      model: openai/gpt-4o-mini
+      temperature: 0.0
+      max_tokens: 16000
+    signature_instructions: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_PROMPT"
+    demos: "prompt_optimization.prompts.seed_prompts.verifier_seed:VERIFIER_DEMOS"
+
+runtime:
+  max_depth: 6
+  verbose: true
+  enable_logging: true
+  log_level: INFO
+  timeout: 900
+
+resilience:
+  retry:
+    enabled: true
+    max_attempts: 5
+    strategy: exponential_backoff
+    base_delay: 2.0
+    max_delay: 60.0
+
+  checkpoint:
+    enabled: true
+    storage_path: ${oc.env:ROMA_CHECKPOINT_PATH,.checkpoints}
+    max_checkpoints: 25
+    max_age_hours: 72.0
+    compress_checkpoints: true
+    verify_integrity: true
+
+storage:
+  base_path: ${oc.env:STORAGE_BASE_PATH,/opt/sentient}
+  max_file_size: 104857600 # 100MB
+
+  postgres:
+    enabled: ${oc.env:POSTGRES_ENABLED,true}
+    connection_url: ${oc.env:DATABASE_URL,postgresql+asyncpg://localhost/roma_dspy}
+    pool_size: 10
+    max_overflow: 20
+
+observability:
+  mlflow:
+    enabled: ${oc.env:MLFLOW_ENABLED,false}
+    tracking_uri: ${oc.env:MLFLOW_TRACKING_URI,http://mlflow:5000}
+    experiment_name: ROMA-Ouvify-Audit
+    log_traces: true
+    log_compiles: true
+    log_evals: true
+
+logging:
+  level: ${oc.env:LOG_LEVEL,INFO}
+  log_dir: ${oc.env:LOG_DIR,logs}
+  console_format: detailed
+  file_format: json
+  serialize: true
+  rotation: 500 MB
+  retention: 90 days
+  colorize: true
+  backtrace: true
+  diagnose: false

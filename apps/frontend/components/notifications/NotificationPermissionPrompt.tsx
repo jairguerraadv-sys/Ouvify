@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
 /**
  * Prompt para solicitar permissão de notificações
  * Aparece após 10 segundos na primeira visita
  */
 
-import { useState, useEffect, useCallback } from 'react';
-import { Bell, X } from 'lucide-react';
-import { 
+import { useState, useEffect, useCallback } from "react";
+import { Bell, X } from "lucide-react";
+import {
   isPushSupported,
   getNotificationPermission,
-  registerServiceWorker, 
-  requestNotificationPermission, 
+  registerServiceWorker,
+  requestNotificationPermission,
   subscribeToPush,
   extractSubscriptionData,
-} from '@/lib/push-notifications';
-import { apiRequest } from '@/lib/api';
+} from "@/lib/push-notifications";
+import { apiRequest } from "@/lib/api";
 
-const STORAGE_KEY = 'ouvify-notification-prompt-dismissed';
+const STORAGE_KEY = "ouvify-notification-prompt-dismissed";
 const SHOW_DELAY_MS = 10000; // 10 segundos
 
 export function NotificationPermissionPrompt() {
@@ -27,17 +27,17 @@ export function NotificationPermissionPrompt() {
 
   useEffect(() => {
     // Verificar se deve mostrar o prompt
-    if (typeof window === 'undefined') return;
-    
+    if (typeof window === "undefined") return;
+
     // Não mostrar se não suporta push
     if (!isPushSupported()) {
-      console.log('[Notifications] Push não suportado neste browser');
+      console.log("[Notifications] Push não suportado neste browser");
       return;
     }
 
     // Não mostrar se já tem permissão
     const permission = getNotificationPermission();
-    if (permission !== 'default') {
+    if (permission !== "default") {
       return;
     }
 
@@ -63,40 +63,42 @@ export function NotificationPermissionPrompt() {
       // 1. Registrar Service Worker
       const registration = await registerServiceWorker();
       if (!registration) {
-        throw new Error('Não foi possível registrar o Service Worker');
+        throw new Error("Não foi possível registrar o Service Worker");
       }
 
       // 2. Solicitar permissão
       const permission = await requestNotificationPermission();
-      if (permission !== 'granted') {
-        throw new Error('Permissão negada pelo usuário');
+      if (permission !== "granted") {
+        throw new Error("Permissão negada pelo usuário");
       }
 
       // 3. Criar subscription
       const vapidPublicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
       if (!vapidPublicKey) {
-        throw new Error('VAPID public key não configurada');
+        throw new Error("VAPID public key não configurada");
       }
 
       const subscription = await subscribeToPush(vapidPublicKey);
       if (!subscription) {
-        throw new Error('Não foi possível criar a subscription');
+        throw new Error("Não foi possível criar a subscription");
       }
 
       // 4. Enviar para o backend
       const subscriptionData = extractSubscriptionData(subscription);
-      
+
       await apiRequest({
-        url: '/push/subscriptions/subscribe/',
-        method: 'POST',
+        url: "/api/push/subscriptions/subscribe/",
+        method: "POST",
         data: subscriptionData,
       });
 
-      console.log('[Notifications] Notificações ativadas com sucesso!');
+      console.log("[Notifications] Notificações ativadas com sucesso!");
       setShow(false);
     } catch (err) {
-      console.error('[Notifications] Erro:', err);
-      setError(err instanceof Error ? err.message : 'Erro ao ativar notificações');
+      console.error("[Notifications] Erro:", err);
+      setError(
+        err instanceof Error ? err.message : "Erro ao ativar notificações",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -104,7 +106,7 @@ export function NotificationPermissionPrompt() {
 
   const handleDismiss = useCallback(() => {
     setShow(false);
-    localStorage.setItem(STORAGE_KEY, 'true');
+    localStorage.setItem(STORAGE_KEY, "true");
   }, []);
 
   if (!show) {
@@ -112,7 +114,7 @@ export function NotificationPermissionPrompt() {
   }
 
   return (
-    <div 
+    <div
       className="fixed bottom-4 right-4 max-w-sm bg-background rounded-xl shadow-2xl p-6 border-2 border-primary-500 z-50 animate-in slide-in-from-bottom-4 duration-300"
       role="dialog"
       aria-labelledby="notification-prompt-title"
@@ -126,37 +128,38 @@ export function NotificationPermissionPrompt() {
       >
         <X className="w-4 h-4" />
       </button>
-      
+
       <div className="flex items-start gap-4">
         {/* Ícone */}
         <div className="flex-shrink-0 p-3 bg-primary-100 dark:bg-primary-900/20 rounded-full">
           <Bell className="w-6 h-6 text-primary-600 dark:text-primary-400" />
         </div>
-        
+
         <div className="flex-1 min-w-0">
           {/* Título */}
-          <h3 
+          <h3
             id="notification-prompt-title"
             className="font-semibold text-lg text-text-primary mb-2"
           >
             Ativar Notificações?
           </h3>
-          
+
           {/* Descrição */}
-          <p 
+          <p
             id="notification-prompt-description"
             className="text-sm text-text-secondary mb-4"
           >
-            Receba alertas em tempo real sobre novos feedbacks, atualizações de status e mensagens importantes.
+            Receba alertas em tempo real sobre novos feedbacks, atualizações de
+            status e mensagens importantes.
           </p>
-          
+
           {/* Erro */}
           {error && (
             <p className="text-sm text-error-600 dark:text-error-400 mb-4">
               {error}
             </p>
           )}
-          
+
           {/* Botões */}
           <div className="flex gap-2">
             <button
@@ -170,7 +173,7 @@ export function NotificationPermissionPrompt() {
                   Ativando...
                 </span>
               ) : (
-                'Permitir'
+                "Permitir"
               )}
             </button>
             <button

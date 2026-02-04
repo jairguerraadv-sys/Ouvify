@@ -1,10 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
-import logger from '@/lib/logger';
+import {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useSyncExternalStore,
+} from "react";
+import logger from "@/lib/logger";
 
 interface ToastState {
   id: string;
   message: string;
-  type: 'success' | 'error' | 'warning' | 'info';
+  type: "success" | "error" | "warning" | "info";
   duration?: number;
 }
 
@@ -13,37 +19,37 @@ export function useToast() {
 
   const show = (
     message: string,
-    type: ToastState['type'] = 'info',
-    duration = 5000
+    type: ToastState["type"] = "info",
+    duration = 5000,
   ) => {
     const id = `${Date.now()}-${Math.random()}`;
     const toast: ToastState = { id, message, type, duration };
-    
-    setToasts(prev => [...prev, toast]);
-    
+
+    setToasts((prev) => [...prev, toast]);
+
     if (duration > 0) {
       setTimeout(() => {
-        setToasts(prev => prev.filter(t => t.id !== id));
+        setToasts((prev) => prev.filter((t) => t.id !== id));
       }, duration);
     }
-    
+
     return id;
   };
 
   const success = (message: string, duration?: number) =>
-    show(message, 'success', duration);
-    
+    show(message, "success", duration);
+
   const error = (message: string, duration?: number) =>
-    show(message, 'error', duration);
-    
+    show(message, "error", duration);
+
   const warning = (message: string, duration?: number) =>
-    show(message, 'warning', duration);
-    
+    show(message, "warning", duration);
+
   const info = (message: string, duration?: number) =>
-    show(message, 'info', duration);
+    show(message, "info", duration);
 
   const dismiss = (id: string) => {
-    setToasts(prev => prev.filter(t => t.id !== id));
+    setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
   return { toasts, show, success, error, warning, info, dismiss };
@@ -67,11 +73,11 @@ export function useDebounce<T>(value: T, delay: number): T {
 
 export function useLocalStorage<T>(
   key: string,
-  initialValue: T
+  initialValue: T,
 ): [T, (value: T | ((val: T) => T)) => void, () => void] {
   const [storedValue, setStoredValue] = useState<T>(() => {
-    if (typeof window === 'undefined') return initialValue;
-    
+    if (typeof window === "undefined") return initialValue;
+
     try {
       const item = window.localStorage.getItem(key);
       return item ? JSON.parse(item) : initialValue;
@@ -82,25 +88,26 @@ export function useLocalStorage<T>(
 
   const setValue = (value: T | ((val: T) => T)) => {
     try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
-      
-      if (typeof window !== 'undefined') {
+
+      if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
       }
     } catch (error) {
-      logger.error('Error setting localStorage:', error);
+      logger.error("Error setting localStorage:", error);
     }
   };
 
   const removeValue = () => {
     try {
       setStoredValue(initialValue);
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         window.localStorage.removeItem(key);
       }
     } catch (error) {
-      logger.error('Error removing localStorage:', error);
+      logger.error("Error removing localStorage:", error);
     }
   };
 
@@ -108,26 +115,40 @@ export function useLocalStorage<T>(
 }
 
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
+  const getServerSnapshot = useCallback(() => false, []);
 
-  useEffect(() => {
-    const media = window.matchMedia(query);
-    
-    if (media.matches !== matches) {
-      setMatches(media.matches);
-    }
+  const getSnapshot = useCallback(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia(query).matches;
+  }, [query]);
 
-    const listener = () => setMatches(media.matches);
-    media.addEventListener('change', listener);
-    
-    return () => media.removeEventListener('change', listener);
-  }, [matches, query]);
+  const subscribe = useCallback(
+    (onStoreChange: () => void) => {
+      if (typeof window === "undefined") return () => {};
 
-  return matches;
+      const media = window.matchMedia(query);
+      const handler = () => onStoreChange();
+
+      if (media.addEventListener) {
+        media.addEventListener("change", handler);
+        return () => media.removeEventListener("change", handler);
+      }
+
+      // @ts-expect-error - Safari antigo
+      media.addListener(handler);
+      return () => {
+        // @ts-expect-error - Safari antigo
+        media.removeListener(handler);
+      };
+    },
+    [query],
+  );
+
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 export function useClickOutside<T extends HTMLElement = HTMLElement>(
-  handler: () => void
+  handler: () => void,
 ) {
   const ref = useRef<T>(null);
 
@@ -138,8 +159,8 @@ export function useClickOutside<T extends HTMLElement = HTMLElement>(
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handler]);
 
   return ref;
@@ -150,7 +171,7 @@ export function useCopyToClipboard() {
 
   const copy = async (text: string) => {
     if (!navigator?.clipboard) {
-      logger.warn('Clipboard not supported');
+      logger.warn("Clipboard not supported");
       return false;
     }
 
@@ -160,7 +181,7 @@ export function useCopyToClipboard() {
       setTimeout(() => setCopiedText(null), 2000);
       return true;
     } catch (error) {
-      logger.error('Failed to copy:', error);
+      logger.error("Failed to copy:", error);
       setCopiedText(null);
       return false;
     }
@@ -169,29 +190,29 @@ export function useCopyToClipboard() {
   return { copiedText, copy };
 }
 
-export function useAsync<T, E = string>(
-  asyncFunction: () => Promise<T>
-) {
-  const [status, setStatus] = useState<'idle' | 'pending' | 'success' | 'error'>('idle');
+export function useAsync<T, E = string>(asyncFunction: () => Promise<T>) {
+  const [status, setStatus] = useState<
+    "idle" | "pending" | "success" | "error"
+  >("idle");
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<E | null>(null);
 
   const execute = async () => {
-    setStatus('pending');
+    setStatus("pending");
     setData(null);
     setError(null);
 
     try {
       const response = await asyncFunction();
       setData(response);
-      setStatus('success');
+      setStatus("success");
       return response;
     } catch (error) {
       setError(error as E);
-      setStatus('error');
+      setStatus("error");
       throw error;
     }
   };
 
-  return { execute, status, data, error, isLoading: status === 'pending' };
+  return { execute, status, data, error, isLoading: status === "pending" };
 }
