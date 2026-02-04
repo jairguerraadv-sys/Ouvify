@@ -55,7 +55,7 @@ class TestTeamInvitation:
 
         assert invitation.token is not None
         assert len(invitation.token) > 40
-        assert invitation.is_valid == True
+        assert invitation.is_valid is True
 
     def test_accept_invitation_creates_team_member(self):
         admin = User.objects.create_user("admin@test.com", password="pass")
