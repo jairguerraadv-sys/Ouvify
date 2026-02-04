@@ -16,9 +16,10 @@ from datetime import timedelta
 from unittest.mock import MagicMock, patch
 
 import pytest
+from django.utils import timezone
+
 from apps.billing.models import Invoice, Plan, Subscription
 from apps.tenants.models import Client
-from django.utils import timezone
 
 # ======================
 # FIXTURES
@@ -88,8 +89,9 @@ def create_tenant(db, test_user):
     def _create_tenant(name_prefix="Test"):
         import uuid
 
-        from apps.billing.signals import auto_start_trial_for_new_tenant
         from django.db.models.signals import post_save
+
+        from apps.billing.signals import auto_start_trial_for_new_tenant
 
         unique_id = str(uuid.uuid4())[:8]
 

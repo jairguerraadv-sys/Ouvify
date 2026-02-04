@@ -15,8 +15,12 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import AuditLog, AuditLogSummary, UserSession
-from .serializers import (AuditAnalyticsSerializer, AuditLogSerializer,
-                          AuditLogSummarySerializer, UserSessionSerializer)
+from .serializers import (
+    AuditAnalyticsSerializer,
+    AuditLogSerializer,
+    AuditLogSummarySerializer,
+    UserSessionSerializer,
+)
 
 
 class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
@@ -367,8 +371,7 @@ class UserSessionViewSet(viewsets.ReadOnlyModelViewSet):
         # Média de duração (em minutos)
         completed_sessions = queryset.filter(ended_at__isnull=False)
         if completed_sessions.exists():
-            from django.db.models import (Avg, DurationField,
-                                          ExpressionWrapper, F)
+            from django.db.models import Avg, DurationField, ExpressionWrapper, F
 
             avg_duration_qs = completed_sessions.annotate(
                 duration=ExpressionWrapper(

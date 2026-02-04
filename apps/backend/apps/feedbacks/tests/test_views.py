@@ -4,12 +4,13 @@ Cobertura: CRUD, validações, permissões, rate limiting, isolamento multi-tena
 """
 
 import pytest
-from apps.feedbacks.models import Feedback
-from apps.tenants.models import Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
+
+from apps.feedbacks.models import Feedback
+from apps.tenants.models import Client
 
 User = get_user_model()
 

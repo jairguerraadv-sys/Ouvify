@@ -15,9 +15,10 @@ import logging
 import secrets
 from datetime import timedelta
 
-from apps.core.models import TenantAwareModel
 from django.db import models
 from django.utils import timezone
+
+from apps.core.models import TenantAwareModel
 
 logger = logging.getLogger(__name__)
 

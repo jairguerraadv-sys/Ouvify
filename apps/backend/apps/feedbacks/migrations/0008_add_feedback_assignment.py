@@ -8,53 +8,74 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0007_add_performance_indexes'),
-        ('tenants', '0007_populate_team_members'),
+        ("feedbacks", "0007_add_performance_indexes"),
+        ("tenants", "0007_populate_team_members"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.RemoveIndex(
-            model_name='feedback',
-            name='fb_client_status_date_idx',
+            model_name="feedback",
+            name="fb_client_status_date_idx",
         ),
         migrations.RemoveIndex(
-            model_name='feedback',
-            name='fb_client_tipo_idx',
+            model_name="feedback",
+            name="fb_client_tipo_idx",
         ),
         migrations.RemoveIndex(
-            model_name='feedback',
-            name='fb_email_idx',
+            model_name="feedback",
+            name="fb_email_idx",
         ),
         migrations.RemoveIndex(
-            model_name='feedback',
-            name='fb_date_desc_idx',
+            model_name="feedback",
+            name="fb_date_desc_idx",
         ),
         migrations.RemoveIndex(
-            model_name='feedbackinteracao',
-            name='fbi_feedback_date_idx',
+            model_name="feedbackinteracao",
+            name="fbi_feedback_date_idx",
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='assigned_at',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Data de atribuição'),
+            model_name="feedback",
+            name="assigned_at",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Data de atribuição"
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='assigned_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='feedbacks_assigned_by', to=settings.AUTH_USER_MODEL, verbose_name='Atribuído por'),
+            model_name="feedback",
+            name="assigned_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="feedbacks_assigned_by",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Atribuído por",
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='assigned_to',
-            field=models.ForeignKey(blank=True, help_text='Membro responsável por responder este feedback', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='assigned_feedbacks', to='tenants.teammember', verbose_name='Atribuído para'),
+            model_name="feedback",
+            name="assigned_to",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Membro responsável por responder este feedback",
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="assigned_feedbacks",
+                to="tenants.teammember",
+                verbose_name="Atribuído para",
+            ),
         ),
         migrations.AddIndex(
-            model_name='feedback',
-            index=models.Index(fields=['assigned_to', 'status'], name='feedbacks_f_assigne_3cd7c9_idx'),
+            model_name="feedback",
+            index=models.Index(
+                fields=["assigned_to", "status"], name="feedbacks_f_assigne_3cd7c9_idx"
+            ),
         ),
         migrations.AddIndex(
-            model_name='feedback',
-            index=models.Index(fields=['client', 'assigned_to'], name='feedbacks_f_client__9022a3_idx'),
+            model_name="feedback",
+            index=models.Index(
+                fields=["client", "assigned_to"], name="feedbacks_f_client__9022a3_idx"
+            ),
         ),
     ]

@@ -14,9 +14,10 @@ from datetime import datetime
 from typing import Any, Dict
 
 import stripe
-from apps.tenants.models import Client
 from django.conf import settings
 from django.utils import timezone
+
+from apps.tenants.models import Client
 
 from .models import Invoice, Plan, Subscription
 

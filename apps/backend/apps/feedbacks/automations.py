@@ -338,8 +338,9 @@ def send_daily_digest(self):
 
 def _generate_tenant_digest(tenant):
     """Gera e envia digest para um tenant."""
-    from apps.feedbacks.models import Feedback
     from django.db.models import Count, Q
+
+    from apps.feedbacks.models import Feedback
 
     agora = timezone.now()
     ontem = agora - timedelta(days=1)

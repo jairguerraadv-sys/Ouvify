@@ -10,9 +10,10 @@ Cobertura:
 """
 
 import pytest
-from apps.consent.models import ConsentVersion, UserConsent
 from django.contrib.auth import get_user_model
 from django.utils import timezone
+
+from apps.consent.models import ConsentVersion, UserConsent
 
 User = get_user_model()
 

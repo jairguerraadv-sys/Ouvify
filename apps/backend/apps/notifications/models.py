@@ -3,10 +3,11 @@ Modelos do sistema de notificações push
 Inclui: PushSubscription (Web Push), Notification (histórico)
 """
 
-from apps.tenants.models import Client
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils import timezone
+
+from apps.tenants.models import Client
 
 User = get_user_model()
 

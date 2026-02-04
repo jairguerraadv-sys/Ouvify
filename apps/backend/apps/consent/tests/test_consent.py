@@ -9,8 +9,9 @@ Cobertura:
 """
 
 import pytest
-from apps.consent.models import ConsentVersion, UserConsent
 from django.utils import timezone
+
+from apps.consent.models import ConsentVersion, UserConsent
 
 
 @pytest.fixture

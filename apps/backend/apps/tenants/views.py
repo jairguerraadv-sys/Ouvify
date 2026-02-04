@@ -1,4 +1,5 @@
 import logging
+from datetime import timedelta
 from typing import Any, Dict, cast
 
 import stripe
@@ -15,9 +16,14 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Client
-from .serializers import (ClientBrandingSerializer, ClientPublicSerializer,
-                          ClientSerializer, RegisterTenantSerializer,
-                          TenantAdminSerializer, UserSerializer)
+from .serializers import (
+    ClientBrandingSerializer,
+    ClientPublicSerializer,
+    ClientSerializer,
+    RegisterTenantSerializer,
+    TenantAdminSerializer,
+    UserSerializer,
+)
 from .services import StripeService
 from .upload_service import UploadService
 

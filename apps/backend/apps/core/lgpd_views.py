@@ -9,13 +9,14 @@ Endpoints:
 import logging
 from datetime import datetime
 
-from apps.feedbacks.models import Feedback, FeedbackInteracao
-from apps.tenants.models import Client
 from django.db import transaction
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from apps.feedbacks.models import Feedback, FeedbackInteracao
+from apps.tenants.models import Client
 
 logger = logging.getLogger(__name__)
 

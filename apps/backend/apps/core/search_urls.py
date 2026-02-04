@@ -4,8 +4,7 @@ URLs para API de busca global
 
 from django.urls import path
 
-from .views.search_views import (AutocompleteView, GlobalSearchView,
-                                 SearchByProtocolView)
+from .views.search_views import AutocompleteView, GlobalSearchView, SearchByProtocolView
 
 app_name = "search"
 

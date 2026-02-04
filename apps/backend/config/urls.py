@@ -5,36 +5,52 @@ The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
 """
 
-from apps.core.health import \
-    health_check as health_check_view  # type: ignore[import-not-found]
-from apps.core.health import readiness_check
-from apps.core.lgpd_views import (  # type: ignore[import-not-found]
-    AccountDeletionView, DataExportView)
-from apps.core.password_reset import (  # type: ignore[import-not-found]
-    PasswordResetConfirmView, PasswordResetRequestView)
-from apps.core.profile_views import \
-    UserProfileUpdateView  # type: ignore[import-not-found]
-from apps.core.views.analytics import (  # type: ignore[import-not-found]
-    AnalyticsDashboardView, AnalyticsView)
-from apps.core.views.csp import csp_report
-from apps.core.views.home import home as home_view
-from apps.feedbacks import \
-    views as feedback_views  # type: ignore[import-not-found]
-from apps.tenants import \
-    views as tenant_views  # type: ignore[import-not-found]
-from apps.tenants.jwt_views import CustomTokenObtainPairView
-from apps.tenants.logout_views import (  # type: ignore[import-not-found]
-    LogoutAllDevicesView, LogoutView)
-from apps.tenants.subscription_management import (  # type: ignore[import-not-found]
-    ManageSubscriptionView, ReactivateSubscriptionView)
-from apps.tenants.team_views import (  # type: ignore[import-not-found]
-    TeamInvitationViewSet, TeamMemberViewSet)
-from config.swagger import swagger_urlpatterns
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import SimpleRouter
+
 # JWT Views
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
+
+from apps.core.health import (
+    health_check as health_check_view,  # type: ignore[import-not-found]
+)
+from apps.core.health import (
+    readiness_check,
+)
+from apps.core.lgpd_views import (  # type: ignore[import-not-found]
+    AccountDeletionView,
+    DataExportView,
+)
+from apps.core.password_reset import (  # type: ignore[import-not-found]
+    PasswordResetConfirmView,
+    PasswordResetRequestView,
+)
+from apps.core.profile_views import (  # type: ignore[import-not-found]
+    UserProfileUpdateView,
+)
+from apps.core.views.analytics import (  # type: ignore[import-not-found]
+    AnalyticsDashboardView,
+    AnalyticsView,
+)
+from apps.core.views.csp import csp_report
+from apps.core.views.home import home as home_view
+from apps.feedbacks import views as feedback_views  # type: ignore[import-not-found]
+from apps.tenants import views as tenant_views  # type: ignore[import-not-found]
+from apps.tenants.jwt_views import CustomTokenObtainPairView
+from apps.tenants.logout_views import (  # type: ignore[import-not-found]
+    LogoutAllDevicesView,
+    LogoutView,
+)
+from apps.tenants.subscription_management import (  # type: ignore[import-not-found]
+    ManageSubscriptionView,
+    ReactivateSubscriptionView,
+)
+from apps.tenants.team_views import (  # type: ignore[import-not-found]
+    TeamInvitationViewSet,
+    TeamMemberViewSet,
+)
+from config.swagger import swagger_urlpatterns
 
 # Expor referências para Pylance
 FeedbackViewSet = feedback_views.FeedbackViewSet  # type: ignore[attr-defined]

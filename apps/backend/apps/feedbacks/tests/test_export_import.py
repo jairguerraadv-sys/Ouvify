@@ -7,10 +7,11 @@ import json
 import uuid
 from unittest.mock import Mock, patch
 
+from django.test import TestCase
+
 from apps.feedbacks.export_service import ExportService, ImportService
 from apps.feedbacks.models import Feedback
 from apps.tenants.models import Client
-from django.test import TestCase
 
 
 # Mock do webhook para evitar conexão Redis durante testes

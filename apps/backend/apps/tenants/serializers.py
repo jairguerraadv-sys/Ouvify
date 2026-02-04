@@ -1,9 +1,10 @@
 import re
 
-from apps.core.validators import validate_strong_password, validate_subdomain
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
 from rest_framework import serializers
+
+from apps.core.validators import validate_strong_password, validate_subdomain
 
 from .models import Client, TeamInvitation, TeamMember
 

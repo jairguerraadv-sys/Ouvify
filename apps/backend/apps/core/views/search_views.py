@@ -11,8 +11,7 @@ from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 
 try:
-    from apps.core.search_service import (GlobalSearchService,
-                                          get_search_service)
+    from apps.core.search_service import GlobalSearchService, get_search_service
 
     SEARCH_AVAILABLE = True
 except ImportError:

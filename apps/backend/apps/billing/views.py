@@ -24,12 +24,17 @@ from rest_framework.views import APIView
 
 from . import stripe_service
 from .models import Invoice, Plan, Subscription
-from .serializers import (CancelSubscriptionSerializer,
-                          CheckoutRequestSerializer,
-                          CheckoutResponseSerializer, InvoiceSerializer,
-                          PlanPublicSerializer, PlanSerializer,
-                          PortalRequestSerializer, PortalResponseSerializer,
-                          SubscriptionStatusSerializer)
+from .serializers import (
+    CancelSubscriptionSerializer,
+    CheckoutRequestSerializer,
+    CheckoutResponseSerializer,
+    InvoiceSerializer,
+    PlanPublicSerializer,
+    PlanSerializer,
+    PortalRequestSerializer,
+    PortalResponseSerializer,
+    SubscriptionStatusSerializer,
+)
 
 logger = logging.getLogger(__name__)
 

@@ -9,42 +9,150 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0005_feedback_autor'),
-        ('tenants', '0005_client_cor_secundaria_client_cor_texto_and_more'),
+        ("feedbacks", "0005_feedback_autor"),
+        ("tenants", "0005_client_cor_secundaria_client_cor_texto_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='feedback',
-            name='protocolo',
-            field=models.CharField(blank=True, db_index=True, editable=False, help_text='Código único de rastreamento do feedback (gerado automaticamente)', max_length=20, null=True, unique=True, verbose_name='Protocolo'),
+            model_name="feedback",
+            name="protocolo",
+            field=models.CharField(
+                blank=True,
+                db_index=True,
+                editable=False,
+                help_text="Código único de rastreamento do feedback (gerado automaticamente)",
+                max_length=20,
+                null=True,
+                unique=True,
+                verbose_name="Protocolo",
+            ),
         ),
         migrations.AlterField(
-            model_name='feedbackinteracao',
-            name='tipo',
-            field=models.CharField(choices=[('MENSAGEM_PUBLICA', 'Mensagem Pública'), ('NOTA_INTERNA', 'Nota Interna'), ('MUDANCA_STATUS', 'Mudança de Status'), ('PERGUNTA_EMPRESA', 'Pergunta da Empresa'), ('RESPOSTA_USUARIO', 'Resposta do Usuário'), ('MENSAGEM_AUTOMATICA', 'Mensagem Automática')], max_length=25, verbose_name='Tipo de Interação'),
+            model_name="feedbackinteracao",
+            name="tipo",
+            field=models.CharField(
+                choices=[
+                    ("MENSAGEM_PUBLICA", "Mensagem Pública"),
+                    ("NOTA_INTERNA", "Nota Interna"),
+                    ("MUDANCA_STATUS", "Mudança de Status"),
+                    ("PERGUNTA_EMPRESA", "Pergunta da Empresa"),
+                    ("RESPOSTA_USUARIO", "Resposta do Usuário"),
+                    ("MENSAGEM_AUTOMATICA", "Mensagem Automática"),
+                ],
+                max_length=25,
+                verbose_name="Tipo de Interação",
+            ),
         ),
         migrations.CreateModel(
-            name='FeedbackArquivo',
+            name="FeedbackArquivo",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('arquivo', cloudinary.models.CloudinaryField(help_text='Arquivo anexado (imagem, PDF, documento)', max_length=255, verbose_name='Arquivo')),
-                ('nome_original', models.CharField(help_text='Nome do arquivo no momento do upload', max_length=255, verbose_name='Nome Original')),
-                ('tipo_mime', models.CharField(help_text='Tipo do arquivo (ex: image/png, application/pdf)', max_length=100, verbose_name='Tipo MIME')),
-                ('tamanho_bytes', models.PositiveIntegerField(help_text='Tamanho do arquivo em bytes', verbose_name='Tamanho (bytes)')),
-                ('interno', models.BooleanField(default=False, help_text='Arquivo visível apenas para a empresa (não para denunciante)', verbose_name='Interno')),
-                ('data_envio', models.DateTimeField(auto_now_add=True, verbose_name='Data de Envio')),
-                ('client', models.ForeignKey(help_text='Cliente (tenant) ao qual este registro pertence', on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_set', to='tenants.client', verbose_name='Cliente')),
-                ('enviado_por', models.ForeignKey(blank=True, help_text='Usuário que enviou o arquivo (null se anônimo)', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='arquivos_enviados', to=settings.AUTH_USER_MODEL, verbose_name='Enviado Por')),
-                ('feedback', models.ForeignKey(help_text='Feedback ao qual este arquivo pertence', on_delete=django.db.models.deletion.CASCADE, related_name='arquivos', to='feedbacks.feedback', verbose_name='Feedback')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "arquivo",
+                    cloudinary.models.CloudinaryField(
+                        help_text="Arquivo anexado (imagem, PDF, documento)",
+                        max_length=255,
+                        verbose_name="Arquivo",
+                    ),
+                ),
+                (
+                    "nome_original",
+                    models.CharField(
+                        help_text="Nome do arquivo no momento do upload",
+                        max_length=255,
+                        verbose_name="Nome Original",
+                    ),
+                ),
+                (
+                    "tipo_mime",
+                    models.CharField(
+                        help_text="Tipo do arquivo (ex: image/png, application/pdf)",
+                        max_length=100,
+                        verbose_name="Tipo MIME",
+                    ),
+                ),
+                (
+                    "tamanho_bytes",
+                    models.PositiveIntegerField(
+                        help_text="Tamanho do arquivo em bytes",
+                        verbose_name="Tamanho (bytes)",
+                    ),
+                ),
+                (
+                    "interno",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Arquivo visível apenas para a empresa (não para denunciante)",
+                        verbose_name="Interno",
+                    ),
+                ),
+                (
+                    "data_envio",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Data de Envio"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Cliente (tenant) ao qual este registro pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_set",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "enviado_por",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Usuário que enviou o arquivo (null se anônimo)",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="arquivos_enviados",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Enviado Por",
+                    ),
+                ),
+                (
+                    "feedback",
+                    models.ForeignKey(
+                        help_text="Feedback ao qual este arquivo pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="arquivos",
+                        to="feedbacks.feedback",
+                        verbose_name="Feedback",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Arquivo de Feedback',
-                'verbose_name_plural': 'Arquivos de Feedbacks',
-                'ordering': ['-data_envio'],
-                'abstract': False,
-                'indexes': [models.Index(fields=['client', 'feedback'], name='feedbacks_f_client__18f065_idx'), models.Index(fields=['feedback', '-data_envio'], name='feedbacks_f_feedbac_69031c_idx'), models.Index(fields=['interno'], name='feedbacks_f_interno_0f00b2_idx')],
+                "verbose_name": "Arquivo de Feedback",
+                "verbose_name_plural": "Arquivos de Feedbacks",
+                "ordering": ["-data_envio"],
+                "abstract": False,
+                "indexes": [
+                    models.Index(
+                        fields=["client", "feedback"],
+                        name="feedbacks_f_client__18f065_idx",
+                    ),
+                    models.Index(
+                        fields=["feedback", "-data_envio"],
+                        name="feedbacks_f_feedbac_69031c_idx",
+                    ),
+                    models.Index(
+                        fields=["interno"], name="feedbacks_f_interno_0f00b2_idx"
+                    ),
+                ],
             },
         ),
     ]

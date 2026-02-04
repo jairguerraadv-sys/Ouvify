@@ -1,12 +1,7 @@
+import json
 import logging
 from datetime import timedelta
 
-from apps.core.decorators import require_feature
-from apps.core.exceptions import FeatureNotAvailableError
-from apps.core.pagination import StandardResultsSetPagination
-from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
-from apps.core.utils import get_client_ip, get_current_tenant
-from apps.core.utils.privacy import anonymize_ip
 from django.db.models import Prefetch, Q, QuerySet
 from django.utils import timezone
 from rest_framework import permissions, status, viewsets
@@ -14,17 +9,27 @@ from rest_framework.decorators import action
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 
-from .constants import (MAX_INTERACAO_MENSAGEM_LENGTH, FeedbackStatus,
-                        InteracaoTipo)
+from apps.core.decorators import require_feature
+from apps.core.exceptions import FeatureNotAvailableError
+from apps.core.pagination import StandardResultsSetPagination
+from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
+from apps.core.utils import get_client_ip, get_current_tenant
+from apps.core.utils.privacy import anonymize_ip
+
+from .constants import MAX_INTERACAO_MENSAGEM_LENGTH, FeedbackStatus, InteracaoTipo
 from .filters import FeedbackFilter
-from .models import (Feedback, FeedbackArquivo, FeedbackInteracao,
-                     ResponseTemplate, Tag)
-from .serializers import (FeedbackArquivoSerializer,
-                          FeedbackArquivoUploadSerializer,
-                          FeedbackConsultaSerializer, FeedbackDetailSerializer,
-                          FeedbackInteracaoSerializer, FeedbackSerializer,
-                          ResponseTemplateRenderSerializer,
-                          ResponseTemplateSerializer, TagSerializer)
+from .models import Feedback, FeedbackArquivo, FeedbackInteracao, ResponseTemplate, Tag
+from .serializers import (
+    FeedbackArquivoSerializer,
+    FeedbackArquivoUploadSerializer,
+    FeedbackConsultaSerializer,
+    FeedbackDetailSerializer,
+    FeedbackInteracaoSerializer,
+    FeedbackSerializer,
+    ResponseTemplateRenderSerializer,
+    ResponseTemplateSerializer,
+    TagSerializer,
+)
 from .throttles import FeedbackCriacaoThrottle, ProtocoloConsultaThrottle
 
 logger = logging.getLogger(__name__)
@@ -960,9 +965,10 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         """
         import os
 
+        from django.conf import settings
+
         from apps.core.utils import set_current_tenant
         from apps.tenants.models import Client
-        from django.conf import settings
 
         # Tentar via header X-Tenant-ID (somente quando explicitamente habilitado)
         header_enabled = os.getenv(

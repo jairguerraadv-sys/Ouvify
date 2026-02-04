@@ -13,11 +13,13 @@ from drf_spectacular.views import (
 # URLs para documentação da API
 swagger_urlpatterns = [
     # Schema OpenAPI 3.0 em JSON
-    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
-    
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
     # Swagger UI (interface interativa)
-    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
-    
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
     # ReDoc (documentação elegante)
-    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path("api/redoc/", SpectacularRedocView.as_view(url_name="schema"), name="redoc"),
 ]

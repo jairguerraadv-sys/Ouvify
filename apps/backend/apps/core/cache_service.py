@@ -66,7 +66,7 @@ class CacheService:
     def _hash_params(self, params: dict) -> str:
         """Gera hash MD5 de parâmetros para usar como parte da chave"""
         serialized = json.dumps(params, sort_keys=True)
-        return hashlib.md5(serialized.encode()).hexdigest()[:12]
+        return hashlib.md5(serialized.encode(), usedforsecurity=False).hexdigest()[:12]
 
     def get(self, key: str) -> Optional[Any]:
         """
@@ -267,11 +267,16 @@ def cached(
                 # Chave padrão baseada em args/kwargs
                 key_parts = [prefix, func.__name__]
                 key_parts.extend([str(a) for a in args if not hasattr(a, "__dict__")])
-                key_parts.append(
-                    hashlib.md5(
-                        json.dumps(kwargs, sort_keys=True, default=str).encode()
-                    ).hexdigest()[:12]
-                )
+                if kwargs:
+                    key_parts.append(
+                        hashlib.md5(
+                            json.dumps(kwargs, sort_keys=True, default=str).encode(
+                                "utf-8"
+                            ),
+                            usedforsecurity=False,
+                        ).hexdigest()[:12]
+                    )
+
                 cache_key = ":".join(key_parts)
 
             # Tentar obter do cache
@@ -321,10 +326,10 @@ def cached_method(prefix: str, timeout: int = 60 * 15, tenant_aware: bool = True
             if kwargs:
                 key_parts.append(
                     hashlib.md5(
-                        json.dumps(kwargs, sort_keys=True, default=str).encode()
+                        json.dumps(kwargs, sort_keys=True, default=str).encode("utf-8"),
+                        usedforsecurity=False,
                     ).hexdigest()[:12]
                 )
-
             cache_key = ":".join(key_parts)
 
             # Tentar obter do cache

@@ -6,38 +6,62 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0010_add_prioridade'),
+        ("feedbacks", "0010_add_prioridade"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='feedback',
-            name='data_primeira_resposta',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Data Primeira Resposta'),
+            model_name="feedback",
+            name="data_primeira_resposta",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Data Primeira Resposta"
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='data_resolucao',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Data de Resolução'),
+            model_name="feedback",
+            name="data_resolucao",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Data de Resolução"
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='sla_primeira_resposta',
-            field=models.BooleanField(blank=True, help_text='True = dentro do SLA, False = fora do SLA', null=True, verbose_name='SLA Primeira Resposta'),
+            model_name="feedback",
+            name="sla_primeira_resposta",
+            field=models.BooleanField(
+                blank=True,
+                help_text="True = dentro do SLA, False = fora do SLA",
+                null=True,
+                verbose_name="SLA Primeira Resposta",
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='sla_resolucao',
-            field=models.BooleanField(blank=True, help_text='True = dentro do SLA, False = fora do SLA', null=True, verbose_name='SLA Resolução'),
+            model_name="feedback",
+            name="sla_resolucao",
+            field=models.BooleanField(
+                blank=True,
+                help_text="True = dentro do SLA, False = fora do SLA",
+                null=True,
+                verbose_name="SLA Resolução",
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='tempo_primeira_resposta',
-            field=models.DurationField(blank=True, help_text='Tempo entre criação e primeira interação', null=True, verbose_name='Tempo Primeira Resposta'),
+            model_name="feedback",
+            name="tempo_primeira_resposta",
+            field=models.DurationField(
+                blank=True,
+                help_text="Tempo entre criação e primeira interação",
+                null=True,
+                verbose_name="Tempo Primeira Resposta",
+            ),
         ),
         migrations.AddField(
-            model_name='feedback',
-            name='tempo_resolucao',
-            field=models.DurationField(blank=True, help_text='Tempo entre criação e resolução', null=True, verbose_name='Tempo de Resolução'),
+            model_name="feedback",
+            name="tempo_resolucao",
+            field=models.DurationField(
+                blank=True,
+                help_text="Tempo entre criação e resolução",
+                null=True,
+                verbose_name="Tempo de Resolução",
+            ),
         ),
     ]

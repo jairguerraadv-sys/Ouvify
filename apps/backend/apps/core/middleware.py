@@ -26,8 +26,7 @@ class TenantIsolationMiddleware:
         user = getattr(request, "user", None)
         if user is not None and not getattr(user, "is_authenticated", False):
             try:
-                from rest_framework_simplejwt.authentication import \
-                    JWTAuthentication
+                from rest_framework_simplejwt.authentication import JWTAuthentication
 
                 jwt_auth = JWTAuthentication()
                 auth_result = jwt_auth.authenticate(request)
@@ -55,8 +54,9 @@ class TenantIsolationMiddleware:
 
             # Validar membership do usuário no tenant (owner ou TeamMember ativo)
             try:
-                from apps.tenants.models import \
-                    TeamMember  # import local p/ evitar ciclos
+                from apps.tenants.models import (  # import local p/ evitar ciclos
+                    TeamMember,
+                )
 
                 is_owner = getattr(tenant, "owner_id", None) == getattr(
                     user, "id", None
@@ -105,9 +105,10 @@ Handles automatic tenant identification based on subdomain or headers.
 import logging
 import os
 
-from apps.tenants.models import Client
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
+
+from apps.tenants.models import Client
 
 from .utils import clear_current_tenant, set_current_tenant
 

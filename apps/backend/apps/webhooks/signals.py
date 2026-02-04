@@ -4,15 +4,18 @@ Sprint 5 - Feature 5.2: Integrações (Webhooks)
 
 Signals para disparar webhooks automaticamente
 """
+
 import logging
+
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from apps.feedbacks.models import Feedback
+
 from .services import (
     trigger_feedback_created,
-    trigger_feedback_status_changed,
     trigger_feedback_resolved,
+    trigger_feedback_status_changed,
 )
 
 logger = logging.getLogger(__name__)
@@ -46,19 +49,21 @@ def trigger_feedback_webhooks(sender, instance, created, **kwargs):
         else:
             # Feedback atualizado - verificar se status mudou
             old_status = _feedback_status_cache.pop(instance.pk, None)
-            
+
             if old_status and old_status != instance.status:
                 trigger_feedback_status_changed(instance, old_status, instance.status)
                 logger.info(
                     f"Webhook triggered: feedback.status_changed for {instance.protocolo} "
                     f"({old_status} -> {instance.status})"
                 )
-                
+
                 # Se resolvido, disparar evento específico
-                if instance.status in ['resolvido', 'concluido', 'fechado']:
+                if instance.status in ["resolvido", "concluido", "fechado"]:
                     trigger_feedback_resolved(instance)
-                    logger.info(f"Webhook triggered: feedback.resolved for {instance.protocolo}")
-                    
+                    logger.info(
+                        f"Webhook triggered: feedback.resolved for {instance.protocolo}"
+                    )
+
     except Exception as e:
         # Não deixar erro de webhook quebrar o fluxo principal
         logger.error(f"Error triggering webhook: {e}", exc_info=True)

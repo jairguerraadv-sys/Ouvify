@@ -4,8 +4,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
 from .models import ConsentLog, ConsentVersion, UserConsent
-from .serializers import (AcceptConsentSerializer, ConsentVersionSerializer,
-                          UserConsentSerializer)
+from .serializers import (
+    AcceptConsentSerializer,
+    ConsentVersionSerializer,
+    UserConsentSerializer,
+)
 
 
 class ConsentVersionViewSet(viewsets.ReadOnlyModelViewSet):

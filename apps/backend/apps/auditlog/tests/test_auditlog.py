@@ -10,9 +10,10 @@ Cobertura:
 import uuid
 
 import pytest
+from django.utils import timezone
+
 from apps.auditlog.models import AuditLog
 from apps.tenants.models import Client
-from django.utils import timezone
 
 
 @pytest.fixture

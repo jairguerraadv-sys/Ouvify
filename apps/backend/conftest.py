@@ -16,9 +16,10 @@ os.environ["NPLUSONE_WHITELIST"] = "*"
 from unittest.mock import MagicMock
 
 import pytest
-from apps.core.utils import set_current_tenant
 from django.conf import settings
 from dotenv import load_dotenv
+
+from apps.core.utils import set_current_tenant
 
 # Carregar variáveis de ambiente do .env
 env_path = Path(__file__).resolve().parent / ".env"

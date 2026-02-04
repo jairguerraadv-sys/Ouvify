@@ -16,8 +16,11 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from .decorators import require_permission
 from .mixins import PermissionRequiredMixin, TenantFilterMixin
 from .models import TeamInvitation, TeamMember
-from .serializers import (AcceptInvitationSerializer, TeamInvitationSerializer,
-                          TeamMemberSerializer)
+from .serializers import (
+    AcceptInvitationSerializer,
+    TeamInvitationSerializer,
+    TeamMemberSerializer,
+)
 
 
 class InvitationAcceptRateThrottle(AnonRateThrottle):

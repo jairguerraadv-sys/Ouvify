@@ -167,10 +167,11 @@ def update_analytics_cache():
     """
     Atualiza cache de analytics para todos os tenants ativos
     """
-    from apps.feedbacks.models import Feedback
-    from apps.tenants.models import Client
     from django.core.cache import cache
     from django.db.models import Count
+
+    from apps.feedbacks.models import Feedback
+    from apps.tenants.models import Client
 
     tenants = Client.objects.filter(ativo=True)
 
@@ -218,10 +219,11 @@ def warm_cache_for_tenant(tenant_id: int):
     """
     Aquece cache para um tenant específico
     """
-    from apps.feedbacks.models import Feedback
-    from apps.tenants.models import Client
     from django.core.cache import cache
     from django.db.models import Count, Q
+
+    from apps.feedbacks.models import Feedback
+    from apps.tenants.models import Client
 
     try:
         tenant = Client.objects.get(id=tenant_id)
@@ -262,8 +264,7 @@ def cleanup_expired_tokens():
     Remove tokens JWT blacklistados expirados
     """
     try:
-        from rest_framework_simplejwt.token_blacklist.models import \
-            OutstandingToken
+        from rest_framework_simplejwt.token_blacklist.models import OutstandingToken
 
         # Remover tokens expirados
         expired = OutstandingToken.objects.filter(expires_at__lt=timezone.now())
@@ -322,9 +323,10 @@ def send_daily_digest():
     """
     Envia digest diário para todos os tenants
     """
+    from django.db.models import Count
+
     from apps.feedbacks.models import Feedback
     from apps.tenants.models import Client
-    from django.db.models import Count
 
     yesterday = timezone.now() - timedelta(days=1)
 

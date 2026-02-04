@@ -8,11 +8,12 @@ Cobertura:
 from datetime import timedelta
 
 import pytest
-from apps.tenants.models import Client, TeamInvitation, TeamMember
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
+
+from apps.tenants.models import Client, TeamInvitation, TeamMember
 
 pytestmark = pytest.mark.django_db
 

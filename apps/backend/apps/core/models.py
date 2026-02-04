@@ -173,3 +173,5 @@ class CSPViolation(models.Model):
 
 
 # Importar APIKey para que Django detecte o modelo
+
+from .api_keys import APIKey  # noqa: F401

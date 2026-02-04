@@ -5,12 +5,13 @@ Views adicionais para gestão de assinaturas.
 import logging
 
 import stripe
-from apps.tenants.models import Client
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from stripe import error as stripe_error
+
+from apps.tenants.models import Client
 
 logger = logging.getLogger(__name__)
 

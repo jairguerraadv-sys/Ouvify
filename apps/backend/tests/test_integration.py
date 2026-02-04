@@ -1,10 +1,12 @@
-import pytest
 import json
-from django.test import TestCase, Client
+
+import pytest
 from django.contrib.auth.models import User
+from django.test import Client, TestCase
 from django.urls import reverse
-from apps.tenants.models import Client as TenantClient
+
 from apps.feedbacks.models import Feedback
+from apps.tenants.models import Client as TenantClient
 
 
 class FeedbackAPITestCase(TestCase):
@@ -18,23 +20,18 @@ class FeedbackAPITestCase(TestCase):
 
         # Criar tenant de teste
         self.tenant = TenantClient.objects.create(
-            nome="Empresa Teste",
-            subdominio="teste",
-            plano="starter",
-            ativo=True
+            nome="Empresa Teste", subdominio="teste", plano="starter", ativo=True
         )
 
         # Criar usuário de teste
         self.user = User.objects.create_user(
-            username="testuser",
-            email="test@example.com",
-            password="testpass123"
+            username="testuser", email="test@example.com", password="testpass123"
         )
 
         # Headers para simular tenant
         self.headers = {
-            'HTTP_X_TENANT_ID': str(self.tenant.pk),
-            'CONTENT_TYPE': 'application/json'
+            "HTTP_X_TENANT_ID": str(self.tenant.pk),
+            "CONTENT_TYPE": "application/json",
         }
 
     def test_create_feedback_anonymous(self):
@@ -43,54 +40,56 @@ class FeedbackAPITestCase(TestCase):
             "tipo": "denuncia",
             "titulo": "Denúncia de Teste",
             "descricao": "Descrição detalhada da denúncia para teste",
-            "anonimo": True
+            "anonimo": True,
         }
 
         response = self.client.post(
-            reverse('feedback-list'),
+            reverse("feedback-list"),
             data=payload,
-            content_type='application/json',
-            **self.headers
+            content_type="application/json",
+            **self.headers,
         )
 
         self.assertEqual(response.status_code, 201)
 
         # Verificar se o feedback foi criado
         data = response.json()
-        self.assertIn('protocolo', data)
-        self.assertEqual(data['tipo'], 'denuncia')
-        self.assertEqual(data['titulo'], 'Denúncia de Teste')
-        self.assertTrue(data['anonimo'])
+        self.assertIn("protocolo", data)
+        self.assertEqual(data["tipo"], "denuncia")
+        self.assertEqual(data["titulo"], "Denúncia de Teste")
+        self.assertTrue(data["anonimo"])
 
         # Verificar no banco usando all_tenants() (fora do contexto de tenant no thread-local)
-        feedback = Feedback.objects.all_tenants().get(protocolo=data['protocolo'], client=self.tenant)
+        feedback = Feedback.objects.all_tenants().get(
+            protocolo=data["protocolo"], client=self.tenant
+        )
         self.assertEqual(feedback.client, self.tenant)
-        self.assertEqual(feedback.tipo, 'denuncia')
+        self.assertEqual(feedback.tipo, "denuncia")
 
     def test_create_feedback_authenticated(self):
         """Teste: Criar feedback como usuário autenticado"""
         # Fazer login
-        self.client.login(username='testuser', password='testpass123')
+        self.client.login(username="testuser", password="testpass123")
 
         payload = {
             "tipo": "sugestao",
             "titulo": "Sugestão de Melhoria",
             "descricao": "Implementar dark mode na plataforma",
-            "anonimo": False
+            "anonimo": False,
         }
 
         response = self.client.post(
-            reverse('feedback-list'),
+            reverse("feedback-list"),
             data=payload,
-            content_type='application/json',
-            **self.headers
+            content_type="application/json",
+            **self.headers,
         )
 
         self.assertEqual(response.status_code, 201)
 
         data = response.json()
-        self.assertEqual(data['tipo'], 'sugestao')
-        self.assertFalse(data['anonimo'])
+        self.assertEqual(data["tipo"], "sugestao")
+        self.assertFalse(data["anonimo"])
 
     def test_consultar_protocolo(self):
         """Teste: Consultar status de feedback por protocolo"""
@@ -99,38 +98,32 @@ class FeedbackAPITestCase(TestCase):
             "tipo": "reclamacao",
             "titulo": "Reclamação de Teste",
             "descricao": "Serviço lento",
-            "anonimo": True
+            "anonimo": True,
         }
-        
+
         create_response = self.client.post(
-            reverse('feedback-list'),
+            reverse("feedback-list"),
             data=payload,
-            content_type='application/json',
-            **self.headers
+            content_type="application/json",
+            **self.headers,
         )
 
         self.assertEqual(create_response.status_code, 201)
-        
-        protocolo = create_response.json()['protocolo']
+
+        protocolo = create_response.json()["protocolo"]
 
         # Consultar protocolo
-        url = reverse('feedback-consultar-protocolo')
-        response = self.client.get(
-            f"{url}?protocolo={protocolo}",
-            **self.headers
-        )
+        url = reverse("feedback-consultar-protocolo")
+        response = self.client.get(f"{url}?protocolo={protocolo}", **self.headers)
 
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        self.assertEqual(data['protocolo'], protocolo)
+        self.assertEqual(data["protocolo"], protocolo)
 
     def test_protocolo_not_found(self):
         """Teste: Consultar protocolo inexistente"""
-        url = reverse('feedback-consultar-protocolo')
-        response = self.client.get(
-            f"{url}?protocolo=INVALID-PROTOCOL",
-            **self.headers
-        )
+        url = reverse("feedback-consultar-protocolo")
+        response = self.client.get(f"{url}?protocolo=INVALID-PROTOCOL", **self.headers)
 
         self.assertEqual(response.status_code, 404)
 
@@ -154,7 +147,7 @@ class FeedbackAPITestCase(TestCase):
         )
 
         # Consultar o protocolo do tenant2 com header do tenant1 deve retornar 404
-        url = reverse('feedback-consultar-protocolo')
+        url = reverse("feedback-consultar-protocolo")
         response = self.client.get(
             f"{url}?protocolo={feedback_t2.protocolo}",
             **self.headers,
@@ -164,13 +157,10 @@ class FeedbackAPITestCase(TestCase):
     def test_rate_limiting(self):
         """Teste: Rate limiting na consulta de protocolo"""
         # Fazer múltiplas requisições rápidas
-        url = reverse('feedback-consultar-protocolo')
+        url = reverse("feedback-consultar-protocolo")
 
         for i in range(10):
-            response = self.client.get(
-                f"{url}?codigo=INVALID-PROTOCOL",
-                **self.headers
-            )
+            response = self.client.get(f"{url}?codigo=INVALID-PROTOCOL", **self.headers)
 
         # A última deve ser bloqueada por rate limiting
         # (depende da configuração do throttle)
@@ -190,18 +180,18 @@ class HealthCheckTestCase(TestCase):
 
     def test_health_endpoint(self):
         """Teste: Health check endpoint"""
-        response = self.client.get('/health/')
+        response = self.client.get("/health/")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        self.assertIn('status', data)
-        self.assertEqual(data['status'], 'healthy')
+        self.assertIn("status", data)
+        self.assertEqual(data["status"], "healthy")
 
     def test_api_health_endpoint(self):
         """Teste: API health check"""
-        response = self.client.get('/health/')
+        response = self.client.get("/health/")
         self.assertEqual(response.status_code, 200)
 
         data = response.json()
-        self.assertIn('status', data)
-        self.assertEqual(data['status'], 'healthy')
+        self.assertIn("status", data)
+        self.assertEqual(data["status"], "healthy")

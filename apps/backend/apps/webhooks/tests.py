@@ -6,10 +6,11 @@ Sprint 5 - Feature 5.2: Integrações (Webhooks)
 import uuid
 from unittest.mock import Mock, patch
 
+from django.test import TestCase
+
 from apps.tenants.models import Client
 from apps.webhooks.models import WebhookDelivery, WebhookEndpoint, WebhookEvent
 from apps.webhooks.services import create_webhook_event, deliver_webhook
-from django.test import TestCase
 
 
 class WebhookEndpointModelTest(TestCase):

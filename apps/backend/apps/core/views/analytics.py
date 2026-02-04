@@ -1,12 +1,13 @@
 from datetime import timedelta
 
-from apps.feedbacks.models import Feedback
-from config.feature_flags import feature_flags
 from django.db.models import Count, Q
 from django.utils import timezone
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
+from apps.feedbacks.models import Feedback
+from config.feature_flags import feature_flags
 
 
 class AnalyticsView(APIView):

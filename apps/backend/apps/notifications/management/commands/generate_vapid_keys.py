@@ -46,8 +46,7 @@ class Command(BaseCommand):
         # Para Web Push, precisamos da chave pública em formato URL-safe base64
         import base64
 
-        from cryptography.hazmat.primitives.serialization import (Encoding,
-                                                                  PublicFormat)
+        from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
         public_key_bytes = vapid.public_key.public_bytes(
             encoding=Encoding.X962, format=PublicFormat.UncompressedPoint

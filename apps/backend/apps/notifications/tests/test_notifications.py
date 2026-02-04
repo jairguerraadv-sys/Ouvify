@@ -11,6 +11,7 @@ Cobertura:
 import uuid
 
 import pytest
+
 from apps.notifications.models import Notification, PushSubscription
 from apps.tenants.models import Client
 

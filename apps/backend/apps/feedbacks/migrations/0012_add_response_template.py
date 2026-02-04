@@ -8,35 +8,137 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0011_add_sla_tracking'),
-        ('tenants', '0008_add_email_notifications_preference'),
+        ("feedbacks", "0011_add_sla_tracking"),
+        ("tenants", "0008_add_email_notifications_preference"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ResponseTemplate',
+            name="ResponseTemplate",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(help_text='Nome identificador do template (ex: "Agradecimento Padrão")', max_length=100, verbose_name='Nome do Template')),
-                ('categoria', models.CharField(choices=[('agradecimento', 'Agradecimento'), ('recebimento', 'Confirmação de Recebimento'), ('analise', 'Em Análise'), ('resolucao', 'Resolução'), ('encerramento', 'Encerramento'), ('esclarecimento', 'Pedido de Esclarecimento'), ('outro', 'Outro')], default='outro', help_text='Categoria para organização dos templates', max_length=20, verbose_name='Categoria')),
-                ('assunto', models.CharField(blank=True, help_text='Assunto padrão para emails (opcional)', max_length=200, verbose_name='Assunto do Email')),
-                ('conteudo', models.TextField(help_text='Texto do template. Use {{protocolo}}, {{nome}}, {{tipo}}, {{status}} como variáveis.', verbose_name='Conteúdo')),
-                ('tipos_aplicaveis', models.JSONField(blank=True, default=list, help_text='Lista de tipos de feedback onde este template pode ser usado (vazio = todos)', verbose_name='Tipos Aplicáveis')),
-                ('ativo', models.BooleanField(default=True, help_text='Se o template está disponível para uso', verbose_name='Ativo')),
-                ('uso_count', models.PositiveIntegerField(default=0, help_text='Contador de quantas vezes o template foi utilizado', verbose_name='Vezes Usado')),
-                ('criado_em', models.DateTimeField(auto_now_add=True, verbose_name='Criado em')),
-                ('atualizado_em', models.DateTimeField(auto_now=True, verbose_name='Atualizado em')),
-                ('client', models.ForeignKey(help_text='Cliente (tenant) ao qual este registro pertence', on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_set', to='tenants.client', verbose_name='Cliente')),
-                ('criado_por', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='templates_criados', to=settings.AUTH_USER_MODEL, verbose_name='Criado por')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "nome",
+                    models.CharField(
+                        help_text='Nome identificador do template (ex: "Agradecimento Padrão")',
+                        max_length=100,
+                        verbose_name="Nome do Template",
+                    ),
+                ),
+                (
+                    "categoria",
+                    models.CharField(
+                        choices=[
+                            ("agradecimento", "Agradecimento"),
+                            ("recebimento", "Confirmação de Recebimento"),
+                            ("analise", "Em Análise"),
+                            ("resolucao", "Resolução"),
+                            ("encerramento", "Encerramento"),
+                            ("esclarecimento", "Pedido de Esclarecimento"),
+                            ("outro", "Outro"),
+                        ],
+                        default="outro",
+                        help_text="Categoria para organização dos templates",
+                        max_length=20,
+                        verbose_name="Categoria",
+                    ),
+                ),
+                (
+                    "assunto",
+                    models.CharField(
+                        blank=True,
+                        help_text="Assunto padrão para emails (opcional)",
+                        max_length=200,
+                        verbose_name="Assunto do Email",
+                    ),
+                ),
+                (
+                    "conteudo",
+                    models.TextField(
+                        help_text="Texto do template. Use {{protocolo}}, {{nome}}, {{tipo}}, {{status}} como variáveis.",
+                        verbose_name="Conteúdo",
+                    ),
+                ),
+                (
+                    "tipos_aplicaveis",
+                    models.JSONField(
+                        blank=True,
+                        default=list,
+                        help_text="Lista de tipos de feedback onde este template pode ser usado (vazio = todos)",
+                        verbose_name="Tipos Aplicáveis",
+                    ),
+                ),
+                (
+                    "ativo",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Se o template está disponível para uso",
+                        verbose_name="Ativo",
+                    ),
+                ),
+                (
+                    "uso_count",
+                    models.PositiveIntegerField(
+                        default=0,
+                        help_text="Contador de quantas vezes o template foi utilizado",
+                        verbose_name="Vezes Usado",
+                    ),
+                ),
+                (
+                    "criado_em",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Criado em"),
+                ),
+                (
+                    "atualizado_em",
+                    models.DateTimeField(auto_now=True, verbose_name="Atualizado em"),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Cliente (tenant) ao qual este registro pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_set",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "criado_por",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="templates_criados",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Criado por",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Template de Resposta',
-                'verbose_name_plural': 'Templates de Resposta',
-                'ordering': ['categoria', 'nome'],
-                'abstract': False,
-                'indexes': [models.Index(fields=['client', 'categoria'], name='feedbacks_r_client__29455e_idx'), models.Index(fields=['client', 'ativo'], name='feedbacks_r_client__db0a2f_idx')],
-                'unique_together': {('client', 'nome')},
+                "verbose_name": "Template de Resposta",
+                "verbose_name_plural": "Templates de Resposta",
+                "ordering": ["categoria", "nome"],
+                "abstract": False,
+                "indexes": [
+                    models.Index(
+                        fields=["client", "categoria"],
+                        name="feedbacks_r_client__29455e_idx",
+                    ),
+                    models.Index(
+                        fields=["client", "ativo"],
+                        name="feedbacks_r_client__db0a2f_idx",
+                    ),
+                ],
+                "unique_together": {("client", "nome")},
             },
         ),
     ]

@@ -1,12 +1,13 @@
 import json
 from datetime import timedelta
 
-from apps.core.utils import get_current_tenant
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 from django.utils.html import escape
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
+
+from apps.core.utils import get_current_tenant
 
 from .models import CSPViolation
 

@@ -6,13 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0009_add_tags'),
+        ("feedbacks", "0009_add_tags"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='feedback',
-            name='prioridade',
-            field=models.CharField(choices=[('baixa', 'Baixa'), ('media', 'Média'), ('alta', 'Alta'), ('critica', 'Crítica')], default='media', help_text='Nível de prioridade do feedback', max_length=10, verbose_name='Prioridade'),
+            model_name="feedback",
+            name="prioridade",
+            field=models.CharField(
+                choices=[
+                    ("baixa", "Baixa"),
+                    ("media", "Média"),
+                    ("alta", "Alta"),
+                    ("critica", "Crítica"),
+                ],
+                default="media",
+                help_text="Nível de prioridade do feedback",
+                max_length=10,
+                verbose_name="Prioridade",
+            ),
         ),
     ]

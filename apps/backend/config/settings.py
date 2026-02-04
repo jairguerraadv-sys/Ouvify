@@ -456,9 +456,15 @@ if not DEBUG:
 # =============================================================================
 
 # Origens permitidas para requisições do frontend
+_DEFAULT_CORS_ALLOWED_ORIGINS = (
+    "http://localhost:3000,http://127.0.0.1:3000,https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app"
+    if DEBUG
+    else "https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app"
+)
+
 CORS_ALLOWED_ORIGINS = os.getenv(
     "CORS_ALLOWED_ORIGINS",
-    "http://localhost:3000,http://127.0.0.1:3000,https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app",
+    _DEFAULT_CORS_ALLOWED_ORIGINS,
 ).split(",")
 
 # Segurança CORS: bloquear origens de desenvolvimento em produção

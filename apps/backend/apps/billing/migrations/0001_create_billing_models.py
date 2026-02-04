@@ -9,87 +9,216 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('tenants', '0008_add_email_notifications_preference'),
+        ("tenants", "0008_add_email_notifications_preference"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Plan',
+            name="Plan",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True)),
-                ('slug', models.SlugField(max_length=100, unique=True)),
-                ('price_cents', models.PositiveIntegerField(default=0, help_text='Preço em centavos')),
-                ('currency', models.CharField(default='BRL', max_length=3)),
-                ('stripe_price_id', models.CharField(blank=True, max_length=100, null=True)),
-                ('stripe_product_id', models.CharField(blank=True, max_length=100, null=True)),
-                ('features', models.JSONField(default=dict, help_text="Features habilitadas: {'analytics': true, 'automations': true, ...}")),
-                ('limits', models.JSONField(default=dict, help_text="Limites: {'feedbacks_per_month': 1000, 'team_members': 5, ...}")),
-                ('description', models.TextField(blank=True)),
-                ('is_popular', models.BooleanField(default=False, help_text='Destaque na página de preços')),
-                ('display_order', models.PositiveIntegerField(default=0)),
-                ('is_active', models.BooleanField(default=True)),
-                ('trial_days', models.PositiveIntegerField(default=14)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100, unique=True)),
+                ("slug", models.SlugField(max_length=100, unique=True)),
+                (
+                    "price_cents",
+                    models.PositiveIntegerField(
+                        default=0, help_text="Preço em centavos"
+                    ),
+                ),
+                ("currency", models.CharField(default="BRL", max_length=3)),
+                (
+                    "stripe_price_id",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "stripe_product_id",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "features",
+                    models.JSONField(
+                        default=dict,
+                        help_text="Features habilitadas: {'analytics': true, 'automations': true, ...}",
+                    ),
+                ),
+                (
+                    "limits",
+                    models.JSONField(
+                        default=dict,
+                        help_text="Limites: {'feedbacks_per_month': 1000, 'team_members': 5, ...}",
+                    ),
+                ),
+                ("description", models.TextField(blank=True)),
+                (
+                    "is_popular",
+                    models.BooleanField(
+                        default=False, help_text="Destaque na página de preços"
+                    ),
+                ),
+                ("display_order", models.PositiveIntegerField(default=0)),
+                ("is_active", models.BooleanField(default=True)),
+                ("trial_days", models.PositiveIntegerField(default=14)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name': 'Plano',
-                'verbose_name_plural': 'Planos',
-                'ordering': ['display_order', 'price_cents'],
+                "verbose_name": "Plano",
+                "verbose_name_plural": "Planos",
+                "ordering": ["display_order", "price_cents"],
             },
         ),
         migrations.CreateModel(
-            name='Subscription',
+            name="Subscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stripe_subscription_id', models.CharField(blank=True, max_length=100, null=True, unique=True)),
-                ('stripe_customer_id', models.CharField(blank=True, max_length=100, null=True)),
-                ('status', models.CharField(choices=[('trialing', 'Trial'), ('active', 'Ativa'), ('past_due', 'Vencida'), ('canceled', 'Cancelada'), ('unpaid', 'Não Paga'), ('incomplete', 'Incompleta')], default='trialing', max_length=20)),
-                ('trial_start', models.DateTimeField(blank=True, null=True)),
-                ('trial_end', models.DateTimeField(blank=True, null=True)),
-                ('current_period_start', models.DateTimeField(blank=True, null=True)),
-                ('current_period_end', models.DateTimeField(blank=True, null=True)),
-                ('canceled_at', models.DateTimeField(blank=True, null=True)),
-                ('cancel_at_period_end', models.BooleanField(default=False)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('client', models.ForeignKey(help_text='Cliente (tenant) ao qual este registro pertence', on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_set', to='tenants.client', verbose_name='Cliente')),
-                ('plan', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='subscriptions', to='billing.plan')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "stripe_subscription_id",
+                    models.CharField(
+                        blank=True, max_length=100, null=True, unique=True
+                    ),
+                ),
+                (
+                    "stripe_customer_id",
+                    models.CharField(blank=True, max_length=100, null=True),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("trialing", "Trial"),
+                            ("active", "Ativa"),
+                            ("past_due", "Vencida"),
+                            ("canceled", "Cancelada"),
+                            ("unpaid", "Não Paga"),
+                            ("incomplete", "Incompleta"),
+                        ],
+                        default="trialing",
+                        max_length=20,
+                    ),
+                ),
+                ("trial_start", models.DateTimeField(blank=True, null=True)),
+                ("trial_end", models.DateTimeField(blank=True, null=True)),
+                ("current_period_start", models.DateTimeField(blank=True, null=True)),
+                ("current_period_end", models.DateTimeField(blank=True, null=True)),
+                ("canceled_at", models.DateTimeField(blank=True, null=True)),
+                ("cancel_at_period_end", models.BooleanField(default=False)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Cliente (tenant) ao qual este registro pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_set",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "plan",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        related_name="subscriptions",
+                        to="billing.plan",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Assinatura',
-                'verbose_name_plural': 'Assinaturas',
+                "verbose_name": "Assinatura",
+                "verbose_name_plural": "Assinaturas",
             },
         ),
         migrations.CreateModel(
-            name='Invoice',
+            name="Invoice",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stripe_invoice_id', models.CharField(blank=True, max_length=100, null=True, unique=True)),
-                ('amount_cents', models.PositiveIntegerField(default=0)),
-                ('currency', models.CharField(default='BRL', max_length=3)),
-                ('status', models.CharField(choices=[('draft', 'Rascunho'), ('open', 'Aberta'), ('paid', 'Paga'), ('void', 'Cancelada'), ('uncollectible', 'Incobrável')], default='draft', max_length=20)),
-                ('pdf_url', models.URLField(blank=True, null=True)),
-                ('hosted_invoice_url', models.URLField(blank=True, null=True)),
-                ('period_start', models.DateTimeField(blank=True, null=True)),
-                ('period_end', models.DateTimeField(blank=True, null=True)),
-                ('paid_at', models.DateTimeField(blank=True, null=True)),
-                ('due_date', models.DateTimeField(blank=True, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('description', models.TextField(blank=True)),
-                ('client', models.ForeignKey(help_text='Cliente (tenant) ao qual este registro pertence', on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_set', to='tenants.client', verbose_name='Cliente')),
-                ('subscription', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='invoices', to='billing.subscription')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "stripe_invoice_id",
+                    models.CharField(
+                        blank=True, max_length=100, null=True, unique=True
+                    ),
+                ),
+                ("amount_cents", models.PositiveIntegerField(default=0)),
+                ("currency", models.CharField(default="BRL", max_length=3)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("draft", "Rascunho"),
+                            ("open", "Aberta"),
+                            ("paid", "Paga"),
+                            ("void", "Cancelada"),
+                            ("uncollectible", "Incobrável"),
+                        ],
+                        default="draft",
+                        max_length=20,
+                    ),
+                ),
+                ("pdf_url", models.URLField(blank=True, null=True)),
+                ("hosted_invoice_url", models.URLField(blank=True, null=True)),
+                ("period_start", models.DateTimeField(blank=True, null=True)),
+                ("period_end", models.DateTimeField(blank=True, null=True)),
+                ("paid_at", models.DateTimeField(blank=True, null=True)),
+                ("due_date", models.DateTimeField(blank=True, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("description", models.TextField(blank=True)),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Cliente (tenant) ao qual este registro pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_set",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "subscription",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="invoices",
+                        to="billing.subscription",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Fatura',
-                'verbose_name_plural': 'Faturas',
-                'ordering': ['-created_at'],
+                "verbose_name": "Fatura",
+                "verbose_name_plural": "Faturas",
+                "ordering": ["-created_at"],
             },
         ),
         migrations.AddConstraint(
-            model_name='subscription',
-            constraint=models.UniqueConstraint(condition=models.Q(('status__in', ['trialing', 'active', 'past_due'])), fields=('client',), name='unique_active_subscription_per_tenant'),
+            model_name="subscription",
+            constraint=models.UniqueConstraint(
+                condition=models.Q(("status__in", ["trialing", "active", "past_due"])),
+                fields=("client",),
+                name="unique_active_subscription_per_tenant",
+            ),
         ),
     ]
