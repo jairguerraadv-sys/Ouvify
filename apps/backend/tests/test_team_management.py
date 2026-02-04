@@ -24,9 +24,9 @@ class TestTeamMember:
             user=user, client=client, role=TeamMember.OWNER
         )
 
-        assert owner.has_permission("manage_team") == True
-        assert owner.has_permission("manage_billing") == True
-        assert owner.has_permission("delete_tenant") == True
+        assert owner.has_permission("manage_team") is True
+        assert owner.has_permission("manage_billing") is True
+        assert owner.has_permission("delete_tenant") is True
 
     def test_viewer_has_limited_permissions(self):
         user = User.objects.create_user("viewer@test.com", password="pass")
@@ -35,9 +35,9 @@ class TestTeamMember:
             user=user, client=client, role=TeamMember.VIEWER
         )
 
-        assert viewer.has_permission("view_analytics") == True
-        assert viewer.has_permission("manage_feedbacks") == False
-        assert viewer.has_permission("manage_team") == False
+        assert viewer.has_permission("view_analytics") is True
+        assert viewer.has_permission("manage_feedbacks") is False
+        assert viewer.has_permission("manage_team") is False
 
 
 @pytest.mark.django_db

@@ -1,4 +1,5 @@
 import json
+import logging
 from datetime import timedelta
 
 from django.http import HttpResponse, JsonResponse
@@ -10,6 +11,8 @@ from django.views.decorators.http import require_POST
 from apps.core.utils import get_current_tenant
 
 from .models import CSPViolation
+
+logger = logging.getLogger(__name__)
 
 
 def home(request):

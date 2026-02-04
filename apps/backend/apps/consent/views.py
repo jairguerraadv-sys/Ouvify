@@ -65,9 +65,14 @@ class UserConsentViewSet(viewsets.ModelViewSet):
                     defaults={
                         "ip_address": self._get_client_ip(request),
                         "user_agent": request.META.get("HTTP_USER_AGENT", "")[:500],
-                        "context": "signup" if created else "update",
+                        "context": "signup",
                     },
                 )
+
+                # Se não foi criado agora, atualizar o context
+                if not created:
+                    user_consent.context = "update"
+                    user_consent.save()
 
                 user_consent.accept()
 

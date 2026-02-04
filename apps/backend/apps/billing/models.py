@@ -60,12 +60,12 @@ class Plan(models.Model):
         verbose_name_plural = "Planos"
 
     def __str__(self):
-        return f"{self.name} - R\${self.price_cents/100:.2f}/mês"
+        return f"{self.name} - R${self.price_cents/100:.2f}/mês"
 
     @property
     def price_display(self):
         """Retorna preço formatado."""
-        return f"R\$ {self.price_cents/100:.2f}"
+        return f"R$ {self.price_cents/100:.2f}"
 
     @property
     def is_free(self):
@@ -279,7 +279,7 @@ class Invoice(TenantAwareModel):
     @property
     def amount_display(self):
         """Retorna valor formatado."""
-        return f"R\$ {self.amount_cents/100:.2f}"
+        return f"R$ {self.amount_cents/100:.2f}"
 
     @property
     def is_paid(self):
