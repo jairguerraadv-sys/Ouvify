@@ -21,6 +21,9 @@ from dotenv import load_dotenv
 
 from apps.core.utils import set_current_tenant
 
+# Desabilitar APPEND_SLASH para evitar redirects 301 em testes
+settings.APPEND_SLASH = False
+
 # Carregar variáveis de ambiente do .env
 env_path = Path(__file__).resolve().parent / ".env"
 load_dotenv(env_path)
