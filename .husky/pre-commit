@@ -2,6 +2,21 @@
 # Husky pre-commit hook
 # Executa lint-staged para validar arquivos antes do commit
 
+# Bloqueia commit acidental de secrets/configs locais
+STAGED_FILES=$(git diff --cached --name-only)
+if echo "$STAGED_FILES" | grep -E '(^|/)\.vercel/' >/dev/null 2>&1; then
+    echo "❌ Commit bloqueado: diretório .vercel não deve ser versionado."
+    exit 1
+fi
+
+# Bloqueia qualquer .env* exceto .env.example
+BAD_ENV_FILES=$(echo "$STAGED_FILES" | grep -E '(^|/)\.env(\..+)?$' | grep -vE '(^|/)\.env\.example$' || true)
+if [ -n "$BAD_ENV_FILES" ]; then
+    echo "❌ Commit bloqueado: arquivos .env* não devem ser versionados (use apenas .env.example)."
+    echo "$BAD_ENV_FILES"
+    exit 1
+fi
+
 # Verifica se lint-staged está disponível
 if command -v npx &> /dev/null; then
     npx lint-staged
