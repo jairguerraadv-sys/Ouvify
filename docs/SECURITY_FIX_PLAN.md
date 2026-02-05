@@ -2,7 +2,7 @@
 
 **Data de Criação:** 2026-02-05  
 **Baseline Auditoria:** `AUDITORIA_SEGURANCA_2026-02-05.md`  
-**Status Geral:** 🟡 EM PROGRESSO (Fase 1/6)
+**Status Geral:** 🟡 EM PROGRESSO (Fase 2/6 - 1/21 concluída)
 
 ---
 
@@ -10,7 +10,7 @@
 
 |     ID     | Severidade | Categoria          | Arquivo/Rota                                                        | Problema                                                        | Correção Necessária                                                                                             | Teste                                                                           | Status         |
 | :--------: | :--------- | :----------------- | :------------------------------------------------------------------ | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------ | :------------- |
-| **CR-001** | 🔴 CRÍTICA | Multi-Tenancy      | `apps/feedbacks/views.py:consultar_protocolo`                       | Vazamento cross-tenant (sem validação de tenant)                | Validar X-Tenant-ID ou subdomínio; filtrar feedback por tenant+protocolo; usar serializer público               | Sem header→400; tenant inválido→404; protocolo de outro tenant→404; sucesso→200 | ⏳ NOT STARTED |
+| **CR-001** | 🔴 CRÍTICA | Multi-Tenancy      | `apps/feedbacks/views.py:consultar_protocolo`                       | Vazamento cross-tenant (sem validação de tenant)                | Validar X-Tenant-ID ou subdomínio; filtrar feedback por tenant+protocolo; usar serializer público               | Sem header→400; tenant inválido→404; protocolo de outro tenant→404; sucesso→200 | ✅ COMPLETED   |
 | **AL-001** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:TokenObtainPairView`                            | Brute force de login (throttle genérico 1000/dia)               | Criar LoginRateThrottle (5/hora); aplicar na view                                                               | Disparar 6 reqs em 1min → 429                                                   | ⏳ NOT STARTED |
 | **AL-002** | 🔴 ALTA    | Rate Limiting      | `apps/core/views/two_factor_views.py:TwoFactorVerifyView`           | Brute force de 2FA (throttle genérico 1000/dia)                 | Criar TwoFactorVerifyThrottle (10/hora); aplicar na view                                                        | Disparar 11 reqs em 1min → 429                                                  | ⏳ NOT STARTED |
 | **AL-003** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:PasswordResetConfirmView`                       | Brute force de token reset (throttle genérico 1000/dia)         | Criar PasswordResetConfirmThrottle (10/hora); aplicar na view                                                   | Disparar 11 reqs em 1min → 429                                                  | ⏳ NOT STARTED |
@@ -43,13 +43,14 @@
 - [x] Mapear arquivos e rotas afetadas
 - [x] Definir testes e critérios de sucesso
 
-### ⏳ Fase 2 — Fix CRÍTICO #1 (Consultar-Protocolo) - PRÓXIMA
+### ✅ Fase 2 — Fix CRÍTICO #1 (Consultar-Protocolo) (CONCLUÍDO)
 
-- [ ] Alterar `consultar_protocolo` para validar tenant
-- [ ] Implementar FeedbackConsultaSerializer público
-- [ ] Adicionar testes de segurança
+- [x] Alterar `consultar_protocolo` para validar tenant
+- [x] Implementar FeedbackConsultaSerializer público
+- [x] Adicionar testes de segurança
+- [x] Commits: `fix(security): prevent cross-tenant leak in protocol lookup (CR-001)` + `test(security): add protocol lookup cross-tenant security tests (CR-001)`
 
-### ⏳ Fase 3 — Fix CRÍTICO/ALTO #2 (Rate Limiting)
+### ⏳ Fase 3 — Fix CRÍTICO/ALTO #2 (Rate Limiting) - PRÓXIMA
 
 - [ ] Criar throttles específicos
 - [ ] Aplicar em views
@@ -82,21 +83,21 @@
 
 | Severidade | Total  | Completadas | Restantes | % Completo |
 | :--------- | :----: | :---------: | :-------: | :--------: |
-| 🔴 CRÍTICA |   1    |      0      |     1     |     0%     |
+| 🔴 CRÍTICA |   1    |      1      |     0     |    100%    |
 | 🔴 ALTA    |   11   |      0      |    11     |     0%     |
 | 🟡 MÉDIA   |   6    |      0      |     6     |     0%     |
 | 🟠 BAIXA   |   3    |      0      |     3     |     0%     |
-| **TOTAL**  | **21** |    **0**    |  **21**   |   **0%**   |
+| **TOTAL**  | **21** |    **1**    |  **20**   |  **4.8%**  |
 
 ---
 
 ## 🎯 Próximos Passos
 
-1. **Executar FASE 2:** Corrigir vazamento em `consultar-protocolo` (CRÍTICA)
-2. **Executar FASE 3:** Implementar rate limiting específico (6 throttles)
-3. **Executar FASE 4:** Criar e aplicar RBAC permissions (3 views)
-4. **Executar FASE 5:** Exigir 2FA em operações sensíveis (3 endpoints)
-5. **Executar FASE 6:** Fixes MÉDIOS/BAIXOS + Re-Auditoria com ROMA
+1. **✅ FASE 2 COMPLETADA:** Validação de tenant em `consultar-protocolo` (CRÍTICA) - Cross-tenant leak eliminado
+2. **⏳ EXECUTAR FASE 3:** Implementar rate limiting específico (6 throttles) - AL-001 a AL-006
+3. **⏳ EXECUTAR FASE 4:** Criar e aplicar RBAC permissions (3 views) - AL-007 a AL-009
+4. **⏳ EXECUTAR FASE 5:** Exigir 2FA em operações sensíveis (3 endpoints) - AL-010 a AL-012
+5. **⏳ EXECUTAR FASE 6:** Fixes MÉDIOS/BAIXOS + Re-Auditoria com ROMA - MD-001 a BX-003
 
 ---
 
