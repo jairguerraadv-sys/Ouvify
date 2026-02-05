@@ -488,23 +488,23 @@ function WebhooksContent() {
       </Card>
 
       {/* Documentation Link */}
-      <Card className="bg-blue-50 border-blue-200">
+      <Card className="bg-info-50 border-info-200">
         <CardContent className="py-4">
           <div className="flex items-center gap-4">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <AlertCircle className="w-5 h-5 text-blue-600" />
+            <div className="p-2 bg-info-100 rounded-lg">
+              <AlertCircle className="w-5 h-5 text-info-600" />
             </div>
             <div className="flex-1">
-              <h4 className="font-medium text-blue-900">
+              <h4 className="font-medium text-info-900">
                 Documentação de Webhooks
               </h4>
-              <p className="text-sm text-blue-700">
+              <p className="text-sm text-info-700">
                 Aprenda como integrar webhooks com sua aplicação
               </p>
             </div>
             <Button
               variant="outline"
-              className="border-blue-300 text-blue-700 hover:bg-blue-100"
+              className="border-info-300 text-info-700 hover:bg-info-100"
             >
               <a href="/docs/webhooks" target="_blank">
                 Ver Documentação
@@ -613,11 +613,11 @@ function WebhookCard({
         {/* Stats */}
         <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Check className="w-4 h-4 text-green-500" />
+            <Check className="w-4 h-4 text-success-500" />
             {webhook.successful_deliveries} sucesso
           </span>
           <span className="flex items-center gap-1">
-            <X className="w-4 h-4 text-red-500" />
+            <X className="w-4 h-4 text-error-500" />
             {webhook.failed_deliveries} falhas
           </span>
           <span>Taxa: {successRate}%</span>
@@ -683,9 +683,9 @@ function WebhookCard({
                   >
                     <div className="flex items-center gap-2">
                       {delivery.success ? (
-                        <Check className="w-4 h-4 text-green-500" />
+                        <Check className="w-4 h-4 text-success-500" />
                       ) : (
-                        <X className="w-4 h-4 text-red-500" />
+                        <X className="w-4 h-4 text-error-500" />
                       )}
                       <Badge variant="outline">{delivery.event_type}</Badge>
                       <span className="text-muted-foreground">

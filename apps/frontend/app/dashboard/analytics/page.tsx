@@ -1,27 +1,33 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { api } from '@/lib/api';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { PageHeader } from '@/components/ui/page-header';
-import { FlexBetween, PageContent, PageLayout } from '@/components/ui';
-import { 
-  TrendingUp, 
-  MessageSquare, 
-  CheckCircle, 
-  Clock, 
+import { useState, useEffect, useMemo } from "react";
+import { api } from "@/lib/api";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { PageHeader } from "@/components/ui/page-header";
+import { FlexBetween, PageContent, PageLayout } from "@/components/ui";
+import {
+  TrendingUp,
+  MessageSquare,
+  CheckCircle,
+  Clock,
   AlertCircle,
   BarChart3,
   RefreshCw,
   ArrowUpRight,
   ArrowDownRight,
-  Timer
-} from 'lucide-react';
-import { DashboardLayout } from '@/components/dashboard/DashboardLayout';
-import { toast } from 'sonner';
+  Timer,
+} from "lucide-react";
+import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
+import { toast } from "sonner";
 
 interface AnalyticsData {
   periodo: {
@@ -70,16 +76,18 @@ function AnalyticsContent() {
     try {
       setLoading(true);
       setError(null);
-      const response = await api.get<AnalyticsData>('/api/analytics/');
+      const response = await api.get<AnalyticsData>("/api/analytics/");
       setData(response);
     } catch (err: any) {
-      console.error('Erro ao carregar analytics:', err);
+      console.error("Erro ao carregar analytics:", err);
       if (err?.response?.status === 403) {
-        setError('Analytics não está habilitado para este ambiente. Contacte o administrador.');
+        setError(
+          "Analytics não está habilitado para este ambiente. Contacte o administrador.",
+        );
       } else {
-        setError('Erro ao carregar dados de analytics. Tente novamente.');
+        setError("Erro ao carregar dados de analytics. Tente novamente.");
       }
-      toast.error('Erro ao carregar analytics');
+      toast.error("Erro ao carregar analytics");
     } finally {
       setLoading(false);
     }
@@ -110,9 +118,7 @@ function AnalyticsContent() {
         <h2 className="text-xl font-semibold text-text-primary mb-2">
           Analytics Indisponível
         </h2>
-        <p className="text-text-secondary text-center max-w-md mb-4">
-          {error}
-        </p>
+        <p className="text-text-secondary text-center max-w-md mb-4">{error}</p>
         <Button onClick={fetchAnalytics} variant="outline">
           <RefreshCw className="w-4 h-4 mr-2" />
           Tentar Novamente
@@ -128,199 +134,203 @@ function AnalyticsContent() {
       <PageContent padding="none" maxWidth="full" className="space-y-8">
         <PageHeader
           title="📊 Analytics"
-          description={`Métricas e insights do período de ${new Date(data.periodo.inicio).toLocaleDateString('pt-BR')} a ${new Date(data.periodo.fim).toLocaleDateString('pt-BR')}`}
+          description={`Métricas e insights do período de ${new Date(data.periodo.inicio).toLocaleDateString("pt-BR")} a ${new Date(data.periodo.fim).toLocaleDateString("pt-BR")}`}
           breadcrumbs={[
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Analytics' },
+            { label: "Dashboard", href: "/dashboard" },
+            { label: "Analytics" },
           ]}
           action={{
-            label: 'Atualizar',
+            label: "Atualizar",
             onClick: fetchAnalytics,
             icon: RefreshCw,
-            variant: 'outline',
+            variant: "outline",
           }}
         />
 
-      {/* KPIs Principais */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <KPICard
-          icon={MessageSquare}
-          label="Total de Feedbacks"
-          value={data.metricas_gerais.total_feedbacks}
-          subValue={`${data.metricas_gerais.feedbacks_ultimos_30_dias} nos últimos 30 dias`}
-          trend={variations.feedbacks}
-          color="blue"
-        />
-        <KPICard
-          icon={CheckCircle}
-          label="Taxa de Resolução"
-          value={`${data.metricas_gerais.taxa_resolucao_percentual}%`}
-          subValue="Feedbacks resolvidos/fechados"
-          trend={variations.resolucao}
-          color="green"
-        />
-        <KPICard
-          icon={Timer}
-          label="Tempo Médio de Resposta"
-          value={`${data.metricas_gerais.tempo_medio_resposta_horas}h`}
-          subValue="Da criação até resolução"
-          color="orange"
-        />
-        <KPICard
-          icon={Clock}
-          label="Pendentes"
-          value={data.metricas_por_status.pendente}
-          subValue={`${data.metricas_por_status.em_analise} em análise`}
-          color="yellow"
-        />
-      </div>
+        {/* KPIs Principais */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <KPICard
+            icon={MessageSquare}
+            label="Total de Feedbacks"
+            value={data.metricas_gerais.total_feedbacks}
+            subValue={`${data.metricas_gerais.feedbacks_ultimos_30_dias} nos últimos 30 dias`}
+            trend={variations.feedbacks}
+            color="blue"
+          />
+          <KPICard
+            icon={CheckCircle}
+            label="Taxa de Resolução"
+            value={`${data.metricas_gerais.taxa_resolucao_percentual}%`}
+            subValue="Feedbacks resolvidos/fechados"
+            trend={variations.resolucao}
+            color="green"
+          />
+          <KPICard
+            icon={Timer}
+            label="Tempo Médio de Resposta"
+            value={`${data.metricas_gerais.tempo_medio_resposta_horas}h`}
+            subValue="Da criação até resolução"
+            color="orange"
+          />
+          <KPICard
+            icon={Clock}
+            label="Pendentes"
+            value={data.metricas_por_status.pendente}
+            subValue={`${data.metricas_por_status.em_analise} em análise`}
+            color="yellow"
+          />
+        </div>
 
-      {/* Grid de 2 colunas */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Métricas por Status */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="w-5 h-5 text-indigo-500" />
-              Por Status
-            </CardTitle>
-            <CardDescription>
-              Distribuição de feedbacks por status atual
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <MetricBar 
-                label="Pendente" 
-                value={data.metricas_por_status.pendente} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-warning-500"
-              />
-              <MetricBar 
-                label="Em Análise" 
-                value={data.metricas_por_status.em_analise} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-primary-500"
-              />
-              <MetricBar 
-                label="Resolvido" 
-                value={data.metricas_por_status.resolvido} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-success-500"
-              />
-              <MetricBar 
-                label="Fechado" 
-                value={data.metricas_por_status.fechado} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-neutral-500"
-              />
-            </div>
-          </CardContent>
-        </Card>
+        {/* Grid de 2 colunas */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Métricas por Status */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <BarChart3 className="w-5 h-5 text-primary-500" />
+                Por Status
+              </CardTitle>
+              <CardDescription>
+                Distribuição de feedbacks por status atual
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <MetricBar
+                  label="Pendente"
+                  value={data.metricas_por_status.pendente}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-warning-500"
+                />
+                <MetricBar
+                  label="Em Análise"
+                  value={data.metricas_por_status.em_analise}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-primary-500"
+                />
+                <MetricBar
+                  label="Resolvido"
+                  value={data.metricas_por_status.resolvido}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-success-500"
+                />
+                <MetricBar
+                  label="Fechado"
+                  value={data.metricas_por_status.fechado}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-neutral-500"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Métricas por Tipo */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-secondary-500" />
-              Por Tipo
-            </CardTitle>
-            <CardDescription>
-              Distribuição de feedbacks por categoria
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <MetricBar 
-                label="Reclamação" 
-                value={data.metricas_por_tipo.reclamacao} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-error-500"
-              />
-              <MetricBar 
-                label="Sugestão" 
-                value={data.metricas_por_tipo.sugestao} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-primary-500"
-              />
-              <MetricBar 
-                label="Denúncia" 
-                value={data.metricas_por_tipo.denuncia} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-orange-500"
-              />
-              <MetricBar 
-                label="Elogio" 
-                value={data.metricas_por_tipo.elogio} 
-                total={data.metricas_gerais.total_feedbacks}
-                color="bg-success-500"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+          {/* Métricas por Tipo */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-secondary-500" />
+                Por Tipo
+              </CardTitle>
+              <CardDescription>
+                Distribuição de feedbacks por categoria
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <MetricBar
+                  label="Reclamação"
+                  value={data.metricas_por_tipo.reclamacao}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-error-500"
+                />
+                <MetricBar
+                  label="Sugestão"
+                  value={data.metricas_por_tipo.sugestao}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-primary-500"
+                />
+                <MetricBar
+                  label="Denúncia"
+                  value={data.metricas_por_tipo.denuncia}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-warning-500"
+                />
+                <MetricBar
+                  label="Elogio"
+                  value={data.metricas_por_tipo.elogio}
+                  total={data.metricas_gerais.total_feedbacks}
+                  color="bg-success-500"
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
-      {/* Features Habilitadas */}
-      {data.features_habilitadas && data.features_habilitadas.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>🚀 Features Habilitadas</CardTitle>
-            <CardDescription>
-              Funcionalidades ativas neste ambiente
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {data.features_habilitadas.map((feature) => (
-                <Badge key={feature} variant="secondary" className="px-3 py-1">
-                  <CheckCircle className="w-3 h-3 mr-1 text-success-500" />
-                  {feature}
-                </Badge>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Top Tenants (apenas para super admins - pode não estar disponível) */}
-      {data.top_tenants && data.top_tenants.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle>🏆 Top Tenants por Volume</CardTitle>
-            <CardDescription>
-              Empresas com maior volume de feedbacks
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {data.top_tenants.map((tenant, index) => (
-                <FlexBetween 
-                  key={tenant.client__nome} 
-                  className="p-3 rounded-lg bg-background-secondary"
-                >
-                  <div className="flex items-center gap-3">
-                    <span className={`
-                      w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
-                      ${index === 0 ? 'bg-warning-100 text-warning-700' : ''}
-                      ${index === 1 ? 'bg-neutral-200 text-neutral-700' : ''}
-                      ${index === 2 ? 'bg-orange-100 text-orange-700' : ''}
-                      ${index > 2 ? 'bg-neutral-100 text-neutral-700' : ''}
-                    `}>
-                      {index + 1}
-                    </span>
-                    <span className="font-medium text-text-primary">
-                      {tenant.client__nome}
-                    </span>
-                  </div>
-                  <Badge variant="outline">
-                    {tenant.total} feedbacks
+        {/* Features Habilitadas */}
+        {data.features_habilitadas && data.features_habilitadas.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>🚀 Features Habilitadas</CardTitle>
+              <CardDescription>
+                Funcionalidades ativas neste ambiente
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {data.features_habilitadas.map((feature) => (
+                  <Badge
+                    key={feature}
+                    variant="secondary"
+                    className="px-3 py-1"
+                  >
+                    <CheckCircle className="w-3 h-3 mr-1 text-success-500" />
+                    {feature}
                   </Badge>
-                </FlexBetween>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      )}
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Top Tenants (apenas para super admins - pode não estar disponível) */}
+        {data.top_tenants && data.top_tenants.length > 0 && (
+          <Card>
+            <CardHeader>
+              <CardTitle>🏆 Top Tenants por Volume</CardTitle>
+              <CardDescription>
+                Empresas com maior volume de feedbacks
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {data.top_tenants.map((tenant, index) => (
+                  <FlexBetween
+                    key={tenant.client__nome}
+                    className="p-3 rounded-lg bg-background-secondary"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`
+                      w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold
+                      ${index === 0 ? "bg-warning-100 text-warning-700" : ""}
+                      ${index === 1 ? "bg-neutral-200 text-neutral-700" : ""}
+                      ${index === 2 ? "bg-warning-100 text-warning-700" : ""}
+                      ${index > 2 ? "bg-neutral-100 text-neutral-700" : ""}
+                    `}
+                      >
+                        {index + 1}
+                      </span>
+                      <span className="font-medium text-text-primary">
+                        {tenant.client__nome}
+                      </span>
+                    </div>
+                    <Badge variant="outline">{tenant.total} feedbacks</Badge>
+                  </FlexBetween>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </PageContent>
     </PageLayout>
   );
@@ -333,28 +343,47 @@ interface KPICardProps {
   value: string | number;
   subValue?: string;
   trend?: number;
-  color: 'blue' | 'green' | 'orange' | 'purple' | 'yellow';
+  color: "blue" | "green" | "orange" | "purple" | "yellow";
 }
 
-function KPICard({ icon: Icon, label, value, subValue, trend, color }: KPICardProps) {
+function KPICard({
+  icon: Icon,
+  label,
+  value,
+  subValue,
+  trend,
+  color,
+}: KPICardProps) {
   const colorClasses = {
-    blue: 'bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400',
-    green: 'bg-success-50 text-success-600 dark:bg-success-900/30 dark:text-success-400',
-    orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
-    purple: 'bg-secondary-50 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400',
-    yellow: 'bg-warning-50 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400',
+    blue: "bg-primary-50 text-primary-600 dark:bg-primary-900/30 dark:text-primary-400",
+    green:
+      "bg-success-50 text-success-600 dark:bg-success-900/30 dark:text-success-400",
+    orange:
+      "bg-warning-50 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400",
+    purple:
+      "bg-secondary-50 text-secondary-600 dark:bg-secondary-900/30 dark:text-secondary-400",
+    yellow:
+      "bg-warning-50 text-warning-600 dark:bg-warning-900/30 dark:text-warning-400",
   };
 
   return (
     <Card>
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
+          <div
+            className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}
+          >
             <Icon className="w-6 h-6" />
           </div>
           {trend !== undefined && (
-            <div className={`flex items-center gap-1 text-sm ${trend >= 0 ? 'text-success-600' : 'text-error-600'}`}>
-              {trend >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
+            <div
+              className={`flex items-center gap-1 text-sm ${trend >= 0 ? "text-success-600" : "text-error-600"}`}
+            >
+              {trend >= 0 ? (
+                <ArrowUpRight className="w-4 h-4" />
+              ) : (
+                <ArrowDownRight className="w-4 h-4" />
+              )}
               {Math.abs(trend)}%
             </div>
           )}
@@ -392,7 +421,7 @@ function MetricBar({ label, value, total, color }: MetricBarProps) {
         </span>
       </FlexBetween>
       <div className="h-2 bg-background-tertiary rounded-full overflow-hidden">
-        <div 
+        <div
           className={`h-full ${color} rounded-full transition-all duration-500`}
           style={barStyle}
         />
@@ -409,7 +438,7 @@ function AnalyticsLoadingSkeleton() {
         <Skeleton className="h-9 w-48 mb-2" />
         <Skeleton className="h-5 w-96" />
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {[1, 2, 3, 4].map((i) => (
           <Card key={i}>

@@ -11,18 +11,18 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FlexBetween } from "@/components/ui";
 import { useState, useRef } from "react";
-import { 
-  Paperclip, 
-  Lock, 
-  Send, 
-  File, 
+import {
+  Paperclip,
+  Lock,
+  Send,
+  File,
   Image as ImageIcon,
   Download,
   X,
   AlertCircle,
   Loader2,
   Edit,
-  Trash2
+  Trash2,
 } from "lucide-react";
 import { api, getErrorMessage } from "@/lib/api";
 import { toast } from "sonner";
@@ -30,12 +30,29 @@ import Link from "next/link";
 import { deleteFeedback } from "@/hooks/use-dashboard";
 
 function StatusBadge({ status }: { status: string }) {
-  const variants: Record<string, { bg: string; text: string; label: string }> = {
-    pendente: { bg: "bg-warning-100", text: "text-warning-800", label: "Pendente" },
-    em_analise: { bg: "bg-primary-100", text: "text-primary-800", label: "Em Análise" },
-    resolvido: { bg: "bg-success-100", text: "text-success-800", label: "Resolvido" },
-    fechado: { bg: "bg-neutral-100", text: "text-neutral-800", label: "Fechado" },
-  };
+  const variants: Record<string, { bg: string; text: string; label: string }> =
+    {
+      pendente: {
+        bg: "bg-warning-100",
+        text: "text-warning-800",
+        label: "Pendente",
+      },
+      em_analise: {
+        bg: "bg-primary-100",
+        text: "text-primary-800",
+        label: "Em Análise",
+      },
+      resolvido: {
+        bg: "bg-success-100",
+        text: "text-success-800",
+        label: "Resolvido",
+      },
+      fechado: {
+        bg: "bg-neutral-100",
+        text: "text-neutral-800",
+        label: "Fechado",
+      },
+    };
   const variant = variants[status] || variants.pendente;
   return (
     <Badge className={`${variant.bg} ${variant.text} border-0`}>
@@ -56,21 +73,20 @@ function FeedbackTicketContent() {
   const params = useParams<{ protocolo: string }>();
   const router = useRouter();
   const protocolo = params?.protocolo;
-  const { data, isLoading, error, enviarMensagem, atualizarStatus } = useFeedbackDetails(
-    String(protocolo)
-  );
-  
+  const { data, isLoading, error, enviarMensagem, atualizarStatus } =
+    useFeedbackDetails(String(protocolo));
+
   // Estados para mensagens
   const [tab, setTab] = useState<"PUBLICA" | "INTERNA">("PUBLICA");
   const [mensagem, setMensagem] = useState("");
   const [alterandoStatus, setAlterandoStatus] = useState<string | null>(null);
   const [enviandoMensagem, setEnviandoMensagem] = useState(false);
-  
+
   // Estados para anexos
   const [uploadingFile, setUploadingFile] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   // Estados para notas internas
   const [isInternalNote, setIsInternalNote] = useState(false);
 
@@ -82,18 +98,18 @@ function FeedbackTicketContent() {
     if (!data) return;
 
     const confirmText = `Tem certeza que deseja excluir o feedback #${data.protocolo}?\n\nEsta ação não pode ser desfeita.`;
-    
+
     if (!confirm(confirmText)) return;
 
     setIsDeleting(true);
 
     try {
       await deleteFeedback(data.id);
-      toast.success('Feedback excluído com sucesso');
-      router.push('/dashboard/feedbacks');
+      toast.success("Feedback excluído com sucesso");
+      router.push("/dashboard/feedbacks");
     } catch (error) {
-      console.error('Erro ao excluir feedback:', error);
-      toast.error('Erro ao excluir feedback. Tente novamente.');
+      console.error("Erro ao excluir feedback:", error);
+      toast.error("Erro ao excluir feedback. Tente novamente.");
     } finally {
       setIsDeleting(false);
     }
@@ -119,7 +135,11 @@ function FeedbackTicketContent() {
       <main className="p-6">
         <Card className="p-6">
           <p className="text-error-600">Erro ao carregar ticket.</p>
-          <Button variant="secondary" className="mt-4" onClick={() => router.back()}>
+          <Button
+            variant="secondary"
+            className="mt-4"
+            onClick={() => router.back()}
+          >
             Voltar
           </Button>
         </Card>
@@ -128,9 +148,13 @@ function FeedbackTicketContent() {
   }
 
   const enviar = async () => {
-    const tipo = isInternalNote ? "NOTA_INTERNA" : tab === "PUBLICA" ? "MENSAGEM_PUBLICA" : "PERGUNTA_EMPRESA";
+    const tipo = isInternalNote
+      ? "NOTA_INTERNA"
+      : tab === "PUBLICA"
+        ? "MENSAGEM_PUBLICA"
+        : "PERGUNTA_EMPRESA";
     if (!mensagem.trim() || enviandoMensagem) return;
-    
+
     setEnviandoMensagem(true);
     try {
       await enviarMensagem(mensagem.trim(), tipo as any);
@@ -139,18 +163,23 @@ function FeedbackTicketContent() {
       toast.success("Mensagem enviada com sucesso!");
     } catch (err) {
       const errorMsg = getErrorMessage(err);
-      
+
       // Detectar erro de feature bloqueada (403)
-      if (errorMsg.includes('feature_not_available') || errorMsg.includes('não permite')) {
+      if (
+        errorMsg.includes("feature_not_available") ||
+        errorMsg.includes("não permite")
+      ) {
         toast.error(
           <div className="flex flex-col gap-2">
             <p className="font-semibold">⚠️ Recurso Indisponível</p>
-            <p className="text-sm">Notas internas são exclusivas do plano Starter ou superior.</p>
+            <p className="text-sm">
+              Notas internas são exclusivas do plano Starter ou superior.
+            </p>
             <Link href="/precos" className="text-primary underline text-sm">
               Ver planos disponíveis →
             </Link>
           </div>,
-          { duration: 5000 }
+          { duration: 5000 },
         );
       } else {
         toast.error(`Erro ao enviar: ${errorMsg}`);
@@ -187,16 +216,21 @@ function FeedbackTicketContent() {
 
     // Validar tipo
     const allowedTypes = [
-      'image/jpeg', 'image/png', 'image/gif', 'image/webp',
-      'application/pdf',
-      'application/msword',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-      'application/vnd.ms-excel',
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ];
-    
+
     if (!allowedTypes.includes(file.type)) {
-      toast.error("Tipo de arquivo não permitido. Use imagens, PDF ou documentos Office.");
+      toast.error(
+        "Tipo de arquivo não permitido. Use imagens, PDF ou documentos Office.",
+      );
       return;
     }
 
@@ -210,43 +244,48 @@ function FeedbackTicketContent() {
     setUploadingFile(true);
     try {
       const formData = new FormData();
-      formData.append('arquivo', selectedFile);
-      formData.append('interno', isInternalNote.toString());
+      formData.append("arquivo", selectedFile);
+      formData.append("interno", isInternalNote.toString());
 
       const response = await api.post(
         `/api/feedbacks/${data.id}/upload-arquivo/`,
         formData,
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
-        }
+        },
       );
 
       toast.success("Arquivo anexado com sucesso!");
       setSelectedFile(null);
-      
+
       // Resetar input
       if (fileInputRef.current) {
-        fileInputRef.current.value = '';
+        fileInputRef.current.value = "";
       }
 
       // Recarregar dados
       window.location.reload();
     } catch (err: any) {
       const errorMsg = getErrorMessage(err);
-      
+
       // Detectar erro de plano (403)
-      if (err.response?.status === 403 || errorMsg.includes('feature_not_available')) {
+      if (
+        err.response?.status === 403 ||
+        errorMsg.includes("feature_not_available")
+      ) {
         toast.error(
           <div className="flex flex-col gap-2">
             <p className="font-semibold">🚀 Upgrade Necessário</p>
-            <p className="text-sm">Envio de anexos é exclusivo do plano Pro ou superior.</p>
+            <p className="text-sm">
+              Envio de anexos é exclusivo do plano Pro ou superior.
+            </p>
             <Link href="/precos" className="text-primary underline text-sm">
               Ver planos disponíveis →
             </Link>
           </div>,
-          { duration: 6000 }
+          { duration: 6000 },
         );
       } else {
         toast.error(`Erro ao enviar arquivo: ${errorMsg}`);
@@ -258,15 +297,15 @@ function FeedbackTicketContent() {
 
   // Renderizar arquivo na timeline
   const renderArquivo = (arquivo: any) => {
-    const isImage = arquivo.tipo_mime?.startsWith('image/');
-    
+    const isImage = arquivo.tipo_mime?.startsWith("image/");
+
     return (
       <div className="mt-2 p-3 bg-background-secondary rounded-lg border border-border-light">
         <div className="flex items-center gap-3">
           {isImage ? (
             <div className="relative w-16 h-16 rounded overflow-hidden bg-background-tertiary">
-              <img 
-                src={arquivo.url} 
+              <img
+                src={arquivo.url}
                 alt={arquivo.nome_original}
                 className="w-full h-full object-cover"
               />
@@ -276,16 +315,17 @@ function FeedbackTicketContent() {
               <File className="w-6 h-6 text-primary" />
             </div>
           )}
-          
+
           <div className="flex-1 min-w-0">
             <p className="text-sm font-medium text-text-primary truncate">
               {arquivo.nome_original}
             </p>
             <p className="text-xs text-text-tertiary">
-              {arquivo.tamanho_mb} MB • {arquivo.tipo_mime?.split('/')[1]?.toUpperCase()}
+              {arquivo.tamanho_mb} MB •{" "}
+              {arquivo.tipo_mime?.split("/")[1]?.toUpperCase()}
             </p>
           </div>
-          
+
           <a
             href={arquivo.url}
             download={arquivo.nome_original}
@@ -296,9 +336,9 @@ function FeedbackTicketContent() {
             <Download className="w-4 h-4 text-text-secondary" />
           </a>
         </div>
-        
+
         {arquivo.interno && (
-          <div className="mt-2 flex items-center gap-1 text-xs text-amber-700">
+          <div className="mt-2 flex items-center gap-1 text-xs text-warning-700">
             <Lock className="w-3 h-3" />
             <span>Arquivo interno (não visível ao denunciante)</span>
           </div>
@@ -318,23 +358,26 @@ function FeedbackTicketContent() {
           <div>
             <h1 className="text-2xl font-semibold">{data.titulo}</h1>
             <p className="text-sm text-text-secondary mt-1">
-              Protocolo: {data.protocolo} | Criado em {new Date(data.data_criacao).toLocaleDateString('pt-BR')}
+              Protocolo: {data.protocolo} | Criado em{" "}
+              {new Date(data.data_criacao).toLocaleDateString("pt-BR")}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <StatusBadge status={data.status} />
-          
+
           <Button
             variant="outline"
             size="sm"
-            onClick={() => router.push(`/dashboard/feedbacks/${data.protocolo}/edit`)}
+            onClick={() =>
+              router.push(`/dashboard/feedbacks/${data.protocolo}/edit`)
+            }
             aria-label="Editar feedback"
           >
             <Edit className="h-4 w-4 mr-2" />
             Editar
           </Button>
-          
+
           <Button
             variant="destructive"
             size="sm"
@@ -356,10 +399,12 @@ function FeedbackTicketContent() {
           </Button>
         </div>
       </FlexBetween>
-      
+
       {/* Alterar Status */}
       <div className="flex items-center gap-3">
-        <label className="text-sm font-medium text-text-secondary">Alterar Status:</label>
+        <label className="text-sm font-medium text-text-secondary">
+          Alterar Status:
+        </label>
         <select
           className="border border-border-light rounded px-3 py-2 text-sm bg-background focus:outline-none focus:ring-2 focus:ring-border-focus"
           value={alterandoStatus ?? data.status}
@@ -382,11 +427,13 @@ function FeedbackTicketContent() {
             <p className="text-sm text-muted-foreground whitespace-pre-line">
               {data.descricao}
             </p>
-            
+
             {/* Arquivos do feedback original */}
             {data.arquivos && data.arquivos.length > 0 && (
               <div className="mt-4">
-                <p className="text-sm font-medium text-text-secondary mb-2">Anexos:</p>
+                <p className="text-sm font-medium text-text-secondary mb-2">
+                  Anexos:
+                </p>
                 <div className="space-y-2">
                   {data.arquivos.map((arquivo: any) => (
                     <div key={arquivo.id}>{renderArquivo(arquivo)}</div>
@@ -412,31 +459,37 @@ function FeedbackTicketContent() {
                     </div>
                   );
                 }
-                
+
                 const isInterna = i.tipo === "NOTA_INTERNA";
-                
+
                 return (
                   <div
                     key={i.id}
                     className={`max-w-xl rounded-lg p-4 text-sm shadow-sm border ${
                       isInterna
-                        ? "bg-amber-50 border-amber-200"
+                        ? "bg-warning-50 border-warning-200"
                         : "bg-primary-50 border-primary-200"
                     }`}
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2">
-                        {isInterna && <Lock className="w-4 h-4 text-amber-600" />}
+                        {isInterna && (
+                          <Lock className="w-4 h-4 text-warning-600" />
+                        )}
                         <span className="font-medium text-text-primary">
                           {isInterna ? "Nota Interna (Privada)" : i.autor_nome}
                         </span>
                       </div>
-                      <span className="text-xs text-muted-foreground">{i.data_formatada}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {i.data_formatada}
+                      </span>
                     </div>
-                    <p className="text-foreground whitespace-pre-line">{i.mensagem}</p>
-                    
+                    <p className="text-foreground whitespace-pre-line">
+                      {i.mensagem}
+                    </p>
+
                     {isInterna && (
-                      <div className="mt-2 flex items-center gap-1 text-xs text-amber-700">
+                      <div className="mt-2 flex items-center gap-1 text-xs text-warning-700">
                         <AlertCircle className="w-3 h-3" />
                         <span>Visível apenas para a equipe interna</span>
                       </div>
@@ -477,11 +530,12 @@ function FeedbackTicketContent() {
 
             {/* Toggle de Nota Interna */}
             {tab === "INTERNA" && (
-              <Alert className="bg-amber-50 border-amber-200">
-                <Lock className="w-4 h-4 text-amber-600" />
-                <AlertDescription className="text-sm text-amber-800">
-                  <strong>Nota Interna:</strong> Esta mensagem será visível apenas para a equipe interna. 
-                  O denunciante não verá este comentário.
+              <Alert className="bg-warning-50 border-warning-200">
+                <Lock className="w-4 h-4 text-warning-600" />
+                <AlertDescription className="text-sm text-warning-800">
+                  <strong>Nota Interna:</strong> Esta mensagem será visível
+                  apenas para a equipe interna. O denunciante não verá este
+                  comentário.
                 </AlertDescription>
               </Alert>
             )}
@@ -489,7 +543,7 @@ function FeedbackTicketContent() {
             {/* Preview do arquivo selecionado */}
             {selectedFile && (
               <div className="flex items-center gap-3 p-3 bg-background-secondary rounded-lg border border-border-light">
-                {selectedFile.type.startsWith('image/') ? (
+                {selectedFile.type.startsWith("image/") ? (
                   <ImageIcon className="w-8 h-8 text-text-tertiary" />
                 ) : (
                   <File className="w-8 h-8 text-text-tertiary" />
@@ -538,19 +592,19 @@ function FeedbackTicketContent() {
                 onChange={(e) => setMensagem(e.target.value)}
                 rows={4}
                 className={`w-full border rounded-lg p-3 pr-12 resize-none focus:ring-2 focus:ring-border-focus focus:border-transparent transition-all ${
-                  isInternalNote 
-                    ? 'border-amber-300 bg-amber-50/50' 
-                    : 'border-border-light bg-background'
+                  isInternalNote
+                    ? "border-warning-300 bg-warning-50/50"
+                    : "border-border-light bg-background"
                 }`}
                 placeholder={
                   isInternalNote
                     ? "Escreva uma nota interna (visível apenas à equipe)..."
                     : tab === "PUBLICA"
-                    ? "Escreva uma resposta pública ao usuário..."
-                    : "Escreva uma mensagem..."
+                      ? "Escreva uma resposta pública ao usuário..."
+                      : "Escreva uma mensagem..."
                 }
               />
-              
+
               {/* Botão de anexo */}
               <input
                 ref={fileInputRef}
@@ -572,10 +626,12 @@ function FeedbackTicketContent() {
 
             {/* Botão de envio */}
             <div className="flex justify-end">
-              <Button 
+              <Button
                 onClick={enviar}
                 disabled={!mensagem.trim() || enviandoMensagem}
-                className={isInternalNote ? 'bg-amber-600 hover:bg-amber-700' : ''}
+                className={
+                  isInternalNote ? "bg-warning-600 hover:bg-warning-700" : ""
+                }
               >
                 {enviandoMensagem ? (
                   <>
@@ -619,7 +675,9 @@ function FeedbackTicketContent() {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Aberto em:</span>
-                <span>{new Date(data.data_criacao).toLocaleDateString('pt-BR')}</span>
+                <span>
+                  {new Date(data.data_criacao).toLocaleDateString("pt-BR")}
+                </span>
               </div>
               {data.anonimo && (
                 <div className="pt-2 border-t">
@@ -634,8 +692,8 @@ function FeedbackTicketContent() {
 
           <Card className="p-6 space-y-3">
             <h3 className="text-lg font-medium">Ações</h3>
-            <Button 
-              variant="secondary" 
+            <Button
+              variant="secondary"
               className="w-full"
               onClick={() => onChangeStatus("fechado")}
             >
