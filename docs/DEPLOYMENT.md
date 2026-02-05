@@ -23,51 +23,95 @@ Este guia descreve como fazer deploy do Ouvify em produção usando Railway (bac
 
                               ---
 
-                              ## Politica de Branches e Deploy (GitHub + Vercel + Render + Railway)
+## Politica de Branches e Deploy
 
-                              Objetivo: evitar deploys acidentais fora da `main`, reduzir o volume de deployments
-                              de Preview e manter o repositorio limpo.
+**Última atualização:** 05/02/2026  
+**Status:** Consolidado e simplificado
 
-                              ### Regras recomendadas
+### 🎯 Estratégia Unificada
 
-                              - **Producao**: somente `main`.
-                              - **Preview**: apenas PRs ativas (desabilitar previews para pushes diretos em branches).
-                              - **Limpeza de branches**: excluir branches ja mergeadas em `main`.
-                              - **Retencao de Preview**: manter apenas os ultimos 7 dias (ou janela definida pelo time).
+O Ouvify utiliza uma estratégia de deploy multi-plataforma:
 
-                              ### Onde isso esta configurado hoje
+- **Frontend (Vercel)**: Deploy automático via integração GitHub
+- **Backend (Railway)**: Deploy via GitHub Actions CI/CD
+- **Backup (Render)**: Configuração mantida para disaster recovery
 
-                              - **Vercel**: configuracao de deploy via GitHub e headers em [vercel.json](vercel.json)
-                                e [apps/frontend/vercel.json](apps/frontend/vercel.json). Preview e Production sao
-                                definidos no painel da Vercel (Production Branch = `main`).
-                              - **Render**: `branch: main` em [render.yaml](render.yaml).
-                              - **Railway**: deploy manual/automatico por push em `main` (ver [deploy-feature.sh](deploy-feature.sh)).
+### 📋 Regras de Deploy
 
-                              ### Como reduzir Preview Deployments na Vercel
+| Branch/Evento    | Frontend (Vercel) | Backend (Railway)         |
+| ---------------- | ----------------- | ------------------------- |
+| `main` (push)    | ✅ Production     | ✅ Production (via CI/CD) |
+| `develop` (push) | ❌ Desabilitado   | ❌ Desabilitado           |
+| Pull Request     | ✅ Preview        | ❌ Usa Production backend |
+| Feature branches | ❌ Desabilitado   | ❌ Desabilitado           |
 
-                              1. Vercel Dashboard → Project Settings → Git.
-                              2. **Production Branch**: `main`.
-                              3. **Preview Deployments**: desabilitar para pushes diretos em branches.
-                              4. Manter Preview apenas para PRs (opcao "Only for Pull Requests").
+### 🔧 Configuração Atual
 
-                              ### Limpeza de branches (GitHub)
+#### Vercel (Frontend)
 
-                              ```bash
-                              git fetch --prune
-                              git branch -r --merged origin/main
-                              git push origin --delete <branch>
-                              ```
+- **Arquivo principal:** `/vercel.json`
+- **Região:** gru1 (São Paulo, Brasil)
+- **Production Branch:** `main`
+- **Preview Deployments:** Apenas Pull Requests (configure no Dashboard)
+- **Auto-delete:** Preview deployments são deletados após merge/close do PR
 
-                              ### Limpeza de deployments antigos (GitHub API)
+**⚠️ Ação Manual Necessária:**
 
-                              > Requer permissao admin no repo. Se falhar com 403, use um token com `repo_deployment`.
+1. Acesse: https://vercel.com/jairguerraadv-sys-projects/frontend/settings/git
+2. Configure:
+   - **Production Branch:** `main`
+   - **Preview Deployments:** Select only "Pull Requests"
+   - Desmarque "All branches" para evitar deploy em cada push
 
-                              ```bash
-                              gh api repos/OWNER/REPO/deployments --paginate \
-                                -q '.[] | [.id, .environment, .ref, .created_at] | @tsv'
+#### Railway (Backend)
 
-                              gh api -X DELETE repos/OWNER/REPO/deployments/DEPLOYMENT_ID
-                              ```
+- **Arquivo:** `apps/backend/railway.json`
+- **Workflow:** `.github/workflows/backend-ci.yml`
+- **Deploy automático:** Apenas quando push em `main` e CI verde
+- **Trigger:** `if: github.ref == 'refs/heads/main' && github.event_name == 'push'`
+
+#### Render (Backup - INATIVO)
+
+- **Arquivo:** `/render.yaml`
+- **Status:** Mantido apenas para disaster recovery
+- **Uso:** Manual, apenas em emergências
+
+### 🧹 Limpeza e Manutenção
+
+#### Limpeza de Branches Mergeadas
+
+```bash
+# Atualizar refs locais
+git fetch --prune
+
+# Listar branches mergeadas na main (exceto main e develop)
+git branch --merged main | grep -v "^\*\|main\|develop"
+
+# Deletar localmente
+git branch -d nome-da-branch
+
+# Deletar remotamente
+git push origin --delete nome-da-branch
+```
+
+#### Deployments Antigos
+
+**⚠️ Limitação:** Deployments criados pela integração Vercel não podem ser deletados via GitHub API (erro 403).
+
+**Soluções:**
+
+1. **Vercel Dashboard**: Configure retenção automática
+2. **Vercel CLI**:
+   ```bash
+   vercel list
+   vercel remove [deployment-url] --yes
+   ```
+
+#### Política de Retenção
+
+- **Production:** Últimos 30 deployments
+- **Preview:** Auto-delete após merge/close do PR
+- **Branches:** Deletar imediatamente após merge
 
                               ---
 

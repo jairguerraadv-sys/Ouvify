@@ -1,5 +1,16 @@
 # Render.com Blueprint - Ouvify Backend
 # https://render.com/docs/blueprint-spec
+#
+# ⚠️  DISASTER RECOVERY / BACKUP CONFIGURATION
+# Este arquivo mantém configuração alternativa para deploy no Render.com
+# Plataforma PRIMARY: Railway (via GitHub Actions)
+# Use este apenas em caso de:
+#   - Falha crítica no Railway
+#   - Migração de plataforma
+#   - Testes de infraestrutura
+#
+# Status: INATIVO (mantido para referência)
+# Última revisão: 2026-02-05
 
 databases:
   - name: ouvify-db

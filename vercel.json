@@ -7,7 +7,15 @@
   "github": {
     "enabled": true,
     "autoAlias": true,
-    "silent": false
+    "silent": false,
+    "autoJobCancelation": true
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": false,
+      "feature/*": false
+    }
   },
   "headers": [
     {
