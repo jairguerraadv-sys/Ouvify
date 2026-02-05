@@ -4,20 +4,20 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - 'apps/frontend/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'turbo.json'
-      - '.github/workflows/frontend-ci.yml'
+      - "apps/frontend/**"
+      - "packages/**"
+      - "package.json"
+      - "turbo.json"
+      - ".github/workflows/frontend-ci.yml"
   pull_request:
     branches: [main, develop]
     paths:
-      - 'apps/frontend/**'
-      - 'packages/**'
+      - "apps/frontend/**"
+      - "packages/**"
 
 env:
-  NODE_VERSION: '22'
-  HUSKY: '0'
+  NODE_VERSION: "22"
+  HUSKY: "0"
 
 jobs:
   # ============================================
@@ -28,22 +28,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
-      
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
       - name: Install dependencies
         working-directory: ./apps/frontend
         run: npm install --legacy-peer-deps
-        
+
       - name: Run ESLint
         working-directory: ./apps/frontend
         run: npm run lint
-        
+
       - name: TypeScript Type Check
         working-directory: ./apps/frontend
         run: npx tsc --noEmit
@@ -56,12 +56,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          
+
       - name: Run npm audit
         working-directory: ./apps/frontend
         run: npm audit --audit-level=high
@@ -74,22 +74,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
-      
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
       - name: Install dependencies
         working-directory: ./apps/frontend
         run: npm install --legacy-peer-deps
-        
+
       - name: Run Tests with Coverage
         working-directory: ./apps/frontend
         run: npm test -- --coverage --watchAll=false
-          
+
       - name: Upload Coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
@@ -107,18 +107,18 @@ jobs:
     needs: [lint, test]
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
-      
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
       - name: Install dependencies
         working-directory: ./apps/frontend
         run: npm install --legacy-peer-deps
-        
+
       - name: Build
         working-directory: ./apps/frontend
         env:
@@ -133,29 +133,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build]
     if: github.event_name == 'pull_request'
-    
+
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-          cache-dependency-path: './apps/frontend/package-lock.json'
-      
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
       - name: Install dependencies
         working-directory: ./apps/frontend
         run: npm install --legacy-peer-deps
-      
+
       - name: Install Playwright Browsers
         working-directory: ./apps/frontend
         run: npx playwright install --with-deps
-        
+
       - name: Run Playwright Tests
         working-directory: ./apps/frontend
         run: npx playwright test
-        
+
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()

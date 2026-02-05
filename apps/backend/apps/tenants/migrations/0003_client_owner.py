@@ -8,14 +8,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0002_alter_client_logo'),
+        ("tenants", "0002_alter_client_logo"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='client',
-            name='owner',
-            field=models.ForeignKey(blank=True, help_text='Usuário proprietário deste tenant', null=True, on_delete=django.db.models.deletion.PROTECT, related_name='tenants_owned', to=settings.AUTH_USER_MODEL, verbose_name='Proprietário'),
+            model_name="client",
+            name="owner",
+            field=models.ForeignKey(
+                blank=True,
+                help_text="Usuário proprietário deste tenant",
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="tenants_owned",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Proprietário",
+            ),
         ),
     ]

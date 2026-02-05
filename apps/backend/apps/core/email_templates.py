@@ -2,6 +2,7 @@
 Email Templates - Ouvify
 Base template with responsive design and consistent branding
 """
+
 import html
 
 
@@ -210,7 +211,7 @@ def welcome_email(user_name: str, tenant_name: str, login_url: str) -> dict:
     user_name_safe = html.escape(user_name)
     tenant_name_safe = html.escape(tenant_name)
     login_url_safe = html.escape(login_url)
-    
+
     content = f"""
         <h1>Bem-vindo ao Ouvify, {user_name_safe}! 🎉</h1>
         <p>
@@ -241,15 +242,19 @@ def welcome_email(user_name: str, tenant_name: str, login_url: str) -> dict:
             <strong>Equipe Ouvify</strong>
         </p>
     """
-    
+
     return {
-        'subject': f'Bem-vindo ao Ouvify, {user_name_safe}!',
-        'html': get_base_template(content, f"Comece a transformar feedbacks em resultados com o Ouvify"),
-        'preheader': 'Comece a transformar feedbacks em resultados'
+        "subject": f"Bem-vindo ao Ouvify, {user_name_safe}!",
+        "html": get_base_template(
+            content, f"Comece a transformar feedbacks em resultados com o Ouvify"
+        ),
+        "preheader": "Comece a transformar feedbacks em resultados",
     }
 
 
-def email_confirmation(user_name: str, confirmation_url: str, expires_in: str = "24 horas") -> dict:
+def email_confirmation(
+    user_name: str, confirmation_url: str, expires_in: str = "24 horas"
+) -> dict:
     """Email de confirmação de cadastro"""
     content = f"""
         <h1>Confirme seu email, {user_name}</h1>
@@ -272,11 +277,11 @@ def email_confirmation(user_name: str, confirmation_url: str, expires_in: str = 
             <a href="{confirmation_url}" style="color: #667eea; word-break: break-all;">{confirmation_url}</a>
         </p>
     """
-    
+
     return {
-        'subject': 'Confirme seu email - Ouvify',
-        'html': get_base_template(content, "Confirme seu email para acessar o Ouvify"),
-        'preheader': 'Confirme seu email para começar'
+        "subject": "Confirme seu email - Ouvify",
+        "html": get_base_template(content, "Confirme seu email para acessar o Ouvify"),
+        "preheader": "Confirme seu email para começar",
     }
 
 
@@ -309,26 +314,31 @@ def password_reset(user_name: str, reset_url: str, expires_in: str = "1 hora") -
             Por segurança, nunca compartilhe este link com ninguém.
         </p>
     """
-    
+
     return {
-        'subject': 'Redefinir senha - Ouvify',
-        'html': get_base_template(content, "Redefina sua senha do Ouvify"),
-        'preheader': 'Solicitação de redefinição de senha'
+        "subject": "Redefinir senha - Ouvify",
+        "html": get_base_template(content, "Redefina sua senha do Ouvify"),
+        "preheader": "Solicitação de redefinição de senha",
     }
 
 
-def feedback_notification(user_name: str, feedback_author: str, feedback_excerpt: str, 
-                         feedback_url: str, priority: str = "média") -> dict:
+def feedback_notification(
+    user_name: str,
+    feedback_author: str,
+    feedback_excerpt: str,
+    feedback_url: str,
+    priority: str = "média",
+) -> dict:
     """Notificação de novo feedback recebido"""
     priority_colors = {
-        'baixa': '#10b981',
-        'média': '#f59e0b',
-        'alta': '#ef4444',
-        'crítica': '#dc2626'
+        "baixa": "#10b981",
+        "média": "#f59e0b",
+        "alta": "#ef4444",
+        "crítica": "#dc2626",
     }
-    
-    priority_color = priority_colors.get(priority.lower(), '#6b7280')
-    
+
+    priority_color = priority_colors.get(priority.lower(), "#6b7280")
+
     content = f"""
         <h1>Novo feedback recebido 📬</h1>
         <p>Olá, {user_name}!</p>
@@ -352,15 +362,19 @@ def feedback_notification(user_name: str, feedback_author: str, feedback_excerpt
             Responda rapidamente para manter seus clientes satisfeitos! 🚀
         </p>
     """
-    
+
     return {
-        'subject': f'Novo feedback de {feedback_author} - Ouvify',
-        'html': get_base_template(content, f"Você recebeu um novo feedback de {feedback_author}"),
-        'preheader': f'Novo feedback de {feedback_author}'
+        "subject": f"Novo feedback de {feedback_author} - Ouvify",
+        "html": get_base_template(
+            content, f"Você recebeu um novo feedback de {feedback_author}"
+        ),
+        "preheader": f"Novo feedback de {feedback_author}",
     }
 
 
-def weekly_report(user_name: str, tenant_name: str, stats: dict, report_url: str) -> dict:
+def weekly_report(
+    user_name: str, tenant_name: str, stats: dict, report_url: str
+) -> dict:
     """Relatório semanal de feedbacks"""
     content = f"""
         <h1>Seu relatório semanal 📊</h1>
@@ -410,15 +424,20 @@ def weekly_report(user_name: str, tenant_name: str, stats: dict, report_url: str
             Continue assim! Cada feedback é uma oportunidade de melhorar. 🎯
         </p>
     """
-    
+
     return {
-        'subject': f'Relatório Semanal - {tenant_name}',
-        'html': get_base_template(content, f"Seu resumo semanal de feedbacks: {stats.get('total', 0)} feedbacks recebidos"),
-        'preheader': f"{stats.get('total', 0)} feedbacks esta semana"
+        "subject": f"Relatório Semanal - {tenant_name}",
+        "html": get_base_template(
+            content,
+            f"Seu resumo semanal de feedbacks: {stats.get('total', 0)} feedbacks recebidos",
+        ),
+        "preheader": f"{stats.get('total', 0)} feedbacks esta semana",
     }
 
 
-def team_invitation(inviter_name: str, tenant_name: str, role: str, accept_url: str) -> dict:
+def team_invitation(
+    inviter_name: str, tenant_name: str, role: str, accept_url: str
+) -> dict:
     """Convite para participar da equipe"""
     content = f"""
         <h1>Convite para equipe 🤝</h1>
@@ -446,9 +465,11 @@ def team_invitation(inviter_name: str, tenant_name: str, role: str, accept_url: 
             pode ignorar este email com segurança.
         </p>
     """
-    
+
     return {
-        'subject': f'{inviter_name} convidou você para {tenant_name} - Ouvify',
-        'html': get_base_template(content, f"Convite de {inviter_name} para participar de {tenant_name}"),
-        'preheader': f'Convite para participar de {tenant_name}'
+        "subject": f"{inviter_name} convidou você para {tenant_name} - Ouvify",
+        "html": get_base_template(
+            content, f"Convite de {inviter_name} para participar de {tenant_name}"
+        ),
+        "preheader": f"Convite para participar de {tenant_name}",
     }

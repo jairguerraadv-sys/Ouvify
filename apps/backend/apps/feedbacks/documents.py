@@ -2,54 +2,46 @@
 Documentos ElasticSearch para indexação de feedbacks
 Multi-tenant aware - cada tenant tem seus próprios dados isolados
 """
+
 from django_elasticsearch_dsl import Document, Index, fields
 from django_elasticsearch_dsl.registries import registry
+
 from apps.feedbacks.models import Feedback
 from apps.tenants.models import Client
 
 # Configuração do índice
-feedbacks_index = Index('feedbacks')
+feedbacks_index = Index("feedbacks")
 feedbacks_index.settings(
     number_of_shards=1,
     number_of_replicas=1,
     analysis={
-        'analyzer': {
-            'portuguese_analyzer': {
-                'type': 'custom',
-                'tokenizer': 'standard',
-                'filter': [
-                    'lowercase',
-                    'portuguese_stop',
-                    'portuguese_stemmer',
-                    'asciifolding',
-                ]
+        "analyzer": {
+            "portuguese_analyzer": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": [
+                    "lowercase",
+                    "portuguese_stop",
+                    "portuguese_stemmer",
+                    "asciifolding",
+                ],
             },
-            'autocomplete': {
-                'type': 'custom',
-                'tokenizer': 'standard',
-                'filter': [
-                    'lowercase',
-                    'asciifolding',
-                    'edge_ngram_filter',
-                ]
-            }
+            "autocomplete": {
+                "type": "custom",
+                "tokenizer": "standard",
+                "filter": [
+                    "lowercase",
+                    "asciifolding",
+                    "edge_ngram_filter",
+                ],
+            },
         },
-        'filter': {
-            'portuguese_stop': {
-                'type': 'stop',
-                'stopwords': '_portuguese_'
-            },
-            'portuguese_stemmer': {
-                'type': 'stemmer',
-                'language': 'portuguese'
-            },
-            'edge_ngram_filter': {
-                'type': 'edge_ngram',
-                'min_gram': 2,
-                'max_gram': 20
-            }
-        }
-    }
+        "filter": {
+            "portuguese_stop": {"type": "stop", "stopwords": "_portuguese_"},
+            "portuguese_stemmer": {"type": "stemmer", "language": "portuguese"},
+            "edge_ngram_filter": {"type": "edge_ngram", "min_gram": 2, "max_gram": 20},
+        },
+    },
 )
 
 
@@ -60,64 +52,63 @@ class FeedbackDocument(Document):
     Documento ElasticSearch para Feedback
     Suporta busca full-text com análise em português
     """
-    
+
     # Campo para isolamento multi-tenant
-    tenant_id = fields.IntegerField(attr='client_id')
-    
+    tenant_id = fields.IntegerField(attr="client_id")
+
     # Campos de texto com análise em português
     titulo = fields.TextField(
-        analyzer='portuguese_analyzer',
+        analyzer="portuguese_analyzer",
         fields={
-            'raw': fields.KeywordField(),
-            'autocomplete': fields.TextField(analyzer='autocomplete')
-        }
+            "raw": fields.KeywordField(),
+            "autocomplete": fields.TextField(analyzer="autocomplete"),
+        },
     )
-    
+
     descricao = fields.TextField(
-        analyzer='portuguese_analyzer',
-        fields={
-            'raw': fields.KeywordField()
-        }
+        analyzer="portuguese_analyzer", fields={"raw": fields.KeywordField()}
     )
-    
+
     # Campos keyword para filtros exatos
     protocolo = fields.KeywordField()
     tipo = fields.KeywordField()
     status = fields.KeywordField()
     categoria = fields.KeywordField()
-    
+
     # Campos de data
     created_at = fields.DateField()
     updated_at = fields.DateField()
-    
+
     # Campo de email (para busca exata)
     email_contato = fields.KeywordField()
-    
+
     # Campo booleano
     anonimo = fields.BooleanField()
-    
+
     # Campos nested para tenant info
-    tenant = fields.ObjectField(properties={
-        'id': fields.IntegerField(),
-        'nome': fields.TextField(),
-        'subdominio': fields.KeywordField(),
-    })
+    tenant = fields.ObjectField(
+        properties={
+            "id": fields.IntegerField(),
+            "nome": fields.TextField(),
+            "subdominio": fields.KeywordField(),
+        }
+    )
 
     class Index:
-        name = 'feedbacks'
+        name = "feedbacks"
         settings = {
-            'number_of_shards': 1,
-            'number_of_replicas': 1,
+            "number_of_shards": 1,
+            "number_of_replicas": 1,
         }
 
     class Django:
         model = Feedback
         fields = []  # Todos os campos definidos explicitamente acima
-        
+
         # Campos do modelo a ignorar
         ignore_signals = False
         auto_refresh = True
-        
+
         # Definir related models para reindexação automática
         related_models = [Client]
 
@@ -125,7 +116,7 @@ class FeedbackDocument(Document):
         """
         Queryset customizado para incluir relacionamentos
         """
-        return super().get_queryset().select_related('client')
+        return super().get_queryset().select_related("client")
 
     def get_instances_from_related(self, related_instance):
         """
@@ -141,8 +132,8 @@ class FeedbackDocument(Document):
         """
         if instance.client:
             return {
-                'id': instance.client.id,
-                'nome': instance.client.nome,
-                'subdominio': instance.client.subdominio,
+                "id": instance.client.id,
+                "nome": instance.client.nome,
+                "subdominio": instance.client.subdominio,
             }
         return None

@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0007_populate_team_members'),
+        ("tenants", "0007_populate_team_members"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='teammember',
-            name='email_notifications',
-            field=models.BooleanField(default=True, help_text='Se desabilitado, não receberá emails de atribuição/novos feedbacks', verbose_name='Receber notificações por email'),
+            model_name="teammember",
+            name="email_notifications",
+            field=models.BooleanField(
+                default=True,
+                help_text="Se desabilitado, não receberá emails de atribuição/novos feedbacks",
+                verbose_name="Receber notificações por email",
+            ),
         ),
     ]

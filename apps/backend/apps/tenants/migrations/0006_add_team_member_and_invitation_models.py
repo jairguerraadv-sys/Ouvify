@@ -8,54 +8,244 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0005_client_cor_secundaria_client_cor_texto_and_more'),
+        ("tenants", "0005_client_cor_secundaria_client_cor_texto_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TeamInvitation',
+            name="TeamInvitation",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('email', models.EmailField(help_text='Email para onde o convite será enviado', max_length=254, verbose_name='Email do Convidado')),
-                ('role', models.CharField(choices=[('OWNER', 'Proprietário'), ('ADMIN', 'Administrador'), ('MODERATOR', 'Moderador'), ('VIEWER', 'Visualizador')], default='VIEWER', help_text='Role que será atribuída ao aceitar', max_length=20, verbose_name='Cargo')),
-                ('token', models.CharField(editable=False, help_text='Token único para aceitar o convite', max_length=64, unique=True, verbose_name='Token')),
-                ('status', models.CharField(choices=[('PENDING', 'Pendente'), ('ACCEPTED', 'Aceito'), ('EXPIRED', 'Expirado'), ('REVOKED', 'Revogado')], default='PENDING', max_length=20, verbose_name='Status')),
-                ('personal_message', models.TextField(blank=True, help_text='Mensagem opcional incluída no email de convite', verbose_name='Mensagem Pessoal')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Criado Em')),
-                ('expires_at', models.DateTimeField(help_text='Data de expiração do convite (7 dias)', verbose_name='Expira Em')),
-                ('accepted_at', models.DateTimeField(blank=True, null=True, verbose_name='Aceito Em')),
-                ('client', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invitations', to='tenants.client', verbose_name='Cliente')),
-                ('invited_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sent_invitations', to=settings.AUTH_USER_MODEL, verbose_name='Convidado Por')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        help_text="Email para onde o convite será enviado",
+                        max_length=254,
+                        verbose_name="Email do Convidado",
+                    ),
+                ),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("OWNER", "Proprietário"),
+                            ("ADMIN", "Administrador"),
+                            ("MODERATOR", "Moderador"),
+                            ("VIEWER", "Visualizador"),
+                        ],
+                        default="VIEWER",
+                        help_text="Role que será atribuída ao aceitar",
+                        max_length=20,
+                        verbose_name="Cargo",
+                    ),
+                ),
+                (
+                    "token",
+                    models.CharField(
+                        editable=False,
+                        help_text="Token único para aceitar o convite",
+                        max_length=64,
+                        unique=True,
+                        verbose_name="Token",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("PENDING", "Pendente"),
+                            ("ACCEPTED", "Aceito"),
+                            ("EXPIRED", "Expirado"),
+                            ("REVOKED", "Revogado"),
+                        ],
+                        default="PENDING",
+                        max_length=20,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "personal_message",
+                    models.TextField(
+                        blank=True,
+                        help_text="Mensagem opcional incluída no email de convite",
+                        verbose_name="Mensagem Pessoal",
+                    ),
+                ),
+                (
+                    "created_at",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Criado Em"),
+                ),
+                (
+                    "expires_at",
+                    models.DateTimeField(
+                        help_text="Data de expiração do convite (7 dias)",
+                        verbose_name="Expira Em",
+                    ),
+                ),
+                (
+                    "accepted_at",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Aceito Em"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="invitations",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "invited_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sent_invitations",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Convidado Por",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Convite de Equipe',
-                'verbose_name_plural': 'Convites de Equipe',
-                'db_table': 'tenants_team_invitation',
-                'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['token'], name='tenants_tea_token_bc6019_idx'), models.Index(fields=['email', 'status'], name='tenants_tea_email_319215_idx'), models.Index(fields=['client', 'status'], name='tenants_tea_client__6e73f1_idx')],
+                "verbose_name": "Convite de Equipe",
+                "verbose_name_plural": "Convites de Equipe",
+                "db_table": "tenants_team_invitation",
+                "ordering": ["-created_at"],
+                "indexes": [
+                    models.Index(fields=["token"], name="tenants_tea_token_bc6019_idx"),
+                    models.Index(
+                        fields=["email", "status"], name="tenants_tea_email_319215_idx"
+                    ),
+                    models.Index(
+                        fields=["client", "status"],
+                        name="tenants_tea_client__6e73f1_idx",
+                    ),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='TeamMember',
+            name="TeamMember",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('role', models.CharField(choices=[('OWNER', 'Proprietário'), ('ADMIN', 'Administrador'), ('MODERATOR', 'Moderador'), ('VIEWER', 'Visualizador')], default='VIEWER', help_text='Nível de permissão do usuário', max_length=20, verbose_name='Cargo')),
-                ('status', models.CharField(choices=[('ACTIVE', 'Ativo'), ('SUSPENDED', 'Suspenso'), ('REMOVED', 'Removido')], default='ACTIVE', help_text='Status atual do membro na equipe', max_length=20, verbose_name='Status')),
-                ('invited_at', models.DateTimeField(auto_now_add=True, verbose_name='Data do Convite')),
-                ('joined_at', models.DateTimeField(blank=True, help_text='Quando o usuário aceitou o convite', null=True, verbose_name='Data de Entrada')),
-                ('removed_at', models.DateTimeField(blank=True, null=True, verbose_name='Data de Remoção')),
-                ('client', models.ForeignKey(help_text='Tenant ao qual este usuário pertence', on_delete=django.db.models.deletion.CASCADE, related_name='team_members', to='tenants.client', verbose_name='Cliente')),
-                ('invited_by', models.ForeignKey(blank=True, help_text='Usuário que enviou o convite', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='invitations_sent', to=settings.AUTH_USER_MODEL, verbose_name='Convidado Por')),
-                ('user', models.ForeignKey(help_text='Usuário que é membro deste tenant', on_delete=django.db.models.deletion.CASCADE, related_name='team_memberships', to=settings.AUTH_USER_MODEL, verbose_name='Usuário')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[
+                            ("OWNER", "Proprietário"),
+                            ("ADMIN", "Administrador"),
+                            ("MODERATOR", "Moderador"),
+                            ("VIEWER", "Visualizador"),
+                        ],
+                        default="VIEWER",
+                        help_text="Nível de permissão do usuário",
+                        max_length=20,
+                        verbose_name="Cargo",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("ACTIVE", "Ativo"),
+                            ("SUSPENDED", "Suspenso"),
+                            ("REMOVED", "Removido"),
+                        ],
+                        default="ACTIVE",
+                        help_text="Status atual do membro na equipe",
+                        max_length=20,
+                        verbose_name="Status",
+                    ),
+                ),
+                (
+                    "invited_at",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Data do Convite"
+                    ),
+                ),
+                (
+                    "joined_at",
+                    models.DateTimeField(
+                        blank=True,
+                        help_text="Quando o usuário aceitou o convite",
+                        null=True,
+                        verbose_name="Data de Entrada",
+                    ),
+                ),
+                (
+                    "removed_at",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Data de Remoção"
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Tenant ao qual este usuário pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="team_members",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
+                (
+                    "invited_by",
+                    models.ForeignKey(
+                        blank=True,
+                        help_text="Usuário que enviou o convite",
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="invitations_sent",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Convidado Por",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        help_text="Usuário que é membro deste tenant",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="team_memberships",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Usuário",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Membro da Equipe',
-                'verbose_name_plural': 'Membros da Equipe',
-                'db_table': 'tenants_team_member',
-                'ordering': ['-invited_at'],
-                'indexes': [models.Index(fields=['client', 'status'], name='tenants_tea_client__586ece_idx'), models.Index(fields=['user', 'status'], name='tenants_tea_user_id_c17212_idx'), models.Index(fields=['role', 'status'], name='tenants_tea_role_32c015_idx')],
-                'unique_together': {('user', 'client')},
+                "verbose_name": "Membro da Equipe",
+                "verbose_name_plural": "Membros da Equipe",
+                "db_table": "tenants_team_member",
+                "ordering": ["-invited_at"],
+                "indexes": [
+                    models.Index(
+                        fields=["client", "status"],
+                        name="tenants_tea_client__586ece_idx",
+                    ),
+                    models.Index(
+                        fields=["user", "status"], name="tenants_tea_user_id_c17212_idx"
+                    ),
+                    models.Index(
+                        fields=["role", "status"], name="tenants_tea_role_32c015_idx"
+                    ),
+                ],
+                "unique_together": {("user", "client")},
             },
         ),
     ]

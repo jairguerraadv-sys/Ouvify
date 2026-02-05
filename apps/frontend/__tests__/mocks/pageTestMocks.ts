@@ -1,6 +1,8 @@
+import type { ReactNode } from "react";
+
 export function protectedRouteMock() {
   return {
-    ProtectedRoute: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    ProtectedRoute: ({ children }: { children: ReactNode }) => children,
   };
 }
 
@@ -24,16 +26,16 @@ export function authenticatedAuthContextMock() {
       isLoading: false,
       user: {
         id: 1,
-        email: 'test@example.com',
-        name: 'Test User',
+        email: "test@example.com",
+        name: "Test User",
       },
       tenant: {
         id: 1,
-        nome: 'Test Company',
-        subdominio: 'testcompany',
-        plano: 'professional',
+        nome: "Test Company",
+        subdominio: "testcompany",
+        plano: "professional",
       },
     })),
-    AuthProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    AuthProvider: ({ children }: { children: ReactNode }) => children,
   };
 }

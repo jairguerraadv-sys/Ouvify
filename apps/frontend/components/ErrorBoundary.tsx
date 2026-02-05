@@ -2,12 +2,13 @@
  * Error Boundary Component para capturar erros em componentes React
  * Evita que um erro em um componente quebre toda a aplicação
  */
-'use client';
+"use client";
 
-import { Component, ReactNode } from 'react';
-import { Button } from '@/components/ui/button';
-import { AlertCircle } from 'lucide-react';
-import logger from '@/lib/logger';
+import { Component, ReactNode } from "react";
+import * as Sentry from "@sentry/nextjs";
+import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
+import logger from "@/lib/logger";
 
 interface Props {
   children: ReactNode;
@@ -31,19 +32,26 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: any) {
-    logger.error('ErrorBoundary caught an error:', {
+    logger.error("ErrorBoundary caught an error:", {
       error: error.message,
       stack: error.stack,
       componentStack: errorInfo.componentStack,
     });
 
+    if (process.env.NODE_ENV !== "test") {
+      Sentry.captureException(error, {
+        contexts: {
+          react: {
+            componentStack: errorInfo.componentStack,
+          },
+        },
+      });
+    }
+
     // Callback personalizado se fornecido
     if (this.props.onError) {
       this.props.onError(error, errorInfo);
     }
-
-    // TODO: Integrar com Sentry ou outro serviço de monitoramento
-    // Sentry.captureException(error, { contexts: { react: { componentStack: errorInfo.componentStack } } });
   }
 
   handleReset = () => {
@@ -64,35 +72,35 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex justify-center mb-4">
               <AlertCircle className="w-16 h-16 text-error-500" />
             </div>
-            
+
             <h2 className="text-2xl font-bold text-text-primary mb-2">
               Algo deu errado
             </h2>
-            
+
             <p className="text-text-secondary mb-6">
               Ocorreu um erro inesperado. Por favor, tente novamente.
             </p>
 
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {process.env.NODE_ENV === "development" && this.state.error && (
               <details className="mb-6 text-left">
                 <summary className="cursor-pointer text-sm text-text-tertiary mb-2">
                   Detalhes do erro (apenas em desenvolvimento)
                 </summary>
                 <pre className="text-xs bg-background-tertiary text-text-secondary p-3 rounded overflow-auto max-h-40">
                   {this.state.error.message}
-                  {'\n\n'}
+                  {"\n\n"}
                   {this.state.error.stack}
                 </pre>
               </details>
             )}
-            
+
             <div className="flex gap-3 justify-center">
               <Button onClick={this.handleReset} variant="default">
                 Tentar novamente
               </Button>
-              
+
               <Button
-                onClick={() => window.location.href = '/'}
+                onClick={() => (window.location.href = "/")}
                 variant="outline"
               >
                 Voltar ao início

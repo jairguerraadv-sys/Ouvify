@@ -6,13 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0001_initial'),
+        ("tenants", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='client',
-            name='logo',
-            field=models.URLField(blank=True, help_text='URL da logo da empresa para white label', max_length=500, null=True, verbose_name='Logo'),
+            model_name="client",
+            name="logo",
+            field=models.URLField(
+                blank=True,
+                help_text="URL da logo da empresa para white label",
+                max_length=500,
+                null=True,
+                verbose_name="Logo",
+            ),
         ),
     ]

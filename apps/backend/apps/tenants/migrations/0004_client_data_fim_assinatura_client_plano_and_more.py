@@ -6,33 +6,57 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0003_client_owner'),
+        ("tenants", "0003_client_owner"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='client',
-            name='data_fim_assinatura',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Fim da Assinatura'),
+            model_name="client",
+            name="data_fim_assinatura",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Fim da Assinatura"
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='plano',
-            field=models.CharField(choices=[('free', 'Gratuito'), ('starter', 'Starter - R$ 99/mês'), ('pro', 'Pro - R$ 299/mês')], default='free', max_length=20, verbose_name='Plano'),
+            model_name="client",
+            name="plano",
+            field=models.CharField(
+                choices=[
+                    ("free", "Gratuito"),
+                    ("starter", "Starter - R$ 99/mês"),
+                    ("pro", "Pro - R$ 299/mês"),
+                ],
+                default="free",
+                max_length=20,
+                verbose_name="Plano",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='stripe_customer_id',
-            field=models.CharField(blank=True, max_length=50, null=True, unique=True, verbose_name='Stripe Customer ID'),
+            model_name="client",
+            name="stripe_customer_id",
+            field=models.CharField(
+                blank=True,
+                max_length=50,
+                null=True,
+                unique=True,
+                verbose_name="Stripe Customer ID",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='stripe_subscription_id',
-            field=models.CharField(blank=True, max_length=50, null=True, verbose_name='Stripe Subscription ID'),
+            model_name="client",
+            name="stripe_subscription_id",
+            field=models.CharField(
+                blank=True,
+                max_length=50,
+                null=True,
+                verbose_name="Stripe Subscription ID",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='subscription_status',
-            field=models.CharField(default='active', max_length=20, verbose_name='Status da Assinatura'),
+            model_name="client",
+            name="subscription_status",
+            field=models.CharField(
+                default="active", max_length=20, verbose_name="Status da Assinatura"
+            ),
         ),
     ]

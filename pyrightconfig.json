@@ -1,14 +1,8 @@
 {
-  "include": [
-    "apps/backend",
-    "test_*.py"
-  ],
-  "extraPaths": [
-    "apps/backend",
-    "apps/backend/apps"
-  ],
-  "pythonVersion": "3.14",
-  "pythonPlatform": "Darwin",
+  "include": ["apps/backend", "test_*.py"],
+  "extraPaths": ["apps/backend", "apps/backend/apps"],
+  "pythonVersion": "3.12",
+  "pythonPlatform": "Linux",
   "typeCheckingMode": "standard",
   "reportMissingImports": "warning",
   "reportMissingTypeStubs": false,

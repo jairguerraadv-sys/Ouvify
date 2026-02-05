@@ -7,31 +7,103 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0001_add_api_keys'),
-        ('tenants', '0008_add_email_notifications_preference'),
+        ("core", "0001_add_api_keys"),
+        ("tenants", "0008_add_email_notifications_preference"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='APIKey',
+            name="APIKey",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(help_text='Nome descritivo para identificar a API key', max_length=100, verbose_name='Nome')),
-                ('prefix', models.CharField(db_index=True, help_text='Prefixo visível da key (para identificação)', max_length=8, verbose_name='Prefixo')),
-                ('key_hash', models.CharField(help_text='SHA-256 hash da API key', max_length=64, unique=True, verbose_name='Hash da Key')),
-                ('permissions', models.CharField(choices=[('read', 'Somente Leitura'), ('write', 'Leitura e Escrita'), ('admin', 'Administrador')], default='read', max_length=10, verbose_name='Permissões')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('last_used_at', models.DateTimeField(blank=True, null=True)),
-                ('expires_at', models.DateTimeField(blank=True, help_text='Deixe vazio para key sem expiração', null=True, verbose_name='Expira em')),
-                ('is_active', models.BooleanField(default=True)),
-                ('requests_count', models.PositiveIntegerField(default=0, verbose_name='Total de Requisições')),
-                ('rate_limit', models.PositiveIntegerField(default=1000, help_text='Máximo de requisições por hora', verbose_name='Rate Limit (req/hora)')),
-                ('client', models.ForeignKey(help_text='Cliente (tenant) ao qual este registro pertence', on_delete=django.db.models.deletion.CASCADE, related_name='%(class)s_set', to='tenants.client', verbose_name='Cliente')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        help_text="Nome descritivo para identificar a API key",
+                        max_length=100,
+                        verbose_name="Nome",
+                    ),
+                ),
+                (
+                    "prefix",
+                    models.CharField(
+                        db_index=True,
+                        help_text="Prefixo visível da key (para identificação)",
+                        max_length=8,
+                        verbose_name="Prefixo",
+                    ),
+                ),
+                (
+                    "key_hash",
+                    models.CharField(
+                        help_text="SHA-256 hash da API key",
+                        max_length=64,
+                        unique=True,
+                        verbose_name="Hash da Key",
+                    ),
+                ),
+                (
+                    "permissions",
+                    models.CharField(
+                        choices=[
+                            ("read", "Somente Leitura"),
+                            ("write", "Leitura e Escrita"),
+                            ("admin", "Administrador"),
+                        ],
+                        default="read",
+                        max_length=10,
+                        verbose_name="Permissões",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("last_used_at", models.DateTimeField(blank=True, null=True)),
+                (
+                    "expires_at",
+                    models.DateTimeField(
+                        blank=True,
+                        help_text="Deixe vazio para key sem expiração",
+                        null=True,
+                        verbose_name="Expira em",
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True)),
+                (
+                    "requests_count",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Total de Requisições"
+                    ),
+                ),
+                (
+                    "rate_limit",
+                    models.PositiveIntegerField(
+                        default=1000,
+                        help_text="Máximo de requisições por hora",
+                        verbose_name="Rate Limit (req/hora)",
+                    ),
+                ),
+                (
+                    "client",
+                    models.ForeignKey(
+                        help_text="Cliente (tenant) ao qual este registro pertence",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="%(class)s_set",
+                        to="tenants.client",
+                        verbose_name="Cliente",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'API Key',
-                'verbose_name_plural': 'API Keys',
-                'ordering': ['-created_at'],
+                "verbose_name": "API Key",
+                "verbose_name_plural": "API Keys",
+                "ordering": ["-created_at"],
             },
         ),
     ]

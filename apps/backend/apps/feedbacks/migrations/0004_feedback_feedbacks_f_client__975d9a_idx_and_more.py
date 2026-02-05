@@ -6,17 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('feedbacks', '0003_feedbackinteracao'),
-        ('tenants', '0004_client_data_fim_assinatura_client_plano_and_more'),
+        ("feedbacks", "0003_feedbackinteracao"),
+        ("tenants", "0004_client_data_fim_assinatura_client_plano_and_more"),
     ]
 
     operations = [
         migrations.AddIndex(
-            model_name='feedback',
-            index=models.Index(fields=['client', '-data_criacao'], name='feedbacks_f_client__975d9a_idx'),
+            model_name="feedback",
+            index=models.Index(
+                fields=["client", "-data_criacao"],
+                name="feedbacks_f_client__975d9a_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='feedback',
-            index=models.Index(fields=['client', 'status', '-data_criacao'], name='feedbacks_f_client__2a029a_idx'),
+            model_name="feedback",
+            index=models.Index(
+                fields=["client", "status", "-data_criacao"],
+                name="feedbacks_f_client__2a029a_idx",
+            ),
         ),
     ]

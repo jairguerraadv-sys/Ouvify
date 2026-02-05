@@ -11,74 +11,312 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('contenttypes', '0002_remove_content_type_name'),
-        ('tenants', '0005_client_cor_secundaria_client_cor_texto_and_more'),
+        ("contenttypes", "0002_remove_content_type_name"),
+        ("tenants", "0005_client_cor_secundaria_client_cor_texto_and_more"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='UserSession',
+            name="UserSession",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('session_key', models.CharField(max_length=40, unique=True, verbose_name='Chave da Sessão')),
-                ('started_at', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Início')),
-                ('last_activity', models.DateTimeField(default=django.utils.timezone.now, verbose_name='Última Atividade')),
-                ('ended_at', models.DateTimeField(blank=True, null=True, verbose_name='Fim')),
-                ('ip_address', models.GenericIPAddressField(blank=True, null=True, verbose_name='Endereço IP')),
-                ('user_agent', models.TextField(blank=True, verbose_name='User Agent')),
-                ('device_type', models.CharField(blank=True, max_length=20, verbose_name='Tipo de Dispositivo')),
-                ('browser', models.CharField(blank=True, max_length=50, verbose_name='Navegador')),
-                ('os', models.CharField(blank=True, max_length=50, verbose_name='Sistema Operacional')),
-                ('is_active', models.BooleanField(default=True, verbose_name='Ativo')),
-                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='user_sessions', to='tenants.client', verbose_name='Tenant')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='sessions', to=settings.AUTH_USER_MODEL, verbose_name='Usuário')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "session_key",
+                    models.CharField(
+                        max_length=40, unique=True, verbose_name="Chave da Sessão"
+                    ),
+                ),
+                (
+                    "started_at",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="Início"
+                    ),
+                ),
+                (
+                    "last_activity",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now,
+                        verbose_name="Última Atividade",
+                    ),
+                ),
+                (
+                    "ended_at",
+                    models.DateTimeField(blank=True, null=True, verbose_name="Fim"),
+                ),
+                (
+                    "ip_address",
+                    models.GenericIPAddressField(
+                        blank=True, null=True, verbose_name="Endereço IP"
+                    ),
+                ),
+                ("user_agent", models.TextField(blank=True, verbose_name="User Agent")),
+                (
+                    "device_type",
+                    models.CharField(
+                        blank=True, max_length=20, verbose_name="Tipo de Dispositivo"
+                    ),
+                ),
+                (
+                    "browser",
+                    models.CharField(
+                        blank=True, max_length=50, verbose_name="Navegador"
+                    ),
+                ),
+                (
+                    "os",
+                    models.CharField(
+                        blank=True, max_length=50, verbose_name="Sistema Operacional"
+                    ),
+                ),
+                ("is_active", models.BooleanField(default=True, verbose_name="Ativo")),
+                (
+                    "tenant",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="user_sessions",
+                        to="tenants.client",
+                        verbose_name="Tenant",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="sessions",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Usuário",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Sessão de Usuário',
-                'verbose_name_plural': 'Sessões de Usuário',
-                'ordering': ['-started_at'],
+                "verbose_name": "Sessão de Usuário",
+                "verbose_name_plural": "Sessões de Usuário",
+                "ordering": ["-started_at"],
             },
         ),
         migrations.CreateModel(
-            name='AuditLog',
+            name="AuditLog",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('timestamp', models.DateTimeField(db_index=True, default=django.utils.timezone.now, verbose_name='Data/Hora')),
-                ('action', models.CharField(choices=[('LOGIN', 'Login'), ('LOGOUT', 'Logout'), ('LOGIN_FAILED', 'Falha de Login'), ('PASSWORD_CHANGE', 'Alteração de Senha'), ('PASSWORD_RESET', 'Reset de Senha'), ('MFA_ENABLED', 'MFA Ativado'), ('MFA_DISABLED', 'MFA Desativado'), ('CREATE', 'Criação'), ('UPDATE', 'Atualização'), ('DELETE', 'Exclusão'), ('VIEW', 'Visualização'), ('EXPORT', 'Exportação'), ('FEEDBACK_CREATED', 'Feedback Criado'), ('FEEDBACK_UPDATED', 'Feedback Atualizado'), ('FEEDBACK_STATUS_CHANGED', 'Status do Feedback Alterado'), ('FEEDBACK_ASSIGNED', 'Feedback Atribuído'), ('FEEDBACK_RESOLVED', 'Feedback Resolvido'), ('TENANT_CREATED', 'Tenant Criado'), ('TENANT_UPDATED', 'Tenant Atualizado'), ('TENANT_SUSPENDED', 'Tenant Suspenso'), ('USER_INVITED', 'Usuário Convidado'), ('USER_REMOVED', 'Usuário Removido'), ('PERMISSION_CHANGED', 'Permissão Alterada'), ('SETTINGS_CHANGED', 'Configurações Alteradas'), ('API_ACCESS', 'Acesso à API'), ('WEBHOOK_TRIGGERED', 'Webhook Disparado'), ('SECURITY_ALERT', 'Alerta de Segurança'), ('SUSPICIOUS_ACTIVITY', 'Atividade Suspeita'), ('ACCESS_DENIED', 'Acesso Negado')], db_index=True, max_length=50, verbose_name='Ação')),
-                ('severity', models.CharField(choices=[('INFO', 'Informação'), ('WARNING', 'Aviso'), ('ERROR', 'Erro'), ('CRITICAL', 'Crítico')], db_index=True, default='INFO', max_length=20, verbose_name='Severidade')),
-                ('description', models.TextField(blank=True, verbose_name='Descrição')),
-                ('object_id', models.PositiveIntegerField(blank=True, db_index=True, null=True)),
-                ('object_repr', models.CharField(blank=True, max_length=200, verbose_name='Representação do Objeto')),
-                ('ip_address', models.GenericIPAddressField(blank=True, db_index=True, null=True, verbose_name='Endereço IP')),
-                ('user_agent', models.TextField(blank=True, default='', null=True, verbose_name='User Agent')),
-                ('metadata', models.JSONField(blank=True, default=dict, verbose_name='Metadados')),
-                ('content_type', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='contenttypes.contenttype')),
-                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='audit_logs', to='tenants.client', verbose_name='Tenant')),
-                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='audit_logs', to=settings.AUTH_USER_MODEL, verbose_name='Usuário')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "timestamp",
+                    models.DateTimeField(
+                        db_index=True,
+                        default=django.utils.timezone.now,
+                        verbose_name="Data/Hora",
+                    ),
+                ),
+                (
+                    "action",
+                    models.CharField(
+                        choices=[
+                            ("LOGIN", "Login"),
+                            ("LOGOUT", "Logout"),
+                            ("LOGIN_FAILED", "Falha de Login"),
+                            ("PASSWORD_CHANGE", "Alteração de Senha"),
+                            ("PASSWORD_RESET", "Reset de Senha"),
+                            ("MFA_ENABLED", "MFA Ativado"),
+                            ("MFA_DISABLED", "MFA Desativado"),
+                            ("CREATE", "Criação"),
+                            ("UPDATE", "Atualização"),
+                            ("DELETE", "Exclusão"),
+                            ("VIEW", "Visualização"),
+                            ("EXPORT", "Exportação"),
+                            ("FEEDBACK_CREATED", "Feedback Criado"),
+                            ("FEEDBACK_UPDATED", "Feedback Atualizado"),
+                            ("FEEDBACK_STATUS_CHANGED", "Status do Feedback Alterado"),
+                            ("FEEDBACK_ASSIGNED", "Feedback Atribuído"),
+                            ("FEEDBACK_RESOLVED", "Feedback Resolvido"),
+                            ("TENANT_CREATED", "Tenant Criado"),
+                            ("TENANT_UPDATED", "Tenant Atualizado"),
+                            ("TENANT_SUSPENDED", "Tenant Suspenso"),
+                            ("USER_INVITED", "Usuário Convidado"),
+                            ("USER_REMOVED", "Usuário Removido"),
+                            ("PERMISSION_CHANGED", "Permissão Alterada"),
+                            ("SETTINGS_CHANGED", "Configurações Alteradas"),
+                            ("API_ACCESS", "Acesso à API"),
+                            ("WEBHOOK_TRIGGERED", "Webhook Disparado"),
+                            ("SECURITY_ALERT", "Alerta de Segurança"),
+                            ("SUSPICIOUS_ACTIVITY", "Atividade Suspeita"),
+                            ("ACCESS_DENIED", "Acesso Negado"),
+                        ],
+                        db_index=True,
+                        max_length=50,
+                        verbose_name="Ação",
+                    ),
+                ),
+                (
+                    "severity",
+                    models.CharField(
+                        choices=[
+                            ("INFO", "Informação"),
+                            ("WARNING", "Aviso"),
+                            ("ERROR", "Erro"),
+                            ("CRITICAL", "Crítico"),
+                        ],
+                        db_index=True,
+                        default="INFO",
+                        max_length=20,
+                        verbose_name="Severidade",
+                    ),
+                ),
+                ("description", models.TextField(blank=True, verbose_name="Descrição")),
+                (
+                    "object_id",
+                    models.PositiveIntegerField(blank=True, db_index=True, null=True),
+                ),
+                (
+                    "object_repr",
+                    models.CharField(
+                        blank=True,
+                        max_length=200,
+                        verbose_name="Representação do Objeto",
+                    ),
+                ),
+                (
+                    "ip_address",
+                    models.GenericIPAddressField(
+                        blank=True, db_index=True, null=True, verbose_name="Endereço IP"
+                    ),
+                ),
+                (
+                    "user_agent",
+                    models.TextField(
+                        blank=True, default="", null=True, verbose_name="User Agent"
+                    ),
+                ),
+                (
+                    "metadata",
+                    models.JSONField(
+                        blank=True, default=dict, verbose_name="Metadados"
+                    ),
+                ),
+                (
+                    "content_type",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="contenttypes.contenttype",
+                    ),
+                ),
+                (
+                    "tenant",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="audit_logs",
+                        to="tenants.client",
+                        verbose_name="Tenant",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="audit_logs",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Usuário",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Log de Auditoria',
-                'verbose_name_plural': 'Logs de Auditoria',
-                'ordering': ['-timestamp'],
-                'indexes': [models.Index(fields=['-timestamp', 'action'], name='auditlog_au_timesta_c08c6e_idx'), models.Index(fields=['tenant', '-timestamp'], name='auditlog_au_tenant__7651e6_idx'), models.Index(fields=['user', '-timestamp'], name='auditlog_au_user_id_f1faf1_idx'), models.Index(fields=['action', 'severity'], name='auditlog_au_action_4563d2_idx')],
+                "verbose_name": "Log de Auditoria",
+                "verbose_name_plural": "Logs de Auditoria",
+                "ordering": ["-timestamp"],
+                "indexes": [
+                    models.Index(
+                        fields=["-timestamp", "action"],
+                        name="auditlog_au_timesta_c08c6e_idx",
+                    ),
+                    models.Index(
+                        fields=["tenant", "-timestamp"],
+                        name="auditlog_au_tenant__7651e6_idx",
+                    ),
+                    models.Index(
+                        fields=["user", "-timestamp"],
+                        name="auditlog_au_user_id_f1faf1_idx",
+                    ),
+                    models.Index(
+                        fields=["action", "severity"],
+                        name="auditlog_au_action_4563d2_idx",
+                    ),
+                ],
             },
         ),
         migrations.CreateModel(
-            name='AuditLogSummary',
+            name="AuditLogSummary",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('date', models.DateField(db_index=True, verbose_name='Data')),
-                ('action', models.CharField(db_index=True, max_length=50, verbose_name='Ação')),
-                ('count', models.PositiveIntegerField(default=0, verbose_name='Contagem')),
-                ('unique_users', models.PositiveIntegerField(default=0, verbose_name='Usuários Únicos')),
-                ('tenant', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='audit_summaries', to='tenants.client', verbose_name='Tenant')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("date", models.DateField(db_index=True, verbose_name="Data")),
+                (
+                    "action",
+                    models.CharField(db_index=True, max_length=50, verbose_name="Ação"),
+                ),
+                (
+                    "count",
+                    models.PositiveIntegerField(default=0, verbose_name="Contagem"),
+                ),
+                (
+                    "unique_users",
+                    models.PositiveIntegerField(
+                        default=0, verbose_name="Usuários Únicos"
+                    ),
+                ),
+                (
+                    "tenant",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="audit_summaries",
+                        to="tenants.client",
+                        verbose_name="Tenant",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Resumo de Auditoria',
-                'verbose_name_plural': 'Resumos de Auditoria',
-                'indexes': [models.Index(fields=['date', 'tenant'], name='auditlog_au_date_9e90ce_idx'), models.Index(fields=['date', 'action'], name='auditlog_au_date_58dcf7_idx')],
-                'unique_together': {('date', 'tenant', 'action')},
+                "verbose_name": "Resumo de Auditoria",
+                "verbose_name_plural": "Resumos de Auditoria",
+                "indexes": [
+                    models.Index(
+                        fields=["date", "tenant"], name="auditlog_au_date_9e90ce_idx"
+                    ),
+                    models.Index(
+                        fields=["date", "action"], name="auditlog_au_date_58dcf7_idx"
+                    ),
+                ],
+                "unique_together": {("date", "tenant", "action")},
             },
         ),
     ]

@@ -1,13 +1,6 @@
-# Views do app core
-from .analytics import AnalyticsView
-from .home import home
-from .csp import csp_report
-from .search_views import GlobalSearchView, AutocompleteView, SearchByProtocolView
-from .two_factor_views import (
-    TwoFactorSetupView,
-    TwoFactorConfirmView,
-    TwoFactorVerifyView,
-    TwoFactorDisableView,
-    TwoFactorStatusView,
-    TwoFactorRegenerateBackupCodesView,
-)
+"""Views do app core.
+
+Este pacote mantém os módulos de views organizados por domínio.
+"""
+
+__all__: list[str] = []

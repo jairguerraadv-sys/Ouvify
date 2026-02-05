@@ -7,28 +7,67 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0004_client_data_fim_assinatura_client_plano_and_more'),
+        ("tenants", "0004_client_data_fim_assinatura_client_plano_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='client',
-            name='cor_secundaria',
-            field=models.CharField(blank=True, default='#10B981', help_text='Cor secundária da interface em hexadecimal', max_length=7, null=True, validators=[django.core.validators.RegexValidator(message='Cor deve estar no formato hexadecimal (ex: #10B981)', regex='^#[0-9A-Fa-f]{6}$')], verbose_name='Cor Secundária'),
+            model_name="client",
+            name="cor_secundaria",
+            field=models.CharField(
+                blank=True,
+                default="#10B981",
+                help_text="Cor secundária da interface em hexadecimal",
+                max_length=7,
+                null=True,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="Cor deve estar no formato hexadecimal (ex: #10B981)",
+                        regex="^#[0-9A-Fa-f]{6}$",
+                    )
+                ],
+                verbose_name="Cor Secundária",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='cor_texto',
-            field=models.CharField(blank=True, default='#1F2937', help_text='Cor principal do texto em hexadecimal', max_length=7, null=True, validators=[django.core.validators.RegexValidator(message='Cor deve estar no formato hexadecimal (ex: #1F2937)', regex='^#[0-9A-Fa-f]{6}$')], verbose_name='Cor do Texto'),
+            model_name="client",
+            name="cor_texto",
+            field=models.CharField(
+                blank=True,
+                default="#1F2937",
+                help_text="Cor principal do texto em hexadecimal",
+                max_length=7,
+                null=True,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="Cor deve estar no formato hexadecimal (ex: #1F2937)",
+                        regex="^#[0-9A-Fa-f]{6}$",
+                    )
+                ],
+                verbose_name="Cor do Texto",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='favicon',
-            field=models.URLField(blank=True, help_text='URL do favicon da empresa (.ico ou .png)', max_length=500, null=True, verbose_name='Favicon'),
+            model_name="client",
+            name="favicon",
+            field=models.URLField(
+                blank=True,
+                help_text="URL do favicon da empresa (.ico ou .png)",
+                max_length=500,
+                null=True,
+                verbose_name="Favicon",
+            ),
         ),
         migrations.AddField(
-            model_name='client',
-            name='fonte_customizada',
-            field=models.CharField(blank=True, default='Inter', help_text='Nome da fonte do Google Fonts (ex: Inter, Roboto, Poppins)', max_length=100, null=True, verbose_name='Fonte Customizada'),
+            model_name="client",
+            name="fonte_customizada",
+            field=models.CharField(
+                blank=True,
+                default="Inter",
+                help_text="Nome da fonte do Google Fonts (ex: Inter, Roboto, Poppins)",
+                max_length=100,
+                null=True,
+                verbose_name="Fonte Customizada",
+            ),
         ),
     ]

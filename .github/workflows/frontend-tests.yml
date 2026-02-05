@@ -2,12 +2,12 @@ name: Frontend Tests
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 
 env:
-  HUSKY: '0'
+  HUSKY: "0"
 
 jobs:
   test:
@@ -22,32 +22,32 @@ jobs:
         node-version: [20.x, 22.x]
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-        cache-dependency-path: ./apps/frontend/package-lock.json
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: ./package-lock.json
 
-    - name: Install dependencies
-      run: npm install --legacy-peer-deps
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
 
-    - name: TypeScript check
-      run: npx tsc --noEmit
+      - name: TypeScript check
+        run: npx tsc --noEmit
 
-    - name: Lint check
-      run: npm run lint --if-present
+      - name: Lint check
+        run: npm run lint --if-present
 
-    - name: Run tests
-      run: npm test -- --coverage --passWithNoTests
+      - name: Run tests
+        run: npm test -- --coverage --passWithNoTests
 
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v4
-      with:
-        files: ./apps/frontend/coverage/coverage-final.json
-        flags: frontend
-        name: frontend-coverage
-        fail_ci_if_error: false
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: ./apps/frontend/coverage/coverage-final.json
+          flags: frontend
+          name: frontend-coverage
+          fail_ci_if_error: false

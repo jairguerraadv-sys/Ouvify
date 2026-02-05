@@ -9,11 +9,13 @@ Triggers automáticos para enviar emails quando:
 """
 
 import logging
+
+from django.core.cache import cache
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
-from django.core.cache import cache
 
 from apps.core.services import EmailService, WebhookService
+
 from .models import Feedback, FeedbackInteracao
 
 logger = logging.getLogger(__name__)
@@ -22,6 +24,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 # SIGNAL: Novo Feedback Criado
 # =============================================================================
+
 
 @receiver(post_save, sender=Feedback)
 def notificar_novo_feedback(sender, instance, created, **kwargs):
@@ -41,8 +44,7 @@ def notificar_novo_feedback(sender, instance, created, **kwargs):
     # Ignora se não tem tenant
     if not instance.client:
         logger.warning(
-            f"⚠️ Feedback {instance.protocolo} sem client - "
-            f"Notificação não enviada"
+            f"⚠️ Feedback {instance.protocolo} sem client - " f"Notificação não enviada"
         )
         return
 
@@ -51,7 +53,7 @@ def notificar_novo_feedback(sender, instance, created, **kwargs):
         EmailService.send_feedback_notification(instance)
 
         # Envia webhook se configurado
-        WebhookService.send_feedback_webhook(instance, 'feedback.created')
+        WebhookService.send_feedback_webhook(instance, "feedback.created")
 
         logger.info(f"✅ Notificações enviadas para feedback {instance.protocolo}")
 
@@ -59,7 +61,7 @@ def notificar_novo_feedback(sender, instance, created, **kwargs):
         logger.error(
             f"❌ Erro ao processar notificações do feedback {instance.protocolo}: "
             f"{str(e)}",
-            exc_info=True
+            exc_info=True,
         )
 
 
@@ -67,11 +69,12 @@ def notificar_novo_feedback(sender, instance, created, **kwargs):
 # SIGNAL: Nova Interação/Resposta
 # =============================================================================
 
+
 @receiver(post_save, sender=FeedbackInteracao)
 def notificar_resposta_feedback(sender, instance, created, **kwargs):
     """
     Notifica quando há uma nova resposta/interação no feedback.
-    
+
     Args:
         sender: Classe FeedbackInteracao
         instance: Instância da interação criada
@@ -81,24 +84,23 @@ def notificar_resposta_feedback(sender, instance, created, **kwargs):
     # Só envia para novas interações
     if not created:
         return
-    
+
     feedback = instance.feedback
-    
+
     # Ignora se não tem tenant ou email
     if not feedback.client or not feedback.client.owner:
         return
-    
+
     owner_email = feedback.client.owner.email
     if not owner_email:
         return
-    
+
     try:
         # Envia notificação de resposta
         success = EmailService.send_feedback_response_notification(
-            feedback=feedback,
-            response_message=instance.mensagem
+            feedback=feedback, response_message=instance.mensagem
         )
-        
+
         if success:
             logger.info(
                 f"✅ Notificação de resposta enviada para {owner_email} - "
@@ -109,7 +111,7 @@ def notificar_resposta_feedback(sender, instance, created, **kwargs):
                 f"⚠️ Falha ao enviar notificação de resposta - "
                 f"Feedback {feedback.protocolo}"
             )
-            
+
     except Exception as e:
         # Se método não existe ainda no EmailService, só loga
         if "send_feedback_response_notification" in str(e):
@@ -118,14 +120,14 @@ def notificar_resposta_feedback(sender, instance, created, **kwargs):
             )
         else:
             logger.error(
-                f"❌ Erro ao processar notificação de resposta: {str(e)}",
-                exc_info=True
+                f"❌ Erro ao processar notificação de resposta: {str(e)}", exc_info=True
             )
 
 
 # =============================================================================
 # SIGNAL: Mudança de Status (com rate limiting)
 # =============================================================================
+
 
 @receiver(pre_save, sender=Feedback)
 def preparar_notificacao_status(sender, instance, **kwargs):
@@ -152,7 +154,7 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
         return
 
     # Verifica se status mudou
-    status_anterior = getattr(instance, '_status_anterior', None)
+    status_anterior = getattr(instance, "_status_anterior", None)
     if not status_anterior or status_anterior == instance.status:
         return
 
@@ -170,20 +172,22 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
         EmailService.send_feedback_status_update(instance, status_anterior)
 
         # Envia webhook se configurado
-        WebhookService.send_feedback_webhook(instance, 'feedback.updated')
+        WebhookService.send_feedback_webhook(instance, "feedback.updated")
 
         # Define rate limit por 5 minutos
         cache.set(cache_key, True, 300)
 
-        logger.info(f"✅ Notificação de status enviada para feedback {instance.protocolo}")
+        logger.info(
+            f"✅ Notificação de status enviada para feedback {instance.protocolo}"
+        )
 
     except Exception as e:
         logger.error(
             f"❌ Erro ao processar notificação de status do feedback {instance.protocolo}: "
             f"{str(e)}",
-            exc_info=True
+            exc_info=True,
         )
-            
+
     except Exception as e:
         # Se método não existe ainda, só loga
         if "send_status_change_notification" in str(e):
@@ -192,8 +196,7 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
             )
         else:
             logger.error(
-                f"❌ Erro ao processar notificação de status: {str(e)}",
-                exc_info=True
+                f"❌ Erro ao processar notificação de status: {str(e)}", exc_info=True
             )
 
 
@@ -201,18 +204,19 @@ def notificar_mudanca_status(sender, instance, created, **kwargs):
 # UTILITIES
 # =============================================================================
 
+
 def desativar_notificacoes_temporariamente(tempo_segundos=3600):
     """
     Desativa notificações temporariamente (útil para migrations/fixtures).
-    
+
     Args:
         tempo_segundos: Tempo em segundos (padrão: 1 hora)
-    
+
     Usage:
         from apps.feedbacks.signals import desativar_notificacoes_temporariamente
         desativar_notificacoes_temporariamente(3600)
     """
-    cache.set('notificacoes_desativadas', True, tempo_segundos)
+    cache.set("notificacoes_desativadas", True, tempo_segundos)
     logger.info(f"🔕 Notificações desativadas por {tempo_segundos}s")
 
 
@@ -220,43 +224,44 @@ def reativar_notificacoes():
     """
     Reativa notificações imediatamente.
     """
-    cache.delete('notificacoes_desativadas')
+    cache.delete("notificacoes_desativadas")
     logger.info("🔔 Notificações reativadas")
 
 
 def notificacoes_estao_ativas():
     """
     Verifica se notificações estão ativas.
-    
+
     Returns:
         bool: True se ativas
     """
-    return not cache.get('notificacoes_desativadas', False)
+    return not cache.get("notificacoes_desativadas", False)
 
 
 # =============================================================================
 # CACHE INVALIDATION - Auditoria Fase 3 (26/01/2026)
 # =============================================================================
 
+
 @receiver(post_save, sender=Feedback)
 def invalidate_dashboard_cache_on_feedback_save(sender, instance, created, **kwargs):
     """
     Invalida cache de dashboard stats quando Feedback é criado ou atualizado.
-    
+
     **Performance (Auditoria Fase 3):**
     - Garante dados frescos após mudanças
     - Próximo request recalcula e atualiza cache
     - Mantém 99% de cache hit rate (5min lifetime)
-    
+
     **Cache keys invalidados:**
     - dashboard_stats:{tenant_id}
     """
-    if hasattr(instance, 'client') and instance.client:
+    if hasattr(instance, "client") and instance.client:
         cache_key = f"dashboard_stats:{instance.client.id}"
         deleted = cache.delete(cache_key)
-        
+
         if deleted:
-            action = 'criado' if created else 'atualizado'
+            action = "criado" if created else "atualizado"
             logger.debug(
                 f"🗑️ Cache invalidado: {cache_key} | "
                 f"Feedback {instance.protocolo} {action}"
@@ -267,18 +272,18 @@ def invalidate_dashboard_cache_on_feedback_save(sender, instance, created, **kwa
 def invalidate_dashboard_cache_on_interacao(sender, instance, created, **kwargs):
     """
     Invalida cache quando interação é adicionada (pode mudar status do feedback).
-    
+
     **Razão:** Interações podem alterar status do feedback (pendente → resolvido),
     impactando estatísticas do dashboard.
-    
+
     Auditoria Fase 3 (26/01/2026)
     """
-    if hasattr(instance, 'feedback') and instance.feedback:
+    if hasattr(instance, "feedback") and instance.feedback:
         feedback = instance.feedback
-        if hasattr(feedback, 'client') and feedback.client:
+        if hasattr(feedback, "client") and feedback.client:
             cache_key = f"dashboard_stats:{feedback.client.id}"
             deleted = cache.delete(cache_key)
-            
+
             if deleted:
                 logger.debug(
                     f"🗑️ Cache invalidado: {cache_key} | "
@@ -290,34 +295,37 @@ def invalidate_dashboard_cache_on_interacao(sender, instance, created, **kwargs)
 # SIGNAL: SLA Tracking - Primeira Resposta
 # =============================================================================
 
+
 @receiver(post_save, sender=FeedbackInteracao)
 def registrar_primeira_resposta_sla(sender, instance, created, **kwargs):
     """
     Registra automaticamente a primeira resposta para cálculo de SLA.
-    
+
     Quando uma interação de resposta é criada (por membro da equipe),
     e o feedback ainda não tem primeira resposta registrada,
     calcula o tempo de primeira resposta e verifica SLA.
-    
+
     **SLA Padrão:** 24 horas para primeira resposta
     """
     if not created:
         return
-    
+
     feedback = instance.feedback
-    
+
     # Só processa se for resposta de membro da equipe (não do cliente)
     # e se ainda não tem primeira resposta registrada
     if instance.autor and feedback.data_primeira_resposta is None:
         try:
             # Registra primeira resposta (calcula SLA automaticamente)
             feedback.registrar_primeira_resposta()
-            feedback.save(update_fields=[
-                'data_primeira_resposta', 
-                'tempo_primeira_resposta', 
-                'sla_primeira_resposta'
-            ])
-            
+            feedback.save(
+                update_fields=[
+                    "data_primeira_resposta",
+                    "tempo_primeira_resposta",
+                    "sla_primeira_resposta",
+                ]
+            )
+
             sla_status = "✅ dentro" if feedback.sla_primeira_resposta else "❌ fora"
             logger.info(
                 f"📊 SLA Primeira Resposta: {feedback.protocolo} | "
@@ -326,8 +334,7 @@ def registrar_primeira_resposta_sla(sender, instance, created, **kwargs):
             )
         except Exception as e:
             logger.error(
-                f"❌ Erro ao registrar SLA primeira resposta: {str(e)}",
-                exc_info=True
+                f"❌ Erro ao registrar SLA primeira resposta: {str(e)}", exc_info=True
             )
 
 
@@ -335,28 +342,31 @@ def registrar_primeira_resposta_sla(sender, instance, created, **kwargs):
 # SIGNAL: SLA Tracking - Resolução
 # =============================================================================
 
+
 @receiver(pre_save, sender=Feedback)
 def registrar_resolucao_sla(sender, instance, **kwargs):
     """
     Registra automaticamente a resolução quando status muda para 'resolvido'.
-    
+
     **SLA Padrão:** 72 horas para resolução
     """
     if not instance.pk:
         return  # Novo feedback, não precisa verificar
-    
+
     # Obtém status anterior
-    status_anterior = getattr(instance, '_status_anterior', None)
-    
+    status_anterior = getattr(instance, "_status_anterior", None)
+
     # Se mudou para 'resolvido' e ainda não tem data de resolução
-    if (status_anterior != 'resolvido' and 
-        instance.status == 'resolvido' and 
-        instance.data_resolucao is None):
-        
+    if (
+        status_anterior != "resolvido"
+        and instance.status == "resolvido"
+        and instance.data_resolucao is None
+    ):
+
         try:
             # Registra resolução (calcula SLA automaticamente)
             instance.registrar_resolucao()
-            
+
             sla_status = "✅ dentro" if instance.sla_resolucao else "❌ fora"
             logger.info(
                 f"📊 SLA Resolução: {instance.protocolo} | "
@@ -364,7 +374,4 @@ def registrar_resolucao_sla(sender, instance, **kwargs):
                 f"Status: {sla_status} do SLA"
             )
         except Exception as e:
-            logger.error(
-                f"❌ Erro ao registrar SLA resolução: {str(e)}",
-                exc_info=True
-            )
+            logger.error(f"❌ Erro ao registrar SLA resolução: {str(e)}", exc_info=True)

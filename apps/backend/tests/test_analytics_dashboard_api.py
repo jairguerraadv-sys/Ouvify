@@ -1,16 +1,18 @@
 import pytest
-from rest_framework.test import APIClient
 from django.contrib.auth.models import User
+from rest_framework.test import APIClient
 
-from apps.tenants.models import Client as Tenant
 from apps.core.utils import tenant_context
 from apps.feedbacks.models import Feedback
+from apps.tenants.models import Client as Tenant
 
 
 @pytest.mark.django_db
 def test_analytics_dashboard_shape():
     tenant = Tenant.objects.create(nome="Tenant A", subdominio="tenant-a", ativo=True)
-    user = User.objects.create_user(username="u@a.com", email="u@a.com", password="pass123456")
+    user = User.objects.create_user(
+        username="u@a.com", email="u@a.com", password="pass123456"
+    )
     tenant.owner = user
     tenant.save(update_fields=["owner"])
 
@@ -37,7 +39,13 @@ def test_analytics_dashboard_shape():
         return
 
     data = resp.data
-    assert set(data.keys()) == {"trend", "byType", "byStatus", "responseTime", "summary"}
+    assert set(data.keys()) == {
+        "trend",
+        "byType",
+        "byStatus",
+        "responseTime",
+        "summary",
+    }
     assert isinstance(data["trend"], list)
     assert isinstance(data["byType"], list)
     assert isinstance(data["byStatus"], list)

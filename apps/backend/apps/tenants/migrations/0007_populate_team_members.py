@@ -8,25 +8,27 @@ def populate_team_members(apps, schema_editor):
     Cria TeamMember OWNER para todos os Clients existentes que têm owner.
     Isso garante backward compatibility com dados existentes.
     """
-    Client = apps.get_model('tenants', 'Client')
-    TeamMember = apps.get_model('tenants', 'TeamMember')
-    
+    Client = apps.get_model("tenants", "Client")
+    TeamMember = apps.get_model("tenants", "TeamMember")
+
     clients_with_owner = Client.objects.filter(owner__isnull=False)
-    
+
     for client in clients_with_owner:
         # Criar TeamMember apenas se não existir
         TeamMember.objects.get_or_create(
             user=client.owner,
             client=client,
             defaults={
-                'role': 'OWNER',
-                'status': 'ACTIVE',
-                'joined_at': client.data_criacao,
-                'invited_by': None,  # Owner não foi convidado
-            }
+                "role": "OWNER",
+                "status": "ACTIVE",
+                "joined_at": client.data_criacao,
+                "invited_by": None,  # Owner não foi convidado
+            },
         )
-    
-    print(f"✅ {clients_with_owner.count()} TeamMembers (OWNER) criados para tenants existentes.")
+
+    print(
+        f"✅ {clients_with_owner.count()} TeamMembers (OWNER) criados para tenants existentes."
+    )
 
 
 def reverse_populate(apps, schema_editor):
@@ -34,11 +36,10 @@ def reverse_populate(apps, schema_editor):
     Rollback: Remove TeamMembers criados por esta migration.
     Apenas para casos de rollback, normalmente não será executado.
     """
-    TeamMember = apps.get_model('tenants', 'TeamMember')
+    TeamMember = apps.get_model("tenants", "TeamMember")
     # Remove apenas TeamMembers OWNER criados pela migration
     deleted_count = TeamMember.objects.filter(
-        role='OWNER',
-        invited_by__isnull=True
+        role="OWNER", invited_by__isnull=True
     ).delete()[0]
     print(f"🔄 {deleted_count} TeamMembers removidos (rollback).")
 
@@ -46,7 +47,7 @@ def reverse_populate(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tenants', '0006_add_team_member_and_invitation_models'),
+        ("tenants", "0006_add_team_member_and_invitation_models"),
     ]
 
     operations = [
