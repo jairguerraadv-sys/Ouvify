@@ -9,24 +9,13 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
+
+from apps.core.throttling import TwoFactorVerifyThrottle
 
 from ..two_factor_service import TwoFactorAuthService
 
 logger = logging.getLogger(__name__)
-
-
-class TwoFactorSetupThrottle(UserRateThrottle):
-    """Rate limit para setup de 2FA: 5/hora"""
-
-    rate = "5/hour"
-
-
-class TwoFactorVerifyThrottle(UserRateThrottle):
-    """Rate limit para verificação de 2FA: 10/min"""
-
-    rate = "10/min"
 
 
 class TwoFactorSetupView(APIView):
