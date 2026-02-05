@@ -1,6 +1,8 @@
 # 🚀 Guia de Deployment - Ouvify
 
-Este guia descreve como fazer deploy do Ouvify em produção usando Railway (backend) e Vercel (frontend).
+Este guia descreve como fazer deploy do Ouvify em produção usando Render (backend) e Vercel (frontend).
+
+**⚠️ IMPORTANTE (05/02/2026):** Migrado do Railway para Render devido ao esgotamento dos créditos trial do Railway.
 
 ---
 
@@ -8,16 +10,16 @@ Este guia descreve como fazer deploy do Ouvify em produção usando Railway (bac
 
 ```
 ┌─────────────────┐     ┌─────────────────┐     ┌─────────────────┐
-│    Cloudflare   │     │     Vercel      │     │    Railway      │
+│    Cloudflare   │     │     Vercel      │     │      Render     │
 │   (DNS + CDN)   │────►│   (Frontend)    │────►│   (Backend)     │
-│                 │     │   Next.js 16    │     │   Django 5.1    │
+│                 │     │   Next.js 16    │     │   Django 6.0    │
 └─────────────────┘     └─────────────────┘     └────────┬────────┘
                                                          │
                                     ┌────────────────────┼────────────────────┐
                                     │                    │                    │
                               ┌─────▼─────┐        ┌─────▼─────┐        ┌─────▼─────┐
                               │ PostgreSQL│        │   Redis   │        │Cloudinary │
-                              │ (Railway) │        │ (Railway) │        │  (Media)  │
+                              │  (Render) │        │  (Render) │        │  (Media)  │
                               └───────────┘        └───────────┘        └───────────┘
 ```
 
@@ -33,12 +35,12 @@ Este guia descreve como fazer deploy do Ouvify em produção usando Railway (bac
 O Ouvify utiliza uma estratégia de deploy multi-plataforma:
 
 - **Frontend (Vercel)**: Deploy automático via integração GitHub
-- **Backend (Railway)**: Deploy via GitHub Actions CI/CD
-- **Backup (Render)**: Configuração mantida para disaster recovery
+- **Backend (Render)**: Deploy via GitHub Actions CI/CD + deploy hook
+- **Banco de Dados (Render)**: PostgreSQL gerenciado
 
 ### 📋 Regras de Deploy
 
-| Branch/Evento    | Frontend (Vercel) | Backend (Railway)         |
+| Branch/Evento    | Frontend (Vercel) | Backend (Render)          |
 | ---------------- | ----------------- | ------------------------- |
 | `main` (push)    | ✅ Production     | ✅ Production (via CI/CD) |
 | `develop` (push) | ❌ Desabilitado   | ❌ Desabilitado           |
@@ -117,75 +119,101 @@ git push origin --delete nome-da-branch
 
 ---
 
-## 1. Deploy do Backend (Railway)
+## 1. Deploy do Backend (Render)
 
-### 1.1 Criar Projeto no Railway
+### 1.1 Pré-requisitos
 
-1. Acesse [railway.app](https://railway.app)
-2. Login com GitHub
-3. Clique em "New Project"
-4. Selecione "Deploy from GitHub repo"
-5. Escolha o repositório `ouvify`
-6. Configure o Root Directory: `apps/backend`
+1. Conta no [Render](https://render.com) (gratuita)
+2. Repositório conectado ao GitHub
+3. Arquivo [`render.yaml`](../render.yaml) configurado (já incluído no repositório)
 
-### 1.2 Adicionar Serviços
+### 1.2 Criar Blueprint no Render
 
-No dashboard do Railway, adicione:
+O Render utiliza o arquivo `render.yaml` para criar automaticamente todos os serviços:
 
-**PostgreSQL:**
+1. Acesse [dashboard.render.com](https://dashboard.render.com)
+2. Clique em "New +" → "Blueprint"
+3. Conecte seu repositório GitHub ( `jairguerraadv-sys/Ouvify`)
+4. O Render detectará automaticamente o `render.yaml`
+5. Clique em "Apply" para criar:
+   - **ouvify-backend**: Web Service (Django)
+   - **ouvify-db**: PostgreSQL Database
 
+### 1.3 Serviços Criados
+
+**Web Service (ouvify-backend):**
+
+```yaml
+Tipo: Web Service
+Runtime: Python 3.12.3
+Build Command: ./apps/backend/build.sh
+Start Command: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
+Region: Oregon
+Plan: Free
+Health Check: /health/
 ```
-1. Clique em "+ New"
-2. Selecione "Database" → "PostgreSQL"
-3. Railway cria automaticamente DATABASE_URL
+
+**Database (ouvify-db):**
+
+```yaml
+Tipo: PostgreSQL
+Plan: Free
+Database: ouvify
+User: ouvify_user
+Region: Oregon
 ```
 
-**Redis:**
+### 1.4 Configurar GitHub Actions Deploy Hook
 
-```
-1. Clique em "+ New"
-2. Selecione "Database" → "Redis"
-3. Railway cria automaticamente REDIS_URL
-```
+Para habilitar deploy automático via GitHub Actions:
 
-### 1.3 Configurar Variáveis de Ambiente
+1. No Render Dashboard, acesse o serviço **ouvify-backend**
+2. Vá em "Settings" → "Deploy Hook"
+3. Copie a URL do Deploy Hook
+4. No GitHub, vá em "Settings" → "Secrets and variables" → "Actions"
+5. Adicione um novo secret:
+   - **Nome:** `RENDER_DEPLOY_HOOK_URL`
+   - **Value:** Cole a URL do deploy hook
 
-No serviço do backend, vá em "Variables" e adicione:
+Agora, toda vez que houver push para `main`, o GitHub Actions disparará o deploy automaticamente.
+
+### 1.5 Configurar Variáveis de Ambiente
+
+O `render.yaml` já define a maioria das variáveis. Você só precisa adicionar as secrets:
+
+No Render Dashboard, acesse **ouvify-backend** → "Environment":
 
 ```bash
-# Django Core
-SECRET_KEY=<gerar com: python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())">
+# Django Core (auto-gerado pelo Render via render.yaml)
+SECRET_KEY=<gerado automaticamente>
 DEBUG=False
-ALLOWED_HOSTS=.railway.app,.up.railway.app,ouvify-production.up.railway.app
+ALLOWED_HOSTS=.onrender.com,ouvify-backend.onrender.com
 
-# Database (Railway preenche automaticamente)
-# DATABASE_URL=postgresql://... (auto)
-# DATABASE_PRIVATE_URL=postgresql://... (auto - usar este!)
+# Database (auto-gerado pelo Render)
+DATABASE_URL=postgresql://... (conectado via render.yaml)
 
-# Redis (Railway preenche automaticamente)
-# REDIS_URL=redis://... (auto)
-
-# JWT
+# JWT (adicionar manualmente)
 JWT_SECRET_KEY=<gerar chave única de 64 caracteres>
 JWT_ACCESS_TOKEN_LIFETIME=15
 JWT_REFRESH_TOKEN_LIFETIME=7
 
-# CORS
-CORS_ALLOWED_ORIGINS=https://ouvify.vercel.app,https://ouvify-saas.vercel.app
+# CORS (já definido no render.yaml, pode ajustar)
+CORS_ALLOWED_ORIGINS=https://ouvify.vercel.app,https://ouvify-frontend.vercel.app
+FRONTEND_URL=https://ouvify.vercel.app
 
-# Stripe
+# Stripe (adicionar manualmente)
 STRIPE_SECRET_KEY=sk_live_...
 STRIPE_PUBLIC_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 STRIPE_SUCCESS_URL=https://ouvify.vercel.app/dashboard?payment=success
 STRIPE_CANCEL_URL=https://ouvify.vercel.app/cadastro?payment=canceled
 
-# Cloudinary
+# Cloudinary (adicionar manualmente)
 CLOUDINARY_CLOUD_NAME=seu-cloud-name
 CLOUDINARY_API_KEY=123456789
 CLOUDINARY_API_SECRET=sua-api-secret
 
-# Email (produção)
+# Email (produção - adicionar manualmente)
 EMAIL_BACKEND=django.core.mail.backends.smtp.EmailBackend
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
@@ -194,32 +222,62 @@ EMAIL_HOST_USER=noreply@ouvify.com.br
 EMAIL_HOST_PASSWORD=<app-password>
 DEFAULT_FROM_EMAIL=Ouvify <noreply@ouvify.com.br>
 
-# Sentry
+# Sentry (adicionar manualmente)
 SENTRY_DSN=https://xxx@xxx.ingest.sentry.io/xxx
 ```
 
-### 1.4 Configurar Build
+### 1.6 Deploy e Migrações
 
-Railway detecta automaticamente o `nixpacks.toml`:
+O Render executará automaticamente:
 
-```toml
-# apps/backend/nixpacks.toml
-[phases.setup]
-nixPkgs = ['python311', 'postgresql']
+1. **Build:** `./apps/backend/build.sh`
+   - Instala dependências
+   - Executa migrações
+   - Coleta arquivos estáticos
 
-[phases.install]
-cmds = ['pip install -r requirements.txt']
+2. **Start:** `gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 2`
 
-# Nota (auditoria 2026-01-31): `apps/backend/requirements.txt` é o arquivo
-# self-contained usado em ambientes onde o build context é `apps/backend`.
-# O `requirements.txt` na raiz é um wrapper para tooling no root.
+**Comandos manuais (se necessário):**
 
-[phases.build]
-cmds = ['python manage.py collectstatic --noinput']
+```bash
+# Acessar shell do Render
+# No dashboard, vá em "Shell" ou use Render CLI
 
-[start]
-cmd = 'python manage.py migrate --noinput && gunicorn config.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 120'
+# Executar migrações
+python apps/backend/manage.py migrate
+
+# Criar superuser
+python apps/backend/manage.py createsuperuser
+
+# Collectstatic
+python apps/backend/manage.py collectstatic --noinput
 ```
+
+### 1.7 Health Check
+
+O Render monitora a saúde do serviço via endpoint `/health/` configurado no `render.yaml`.
+
+**Verificar status:**
+
+```bash
+curl https://ouvify-backend.onrender.com/health/
+```
+
+Resposta esperada (200 OK):
+
+```json
+{
+  "status": "healthy",
+  "database": "connected",
+  "environment": "production"
+}
+```
+
+---
+
+cmd = 'python manage.py migrate --noinput && gunicorn config.wsgi --bind 0.0.0.0:$PORT --workers 2 --timeout 120'
+
+````
 
 ### 1.5 Configurar Health Checks
 
@@ -236,7 +294,7 @@ git push origin main
 
 # Ou via Railway CLI
 railway up
-```
+````
 
 ### 1.7 Verificar Deploy
 
