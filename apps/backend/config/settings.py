@@ -567,6 +567,15 @@ REST_FRAMEWORK = {
         "invitation_accept": "30/hour",  # Aceite de convite (público via token)
         "protocolo_consulta": "10/minute",  # Rate limit para consulta de protocolo (IP + Protocolo)
         "feedback_criacao": "10/hour",  # ✅ Rate limit para criação de feedbacks
+        # ============================================================
+        # FASE 3: Throttles específicos para endpoints críticos
+        # ============================================================
+        "login": "5/hour",  # AL-001: Login brute force prevention (5 tentativas/hora)
+        "two_factor_verify": "10/hour",  # AL-002: 2FA TOTP brute force (10 tentativas/hora)
+        "password_reset_confirm": "10/hour",  # AL-003: Reset token brute force (10 tentativas/hora)
+        "tenant_registration": "3/day",  # AL-004: Tenant creation spam prevention (3/dia)
+        "feedback_submission": "5/hour",  # AL-005: Feedback spam prevention (5/hora por tenant)
+        "protocol_lookup": "20/hour",  # AL-006: Protocol enumeration prevention (20/hora)
     },
     "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",  # Handler customizado
     "DEFAULT_PAGINATION_CLASS": "apps.core.pagination.StandardResultsSetPagination",  # Paginação padrão
