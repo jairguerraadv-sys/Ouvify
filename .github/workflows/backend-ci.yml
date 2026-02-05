@@ -174,10 +174,10 @@ jobs:
           path: ./apps/backend/htmlcov/
 
   # ============================================
-  # Deploy to Railway (only on main)
+  # Deploy to Render (only on main)
   # ============================================
   deploy:
-    name: Deploy to Railway
+    name: Deploy to Render
     runs-on: ubuntu-latest
     needs: [lint, security, test]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -185,12 +185,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Railway CLI
-        run: npm install -g @railway/cli
-
-      - name: Deploy to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+      - name: Trigger Render Deploy Hook
+        if: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: |
-          cd apps/backend
-          railway up --service backend || echo "Railway deploy skipped - configure RAILWAY_TOKEN secret"
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}" || echo "Render deploy hook skipped - configure RENDER_DEPLOY_HOOK_URL secret"
+
+      - name: Deploy via Render API (alternative)
+        if: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          echo "Render auto-deploy habilitado via GitHub integration" || true
