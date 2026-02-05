@@ -1,16 +1,22 @@
 /**
  * Dashboard Widgets - Ouvify
  * Sprint 5 - Feature 5.1: Dashboard Melhorado
- * 
+ *
  * Widgets reutilizáveis para o dashboard
  */
-'use client';
+"use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { 
-  TrendingUp, 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  TrendingUp,
   TrendingDown,
   Clock,
   CheckCircle,
@@ -18,9 +24,9 @@ import {
   Star,
   Users,
   MessageSquare,
-  Zap
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
+  Zap,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Stat Widget
 interface StatWidgetProps {
@@ -28,7 +34,7 @@ interface StatWidgetProps {
   value: string | number;
   subtitle?: string;
   icon?: React.ReactNode;
-  trend?: 'up' | 'down' | 'neutral';
+  trend?: "up" | "down" | "neutral";
   trendValue?: string;
   className?: string;
 }
@@ -43,7 +49,7 @@ export function StatWidget({
   className,
 }: StatWidgetProps) {
   return (
-    <Card className={cn('hover:shadow-lg transition-shadow', className)}>
+    <Card className={cn("hover:shadow-lg transition-shadow", className)}>
       <CardContent className="pt-6">
         <div className="flex items-start justify-between">
           <div>
@@ -52,19 +58,25 @@ export function StatWidget({
             {(subtitle || trendValue) && (
               <div className="flex items-center gap-2 mt-2">
                 {trend && (
-                  <span className={cn(
-                    'flex items-center text-xs font-medium',
-                    trend === 'up' && 'text-success-600',
-                    trend === 'down' && 'text-error-600',
-                    trend === 'neutral' && 'text-text-tertiary'
-                  )}>
-                    {trend === 'up' && <TrendingUp className="h-3 w-3 mr-1" />}
-                    {trend === 'down' && <TrendingDown className="h-3 w-3 mr-1" />}
+                  <span
+                    className={cn(
+                      "flex items-center text-xs font-medium",
+                      trend === "up" && "text-success-600",
+                      trend === "down" && "text-error-600",
+                      trend === "neutral" && "text-text-tertiary",
+                    )}
+                  >
+                    {trend === "up" && <TrendingUp className="h-3 w-3 mr-1" />}
+                    {trend === "down" && (
+                      <TrendingDown className="h-3 w-3 mr-1" />
+                    )}
                     {trendValue}
                   </span>
                 )}
                 {subtitle && (
-                  <span className="text-xs text-muted-foreground">{subtitle}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {subtitle}
+                  </span>
                 )}
               </div>
             )}
@@ -84,7 +96,7 @@ export function StatWidget({
 interface SLAWidgetProps {
   compliance: number;
   target: number;
-  trend?: 'up' | 'down';
+  trend?: "up" | "down";
   details?: {
     onTime: number;
     late: number;
@@ -92,16 +104,21 @@ interface SLAWidgetProps {
   };
 }
 
-export function SLAComplianceWidget({ compliance, target, trend, details }: SLAWidgetProps) {
+export function SLAComplianceWidget({
+  compliance,
+  target,
+  trend,
+  details,
+}: SLAWidgetProps) {
   const isHealthy = compliance >= target;
-  
+
   return (
     <Card>
       <CardHeader className="pb-2">
         <CardTitle className="text-base flex items-center justify-between">
           Compliance SLA
-          <Badge variant={isHealthy ? 'default' : 'destructive'}>
-            {isHealthy ? 'Saudável' : 'Atenção'}
+          <Badge variant={isHealthy ? "default" : "destructive"}>
+            {isHealthy ? "Saudável" : "Atenção"}
           </Badge>
         </CardTitle>
       </CardHeader>
@@ -112,29 +129,41 @@ export function SLAComplianceWidget({ compliance, target, trend, details }: SLAW
             / meta {target}%
           </span>
           {trend && (
-            <span className={cn(
-              'flex items-center text-sm mb-1',
-              trend === 'up' ? 'text-success-600' : 'text-error-600'
-            )}>
-              {trend === 'up' ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+            <span
+              className={cn(
+                "flex items-center text-sm mb-1",
+                trend === "up" ? "text-success-600" : "text-error-600",
+              )}
+            >
+              {trend === "up" ? (
+                <TrendingUp className="h-4 w-4" />
+              ) : (
+                <TrendingDown className="h-4 w-4" />
+              )}
             </span>
           )}
         </div>
-        
+
         <Progress value={compliance} className="h-2 mb-4" />
-        
+
         {details && (
           <div className="grid grid-cols-3 gap-4 text-center">
             <div>
-              <p className="text-2xl font-semibold text-success-600">{details.onTime}</p>
+              <p className="text-2xl font-semibold text-success-600">
+                {details.onTime}
+              </p>
               <p className="text-xs text-muted-foreground">No prazo</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-error-600">{details.late}</p>
+              <p className="text-2xl font-semibold text-error-600">
+                {details.late}
+              </p>
               <p className="text-xs text-muted-foreground">Atrasados</p>
             </div>
             <div>
-              <p className="text-2xl font-semibold text-warning-600">{details.pending}</p>
+              <p className="text-2xl font-semibold text-warning-600">
+                {details.pending}
+              </p>
               <p className="text-xs text-muted-foreground">Pendentes</p>
             </div>
           </div>
@@ -147,23 +176,27 @@ export function SLAComplianceWidget({ compliance, target, trend, details }: SLAW
 // Recent Activity Widget
 interface Activity {
   id: string;
-  type: 'feedback' | 'response' | 'status_change' | 'assignment';
+  type: "feedback" | "response" | "status_change" | "assignment";
   title: string;
   description: string;
   time: string;
   user?: string;
 }
 
-export function RecentActivityWidget({ activities }: { activities: Activity[] }) {
-  const getIcon = (type: Activity['type']) => {
+export function RecentActivityWidget({
+  activities,
+}: {
+  activities: Activity[];
+}) {
+  const getIcon = (type: Activity["type"]) => {
     switch (type) {
-      case 'feedback':
+      case "feedback":
         return <MessageSquare className="h-4 w-4 text-primary" />;
-      case 'response':
+      case "response":
         return <CheckCircle className="h-4 w-4 text-success-600" />;
-      case 'status_change':
+      case "status_change":
         return <Zap className="h-4 w-4 text-warning-600" />;
-      case 'assignment':
+      case "assignment":
         return <Users className="h-4 w-4 text-primary-600" />;
     }
   };
@@ -177,12 +210,12 @@ export function RecentActivityWidget({ activities }: { activities: Activity[] })
         <div className="space-y-4">
           {activities.map((activity) => (
             <div key={activity.id} className="flex gap-3">
-              <div className="flex-shrink-0 mt-1">
-                {getIcon(activity.type)}
-              </div>
+              <div className="flex-shrink-0 mt-1">{getIcon(activity.type)}</div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium truncate">{activity.title}</p>
-                <p className="text-xs text-muted-foreground">{activity.description}</p>
+                <p className="text-xs text-muted-foreground">
+                  {activity.description}
+                </p>
                 <p className="text-xs text-muted-foreground mt-1">
                   {activity.time} {activity.user && `• ${activity.user}`}
                 </p>
@@ -219,7 +252,9 @@ export function QuickActionsWidget({ actions }: { actions: QuickAction[] }) {
               className="flex flex-col items-center justify-center p-4 rounded-lg border border-border hover:border-primary hover:bg-primary/5 transition-colors relative"
             >
               <div className="text-primary mb-2">{action.icon}</div>
-              <span className="text-sm font-medium text-center">{action.label}</span>
+              <span className="text-sm font-medium text-center">
+                {action.label}
+              </span>
               {action.badge && (
                 <Badge className="absolute -top-2 -right-2 h-5 px-1.5 text-xs">
                   {action.badge}
@@ -255,9 +290,11 @@ export function TeamPerformanceWidget({ members }: { members: TeamMember[] }) {
             <div key={member.id} className="flex items-center gap-3">
               <div className="flex-shrink-0 w-6 text-center">
                 {idx === 0 ? (
-                  <Star className="h-5 w-5 text-warning-500 fill-yellow-500" />
+                  <Star className="h-5 w-5 text-warning-500 fill-warning-500" />
                 ) : (
-                  <span className="text-sm text-muted-foreground">{idx + 1}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {idx + 1}
+                  </span>
                 )}
               </div>
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm font-medium text-primary">
@@ -280,7 +317,7 @@ export function TeamPerformanceWidget({ members }: { members: TeamMember[] }) {
 // Alerts Widget
 interface Alert {
   id: string;
-  type: 'warning' | 'error' | 'info';
+  type: "warning" | "error" | "info";
   message: string;
   action?: {
     label: string;
@@ -291,14 +328,14 @@ interface Alert {
 export function AlertsWidget({ alerts }: { alerts: Alert[] }) {
   if (alerts.length === 0) return null;
 
-  const getAlertStyles = (type: Alert['type']) => {
+  const getAlertStyles = (type: Alert["type"]) => {
     switch (type) {
-      case 'error':
-        return 'bg-error-50 border-error-200 text-error-800';
-      case 'warning':
-        return 'bg-warning-50 border-warning-200 text-warning-800';
-      case 'info':
-        return 'bg-primary-50 border-primary-200 text-primary-800';
+      case "error":
+        return "bg-error-50 border-error-200 text-error-800";
+      case "warning":
+        return "bg-warning-50 border-warning-200 text-warning-800";
+      case "info":
+        return "bg-primary-50 border-primary-200 text-primary-800";
     }
   };
 
@@ -308,8 +345,8 @@ export function AlertsWidget({ alerts }: { alerts: Alert[] }) {
         <div
           key={alert.id}
           className={cn(
-            'flex items-center justify-between p-3 rounded-lg border',
-            getAlertStyles(alert.type)
+            "flex items-center justify-between p-3 rounded-lg border",
+            getAlertStyles(alert.type),
           )}
         >
           <div className="flex items-center gap-2">

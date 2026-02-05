@@ -24,7 +24,10 @@ export function BarChart({
   showValues = true,
   horizontal = false,
 }: BarChartProps) {
-  const maxValue = useMemo(() => Math.max(...data.map((d) => d.value), 1), [data]);
+  const maxValue = useMemo(
+    () => Math.max(...data.map((d) => d.value), 1),
+    [data],
+  );
 
   const defaultColors = [
     "bg-primary-500",
@@ -32,21 +35,29 @@ export function BarChart({
     "bg-success-500",
     "bg-warning-500",
     "bg-error-500",
+    "bg-info-500",
     "bg-secondary-500",
-    "bg-pink-500",
-    "bg-indigo-500",
+    "bg-primary-500",
   ];
 
   if (horizontal) {
     return (
       <div className="w-full">
-        {title && <h4 className="text-sm font-medium text-text-secondary mb-4">{title}</h4>}
+        {title && (
+          <h4 className="text-sm font-medium text-text-secondary mb-4">
+            {title}
+          </h4>
+        )}
         <div className="space-y-3">
           {data.map((item, index) => {
-            const barStyle = { width: `${(item.value / maxValue) * 100}%` } as CSSProperties;
+            const barStyle = {
+              width: `${(item.value / maxValue) * 100}%`,
+            } as CSSProperties;
             return (
               <div key={item.label} className="flex items-center gap-3">
-                <span className="text-xs text-text-secondary w-20 truncate">{item.label}</span>
+                <span className="text-xs text-text-secondary w-20 truncate">
+                  {item.label}
+                </span>
                 <div className="flex-1 h-6 bg-background-tertiary rounded-full overflow-hidden">
                   <div
                     className={`h-full ${item.color || defaultColors[index % defaultColors.length]} rounded-full transition-all duration-500 ease-out`}
@@ -70,8 +81,15 @@ export function BarChart({
 
   return (
     <div className="w-full">
-      {title && <h4 className="text-sm font-medium text-text-secondary mb-4">{title}</h4>}
-      <div className="flex items-end justify-between gap-2" style={containerStyle}>
+      {title && (
+        <h4 className="text-sm font-medium text-text-secondary mb-4">
+          {title}
+        </h4>
+      )}
+      <div
+        className="flex items-end justify-between gap-2"
+        style={containerStyle}
+      >
         {data.map((item, index) => {
           const columnStyle = {
             height: `${(item.value / maxValue) * 100}%`,
@@ -79,15 +97,22 @@ export function BarChart({
           } as CSSProperties;
 
           return (
-            <div key={item.label} className="flex-1 flex flex-col items-center gap-2">
+            <div
+              key={item.label}
+              className="flex-1 flex flex-col items-center gap-2"
+            >
               {showValues && (
-                <span className="text-xs font-medium text-text-secondary">{item.value}</span>
+                <span className="text-xs font-medium text-text-secondary">
+                  {item.value}
+                </span>
               )}
               <div
                 className={`w-full ${item.color || defaultColors[index % defaultColors.length]} rounded-t transition-all duration-500 ease-out`}
                 style={columnStyle}
               />
-              <span className="text-xs text-text-tertiary truncate max-w-full">{item.label}</span>
+              <span className="text-xs text-text-tertiary truncate max-w-full">
+                {item.label}
+              </span>
             </div>
           );
         })}
@@ -110,7 +135,10 @@ export function DonutChart({
   size = 160,
   showLegend = true,
 }: DonutChartProps) {
-  const total = useMemo(() => data.reduce((acc, d) => acc + d.value, 0), [data]);
+  const total = useMemo(
+    () => data.reduce((acc, d) => acc + d.value, 0),
+    [data],
+  );
 
   const segments = useMemo(() => {
     const defaultColors = [
@@ -142,8 +170,15 @@ export function DonutChart({
       },
       {
         currentAngle: -90,
-        segments: [] as Array<(typeof data)[0] & { percentage: number; startAngle: number; endAngle: number; color: string }>,
-      }
+        segments: [] as Array<
+          (typeof data)[0] & {
+            percentage: number;
+            startAngle: number;
+            endAngle: number;
+            color: string;
+          }
+        >,
+      },
     );
 
     return calculatedSegments;
@@ -153,7 +188,7 @@ export function DonutChart({
     startAngle: number,
     endAngle: number,
     innerRadius: number,
-    outerRadius: number
+    outerRadius: number,
   ) => {
     const startRad = (startAngle * Math.PI) / 180;
     const endRad = (endAngle * Math.PI) / 180;
@@ -177,14 +212,25 @@ export function DonutChart({
 
   return (
     <div className="flex flex-col items-center gap-4">
-      {title && <h4 className="text-sm font-medium text-text-secondary">{title}</h4>}
+      {title && (
+        <h4 className="text-sm font-medium text-text-secondary">{title}</h4>
+      )}
 
       <div className="relative">
-        <svg width={size} height={size} viewBox={`${-size / 2} ${-size / 2} ${size} ${size}`}>
+        <svg
+          width={size}
+          height={size}
+          viewBox={`${-size / 2} ${-size / 2} ${size} ${size}`}
+        >
           {segments.map((segment, index) => (
             <path
               key={`${segment.label}-${index}`}
-              d={getArcPath(segment.startAngle, segment.endAngle, innerRadius, outerRadius)}
+              d={getArcPath(
+                segment.startAngle,
+                segment.endAngle,
+                innerRadius,
+                outerRadius,
+              )}
               fill={segment.color}
               className="transition-all duration-500 ease-out hover:opacity-80"
             />
@@ -193,7 +239,9 @@ export function DonutChart({
 
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center">
-            <span className="text-2xl font-bold text-text-primary">{total}</span>
+            <span className="text-2xl font-bold text-text-primary">
+              {total}
+            </span>
             <span className="block text-xs text-text-tertiary">Total</span>
           </div>
         </div>
@@ -202,9 +250,14 @@ export function DonutChart({
       {showLegend && (
         <div className="flex flex-wrap justify-center gap-3">
           {segments.map((segment, index) => {
-            const legendDotStyle = { backgroundColor: segment.color } as CSSProperties;
+            const legendDotStyle = {
+              backgroundColor: segment.color,
+            } as CSSProperties;
             return (
-              <div key={`${segment.label}-legend-${index}`} className="flex items-center gap-1.5">
+              <div
+                key={`${segment.label}-legend-${index}`}
+                className="flex items-center gap-1.5"
+              >
                 <div className="w-3 h-3 rounded-full" style={legendDotStyle} />
                 <span className="text-xs text-text-secondary">
                   {segment.label} ({segment.value})
@@ -232,8 +285,14 @@ export function LineChart({
   height = 150,
   color = "hsl(var(--primary))",
 }: LineChartProps) {
-  const maxValue = useMemo(() => Math.max(...data.map((d) => d.value), 1), [data]);
-  const minValue = useMemo(() => Math.min(...data.map((d) => d.value), 0), [data]);
+  const maxValue = useMemo(
+    () => Math.max(...data.map((d) => d.value), 1),
+    [data],
+  );
+  const minValue = useMemo(
+    () => Math.min(...data.map((d) => d.value), 0),
+    [data],
+  );
   const range = maxValue - minValue || 1;
 
   const width = 300;
@@ -244,7 +303,10 @@ export function LineChart({
   const points = useMemo(() => {
     return data.map((item, index) => ({
       x: padding.left + (index / (data.length - 1 || 1)) * chartWidth,
-      y: padding.top + chartHeight - ((item.value - minValue) / range) * chartHeight,
+      y:
+        padding.top +
+        chartHeight -
+        ((item.value - minValue) / range) * chartHeight,
       ...item,
     }));
   }, [data, chartWidth, chartHeight, padding, minValue, range]);
@@ -257,7 +319,11 @@ export function LineChart({
 
   return (
     <div className="w-full">
-      {title && <h4 className="text-sm font-medium text-text-secondary mb-4">{title}</h4>}
+      {title && (
+        <h4 className="text-sm font-medium text-text-secondary mb-4">
+          {title}
+        </h4>
+      )}
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full">
         <path d={areaPath} fill={color} fillOpacity={0.1} />
         <path
@@ -278,7 +344,12 @@ export function LineChart({
               stroke={color}
               strokeWidth={2}
             />
-            <text x={point.x} y={height - 10} textAnchor="middle" className="text-[10px] fill-text-tertiary">
+            <text
+              x={point.x}
+              y={height - 10}
+              textAnchor="middle"
+              className="text-[10px] fill-text-tertiary"
+            >
               {point.label}
             </text>
           </g>
@@ -298,7 +369,14 @@ interface StatCardProps {
 }
 
 // Card de estatística simples
-export function StatCard({ title, value, change, trend, icon, description }: StatCardProps) {
+export function StatCard({
+  title,
+  value,
+  change,
+  trend,
+  icon,
+  description,
+}: StatCardProps) {
   const trendColor = {
     up: "text-success",
     down: "text-error",
@@ -318,13 +396,19 @@ export function StatCard({ title, value, change, trend, icon, description }: Sta
           <p className="text-sm text-text-tertiary font-medium">{title}</p>
           <p className="text-2xl font-bold text-text-primary mt-1">{value}</p>
           {change && (
-            <p className={`text-xs mt-1 ${trend ? trendColor[trend] : "text-text-tertiary"}`}>
+            <p
+              className={`text-xs mt-1 ${trend ? trendColor[trend] : "text-text-tertiary"}`}
+            >
               {trend && trendIcon[trend]} {change}
             </p>
           )}
-          {description && <p className="text-xs text-text-tertiary mt-2">{description}</p>}
+          {description && (
+            <p className="text-xs text-text-tertiary mt-2">{description}</p>
+          )}
         </div>
-        {icon && <div className="p-2 bg-background-secondary rounded-lg">{icon}</div>}
+        {icon && (
+          <div className="p-2 bg-background-secondary rounded-lg">{icon}</div>
+        )}
       </div>
     </div>
   );
