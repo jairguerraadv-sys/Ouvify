@@ -90,10 +90,10 @@ if DEBUG and SECRET_KEY_ENV:
     print("✅ SECRET_KEY carregado de .env com sucesso.")
 
 # Hosts permitidos
-# Para Railway: adicione todos os possíveis domínios e use suffix pattern
+# Para Render: adicione todos os possíveis domínios e use suffix pattern
 allowed_hosts_str = os.getenv(
     "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,testserver,.local,.localhost,.railway.app,.up.railway.app,ouvify-production.up.railway.app",
+    "localhost,127.0.0.1,testserver,.local,.localhost,.onrender.com,ouvify-backend.onrender.com",
 )
 ALLOWED_HOSTS = [h.strip() for h in allowed_hosts_str.split(",") if h.strip()]
 

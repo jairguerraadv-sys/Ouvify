@@ -1,17 +1,17 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 // Rotas públicas (não requerem autenticação)
 const publicRoutes = [
-  '/',
-  '/login',
-  '/cadastro',
-  '/recuperar-senha',
-  '/acompanhar',
-  '/enviar',
-  '/demo',
-  '/precos',
-  '/recursos',
+  "/",
+  "/login",
+  "/cadastro",
+  "/recuperar-senha",
+  "/acompanhar",
+  "/enviar",
+  "/demo",
+  "/precos",
+  "/recursos",
 ];
 
 export function middleware(request: NextRequest) {
@@ -21,26 +21,30 @@ export function middleware(request: NextRequest) {
   const nonce = btoa(crypto.randomUUID());
 
   // Configurar CSP baseado no ambiente
-  const isDevelopment = process.env.NODE_ENV === 'development';
-  const cspMode = process.env.CSP_MODE || (process.env.VERCEL_ENV === 'preview' ? 'report-only' : 'enforce');
-  const forceCSP = process.env.FORCE_CSP === 'true'; // For testing
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const cspMode =
+    process.env.CSP_MODE ||
+    (process.env.VERCEL_ENV === "preview" ? "report-only" : "enforce");
+  const forceCSP = process.env.FORCE_CSP === "true"; // For testing
 
-  console.log('[CSP Middleware] Processing request:', pathname);
+  console.log("[CSP Middleware] Processing request:", pathname);
 
-  let cspHeader = '';
+  let cspHeader = "";
 
   if (isDevelopment && !forceCSP) {
     // Development mode - no CSP
-    cspHeader = '';
+    cspHeader = "";
   } else {
     // Production CSP (strict) - applied in production or when FORCE_CSP=true
     // Include all possible backend URLs to ensure connectivity
     const apiUrls = [
       process.env.NEXT_PUBLIC_API_URL,
-      'https://ouvify.up.railway.app',
-      'https://api.ouvify.com.br',
-    ].filter(Boolean).join(' ');
-    
+      "https://ouvify-backend.onrender.com",
+      "https://api.ouvify.com.br",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     cspHeader = `
       default-src 'self';
       script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://js.stripe.com;
@@ -49,31 +53,40 @@ export function middleware(request: NextRequest) {
       style-src-elem 'self' 'unsafe-inline';
       img-src 'self' data: https: blob:;
       font-src 'self' data:;
-      connect-src 'self' ${apiUrls} https://api.stripe.com wss://ouvify.up.railway.app;
+      connect-src 'self' ${apiUrls} https://api.stripe.com wss://ouvify-backend.onrender.com;
       frame-src https://js.stripe.com https://hooks.stripe.com;
       object-src 'none';
       base-uri 'self';
       form-action 'self';
       frame-ancestors 'none';
       upgrade-insecure-requests;
-    `.replace(/\s{2,}/g, ' ').trim();
+    `
+      .replace(/\s{2,}/g, " ")
+      .trim();
   }
 
   // Permitir todas as rotas públicas
-  if (publicRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))) {
+  if (
+    publicRoutes.some(
+      (route) => pathname === route || pathname.startsWith(route + "/"),
+    )
+  ) {
     const response = NextResponse.next();
 
     if (cspHeader) {
       // TEMP: For testing - always apply CSP
-      if (cspMode === 'report-only') {
-        response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report/');
+      if (cspMode === "report-only") {
+        response.headers.set(
+          "Content-Security-Policy-Report-Only",
+          cspHeader + "; report-uri /api/csp-report/",
+        );
       } else {
-        response.headers.set('Content-Security-Policy', cspHeader);
+        response.headers.set("Content-Security-Policy", cspHeader);
       }
     }
 
     if (!isDevelopment || forceCSP) {
-      response.headers.set('x-nonce', nonce);
+      response.headers.set("x-nonce", nonce);
     }
     return response;
   }
@@ -84,15 +97,18 @@ export function middleware(request: NextRequest) {
 
   if (cspHeader) {
     // TEMP: For testing - always apply CSP
-    if (cspMode === 'report-only') {
-      response.headers.set('Content-Security-Policy-Report-Only', cspHeader + '; report-uri /api/csp-report/');
+    if (cspMode === "report-only") {
+      response.headers.set(
+        "Content-Security-Policy-Report-Only",
+        cspHeader + "; report-uri /api/csp-report/",
+      );
     } else {
-      response.headers.set('Content-Security-Policy', cspHeader);
+      response.headers.set("Content-Security-Policy", cspHeader);
     }
   }
 
   if (!isDevelopment || forceCSP) {
-    response.headers.set('x-nonce', nonce);
+    response.headers.set("x-nonce", nonce);
   }
 
   return response;
@@ -108,6 +124,6 @@ export const config = {
      * - public folder
      * - api routes
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api).*)',
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api).*)",
   ],
 };

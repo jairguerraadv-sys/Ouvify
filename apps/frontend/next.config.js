@@ -4,15 +4,15 @@ let nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '*.railway.app',
+        protocol: "https",
+        hostname: "*.onrender.com",
       },
       {
-        protocol: 'https',
-        hostname: 'res.cloudinary.com', // Cloudinary CDN
+        protocol: "https",
+        hostname: "res.cloudinary.com", // Cloudinary CDN
       },
     ],
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     qualities: [75, 90],
     minimumCacheTTL: 60,
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048], // Responsive breakpoints
@@ -24,8 +24,8 @@ let nextConfig = {
   compiler: {
     // Remove console.log em produção (exceto warn e error)
     removeConsole:
-      process.env.NODE_ENV === 'production'
-        ? { exclude: ['warn', 'error'] }
+      process.env.NODE_ENV === "production"
+        ? { exclude: ["warn", "error"] }
         : false,
   },
 
@@ -33,35 +33,35 @@ let nextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on',
+            key: "X-DNS-Prefetch-Control",
+            value: "on",
           },
           {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=63072000; includeSubDomains; preload',
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
           },
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
           },
         ],
       },
@@ -73,41 +73,41 @@ let nextConfig = {
     return [
       // Redirecionar www para non-www
       {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.ouvify.com' }],
-        destination: 'https://ouvify.com/:path*',
+        source: "/:path*",
+        has: [{ type: "host", value: "www.ouvify.com" }],
+        destination: "https://ouvify.com/:path*",
         permanent: true,
       },
 
       // Gaps de rotas (Auditoria 2026-01-31): manter links funcionando sem inventar UX nova
       {
-        source: '/notifications',
-        destination: '/dashboard',
+        source: "/notifications",
+        destination: "/dashboard",
         permanent: false,
       },
       {
-        source: '/contato',
-        destination: '/recursos/faq',
+        source: "/contato",
+        destination: "/recursos/faq",
         permanent: false,
       },
       {
-        source: '/lgpd/solicitacao',
-        destination: '/lgpd',
+        source: "/lgpd/solicitacao",
+        destination: "/lgpd",
         permanent: false,
       },
       {
-        source: '/settings/privacy',
-        destination: '/dashboard/configuracoes',
+        source: "/settings/privacy",
+        destination: "/dashboard/configuracoes",
         permanent: false,
       },
       {
-        source: '/docs',
-        destination: '/recursos/documentacao',
+        source: "/docs",
+        destination: "/recursos/documentacao",
         permanent: false,
       },
       {
-        source: '/docs/:path*',
-        destination: '/recursos/documentacao',
+        source: "/docs/:path*",
+        destination: "/recursos/documentacao",
         permanent: false,
       },
     ];
@@ -116,35 +116,35 @@ let nextConfig = {
   // Otimização de pacotes externos (Auditoria Fase 3)
   experimental: {
     optimizePackageImports: [
-      'lucide-react', // Tree-shaking de ícones
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-dropdown-menu',
-      '@radix-ui/react-toast',
-      '@radix-ui/react-tooltip',
-      '@radix-ui/react-select',
-      '@radix-ui/react-tabs',
-      'recharts', // Biblioteca de gráficos (charts)
+      "lucide-react", // Tree-shaking de ícones
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-dropdown-menu",
+      "@radix-ui/react-toast",
+      "@radix-ui/react-tooltip",
+      "@radix-ui/react-select",
+      "@radix-ui/react-tabs",
+      "recharts", // Biblioteca de gráficos (charts)
     ],
     optimizeCss: true, // ✅ NOVO: Otimização de CSS
   },
 
   // Output standalone para produção (reduz tamanho)
-  output: process.env.NODE_ENV === 'production' ? 'standalone' : undefined,
+  output: process.env.NODE_ENV === "production" ? "standalone" : undefined,
 };
 
-const path = require('path');
+const path = require("path");
 
 // Bundle Analyzer (apenas quando ANALYZE=true)
-if (process.env.ANALYZE === 'true') {
+if (process.env.ANALYZE === "true") {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: true,
     openAnalyzer: true,
   });
   nextConfig = withBundleAnalyzer(nextConfig);
 }
 
-const { withSentryConfig } = require('@sentry/nextjs');
+const { withSentryConfig } = require("@sentry/nextjs");
 
 const sentryWrappedConfig = withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,
@@ -157,7 +157,7 @@ const sentryWrappedConfig = withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
 
   // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  tunnelRoute: '/monitoring',
+  tunnelRoute: "/monitoring",
 
   // Configurações webpack para otimização
   webpack: {
@@ -176,7 +176,7 @@ const sentryWrappedConfig = withSentryConfig(nextConfig, {
 
 // Turbopack: define root directory to avoid lockfile/root inference warnings
 sentryWrappedConfig.turbopack = {
-  root: path.join(__dirname, '../..'),
+  root: path.join(__dirname, "../.."),
 };
 
 module.exports = sentryWrappedConfig;

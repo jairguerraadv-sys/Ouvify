@@ -122,7 +122,7 @@ jobs:
       - name: Build
         working-directory: ./apps/frontend
         env:
-          NEXT_PUBLIC_API_URL: https://ouvify.up.railway.app
+          NEXT_PUBLIC_API_URL: https://ouvify-backend.onrender.com
         run: npm run build
 
   # ============================================
