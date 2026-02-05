@@ -45,14 +45,17 @@ export default function LoginPage() {
     return Object.keys(newErrors).length === 0;
   }, [formData]);
 
-  const handleChange = useCallback((field: keyof LoginForm, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    // Limpar erro do campo ao digitar
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: undefined }));
-    }
-    setApiError("");
-  }, [errors]);
+  const handleChange = useCallback(
+    (field: keyof LoginForm, value: string) => {
+      setFormData((prev) => ({ ...prev, [field]: value }));
+      // Limpar erro do campo ao digitar
+      if (errors[field]) {
+        setErrors((prev) => ({ ...prev, [field]: undefined }));
+      }
+      setApiError("");
+    },
+    [errors],
+  );
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,25 +67,39 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.senha);
-      const redirect = typeof window !== 'undefined'
-        ? new URLSearchParams(window.location.search).get('redirect')
-        : null;
+      const redirect =
+        typeof window !== "undefined"
+          ? new URLSearchParams(window.location.search).get("redirect")
+          : null;
       router.push(redirect || "/dashboard");
     } catch (error) {
       console.error("Erro no login:", error);
-      setApiError(error instanceof Error ? error.message : "Erro ao fazer login");
+      setApiError(
+        error instanceof Error ? error.message : "Erro ao fazer login",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+    <main className="min-h-screen bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Decorative elements */}
-      <DecorativeBlob size="sm" placement="topLeftQuarter" className="animate-pulse opacity-100" />
-      <DecorativeBlob size="sm" placement="bottomRightQuarter" className="animate-pulse delay-1000 opacity-100" />
-      
-      <Card variant="elevated" className="w-full max-w-md relative z-10 animate-scale-in">
+      <DecorativeBlob
+        size="sm"
+        placement="topLeftQuarter"
+        className="animate-pulse opacity-100"
+      />
+      <DecorativeBlob
+        size="sm"
+        placement="bottomRightQuarter"
+        className="animate-pulse delay-1000 opacity-100"
+      />
+
+      <Card
+        variant="elevated"
+        className="w-full max-w-md relative z-10 animate-scale-in"
+      >
         <CardHeader>
           <div className="flex justify-center mb-8">
             <LogoAuth />
@@ -91,14 +108,15 @@ export default function LoginPage() {
             Bem-vindo de volta
           </h1>
           <p className="text-muted-foreground text-center">
-            Entre na sua conta <span className="text-gradient font-semibold">Ouvify</span>
+            Entre na sua conta{" "}
+            <span className="text-gradient font-semibold">Ouvify</span>
           </p>
         </CardHeader>
 
         <form onSubmit={handleLogin} className="p-6 space-y-5">
           {/* API Error */}
           {apiError && (
-            <div 
+            <div
               role="alert"
               aria-live="polite"
               className="flex items-center gap-2 p-3 bg-error/10 border border-error/30 rounded-lg text-error text-sm"
@@ -127,7 +145,9 @@ export default function LoginPage() {
               />
             </div>
             {errors.email && (
-              <p id="email-error" className="text-sm text-error">{errors.email}</p>
+              <p id="email-error" className="text-sm text-error">
+                {errors.email}
+              </p>
             )}
           </div>
 
@@ -137,8 +157,8 @@ export default function LoginPage() {
               <label className="block text-sm font-semibold text-secondary">
                 Senha
               </label>
-              <Link 
-                href="/recuperar-senha" 
+              <Link
+                href="/recuperar-senha"
                 className="text-sm text-primary hover:text-primary-dark font-medium transition-colors"
                 tabIndex={loading ? -1 : 0}
               >
@@ -159,7 +179,9 @@ export default function LoginPage() {
               />
             </div>
             {errors.senha && (
-              <p id="senha-error" className="text-sm text-error">{errors.senha}</p>
+              <p id="senha-error" className="text-sm text-error">
+                {errors.senha}
+              </p>
             )}
           </div>
 

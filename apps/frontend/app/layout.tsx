@@ -30,7 +30,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   ),
   title: {
     default: "Ouvify - Canal de Ética Profissional",
@@ -38,7 +38,13 @@ export const metadata: Metadata = {
   },
   description:
     "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos. White Label, seguro e pronto para usar.",
-  keywords: ["canal de ética", "ouvidoria", "feedback anônimo", "compliance", "saas"],
+  keywords: [
+    "canal de ética",
+    "ouvidoria",
+    "feedback anônimo",
+    "compliance",
+    "saas",
+  ],
   authors: [{ name: "Ouvify Team" }],
   icons: {
     icon: [
@@ -59,7 +65,8 @@ export const metadata: Metadata = {
     url: "https://ouvify.com",
     siteName: "Ouvify",
     title: "Ouvify - Canal de Ética Profissional",
-    description: "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos.",
+    description:
+      "Plataforma SaaS completa para gerenciar denúncias, sugestões e feedbacks anônimos.",
     images: [
       {
         url: "/og-image.png",
@@ -72,7 +79,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Ouvify - Canal de Ética Profissional",
-    description: "Plataforma SaaS completa para gerenciar denúncias e feedbacks anônimos.",
+    description:
+      "Plataforma SaaS completa para gerenciar denúncias e feedbacks anônimos.",
     images: ["/og-image.png"],
   },
 };
@@ -84,7 +92,7 @@ export default async function RootLayout({
 }) {
   // Get nonce from headers (set by middleware)
   const headersList = await headers();
-  const nonce = headersList.get('x-nonce') || '';
+  const nonce = headersList.get("x-nonce") || "";
 
   return (
     <html
@@ -99,7 +107,7 @@ export default async function RootLayout({
         />
         <meta name="theme-color" content="hsl(217 91% 60%)" />
         <meta name="csp-nonce" content={nonce} />
-        
+
         {/* ✅ NOVO: Estilos globais para White Label */}
         <style
           dangerouslySetInnerHTML={{
@@ -127,13 +135,6 @@ export default async function RootLayout({
                 from { opacity: 0; }
                 to { opacity: 1; }
               }
-              
-              /* Transições suaves para mudanças de cor */
-              * {
-                transition: background-color 0.3s ease, 
-                            border-color 0.3s ease, 
-                            color 0.3s ease;
-              }
             `,
           }}
         />
@@ -151,9 +152,9 @@ export default async function RootLayout({
                   {children}
                 </main>
                 <Toaster />
-                <Sonner 
-                  position="top-right" 
-                  richColors 
+                <Sonner
+                  position="top-right"
+                  richColors
                   expand={true}
                   closeButton
                 />
