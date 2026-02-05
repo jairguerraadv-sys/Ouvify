@@ -6,6 +6,8 @@ Adiciona dados extras do usuário e tenant aos tokens JWT
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
+from apps.core.throttling import LoginRateThrottle
+
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
@@ -62,6 +64,9 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         "user": {...},
         "tenant": {...}
     }
+
+    FASE 3: AL-001 - LoginRateThrottle (5/hora) para prevenir brute force
     """
 
     serializer_class = CustomTokenObtainPairSerializer
+    throttle_classes = [LoginRateThrottle]

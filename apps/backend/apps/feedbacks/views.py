@@ -16,6 +16,7 @@ from apps.core.pagination import StandardResultsSetPagination
 # ✅ CORREÇÃO DE SEGURANÇA (2026-02-05): Importar permissions customizadas RBAC
 from apps.core.permissions import CanModifyFeedback
 from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
+from apps.core.throttling import FeedbackSubmissionThrottle, ProtocolLookupThrottle
 from apps.core.utils import get_client_ip, get_current_tenant
 from apps.core.utils.privacy import anonymize_ip
 
@@ -33,7 +34,6 @@ from .serializers import (
     ResponseTemplateSerializer,
     TagSerializer,
 )
-from .throttles import FeedbackCriacaoThrottle, ProtocoloConsultaThrottle
 
 logger = logging.getLogger(__name__)
 
@@ -146,13 +146,12 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         """
         Aplica throttle específico dependendo da action.
 
-        - create: FeedbackCriacaoThrottle (10/hora)
-        - consultar_protocolo: ProtocoloConsultaThrottle (10/min por IP+Protocolo)
-        - responder_protocolo: ProtocoloConsultaThrottle (10/min por IP+Protocolo)
+        - create: FeedbackSubmissionThrottle (5/hora por tenant) - FASE 3: AL-005
+        - consultar_protocolo: ProtocolLookupThrottle (20/hora por IP) - FASE 3: AL-006
         - outros: throttles padrão do DRF
         """
         if self.action == "create":
-            return [FeedbackCriacaoThrottle()]
+            return [FeedbackSubmissionThrottle()]
         return super().get_throttles()
 
     def perform_create(self, serializer):
@@ -1039,7 +1038,9 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         detail=False,
         methods=["get"],
         permission_classes=[permissions.AllowAny],
-        throttle_classes=[ProtocoloConsultaThrottle],  # Rate limiting: 5 req/min
+        throttle_classes=[
+            ProtocolLookupThrottle
+        ],  # FASE 3: AL-006 - 20 req/hora para prevenir enumeração
         url_path="consultar-protocolo",
     )
     def consultar_protocolo(self, request):

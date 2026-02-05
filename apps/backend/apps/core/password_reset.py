@@ -17,6 +17,8 @@ from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
+from apps.core.throttling import PasswordResetConfirmThrottle
+
 from .email_service import EmailService
 
 logger = logging.getLogger(__name__)
@@ -99,9 +101,12 @@ class PasswordResetConfirmView(APIView):
         "token": "password-reset-token",
         "new_password": "novaSenha123"
     }
+
+    FASE 3: AL-003 - PasswordResetConfirmThrottle (10/hora) para prevenir brute force
     """
 
     permission_classes = [AllowAny]
+    throttle_classes = [PasswordResetConfirmThrottle]
 
     def post(self, request):
         uid = request.data.get("uid")
