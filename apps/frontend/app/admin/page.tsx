@@ -7,7 +7,15 @@ import { api } from "@/lib/api";
 import { formatDate } from "@/lib/helpers";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Logo } from "@/components/ui/logo";
@@ -117,31 +125,41 @@ function AdminContent() {
   }, [search, filterPlano, filterAtivo, ordering]);
 
   // Fetch tenants
-  const { data: tenants, error, mutate, isLoading } = useSWR<TenantAdmin[]>(
-    `/api/admin/tenants/?${queryParams}`,
-    fetcher,
-    { revalidateOnFocus: true }
-  );
+  const {
+    data: tenants,
+    error,
+    mutate,
+    isLoading,
+  } = useSWR<TenantAdmin[]>(`/api/admin/tenants/?${queryParams}`, fetcher, {
+    revalidateOnFocus: true,
+  });
 
   // Fetch metrics
   const { data: metrics, isLoading: metricsLoading } = useSWR<AdminMetrics>(
     "/api/admin/tenants/metrics/",
     fetcher,
-    { revalidateOnFocus: false, dedupingInterval: 60000 }
+    { revalidateOnFocus: false, dedupingInterval: 60000 },
   );
 
   // Toggle ativo status
-  const handleToggleAtivo = useCallback(async (tenant: TenantAdmin) => {
-    try {
-      await api.patch(`/api/admin/tenants/${tenant.id}/`, { ativo: !tenant.ativo });
-      await mutate();
-      toast.success(`Tenant ${tenant.ativo ? "desativado" : "ativado"} com sucesso!`);
-    } catch (err) {
-      console.error("Erro ao atualizar tenant", err);
-      toast.error("Erro ao atualizar tenant");
-    }
-    setConfirmDialog({ open: false, tenant: null, action: "toggle" });
-  }, [mutate]);
+  const handleToggleAtivo = useCallback(
+    async (tenant: TenantAdmin) => {
+      try {
+        await api.patch(`/api/admin/tenants/${tenant.id}/`, {
+          ativo: !tenant.ativo,
+        });
+        await mutate();
+        toast.success(
+          `Tenant ${tenant.ativo ? "desativado" : "ativado"} com sucesso!`,
+        );
+      } catch (err) {
+        console.error("Erro ao atualizar tenant", err);
+        toast.error("Erro ao atualizar tenant");
+      }
+      setConfirmDialog({ open: false, tenant: null, action: "toggle" });
+    },
+    [mutate],
+  );
 
   // Impersonate tenant
   const handleImpersonate = useCallback(async (tenant: TenantAdmin) => {
@@ -150,11 +168,11 @@ function AdminContent() {
         access_token: string;
         tenant: { subdominio: string };
       }>(`/api/admin/tenants/${tenant.id}/impersonate/`);
-      
+
       // Abrir nova aba com token
       const url = `http://${response.tenant.subdominio}.localhost:3000/dashboard?impersonate_token=${response.access_token}`;
       window.open(url, "_blank");
-      
+
       toast.success("Sessão de impersonation iniciada em nova aba");
     } catch (err) {
       console.error("Erro ao impersonar tenant", err);
@@ -164,40 +182,53 @@ function AdminContent() {
   }, []);
 
   // Update plano
-  const handleUpdatePlano = useCallback(async (tenant: TenantAdmin, newPlano: string) => {
-    try {
-      await api.patch(`/api/admin/tenants/${tenant.id}/`, { plano: newPlano });
-      await mutate();
-      toast.success(`Plano alterado para ${newPlano.toUpperCase()}`);
-    } catch (err) {
-      console.error("Erro ao alterar plano", err);
-      toast.error("Erro ao alterar plano");
-    }
-  }, [mutate]);
+  const handleUpdatePlano = useCallback(
+    async (tenant: TenantAdmin, newPlano: string) => {
+      try {
+        await api.patch(`/api/admin/tenants/${tenant.id}/`, {
+          plano: newPlano,
+        });
+        await mutate();
+        toast.success(`Plano alterado para ${newPlano.toUpperCase()}`);
+      } catch (err) {
+        console.error("Erro ao alterar plano", err);
+        toast.error("Erro ao alterar plano");
+      }
+    },
+    [mutate],
+  );
 
   // Export CSV
   const handleExportCSV = useCallback(() => {
     if (!tenants) return;
-    
-    const headers = ["ID", "Nome", "Subdomínio", "Plano", "Status", "Feedbacks", "Data Criação"];
-    const rows = tenants.map(t => [
+
+    const headers = [
+      "ID",
+      "Nome",
+      "Subdomínio",
+      "Plano",
+      "Status",
+      "Feedbacks",
+      "Data Criação",
+    ];
+    const rows = tenants.map((t) => [
       t.id,
       t.nome,
       t.subdominio,
       t.plano,
       t.ativo ? "Ativo" : "Inativo",
       t.total_feedbacks,
-      t.data_criacao
+      t.data_criacao,
     ]);
-    
-    const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = `tenants_${new Date().toISOString().split("T")[0]}.csv`;
     a.click();
-    
+
     toast.success("CSV exportado com sucesso!");
   }, [tenants]);
 
@@ -218,7 +249,7 @@ function AdminContent() {
       free: "bg-muted",
       starter: "bg-primary-600",
       pro: "bg-secondary-600",
-      enterprise: "bg-amber-600",
+      enterprise: "bg-warning-600",
     };
     return colors[plano] || "bg-muted";
   };
@@ -230,19 +261,30 @@ function AdminContent() {
         <aside className="w-64 bg-card border-r border-border p-6 min-h-screen sticky top-0">
           <div className="mb-8">
             <Logo size="md" />
-            <p className="text-xs text-muted-foreground mt-2">Torre de Controle Admin</p>
+            <p className="text-xs text-muted-foreground mt-2">
+              Torre de Controle Admin
+            </p>
           </div>
-          
+
           <nav className="space-y-1">
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg bg-accent text-accent-foreground">
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg bg-accent text-accent-foreground"
+            >
               <BarChart3 className="w-4 h-4" />
               <span className="text-sm font-medium">Visão Geral</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
               <DollarSign className="w-4 h-4" />
               <span className="text-sm">Financeiro</span>
             </Link>
-            <Link href="/admin" className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors">
+            <Link
+              href="/admin"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            >
               <Activity className="w-4 h-4" />
               <span className="text-sm">Logs de Atividade</span>
             </Link>
@@ -255,12 +297,16 @@ function AdminContent() {
           <header className="mb-8">
             <FlexBetween>
               <div>
-                <h1 className="text-2xl font-semibold">Painel do Super Admin</h1>
-                <MutedText block>Monitoramento de crescimento do SaaS</MutedText>
+                <h1 className="text-2xl font-semibold">
+                  Painel do Super Admin
+                </h1>
+                <MutedText block>
+                  Monitoramento de crescimento do SaaS
+                </MutedText>
               </div>
               <div className="flex items-center gap-3">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={() => mutate()}
                   className="border-border text-muted-foreground hover:bg-muted"
@@ -268,8 +314,8 @@ function AdminContent() {
                   <RefreshCw className="w-4 h-4 mr-2" />
                   Atualizar
                 </Button>
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   size="sm"
                   onClick={handleExportCSV}
                   className="bg-secondary text-secondary-foreground border-border"
@@ -307,7 +353,7 @@ function AdminContent() {
               title="MRR"
               value={metrics?.mrr}
               icon={DollarSign}
-              color="text-emerald-400"
+              color="text-success-400"
               format="currency"
               loading={metricsLoading}
             />
@@ -334,8 +380,12 @@ function AdminContent() {
             <Card className="bg-card border-border p-4">
               <FlexBetween>
                 <div>
-                  <p className="text-muted-foreground text-xs uppercase tracking-wide">Free</p>
-                  <p className="text-2xl font-bold text-muted-foreground">{metrics?.distribuicao_planos?.free || 0}</p>
+                  <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                    Free
+                  </p>
+                  <p className="text-2xl font-bold text-muted-foreground">
+                    {metrics?.distribuicao_planos?.free || 0}
+                  </p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
                   <PieChart className="w-5 h-5 text-muted-foreground" />
@@ -345,8 +395,12 @@ function AdminContent() {
             <Card className="bg-card border-border p-4">
               <FlexBetween>
                 <div>
-                  <p className="text-muted-foreground text-xs uppercase tracking-wide">Starter</p>
-                  <p className="text-2xl font-bold text-primary-400">{metrics?.distribuicao_planos?.starter || 0}</p>
+                  <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                    Starter
+                  </p>
+                  <p className="text-2xl font-bold text-primary-400">
+                    {metrics?.distribuicao_planos?.starter || 0}
+                  </p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
                   <PieChart className="w-5 h-5 text-primary-400" />
@@ -356,8 +410,12 @@ function AdminContent() {
             <Card className="bg-card border-border p-4">
               <FlexBetween>
                 <div>
-                  <p className="text-muted-foreground text-xs uppercase tracking-wide">Pro</p>
-                  <p className="text-2xl font-bold text-secondary-400">{metrics?.distribuicao_planos?.pro || 0}</p>
+                  <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                    Pro
+                  </p>
+                  <p className="text-2xl font-bold text-secondary-400">
+                    {metrics?.distribuicao_planos?.pro || 0}
+                  </p>
                 </div>
                 <div className="w-10 h-10 rounded-lg bg-secondary-500/20 flex items-center justify-center">
                   <PieChart className="w-5 h-5 text-secondary-400" />
@@ -367,11 +425,15 @@ function AdminContent() {
             <Card className="bg-card border-border p-4">
               <FlexBetween>
                 <div>
-                  <p className="text-muted-foreground text-xs uppercase tracking-wide">Enterprise</p>
-                  <p className="text-2xl font-bold text-amber-400">{metrics?.distribuicao_planos?.enterprise || 0}</p>
+                  <p className="text-muted-foreground text-xs uppercase tracking-wide">
+                    Enterprise
+                  </p>
+                  <p className="text-2xl font-bold text-warning-400">
+                    {metrics?.distribuicao_planos?.enterprise || 0}
+                  </p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-amber-400" />
+                <div className="w-10 h-10 rounded-lg bg-warning-500/20 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-warning-400" />
                 </div>
               </FlexBetween>
             </Card>
@@ -440,134 +502,214 @@ function AdminContent() {
           <Card className="bg-card border-border">
             <Table>
               <TableCaption className="text-muted-foreground">
-                {isLoading ? "Carregando..." : `${tenants?.length || 0} tenants encontrados`}
+                {isLoading
+                  ? "Carregando..."
+                  : `${tenants?.length || 0} tenants encontrados`}
               </TableCaption>
               <TableHeader>
                 <TableRow className="border-border hover:bg-transparent">
-                  <TableHead className="text-muted-foreground">Empresa</TableHead>
-                  <TableHead className="text-muted-foreground">Subdomínio</TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Empresa
+                  </TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Subdomínio
+                  </TableHead>
                   <TableHead className="text-muted-foreground">Plano</TableHead>
-                  <TableHead className="text-muted-foreground">Feedbacks</TableHead>
-                  <TableHead className="text-muted-foreground">Criado em</TableHead>
-                  <TableHead className="text-muted-foreground">Status</TableHead>
-                  <TableHead className="text-muted-foreground text-right">Ações</TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Feedbacks
+                  </TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Criado em
+                  </TableHead>
+                  <TableHead className="text-muted-foreground">
+                    Status
+                  </TableHead>
+                  <TableHead className="text-muted-foreground text-right">
+                    Ações
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isLoading ? (
-                  Array.from({ length: 5 }).map((_, i) => (
-                    <TableRow key={i} className="border-border">
-                      <TableCell><Skeleton className="h-4 w-32 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-12 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-24 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-16 bg-muted" /></TableCell>
-                      <TableCell><Skeleton className="h-4 w-20 bg-muted" /></TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  (tenants || []).map((tenant) => (
-                    <TableRow key={tenant.id} className="border-border hover:bg-muted/50">
-                      <TableCell>
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
-                            {tenant.logo ? (
-                              <img
-                                src={tenant.logo}
-                                alt={tenant.nome ? `Logo da empresa ${tenant.nome}` : 'Logo da empresa'}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <Building2 className="w-4 h-4 text-muted-foreground" />
-                            )}
+                {isLoading
+                  ? Array.from({ length: 5 }).map((_, i) => (
+                      <TableRow key={i} className="border-border">
+                        <TableCell>
+                          <Skeleton className="h-4 w-32 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-24 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-16 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-12 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-24 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-16 bg-muted" />
+                        </TableCell>
+                        <TableCell>
+                          <Skeleton className="h-4 w-20 bg-muted" />
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  : (tenants || []).map((tenant) => (
+                      <TableRow
+                        key={tenant.id}
+                        className="border-border hover:bg-muted/50"
+                      >
+                        <TableCell>
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+                              {tenant.logo ? (
+                                <img
+                                  src={tenant.logo}
+                                  alt={
+                                    tenant.nome
+                                      ? `Logo da empresa ${tenant.nome}`
+                                      : "Logo da empresa"
+                                  }
+                                  className="w-full h-full object-cover"
+                                />
+                              ) : (
+                                <Building2 className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-foreground font-medium">
+                                {tenant.nome}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                {tenant.owner_email || "Sem email"}
+                              </p>
+                            </div>
                           </div>
-                          <div>
-                            <p className="text-foreground font-medium">{tenant.nome}</p>
-                            <p className="text-xs text-muted-foreground">{tenant.owner_email || "Sem email"}</p>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <a
-                          href={`http://${tenant.subdominio}.localhost:3000/dashboard`}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-primary-400 hover:text-primary-300 hover:underline text-sm"
-                        >
-                          {tenant.subdominio}
-                        </a>
-                      </TableCell>
-                      <TableCell>
-                        <Select
-                          value={tenant.plano || "free"}
-                          onValueChange={(value) => handleUpdatePlano(tenant, value)}
-                        >
-                          <SelectTrigger className={`w-[100px] h-7 text-xs ${getPlanoBadgeColor(tenant.plano || "free")} border-0`}>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent className="bg-popover border-border">
-                            <SelectItem value="free">Free</SelectItem>
-                            <SelectItem value="starter">Starter</SelectItem>
-                            <SelectItem value="pro">Pro</SelectItem>
-                            <SelectItem value="enterprise">Enterprise</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">
-                        {tenant.total_feedbacks || 0}
-                      </TableCell>
-                      <TableCell>
-                        <MutedText>{formatDate(tenant.data_criacao, 'short')}</MutedText>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={tenant.ativo ? "bg-success-600/20 text-success-400 border-success-600/30" : "bg-error-600/20 text-error-400 border-error-600/30"}>
-                          {tenant.ativo ? "Ativo" : "Inativo"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="bg-popover border-border">
-                            <DropdownMenuLabel className="text-muted-foreground">Ações</DropdownMenuLabel>
-                            <DropdownMenuSeparator className="bg-border" />
-                            <DropdownMenuItem className="text-popover-foreground hover:bg-muted cursor-pointer">
-                              <Link href={`/admin/tenants/${tenant.id}`} className="flex items-center">
-                                <Eye className="w-4 h-4 mr-2" />
-                                Ver Detalhes
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem 
-                              className="text-popover-foreground hover:bg-muted cursor-pointer"
-                              onClick={() => setConfirmDialog({ open: true, tenant, action: "impersonate" })}
+                        </TableCell>
+                        <TableCell>
+                          <a
+                            href={`http://${tenant.subdominio}.localhost:3000/dashboard`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-primary-400 hover:text-primary-300 hover:underline text-sm"
+                          >
+                            {tenant.subdominio}
+                          </a>
+                        </TableCell>
+                        <TableCell>
+                          <Select
+                            value={tenant.plano || "free"}
+                            onValueChange={(value) =>
+                              handleUpdatePlano(tenant, value)
+                            }
+                          >
+                            <SelectTrigger
+                              className={`w-[100px] h-7 text-xs ${getPlanoBadgeColor(tenant.plano || "free")} border-0`}
                             >
-                              <UserCog className="w-4 h-4 mr-2" />
-                              Impersonar
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-popover-foreground hover:bg-muted cursor-pointer">
-                              <a href={`http://${tenant.subdominio}.localhost:3000/dashboard`} target="_blank" rel="noreferrer" className="flex items-center">
-                                <ExternalLink className="w-4 h-4 mr-2" />
-                                Abrir Painel
-                              </a>
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator className="bg-border" />
-                            <DropdownMenuItem 
-                              className={`cursor-pointer ${tenant.ativo ? "text-error-400 hover:bg-error-500/20" : "text-success-400 hover:bg-success-500/20"}`}
-                              onClick={() => setConfirmDialog({ open: true, tenant, action: "toggle" })}
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent className="bg-popover border-border">
+                              <SelectItem value="free">Free</SelectItem>
+                              <SelectItem value="starter">Starter</SelectItem>
+                              <SelectItem value="pro">Pro</SelectItem>
+                              <SelectItem value="enterprise">
+                                Enterprise
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {tenant.total_feedbacks || 0}
+                        </TableCell>
+                        <TableCell>
+                          <MutedText>
+                            {formatDate(tenant.data_criacao, "short")}
+                          </MutedText>
+                        </TableCell>
+                        <TableCell>
+                          <Badge
+                            className={
+                              tenant.ativo
+                                ? "bg-success-600/20 text-success-400 border-success-600/30"
+                                : "bg-error-600/20 text-error-400 border-error-600/30"
+                            }
+                          >
+                            {tenant.ativo ? "Ativo" : "Inativo"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent
+                              align="end"
+                              className="bg-popover border-border"
                             >
-                              <Power className="w-4 h-4 mr-2" />
-                              {tenant.ativo ? "Desativar" : "Ativar"}
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
+                              <DropdownMenuLabel className="text-muted-foreground">
+                                Ações
+                              </DropdownMenuLabel>
+                              <DropdownMenuSeparator className="bg-border" />
+                              <DropdownMenuItem className="text-popover-foreground hover:bg-muted cursor-pointer">
+                                <Link
+                                  href={`/admin/tenants/${tenant.id}`}
+                                  className="flex items-center"
+                                >
+                                  <Eye className="w-4 h-4 mr-2" />
+                                  Ver Detalhes
+                                </Link>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-popover-foreground hover:bg-muted cursor-pointer"
+                                onClick={() =>
+                                  setConfirmDialog({
+                                    open: true,
+                                    tenant,
+                                    action: "impersonate",
+                                  })
+                                }
+                              >
+                                <UserCog className="w-4 h-4 mr-2" />
+                                Impersonar
+                              </DropdownMenuItem>
+                              <DropdownMenuItem className="text-popover-foreground hover:bg-muted cursor-pointer">
+                                <a
+                                  href={`http://${tenant.subdominio}.localhost:3000/dashboard`}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  className="flex items-center"
+                                >
+                                  <ExternalLink className="w-4 h-4 mr-2" />
+                                  Abrir Painel
+                                </a>
+                              </DropdownMenuItem>
+                              <DropdownMenuSeparator className="bg-border" />
+                              <DropdownMenuItem
+                                className={`cursor-pointer ${tenant.ativo ? "text-error-400 hover:bg-error-500/20" : "text-success-400 hover:bg-success-500/20"}`}
+                                onClick={() =>
+                                  setConfirmDialog({
+                                    open: true,
+                                    tenant,
+                                    action: "toggle",
+                                  })
+                                }
+                              >
+                                <Power className="w-4 h-4 mr-2" />
+                                {tenant.ativo ? "Desativar" : "Ativar"}
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </Card>
@@ -580,7 +722,9 @@ function AdminContent() {
         onOpenChange={(open) => setConfirmDialog({ ...confirmDialog, open })}
         title={
           confirmDialog.action === "toggle"
-            ? confirmDialog.tenant?.ativo ? "Desativar Tenant" : "Ativar Tenant"
+            ? confirmDialog.tenant?.ativo
+              ? "Desativar Tenant"
+              : "Ativar Tenant"
             : "Impersonar Tenant"
         }
         description={
@@ -588,8 +732,16 @@ function AdminContent() {
             ? `Tem certeza que deseja ${confirmDialog.tenant?.ativo ? "desativar" : "ativar"} o tenant "${confirmDialog.tenant?.nome}"?`
             : `Você está prestes a acessar o painel do tenant "${confirmDialog.tenant?.nome}" como o proprietário. Esta ação será registrada no log de auditoria.`
         }
-        confirmText={confirmDialog.action === "toggle" ? "Confirmar" : "Iniciar Impersonation"}
-        variant={confirmDialog.action === "toggle" && confirmDialog.tenant?.ativo ? "destructive" : "default"}
+        confirmText={
+          confirmDialog.action === "toggle"
+            ? "Confirmar"
+            : "Iniciar Impersonation"
+        }
+        variant={
+          confirmDialog.action === "toggle" && confirmDialog.tenant?.ativo
+            ? "destructive"
+            : "default"
+        }
         onConfirm={() => {
           if (confirmDialog.tenant) {
             if (confirmDialog.action === "toggle") {
@@ -614,10 +766,17 @@ interface KPICardProps {
   loading?: boolean;
 }
 
-function KPICard({ title, value, icon: Icon, color = "text-foreground", format = "number", loading }: KPICardProps) {
+function KPICard({
+  title,
+  value,
+  icon: Icon,
+  color = "text-foreground",
+  format = "number",
+  loading,
+}: KPICardProps) {
   const formatValue = (val: number | null | undefined) => {
     if (val === null || val === undefined) return "-";
-    
+
     switch (format) {
       case "currency":
         return `R$ ${val.toLocaleString("pt-BR")}`;
@@ -633,14 +792,20 @@ function KPICard({ title, value, icon: Icon, color = "text-foreground", format =
       <CardContent className="p-4">
         <FlexBetween>
           <div>
-            <p className="text-muted-foreground text-xs uppercase tracking-wide">{title}</p>
+            <p className="text-muted-foreground text-xs uppercase tracking-wide">
+              {title}
+            </p>
             {loading ? (
               <Skeleton className="h-8 w-16 mt-1 bg-muted" />
             ) : (
-              <p className={`text-2xl font-bold ${color}`}>{formatValue(value)}</p>
+              <p className={`text-2xl font-bold ${color}`}>
+                {formatValue(value)}
+              </p>
             )}
           </div>
-          <div className={`w-10 h-10 rounded-lg bg-muted flex items-center justify-center ${color}`}>
+          <div
+            className={`w-10 h-10 rounded-lg bg-muted flex items-center justify-center ${color}`}
+          >
             <Icon className="w-5 h-5" />
           </div>
         </FlexBetween>

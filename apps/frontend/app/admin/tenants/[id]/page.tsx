@@ -1,19 +1,25 @@
-'use client';
+"use client";
 
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { useState, useEffect } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import { api, getErrorMessage } from '@/lib/api';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
-import { 
-  Building, 
-  Mail, 
-  Calendar, 
-  CreditCard, 
-  Users, 
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { api, getErrorMessage } from "@/lib/api";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Building,
+  Mail,
+  Calendar,
+  CreditCard,
+  Users,
   Activity,
   ArrowLeft,
   ExternalLink,
@@ -22,12 +28,12 @@ import {
   XCircle,
   Globe,
   Palette,
-  BarChart3
-} from 'lucide-react';
-import { Logo } from '@/components/ui/logo';
-import { toast } from 'sonner';
-import Link from 'next/link';
-import { FlexBetween } from '@/components/ui/layout-utils';
+  BarChart3,
+} from "lucide-react";
+import { Logo } from "@/components/ui/logo";
+import { toast } from "sonner";
+import Link from "next/link";
+import { FlexBetween } from "@/components/ui/layout-utils";
 
 interface TenantDetails {
   id: number;
@@ -66,18 +72,20 @@ function TenantDetailsContent() {
   const fetchTenantDetails = async () => {
     try {
       setLoading(true);
-      const response = await api.get<TenantDetails>(`/api/admin/tenants/${tenantId}/`);
+      const response = await api.get<TenantDetails>(
+        `/api/admin/tenants/${tenantId}/`,
+      );
       setTenant(response);
     } catch (error: any) {
-      console.error('Erro ao carregar detalhes do tenant:', error);
+      console.error("Erro ao carregar detalhes do tenant:", error);
       if (error?.response?.status === 404) {
-        toast.error('Tenant não encontrado');
+        toast.error("Tenant não encontrado");
       } else if (error?.response?.status === 403) {
-        toast.error('Acesso negado');
+        toast.error("Acesso negado");
       } else {
-        toast.error(getErrorMessage(error) || 'Erro ao carregar dados');
+        toast.error(getErrorMessage(error) || "Erro ao carregar dados");
       }
-      router.push('/admin');
+      router.push("/admin");
     } finally {
       setLoading(false);
     }
@@ -92,7 +100,7 @@ function TenantDetailsContent() {
   const handleToggleStatus = async () => {
     if (!tenant) return;
 
-    const action = tenant.ativo ? 'desativar' : 'reativar';
+    const action = tenant.ativo ? "desativar" : "reativar";
     if (!confirm(`Deseja realmente ${action} este tenant?`)) return;
 
     setToggling(true);
@@ -102,9 +110,11 @@ function TenantDetailsContent() {
       });
 
       setTenant({ ...tenant, ativo: !tenant.ativo });
-      toast.success(`Tenant ${tenant.ativo ? 'desativado' : 'reativado'} com sucesso!`);
+      toast.success(
+        `Tenant ${tenant.ativo ? "desativado" : "reativado"} com sucesso!`,
+      );
     } catch (error: any) {
-      toast.error(getErrorMessage(error) || 'Erro ao alterar status');
+      toast.error(getErrorMessage(error) || "Erro ao alterar status");
     } finally {
       setToggling(false);
     }
@@ -119,8 +129,10 @@ function TenantDetailsContent() {
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
         <Card className="bg-card border-border p-8 text-center">
           <h2 className="text-xl font-semibold mb-2">Tenant não encontrado</h2>
-          <p className="text-muted-foreground mb-4">O tenant solicitado não existe ou foi removido.</p>
-          <Button onClick={() => router.push('/admin')}>
+          <p className="text-muted-foreground mb-4">
+            O tenant solicitado não existe ou foi removido.
+          </p>
+          <Button onClick={() => router.push("/admin")}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             Voltar para Lista
           </Button>
@@ -140,9 +152,11 @@ function TenantDetailsContent() {
               <span className="text-muted-foreground">/</span>
               <span className="text-muted-foreground">Admin</span>
               <span className="text-muted-foreground">/</span>
-              <span className="text-foreground font-medium">Tenant #{tenant.id}</span>
+              <span className="text-foreground font-medium">
+                Tenant #{tenant.id}
+              </span>
             </div>
-            <Button variant="outline" onClick={() => router.push('/admin')}>
+            <Button variant="outline" onClick={() => router.push("/admin")}>
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar
             </Button>
@@ -160,9 +174,9 @@ function TenantDetailsContent() {
                 {/* Logo ou Avatar */}
                 <div className="w-20 h-20 rounded-xl bg-muted flex items-center justify-center overflow-hidden">
                   {tenant.logo ? (
-                    <img 
-                      src={tenant.logo} 
-                      alt={`Logo ${tenant.nome}`} 
+                    <img
+                      src={tenant.logo}
+                      alt={`Logo ${tenant.nome}`}
                       className="w-full h-full object-cover"
                     />
                   ) : (
@@ -172,16 +186,21 @@ function TenantDetailsContent() {
 
                 {/* Info Principal */}
                 <div>
-                  <h1 className="text-2xl font-bold text-foreground mb-1">{tenant.nome}</h1>
+                  <h1 className="text-2xl font-bold text-foreground mb-1">
+                    {tenant.nome}
+                  </h1>
                   <p className="text-muted-foreground flex items-center gap-2">
                     <Globe className="w-4 h-4" />
                     {tenant.subdominio}.ouvify.com
                   </p>
                   <div className="flex items-center gap-3 mt-3">
-                    <Badge className={tenant.ativo 
-                      ? 'bg-success-500/20 text-success-400 border-success-500/30'
-                      : 'bg-error-500/20 text-error-400 border-error-500/30'
-                    }>
+                    <Badge
+                      className={
+                        tenant.ativo
+                          ? "bg-success-500/20 text-success-400 border-success-500/30"
+                          : "bg-error-500/20 text-error-400 border-error-500/30"
+                      }
+                    >
                       {tenant.ativo ? (
                         <>
                           <CheckCircle className="w-3 h-3 mr-1" />
@@ -195,7 +214,7 @@ function TenantDetailsContent() {
                       )}
                     </Badge>
                     <Badge className="bg-primary-500/20 text-primary-400 border-primary-500/30 uppercase">
-                      {tenant.plano || 'Free'}
+                      {tenant.plano || "Free"}
                     </Badge>
                   </div>
                 </div>
@@ -205,7 +224,12 @@ function TenantDetailsContent() {
               <div className="flex items-center gap-3">
                 <Button
                   variant="outline"
-                  onClick={() => window.open(`https://${tenant.subdominio}.ouvify.com/enviar`, '_blank')}
+                  onClick={() =>
+                    window.open(
+                      `https://${tenant.subdominio}.ouvify.com/enviar`,
+                      "_blank",
+                    )
+                  }
                   className="border-border text-muted-foreground hover:bg-muted"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
@@ -214,14 +238,19 @@ function TenantDetailsContent() {
                 <Button
                   onClick={handleToggleStatus}
                   disabled={toggling}
-                  variant={tenant.ativo ? 'destructive' : 'default'}
-                  className={tenant.ativo 
-                    ? 'bg-error-600 hover:bg-error-700'
-                    : 'bg-success-600 hover:bg-success-700'
+                  variant={tenant.ativo ? "destructive" : "default"}
+                  className={
+                    tenant.ativo
+                      ? "bg-error-600 hover:bg-error-700"
+                      : "bg-success-600 hover:bg-success-700"
                   }
                 >
                   <Power className="w-4 h-4 mr-2" />
-                  {toggling ? 'Processando...' : (tenant.ativo ? 'Desativar' : 'Reativar')}
+                  {toggling
+                    ? "Processando..."
+                    : tenant.ativo
+                      ? "Desativar"
+                      : "Reativar"}
                 </Button>
               </div>
             </div>
@@ -255,20 +284,26 @@ function TenantDetailsContent() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <InfoRow 
-                  label="Cliente desde" 
-                  value={new Date(tenant.data_criacao).toLocaleDateString('pt-BR', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                  })} 
+                <InfoRow
+                  label="Cliente desde"
+                  value={new Date(tenant.data_criacao).toLocaleDateString(
+                    "pt-BR",
+                    {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    },
+                  )}
                 />
-                <InfoRow 
-                  label="Último login" 
-                  value={tenant.ultimo_login 
-                    ? new Date(tenant.ultimo_login).toLocaleDateString('pt-BR')
-                    : 'Nunca'
-                  } 
+                <InfoRow
+                  label="Último login"
+                  value={
+                    tenant.ultimo_login
+                      ? new Date(tenant.ultimo_login).toLocaleDateString(
+                          "pt-BR",
+                        )
+                      : "Nunca"
+                  }
                 />
               </div>
             </CardContent>
@@ -284,14 +319,17 @@ function TenantDetailsContent() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <InfoRow label="Plano" value={tenant.plano?.toUpperCase() || 'FREE'} />
-                <InfoRow 
-                  label="Status" 
-                  value={tenant.subscription_status || 'Sem assinatura'} 
+                <InfoRow
+                  label="Plano"
+                  value={tenant.plano?.toUpperCase() || "FREE"}
                 />
-                <InfoRow 
-                  label="Stripe ID" 
-                  value={tenant.stripe_customer_id || 'N/A'} 
+                <InfoRow
+                  label="Status"
+                  value={tenant.subscription_status || "Sem assinatura"}
+                />
+                <InfoRow
+                  label="Stripe ID"
+                  value={tenant.stripe_customer_id || "N/A"}
                 />
               </div>
             </CardContent>
@@ -303,25 +341,28 @@ function TenantDetailsContent() {
           <StatsCard
             icon={Users}
             label="Total Feedbacks"
-            value={tenant.total_feedbacks?.toString() || '0'}
+            value={tenant.total_feedbacks?.toString() || "0"}
             color="blue"
           />
           <StatsCard
             icon={Activity}
             label="Status"
-            value={tenant.ativo ? 'Operacional' : 'Suspenso'}
-            color={tenant.ativo ? 'green' : 'red'}
+            value={tenant.ativo ? "Operacional" : "Suspenso"}
+            color={tenant.ativo ? "green" : "red"}
           />
           <StatsCard
             icon={BarChart3}
             label="Plano"
-            value={tenant.plano?.toUpperCase() || 'FREE'}
+            value={tenant.plano?.toUpperCase() || "FREE"}
             color="purple"
           />
           <StatsCard
             icon={Calendar}
             label="Dias de Conta"
-            value={Math.floor((new Date().getTime() - new Date(tenant.data_criacao).getTime()) / (1000 * 60 * 60 * 24)).toString()}
+            value={Math.floor(
+              (new Date().getTime() - new Date(tenant.data_criacao).getTime()) /
+                (1000 * 60 * 60 * 24),
+            ).toString()}
             color="orange"
           />
         </div>
@@ -331,7 +372,7 @@ function TenantDetailsContent() {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5 text-pink-400" />
+                <Palette className="w-5 h-5 text-secondary-400" />
                 Configuração White-label
               </CardTitle>
               <CardDescription className="text-muted-foreground">
@@ -342,11 +383,24 @@ function TenantDetailsContent() {
               <div className="flex items-center gap-8">
                 {tenant.cor_primaria && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-2">Cor Primária</p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Cor Primária
+                    </p>
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg border border-border overflow-hidden" aria-label="Cor primária">
-                        <svg viewBox="0 0 48 48" className="w-full h-full" role="presentation">
-                          <rect width="48" height="48" fill={tenant.cor_primaria} />
+                      <div
+                        className="w-12 h-12 rounded-lg border border-border overflow-hidden"
+                        aria-label="Cor primária"
+                      >
+                        <svg
+                          viewBox="0 0 48 48"
+                          className="w-full h-full"
+                          role="presentation"
+                        >
+                          <rect
+                            width="48"
+                            height="48"
+                            fill={tenant.cor_primaria}
+                          />
                         </svg>
                       </div>
                       <span className="font-mono text-sm text-muted-foreground">
@@ -357,11 +411,24 @@ function TenantDetailsContent() {
                 )}
                 {tenant.cor_secundaria && (
                   <div>
-                    <p className="text-xs text-muted-foreground mb-2">Cor Secundária</p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Cor Secundária
+                    </p>
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 rounded-lg border border-border overflow-hidden" aria-label="Cor secundária">
-                        <svg viewBox="0 0 48 48" className="w-full h-full" role="presentation">
-                          <rect width="48" height="48" fill={tenant.cor_secundaria} />
+                      <div
+                        className="w-12 h-12 rounded-lg border border-border overflow-hidden"
+                        aria-label="Cor secundária"
+                      >
+                        <svg
+                          viewBox="0 0 48 48"
+                          className="w-full h-full"
+                          role="presentation"
+                        >
+                          <rect
+                            width="48"
+                            height="48"
+                            fill={tenant.cor_secundaria}
+                          />
                         </svg>
                       </div>
                       <span className="font-mono text-sm text-muted-foreground">
@@ -394,23 +461,25 @@ interface StatsCardProps {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
-  color: 'blue' | 'green' | 'red' | 'purple' | 'orange';
+  color: "blue" | "green" | "red" | "purple" | "orange";
 }
 
 function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   const colorClasses = {
-    blue: 'bg-primary-500/20 text-primary-400',
-    green: 'bg-success-500/20 text-success-400',
-    red: 'bg-error-500/20 text-error-400',
-    purple: 'bg-secondary-500/20 text-secondary-400',
-    orange: 'bg-orange-500/20 text-orange-400',
+    blue: "bg-primary-500/20 text-primary-400",
+    green: "bg-success-500/20 text-success-400",
+    red: "bg-error-500/20 text-error-400",
+    purple: "bg-secondary-500/20 text-secondary-400",
+    orange: "bg-warning-500/20 text-warning-400",
   };
 
   return (
     <Card className="bg-card border-border">
       <CardContent className="p-6">
         <div className="flex items-center gap-4">
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}>
+          <div
+            className={`w-12 h-12 rounded-xl flex items-center justify-center ${colorClasses[color]}`}
+          >
             <Icon className="w-6 h-6" />
           </div>
           <div>
@@ -432,7 +501,7 @@ function TenantDetailsSkeleton() {
           <Skeleton className="h-8 w-64 bg-muted" />
         </div>
       </div>
-      
+
       <div className="max-w-7xl mx-auto px-6 py-8">
         <Card className="bg-card border-border mb-8">
           <CardContent className="p-6">

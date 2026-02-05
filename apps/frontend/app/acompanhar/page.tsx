@@ -1,23 +1,36 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useMemo, FormEvent, useEffect } from 'react';
-import { api, getErrorMessage } from '@/lib/api';
-import { Logo } from '@/components/ui/logo';
-import { Card, CardHeader, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { H2, Paragraph } from '@/components/ui/typography';
-import { DecorativeBlob, FlexBetween, FlexRow, MutedText } from '@/components/ui';
-import { formatDate } from '@/lib/helpers';
-import { stripHtml, sanitizeTextOnly } from '@/lib/sanitize';
-import { Search, Shield, Clock, CheckCircle, AlertCircle, Send, MessageSquare } from 'lucide-react';
-import Link from 'next/link';
-import type { Feedback, FeedbackStatus, FeedbackType } from '@/lib/types';
-import { useDebounce } from '@/hooks/use-common';
+import { useState, useCallback, useMemo, FormEvent, useEffect } from "react";
+import { api, getErrorMessage } from "@/lib/api";
+import { Logo } from "@/components/ui/logo";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { H2, Paragraph } from "@/components/ui/typography";
+import {
+  DecorativeBlob,
+  FlexBetween,
+  FlexRow,
+  MutedText,
+} from "@/components/ui";
+import { formatDate } from "@/lib/helpers";
+import { stripHtml, sanitizeTextOnly } from "@/lib/sanitize";
+import {
+  Search,
+  Shield,
+  Clock,
+  CheckCircle,
+  AlertCircle,
+  Send,
+  MessageSquare,
+} from "lucide-react";
+import Link from "next/link";
+import type { Feedback, FeedbackStatus, FeedbackType } from "@/lib/types";
+import { useDebounce } from "@/hooks/use-common";
 
 interface FeedbackInteraction {
   id: number;
-  tipo: 'MENSAGEM_PUBLICA' | 'NOTA_INTERNA' | 'MUDANCA_STATUS';
+  tipo: "MENSAGEM_PUBLICA" | "NOTA_INTERNA" | "MUDANCA_STATUS";
   mensagem: string;
   data: string;
   data_formatada?: string;
@@ -31,12 +44,12 @@ interface FeedbackStatusResponse extends Feedback {
 }
 
 export default function AcompanharPage() {
-  const [protocolo, setProtocolo] = useState('');
+  const [protocolo, setProtocolo] = useState("");
   const debouncedProtocolo = useDebounce(protocolo, 300);
   const [feedback, setFeedback] = useState<FeedbackStatusResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [publicMsg, setPublicMsg] = useState('');
+  const [publicMsg, setPublicMsg] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [cooldownMs, setCooldownMs] = useState(0);
 
@@ -51,51 +64,72 @@ export default function AcompanharPage() {
     return () => clearInterval(timer);
   }, [cooldownMs]);
 
-  const buscarProtocolo = useCallback(async (e: FormEvent) => {
-    e.preventDefault();
+  const buscarProtocolo = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
 
-    if (cooldownMs > 0) {
-      setError('Aguarde alguns segundos antes de tentar novamente.');
-      return;
-    }
-    
-    if (!debouncedProtocolo.trim()) {
-      setError('Por favor, digite um código de protocolo');
-      return;
-    }
-
-    setLoading(true);
-    setError(null);
-    setFeedback(null);
-
-    try {
-      const response = await api.get<FeedbackStatusResponse>('/api/feedbacks/consultar-protocolo/', {
-        params: { protocolo: debouncedProtocolo.toUpperCase().trim() }
-      });
-
-      setFeedback(response);
-    } catch (err) {
-      const status = (err as any)?.response?.status as number | undefined;
-      const waitSeconds = (err as any)?.response?.data?.wait_seconds as number | undefined;
-      const errorMessage = getErrorMessage(err);
-      
-      if (status === 429 || errorMessage.includes('429') || errorMessage.includes('tentativas')) {
-        const ms = Math.max((waitSeconds ?? 60) * 1000, 0);
-        setCooldownMs(ms);
-        setError(`🚨 Muitas tentativas. Aguarde ${Math.ceil(ms / 1000)} segundos antes de tentar de novo.`);
-      } else if (status === 404 || errorMessage.includes('não encontrado')) {
-        setError('Protocolo não encontrado. Verifique o código digitado.');
-      } else if (status === 400 || errorMessage.includes('inválido')) {
-        setError('Código de protocolo inválido.');
-      } else if (errorMessage.includes('Network') || errorMessage.includes('ERR_NETWORK')) {
-        setError('⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
-      } else {
-        setError(errorMessage || 'Erro ao consultar protocolo. Tente novamente.');
+      if (cooldownMs > 0) {
+        setError("Aguarde alguns segundos antes de tentar novamente.");
+        return;
       }
-    } finally {
-      setLoading(false);
-    }
-  }, [debouncedProtocolo, cooldownMs]);
+
+      if (!debouncedProtocolo.trim()) {
+        setError("Por favor, digite um código de protocolo");
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+      setFeedback(null);
+
+      try {
+        const response = await api.get<FeedbackStatusResponse>(
+          "/api/feedbacks/consultar-protocolo/",
+          {
+            params: { protocolo: debouncedProtocolo.toUpperCase().trim() },
+          },
+        );
+
+        setFeedback(response);
+      } catch (err) {
+        const status = (err as any)?.response?.status as number | undefined;
+        const waitSeconds = (err as any)?.response?.data?.wait_seconds as
+          | number
+          | undefined;
+        const errorMessage = getErrorMessage(err);
+
+        if (
+          status === 429 ||
+          errorMessage.includes("429") ||
+          errorMessage.includes("tentativas")
+        ) {
+          const ms = Math.max((waitSeconds ?? 60) * 1000, 0);
+          setCooldownMs(ms);
+          setError(
+            `🚨 Muitas tentativas. Aguarde ${Math.ceil(ms / 1000)} segundos antes de tentar de novo.`,
+          );
+        } else if (status === 404 || errorMessage.includes("não encontrado")) {
+          setError("Protocolo não encontrado. Verifique o código digitado.");
+        } else if (status === 400 || errorMessage.includes("inválido")) {
+          setError("Código de protocolo inválido.");
+        } else if (
+          errorMessage.includes("Network") ||
+          errorMessage.includes("ERR_NETWORK")
+        ) {
+          setError(
+            "⚠️ Não foi possível conectar ao servidor. Verifique se o backend está rodando.",
+          );
+        } else {
+          setError(
+            errorMessage || "Erro ao consultar protocolo. Tente novamente.",
+          );
+        }
+      } finally {
+        setLoading(false);
+      }
+    },
+    [debouncedProtocolo, cooldownMs],
+  );
 
   const handleEnviarResposta = useCallback(async () => {
     if (!feedback) return;
@@ -104,19 +138,22 @@ export default function AcompanharPage() {
       setError(`Mensagem excede o limite de ${MAX_MESSAGE_LENGTH} caracteres.`);
       return;
     }
-    
+
     try {
       setIsSending(true);
       setError(null);
-      
+
       // Sanitizar mensagem antes de enviar
       const sanitizedMessage = sanitizeTextOnly(publicMsg.trim());
-      
-      const res = await api.post<FeedbackInteraction>('/api/feedbacks/responder-protocolo/', {
-        protocolo: feedback.protocolo,
-        mensagem: sanitizedMessage,
-      });
-      
+
+      const res = await api.post<FeedbackInteraction>(
+        "/api/feedbacks/responder-protocolo/",
+        {
+          protocolo: feedback.protocolo,
+          mensagem: sanitizedMessage,
+        },
+      );
+
       // Adicionar a nova interação à lista local
       setFeedback((prev) => {
         if (!prev) return prev;
@@ -124,14 +161,17 @@ export default function AcompanharPage() {
         interacoes.unshift(res); // Mais recente primeiro
         return { ...prev, interacoes };
       });
-      
-      setPublicMsg('');
+
+      setPublicMsg("");
     } catch (err) {
       const errorMessage = getErrorMessage(err);
-      if (errorMessage.includes('excede o limite') || errorMessage.includes('limite')) {
+      if (
+        errorMessage.includes("excede o limite") ||
+        errorMessage.includes("limite")
+      ) {
         setError(errorMessage);
       } else {
-        setError(errorMessage || 'Erro ao enviar mensagem. Tente novamente.');
+        setError(errorMessage || "Erro ao enviar mensagem. Tente novamente.");
       }
     } finally {
       setIsSending(false);
@@ -140,22 +180,22 @@ export default function AcompanharPage() {
 
   const getStatusColor = useCallback((status: string) => {
     const cores: Record<string, string> = {
-      'pendente': 'bg-warning-100 text-warning-800 border-warning-300',
-      'em_analise': 'bg-primary/10 text-primary border-primary/30',
-      'resolvido': 'bg-success-100 text-success-800 border-success-300',
-      'fechado': 'bg-neutral-100 text-secondary border-neutral-300'
+      pendente: "bg-warning-100 text-warning-800 border-warning-300",
+      em_analise: "bg-primary/10 text-primary border-primary/30",
+      resolvido: "bg-success-100 text-success-800 border-success-300",
+      fechado: "bg-neutral-100 text-secondary border-neutral-300",
     };
-    return cores[status] || 'bg-neutral-100 text-secondary border-neutral-300';
+    return cores[status] || "bg-neutral-100 text-secondary border-neutral-300";
   }, []);
 
   const getStatusIcon = useCallback((status: string) => {
     const icones: Record<string, string> = {
-      'pendente': '⏳',
-      'em_analise': '🔍',
-      'resolvido': '✅',
-      'fechado': '📁'
+      pendente: "⏳",
+      em_analise: "🔍",
+      resolvido: "✅",
+      fechado: "📁",
     };
-    return icones[status] || '📋';
+    return icones[status] || "📋";
   }, []);
 
   return (
@@ -163,11 +203,14 @@ export default function AcompanharPage() {
       {/* Decorative elements */}
       <DecorativeBlob tone="primary" placement="topLeftQuarter" />
       <DecorativeBlob tone="secondary" placement="bottomRightQuarter" />
-      
+
       <div className="max-w-3xl mx-auto relative z-10">
         {/* Header */}
         <div className="text-center mb-10 animate-fade-in">
-          <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
+          <Link
+            href="/"
+            className="inline-block mb-6 hover:scale-105 transition-transform"
+          >
             <Logo size="xl" />
           </Link>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
@@ -180,7 +223,8 @@ export default function AcompanharPage() {
             🔍 Acompanhar <span className="text-secondary">Feedback</span>
           </H2>
           <Paragraph className="text-muted-foreground">
-            Digite o código do protocolo para consultar o status da sua manifestação
+            Digite o código do protocolo para consultar o status da sua
+            manifestação
           </Paragraph>
         </div>
 
@@ -192,17 +236,19 @@ export default function AcompanharPage() {
                 <Search className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-secondary">Buscar Protocolo</h3>
-                  <MutedText block>Informe o código recebido</MutedText>
+                <h3 className="text-lg font-semibold text-secondary">
+                  Buscar Protocolo
+                </h3>
+                <MutedText block>Informe o código recebido</MutedText>
               </div>
             </div>
           </CardHeader>
-          
+
           <CardContent className="p-6">
             <form onSubmit={buscarProtocolo} className="space-y-4">
               <div className="space-y-2">
-                <label 
-                  htmlFor="protocolo" 
+                <label
+                  htmlFor="protocolo"
                   className="block text-sm font-semibold text-secondary"
                 >
                   Código do Protocolo
@@ -220,8 +266,8 @@ export default function AcompanharPage() {
                   />
                 </div>
                 <p className="text-xs text-muted-foreground flex items-center gap-1">
-                  <Shield className="w-3 h-3" />
-                  O código foi enviado para você após o registro do feedback
+                  <Shield className="w-3 h-3" />O código foi enviado para você
+                  após o registro do feedback
                 </p>
               </div>
 
@@ -250,11 +296,13 @@ export default function AcompanharPage() {
                 </p>
               </div>
             )}
-            
+
             {cooldownMs > 0 && (
               <FlexRow className="mt-3 text-warning text-sm">
                 <Clock className="w-4 h-4" />
-                <span>Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta</span>
+                <span>
+                  Aguarde {Math.ceil(cooldownMs / 1000)}s para nova consulta
+                </span>
               </FlexRow>
             )}
           </CardContent>
@@ -268,11 +316,19 @@ export default function AcompanharPage() {
               <FlexBetween>
                 <div>
                   <p className="text-sm opacity-90 mb-1">Protocolo</p>
-                  <p className="text-2xl font-bold font-mono">{feedback.protocolo}</p>
+                  <p className="text-2xl font-bold font-mono">
+                    {feedback.protocolo}
+                  </p>
                 </div>
-                <div className={`px-4 py-2 rounded-full border-2 ${getStatusColor(feedback.status)}`}>
-                  <span className="text-lg mr-2">{getStatusIcon(feedback.status)}</span>
-                  <span className="font-semibold">{feedback.status_display}</span>
+                <div
+                  className={`px-4 py-2 rounded-full border-2 ${getStatusColor(feedback.status)}`}
+                >
+                  <span className="text-lg mr-2">
+                    {getStatusIcon(feedback.status)}
+                  </span>
+                  <span className="font-semibold">
+                    {feedback.status_display}
+                  </span>
                 </div>
               </FlexBetween>
             </div>
@@ -286,21 +342,37 @@ export default function AcompanharPage() {
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-start">
-                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Tipo:</span>
-                    <span className="text-secondary">{feedback.tipo_display}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">
+                      Tipo:
+                    </span>
+                    <span className="text-secondary">
+                      {feedback.tipo_display}
+                    </span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Título:</span>
-                    <span className="text-secondary font-semibold">{feedback.titulo}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">
+                      Título:
+                    </span>
+                    <span className="text-secondary font-semibold">
+                      {feedback.titulo}
+                    </span>
                   </div>
                   <div className="flex items-start">
-                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">Enviado em:</span>
-                    <span className="text-secondary">{formatDate(feedback.data_criacao, 'long')}</span>
+                    <span className="text-text-secondary font-medium w-24 flex-shrink-0">
+                      Enviado em:
+                    </span>
+                    <span className="text-secondary">
+                      {formatDate(feedback.data_criacao, "long")}
+                    </span>
                   </div>
                   {feedback.data_atualizacao !== feedback.data_criacao && (
                     <div className="flex items-start">
-                      <span className="text-text-secondary font-medium w-24 flex-shrink-0">Atualizado em:</span>
-                      <span className="text-secondary">{formatDate(feedback.data_atualizacao, 'long')}</span>
+                      <span className="text-text-secondary font-medium w-24 flex-shrink-0">
+                        Atualizado em:
+                      </span>
+                      <span className="text-secondary">
+                        {formatDate(feedback.data_atualizacao, "long")}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -319,19 +391,25 @@ export default function AcompanharPage() {
                   <div className="relative">
                     <div className="absolute -left-8 w-4 h-4 rounded-full bg-success-500 border-2 border-white"></div>
                     <div className="bg-muted rounded-lg p-4">
-                      <p className="font-semibold text-foreground">✅ Feedback Registrado</p>
+                      <p className="font-semibold text-foreground">
+                        ✅ Feedback Registrado
+                      </p>
                       <MutedText block className="mt-1">
-                        {formatDate(feedback.data_criacao, 'long')}
+                        {formatDate(feedback.data_criacao, "long")}
                       </MutedText>
                     </div>
                   </div>
 
                   {/* Evento: Em Análise (se aplicável) */}
-                  {(feedback.status === 'em_analise' || feedback.status === 'resolvido' || feedback.status === 'fechado') && (
+                  {(feedback.status === "em_analise" ||
+                    feedback.status === "resolvido" ||
+                    feedback.status === "fechado") && (
                     <div className="relative">
                       <div className="absolute -left-8 w-4 h-4 rounded-full bg-primary border-2 border-white"></div>
                       <div className="bg-primary/10 rounded-lg p-4">
-                        <p className="font-semibold text-primary">🔍 Em Análise</p>
+                        <p className="font-semibold text-primary">
+                          🔍 Em Análise
+                        </p>
                         <p className="text-sm text-primary-dark mt-1">
                           Estamos avaliando sua manifestação
                         </p>
@@ -346,14 +424,17 @@ export default function AcompanharPage() {
                       <div className="bg-secondary-50 rounded-lg p-4 border-l-4 border-secondary-500">
                         <div className="flex items-center mb-2">
                           <span className="text-lg mr-2">💬</span>
-                          <p className="font-semibold text-secondary-800">Resposta da Empresa</p>
+                          <p className="font-semibold text-secondary-800">
+                            Resposta da Empresa
+                          </p>
                         </div>
                         <p className="text-muted-foreground whitespace-pre-wrap mt-2">
                           {feedback.resposta_empresa}
                         </p>
                         {feedback.data_resposta && (
                           <p className="text-sm text-secondary-600 mt-2">
-                            Respondido em: {formatDate(feedback.data_resposta, 'long')}
+                            Respondido em:{" "}
+                            {formatDate(feedback.data_resposta, "long")}
                           </p>
                         )}
                       </div>
@@ -361,17 +442,20 @@ export default function AcompanharPage() {
                   )}
 
                   {/* Evento: Status Atual */}
-                  {feedback.status === 'pendente' && !feedback.resposta_empresa && (
-                    <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-warning-500 border-2 border-white animate-pulse"></div>
-                      <div className="bg-warning-50 rounded-lg p-4">
-                        <p className="font-semibold text-warning-800">⏳ Aguardando Análise</p>
-                        <p className="text-sm text-warning-700 mt-1">
-                          Sua manifestação será avaliada em breve
-                        </p>
+                  {feedback.status === "pendente" &&
+                    !feedback.resposta_empresa && (
+                      <div className="relative">
+                        <div className="absolute -left-8 w-4 h-4 rounded-full bg-warning-500 border-2 border-white animate-pulse"></div>
+                        <div className="bg-warning-50 rounded-lg p-4">
+                          <p className="font-semibold text-warning-800">
+                            ⏳ Aguardando Análise
+                          </p>
+                          <p className="text-sm text-warning-700 mt-1">
+                            Sua manifestação será avaliada em breve
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  )}
+                    )}
                 </div>
               </div>
 
@@ -383,12 +467,22 @@ export default function AcompanharPage() {
                   </h3>
                   <div className="space-y-3">
                     {feedback.interacoes
-                      .filter((i: FeedbackInteraction) => i.tipo === 'MENSAGEM_PUBLICA' || i.tipo === 'MUDANCA_STATUS')
+                      .filter(
+                        (i: FeedbackInteraction) =>
+                          i.tipo === "MENSAGEM_PUBLICA" ||
+                          i.tipo === "MUDANCA_STATUS",
+                      )
                       .map((i: FeedbackInteraction) => (
                         <div key={i.id} className="rounded border p-3 text-sm">
                           <div className="flex justify-between">
-                            <span className="font-medium">{i.tipo === 'MENSAGEM_PUBLICA' ? i.autor_nome : 'Atualização de Status'}</span>
-                            <span className="text-xs text-muted-foreground">{i.data_formatada || i.data}</span>
+                            <span className="font-medium">
+                              {i.tipo === "MENSAGEM_PUBLICA"
+                                ? i.autor_nome
+                                : "Atualização de Status"}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {i.data_formatada || i.data}
+                            </span>
                           </div>
                           <p className="mt-1 text-foreground">{i.mensagem}</p>
                         </div>
@@ -396,9 +490,18 @@ export default function AcompanharPage() {
                   </div>
                   {/* Entrada de nova mensagem (placeholder até endpoint público) */}
                   <div className="mt-4">
-                    <p className="text-xs text-muted-foreground mb-2">Envie uma mensagem para a empresa</p>
-                    <textarea className="w-full border rounded p-2" placeholder="Escreva sua mensagem..." rows={3} disabled />
-                    <p className="text-xs text-orange-600 mt-2">Em breve: envio de mensagens públicas pelo protocolo.</p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Envie uma mensagem para a empresa
+                    </p>
+                    <textarea
+                      className="w-full border rounded p-2"
+                      placeholder="Escreva sua mensagem..."
+                      rows={3}
+                      disabled
+                    />
+                    <p className="text-xs text-warning-600 mt-2">
+                      Em breve: envio de mensagens públicas pelo protocolo.
+                    </p>
                   </div>
                 </div>
               )}
@@ -406,26 +509,40 @@ export default function AcompanharPage() {
               {/* Informações Adicionais */}
               <div className="bg-primary/10 rounded-lg p-4 border-l-4 border-primary">
                 <p className="text-sm text-primary">
-                  <strong>💡 Dica:</strong> Guarde este código de protocolo para consultas futuras. 
-                  Você receberá notificações quando houver atualizações sobre seu feedback.
+                  <strong>💡 Dica:</strong> Guarde este código de protocolo para
+                  consultas futuras. Você receberá notificações quando houver
+                  atualizações sobre seu feedback.
                 </p>
               </div>
 
               {/* Conversa Pública */}
               {feedback && (
                 <div>
-                  <h3 className="text-lg font-semibold text-foreground mb-4">Conversa</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-4">
+                    Conversa
+                  </h3>
                   {feedback.interacoes && feedback.interacoes.length > 0 ? (
                     <div className="space-y-3">
                       {feedback.interacoes
-                        .filter((i) => i.tipo === 'MENSAGEM_PUBLICA' || i.tipo === 'MUDANCA_STATUS')
+                        .filter(
+                          (i) =>
+                            i.tipo === "MENSAGEM_PUBLICA" ||
+                            i.tipo === "MUDANCA_STATUS",
+                        )
                         .map((i) => (
-                          <div key={i.id} className="rounded border p-3 text-sm">
+                          <div
+                            key={i.id}
+                            className="rounded border p-3 text-sm"
+                          >
                             <div className="flex justify-between">
                               <span className="font-medium">
-                                {i.tipo === 'MENSAGEM_PUBLICA' ? i.autor_nome : 'Atualização de Status'}
+                                {i.tipo === "MENSAGEM_PUBLICA"
+                                  ? i.autor_nome
+                                  : "Atualização de Status"}
                               </span>
-                              <span className="text-xs text-muted-foreground">{i.data_formatada}</span>
+                              <span className="text-xs text-muted-foreground">
+                                {i.data_formatada}
+                              </span>
                             </div>
                             <p className="mt-1 text-foreground">{i.mensagem}</p>
                           </div>
@@ -436,13 +553,19 @@ export default function AcompanharPage() {
                   )}
                   {/* Entrada de nova mensagem */}
                   <div className="mt-4">
-                    <p className="text-xs text-muted-foreground mb-2">Envie uma mensagem para a empresa</p>
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Envie uma mensagem para a empresa
+                    </p>
                     <textarea
                       className="w-full border rounded p-2"
                       placeholder={`Escreva sua mensagem (máx. ${MAX_MESSAGE_LENGTH} caracteres)...`}
                       rows={3}
                       value={publicMsg}
-                      onChange={(e) => setPublicMsg(e.target.value.slice(0, MAX_MESSAGE_LENGTH))}
+                      onChange={(e) =>
+                        setPublicMsg(
+                          e.target.value.slice(0, MAX_MESSAGE_LENGTH),
+                        )
+                      }
                     />
                     <div className="mt-1 text-xs text-muted-foreground text-right">
                       {publicMsg.length}/{MAX_MESSAGE_LENGTH}
@@ -453,7 +576,7 @@ export default function AcompanharPage() {
                         disabled={isSending || !publicMsg.trim()}
                         className="bg-primary text-foreground font-semibold px-4 py-2 rounded disabled:opacity-50"
                       >
-                        {isSending ? 'Enviando...' : 'Enviar Mensagem'}
+                        {isSending ? "Enviando..." : "Enviar Mensagem"}
                       </button>
                     </div>
                   </div>
@@ -465,8 +588,8 @@ export default function AcompanharPage() {
 
         {/* Footer - Link para voltar */}
         <div className="mt-8 text-center">
-          <a 
-            href="/" 
+          <a
+            href="/"
             className="text-primary hover:underline font-medium inline-flex items-center"
           >
             ← Voltar para página inicial
