@@ -12,6 +12,9 @@ from rest_framework.response import Response
 from apps.core.decorators import require_feature
 from apps.core.exceptions import FeatureNotAvailableError
 from apps.core.pagination import StandardResultsSetPagination
+
+# ✅ CORREÇÃO DE SEGURANÇA (2026-02-05): Importar permissions customizadas RBAC
+from apps.core.permissions import CanModifyFeedback
 from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.utils import get_client_ip, get_current_tenant
 from apps.core.utils.privacy import anonymize_ip
@@ -42,6 +45,11 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     O isolamento de dados acontece automaticamente graças ao TenantAwareModel.
     Cada tenant só consegue ver/editar seus próprios feedbacks.
 
+    🔒 RBAC (2026-02-05):
+    - VIEWER: Apenas leitura (GET)
+    - MODERATOR: Pode modificar feedbacks não-internos
+    - ADMIN/OWNER: Acesso total
+
     Endpoints disponíveis:
     - POST /api/feedbacks/ - Criar novo feedback (retorna protocolo)
     - GET /api/feedbacks/ - Listar feedbacks do tenant (autenticado, paginado)
@@ -57,7 +65,8 @@ class FeedbackViewSet(viewsets.ModelViewSet):
     """
 
     serializer_class = FeedbackSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # ✅ CORREÇÃO RBAC (2026-02-05): VIEWER não pode modificar, apenas ler
+    permission_classes = [permissions.IsAuthenticated, CanModifyFeedback]
     pagination_class = StandardResultsSetPagination
     parser_classes = [JSONParser, MultiPartParser, FormParser]
     filterset_class = FeedbackFilter
@@ -960,55 +969,71 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
     def _set_tenant_from_request(self, request):
         """
-        Define o tenant atual baseado no header X-Tenant-ID ou subdomínio.
+        🔒 CORREÇÃO DE SEGURANÇA (2026-02-05):
+        Define o tenant atual APENAS via subdomínio (não aceita X-Tenant-ID).
+
+        ⚠️ CRITICAL FIX: Removido suporte a X-Tenant-ID para endpoints públicos
+        para prevenir ataques de enumeração cross-tenant.
+
+        X-Tenant-ID só é aceito em:
+        - Requisições autenticadas (middleware valida)
+        - Contextos administrativos
+
+        Endpoints públicos (como consultar-protocolo) devem usar APENAS subdomínio,
+        pois subdomínio vem do DNS e não pode ser forjado pelo cliente.
+
         Usado para endpoints exempt no middleware (como consultar-protocolo).
         """
-        import os
-
-        from django.conf import settings
-
         from apps.core.utils import set_current_tenant
         from apps.tenants.models import Client
 
-        # Tentar via header X-Tenant-ID (somente quando explicitamente habilitado)
-        header_enabled = os.getenv(
-            "TENANT_HEADER_ENABLED", "True" if settings.DEBUG else "False"
-        ).lower() in ("true", "1", "yes")
-        header_allowed = header_enabled and request.path.startswith("/api/feedbacks/")
-        if header_allowed:
-            tenant_id = request.headers.get("X-Tenant-ID")
-            if tenant_id:
-                try:
-                    tenant_id_int = int(str(tenant_id).strip())
-                    tenant = Client.objects.only(
-                        "id", "nome", "subdominio", "ativo"
-                    ).get(
-                        id=tenant_id_int,
-                        ativo=True,
-                    )
-                    set_current_tenant(tenant)
-                    request.tenant = tenant
-                    return
-                except (Client.DoesNotExist, ValueError, TypeError):
-                    pass
-
-        # Tentar via subdomínio
+        # ⚠️ IMPORTANTE: X-Tenant-ID foi REMOVIDO de endpoints públicos
+        # Aceitar X-Tenant-ID permitia ataques de enumeração:
+        # curl -H "X-Tenant-ID: 1" /api/feedbacks/consultar-protocolo?protocolo=X
+        # curl -H "X-Tenant-ID: 2" /api/feedbacks/consultar-protocolo?protocolo=X
+        # ... atacante pode enumerar TODOS os tenants
+        # ✅ SOLUÇÃO: Apenas subdomínio via DNS (não forjável)
         host = request.get_host()
         host_without_port = host.split(":")[0]
         parts = host_without_port.split(".")
 
-        if len(parts) > 1:
-            subdomain = parts[0]
-            if subdomain not in ["www", "api", "admin"]:
-                try:
-                    tenant = Client.objects.get(
-                        subdominio__iexact=subdomain, ativo=True
-                    )
-                    set_current_tenant(tenant)
-                    request.tenant = tenant
-                    return
-                except Client.DoesNotExist:
-                    pass
+        # Validar que não é domínio raiz (precisa de subdomínio)
+        if len(parts) < 2:
+            logger.warning(
+                f"🚨 SEGURANÇA: Tentativa de acesso público sem subdomínio | "
+                f"Host: {host} | Path: {request.path}"
+            )
+            return  # Sem tenant, endpoint retornará 404
+
+        subdomain = parts[0]
+
+        # Rejeitar subdomínios reservados do sistema
+        if subdomain in ["www", "api", "admin", "app", "platform", "staging", "prod"]:
+            logger.warning(
+                f"🚨 SEGURANÇA: Tentativa de usar subdomínio reservado | "
+                f"Subdomínio: {subdomain} | Path: {request.path}"
+            )
+            return  # Sem tenant, endpoint retornará 404
+
+        try:
+            tenant = Client.objects.only("id", "nome", "subdominio", "ativo").get(
+                subdominio__iexact=subdomain,
+                ativo=True,
+            )
+            set_current_tenant(tenant)
+            request.tenant = tenant
+            logger.info(
+                f"✅ Tenant identificado via subdomínio | "
+                f"Tenant: {tenant.nome} (ID: {tenant.pk}) | "
+                f"Subdomínio: {subdomain}"
+            )
+        except Client.DoesNotExist:
+            logger.warning(
+                f"⚠️ Subdomínio não encontrado ou inativo | "
+                f"Subdomínio: {subdomain} | "
+                f"Path: {request.path}"
+            )
+            # Sem tenant, endpoint retornará 404 genérico
 
     @action(
         detail=False,
