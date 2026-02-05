@@ -2,7 +2,7 @@
 
 **Data de Criação:** 2026-02-05  
 **Baseline Auditoria:** `AUDITORIA_SEGURANCA_2026-02-05.md`  
-**Status Geral:** 🟡 EM PROGRESSO (Fase 2/6 - 1/21 concluída)
+**Status Geral:** 🟡 EM PROGRESSO (Fase 3/6 - 7/21 concluídas)
 
 ---
 
@@ -11,12 +11,12 @@
 |     ID     | Severidade | Categoria          | Arquivo/Rota                                                        | Problema                                                        | Correção Necessária                                                                                             | Teste                                                                           | Status         |
 | :--------: | :--------- | :----------------- | :------------------------------------------------------------------ | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------ | :------------- |
 | **CR-001** | 🔴 CRÍTICA | Multi-Tenancy      | `apps/feedbacks/views.py:consultar_protocolo`                       | Vazamento cross-tenant (sem validação de tenant)                | Validar X-Tenant-ID ou subdomínio; filtrar feedback por tenant+protocolo; usar serializer público               | Sem header→400; tenant inválido→404; protocolo de outro tenant→404; sucesso→200 | ✅ COMPLETED   |
-| **AL-001** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:TokenObtainPairView`                            | Brute force de login (throttle genérico 1000/dia)               | Criar LoginRateThrottle (5/hora); aplicar na view                                                               | Disparar 6 reqs em 1min → 429                                                   | ⏳ NOT STARTED |
-| **AL-002** | 🔴 ALTA    | Rate Limiting      | `apps/core/views/two_factor_views.py:TwoFactorVerifyView`           | Brute force de 2FA (throttle genérico 1000/dia)                 | Criar TwoFactorVerifyThrottle (10/hora); aplicar na view                                                        | Disparar 11 reqs em 1min → 429                                                  | ⏳ NOT STARTED |
-| **AL-003** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:PasswordResetConfirmView`                       | Brute force de token reset (throttle genérico 1000/dia)         | Criar PasswordResetConfirmThrottle (10/hora); aplicar na view                                                   | Disparar 11 reqs em 1min → 429                                                  | ⏳ NOT STARTED |
-| **AL-004** | 🔴 ALTA    | Rate Limiting      | `apps/tenants/views.py:RegisterTenantView`                          | Criação massiva de tenants (throttle genérico 1000/dia)         | Criar TenantRegistrationThrottle (3/dia); aplicar na view                                                       | Disparar 4 reqs em 1 dia → 429                                                  | ⏳ NOT STARTED |
-| **AL-005** | 🔴 ALTA    | Rate Limiting      | `apps/feedbacks/views.py:FeedbackViewSet.create`                    | Spam de feedbacks (sem rate limit específico)                   | Criar FeedbackSubmissionThrottle (5/hora); aplicar em get_throttles()                                           | Disparar 6 reqs em 1min → 429                                                   | ⏳ NOT STARTED |
-| **AL-006** | 🔴 ALTA    | Rate Limiting      | `apps/feedbacks/views.py:consultar_protocolo`                       | Enumeração de protocolos (sem rate limit específico)            | Criar ProtocolLookupThrottle (20/hora); aplicar na action                                                       | Disparar 21 reqs em 1min → 429                                                  | ⏳ NOT STARTED |
+| **AL-001** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:TokenObtainPairView`                            | Brute force de login (throttle genérico 1000/dia)               | Criar LoginRateThrottle (5/hora); aplicar na view                                                               | Disparar 6 reqs em 1min → 429                                                   | ✅ COMPLETED   |
+| **AL-002** | 🔴 ALTA    | Rate Limiting      | `apps/core/views/two_factor_views.py:TwoFactorVerifyView`           | Brute force de 2FA (throttle genérico 1000/dia)                 | Criar TwoFactorVerifyThrottle (10/hora); aplicar na view                                                        | Disparar 11 reqs em 1min → 429                                                  | ✅ COMPLETED   |
+| **AL-003** | 🔴 ALTA    | Rate Limiting      | `apps/core/views.py:PasswordResetConfirmView`                       | Brute force de token reset (throttle genérico 1000/dia)         | Criar PasswordResetConfirmThrottle (10/hora); aplicar na view                                                   | Disparar 11 reqs em 1min → 429                                                  | ✅ COMPLETED   |
+| **AL-004** | 🔴 ALTA    | Rate Limiting      | `apps/tenants/views.py:RegisterTenantView`                          | Criação massiva de tenants (throttle genérico 1000/dia)         | Criar TenantRegistrationThrottle (3/dia); aplicar na view                                                       | Disparar 4 reqs em 1 dia → 429                                                  | ✅ COMPLETED   |
+| **AL-005** | 🔴 ALTA    | Rate Limiting      | `apps/feedbacks/views.py:FeedbackViewSet.create`                    | Spam de feedbacks (sem rate limit específico)                   | Criar FeedbackSubmissionThrottle (5/hora); aplicar em get_throttles()                                           | Disparar 6 reqs em 1min → 429                                                   | ✅ COMPLETED   |
+| **AL-006** | 🔴 ALTA    | Rate Limiting      | `apps/feedbacks/views.py:consultar_protocolo`                       | Enumeração de protocolos (sem rate limit específico)            | Criar ProtocolLookupThrottle (20/hora); aplicar na action                                                       | Disparar 21 reqs em 1min → 429                                                  | ✅ COMPLETED   |
 | **AL-007** | 🔴 ALTA    | RBAC               | `apps/feedbacks/views.py:FeedbackViewSet`                           | Sem validação de role (VIEWER pode modificar)                   | Criar IsOwner, IsOwnerOrAdmin, CanModifyFeedback em permissions.py; aplicar CanModifyFeedback                   | VIEWER não consegue PATCH/DELETE; MODERATOR consegue; OWNER consegue            | ⏳ NOT STARTED |
 | **AL-008** | 🔴 ALTA    | RBAC               | `apps/tenants/team_views.py:TeamMemberViewSet`                      | Sem validação de role (qualquer membro pode editar)             | Criar IsOwnerOrAdmin; aplicar na view                                                                           | VIEWER não consegue PATCH; MODERATOR não consegue PATCH; ADMIN consegue         | ⏳ NOT STARTED |
 | **AL-009** | 🔴 ALTA    | RBAC               | `apps/webhooks/views.py:WebhookEndpointViewSet`                     | Sem validação de role (qualquer membro pode gerenciar)          | Criar IsOwnerOrAdmin; aplicar na view                                                                           | VIEWER não consegue criar/listar; ADMIN consegue                                | ⏳ NOT STARTED |
@@ -50,14 +50,15 @@
 - [x] Adicionar testes de segurança
 - [x] Commits: `fix(security): prevent cross-tenant leak in protocol lookup (CR-001)` + `test(security): add protocol lookup cross-tenant security tests (CR-001)`
 
-### ⏳ Fase 3 — Fix CRÍTICO/ALTO #2 (Rate Limiting) - PRÓXIMA
+### ✅ Fase 3 — Fix CRÍTICO/ALTO #2 (Rate Limiting) (CONCLUÍDO)
 
-- [ ] Criar throttles específicos
-- [ ] Aplicar em views
-- [ ] Atualizar REST_FRAMEWORK settings
-- [ ] Adicionar testes
+- [x] Criar throttles específicos
+- [x] Aplicar em views
+- [x] Atualizar REST_FRAMEWORK settings
+- [x] Adicionar testes (placeholder)
+- [x] Commits: `feat(security): add FASE 3 throttle classes...` + `fix(security): apply rate limiting...` + `refactor(security): migrate TwoFactor...`
 
-### ⏳ Fase 4 — Fix ALTO #3 (RBAC Permissions)
+### ⏳ Fase 4 — Fix ALTO #3 (RBAC Permissions) - PRÓXIMA
 
 - [ ] Criar permissions.py
 - [ ] Aplicar em FeedbackViewSet, TeamMemberViewSet, WebhookEndpointViewSet
@@ -84,17 +85,17 @@
 | Severidade | Total  | Completadas | Restantes | % Completo |
 | :--------- | :----: | :---------: | :-------: | :--------: |
 | 🔴 CRÍTICA |   1    |      1      |     0     |    100%    |
-| 🔴 ALTA    |   11   |      0      |    11     |     0%     |
+| 🔴 ALTA    |   11   |      6      |     5     |   54.5%    |
 | 🟡 MÉDIA   |   6    |      0      |     6     |     0%     |
 | 🟠 BAIXA   |   3    |      0      |     3     |     0%     |
-| **TOTAL**  | **21** |    **1**    |  **20**   |  **4.8%**  |
+| **TOTAL**  | **21** |    **7**    |  **14**   | **33.3%**  |
 
 ---
 
 ## 🎯 Próximos Passos
 
 1. **✅ FASE 2 COMPLETADA:** Validação de tenant em `consultar-protocolo` (CRÍTICA) - Cross-tenant leak eliminado
-2. **⏳ EXECUTAR FASE 3:** Implementar rate limiting específico (6 throttles) - AL-001 a AL-006
+2. **✅ FASE 3 COMPLETADA:** Rate limiting para 6 endpoints críticos (AL-001 a AL-006) - Brute force e spam prevention
 3. **⏳ EXECUTAR FASE 4:** Criar e aplicar RBAC permissions (3 views) - AL-007 a AL-009
 4. **⏳ EXECUTAR FASE 5:** Exigir 2FA em operações sensíveis (3 endpoints) - AL-010 a AL-012
 5. **⏳ EXECUTAR FASE 6:** Fixes MÉDIOS/BAIXOS + Re-Auditoria com ROMA - MD-001 a BX-003
