@@ -155,10 +155,19 @@ def feedback_factory(db, tenant_factory):
 @pytest.fixture
 def authenticated_user(db, user_factory, tenant_factory):
     """Usuário autenticado com tenant associado."""
+    from apps.tenants.models import TeamMember
+    
     tenant = tenant_factory()
     user = user_factory(email="admin@tenant.com")
     tenant.owner = user
     tenant.save()
+    # Criar TeamMember para que o sistema de permissões funcione
+    TeamMember.objects.create(
+        user=user,
+        client=tenant,
+        role=TeamMember.OWNER,
+        status=TeamMember.ACTIVE
+    )
 
     return user, tenant
 

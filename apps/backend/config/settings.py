@@ -571,6 +571,7 @@ REST_FRAMEWORK = {
         # FASE 3: Throttles específicos para endpoints críticos
         # ============================================================
         "login": "5/hour",  # AL-001: Login brute force prevention (5 tentativas/hora)
+        "two_factor_setup": "5/hour",  # AL-002a: 2FA setup rate limit (5 tentativas/hora)
         "two_factor_verify": "10/hour",  # AL-002: 2FA TOTP brute force (10 tentativas/hora)
         "password_reset_confirm": "10/hour",  # AL-003: Reset token brute force (10 tentativas/hora)
         "tenant_registration": "3/day",  # AL-004: Tenant creation spam prevention (3/dia)

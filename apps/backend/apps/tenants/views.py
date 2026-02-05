@@ -15,6 +15,7 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from apps.core.throttling import TenantRegistrationThrottle
 from .models import Client
 from .serializers import (
     ClientBrandingSerializer,
@@ -41,12 +42,6 @@ class TenantInfoRateThrottle(AnonRateThrottle):
 
     rate = "100/hour"  # 100 requisições por hora (sem autenticação)
     scope = "tenant_info"
-
-
-class RegisterTenantRateThrottle(AnonRateThrottle):
-    """Rate limit para endpoint público de signup de tenant."""
-
-    scope = "tenant_signup"
 
 
 class CheckSubdominioRateThrottle(AnonRateThrottle):
@@ -316,10 +311,12 @@ class RegisterTenantView(APIView):
         "nome_empresa": "Minha Empresa LTDA",
         "subdominio_desejado": "minhaempresa"
     }
+    
+    FASE 3: AL-004 - TenantRegistrationThrottle (3/dia) para prevenir abuse
     """
 
     permission_classes = [AllowAny]
-    throttle_classes = [RegisterTenantRateThrottle]
+    throttle_classes = [TenantRegistrationThrottle]
 
     def post(self, request):
         serializer = RegisterTenantSerializer(data=request.data)

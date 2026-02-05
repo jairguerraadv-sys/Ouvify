@@ -5,6 +5,7 @@ Implementa controle de acesso baseado em plano do tenant
 
 from functools import wraps
 
+from django.contrib.auth.models import User
 from rest_framework.exceptions import PermissionDenied
 
 from apps.core.exceptions import FeatureNotAvailableError
@@ -244,3 +245,103 @@ def require_plan(min_plan: str):
         return wrapped_view
 
     return decorator
+
+
+# =============================================================================
+# P1-001: 2FA Enforcement para Operações Sensíveis
+# =============================================================================
+
+
+def require_2fa_verification(view_method):
+    """
+    Decorator que exige verificação recente de 2FA para operações sensíveis.
+    
+    Aplica-se a operações críticas como:
+    - Mudança de senha
+    - Exclusão de conta
+    - Transferência de ownership
+    - Mudança de email
+    
+    Usage:
+        class PasswordResetConfirmView(APIView):
+            @require_2fa_verification
+            def post(self, request):
+                ...
+    
+    Security Feature (P1-001):
+    - Previne que atacante com sessão comprometida faça ações irreversíveis
+    - Usuário DEVE ter verificado 2FA nos últimos 15min para operações sensíveis
+    - Se usuário não tem 2FA habilitado, passa (2FA é opcional)
+    """
+    
+    @wraps(view_method)
+    def wrapper(self, request, *args, **kwargs):
+        from django.utils import timezone
+        from datetime import timedelta, datetime
+        
+        user: User = request.user
+        
+        # Verificar se usuário tem 2FA habilitado
+        has_2fa = False
+        if hasattr(user, 'totp_device_set'):
+            has_2fa = user.totp_device_set.filter(confirmed=True).exists()
+        
+        # Se usuário TEM 2FA habilitado, DEVE ter verificado recentemente
+        if has_2fa:
+            last_verification_str = request.session.get('2fa_verified_at')
+            
+            if not last_verification_str:
+                raise PermissionDenied({
+                    "detail": "Esta operação sensível requer verificação 2FA",
+                    "error_code": " 2FA_REQUIRED",
+                    "next_step": "Faça login ou verifique seu código 2FA antes de continuar"
+                })
+            
+            # Verificar se verificação foi recent (< 15min)
+            try:
+                last_verification = datetime.fromisoformat(last_verification_str)
+                # Tornar timezone-aware se necessário
+                if last_verification.tzinfo is None:
+                    last_verification = timezone.make_aware(last_verification)
+                
+                age = timezone.now() - last_verification
+                if age > timedelta(minutes=15):
+                    # Limpar verificação expirada
+                    del request.session['2fa_verified_at']
+                    request.session.modified = True
+                    
+                    raise PermissionDenied({
+                        "detail": "Sua verificação 2FA expirou (timeout: 15min)",
+                        "error_code": "2FA_EXPIRED",
+                        "next_step": "Por favor, verifique seu código 2FA novamente"
+                    })
+            except (ValueError, TypeError):
+                # Se não conseguir parsear, invalidar
+                raise PermissionDenied({
+                    "detail": "Verificação 2FA inválida",
+                    "error_code": "2FA_INVALID"
+                })
+        
+        # Se passou pelas checagens, executar view
+        return view_method(self, request, *args, **kwargs)
+    
+    return wrapper
+
+
+def record_2fa_verification(request):
+    """
+    Helper para registrar que o usuário passou pela verificação 2FA.
+    Chamar após validação bem-sucedida do código TOTP.
+    
+    Usage:
+        # No endpoint de verificação 2FA, após validar o código
+        from apps.core.decorators import record_2fa_verification
+        record_2fa_verification(request)
+        
+        return Response({"detail": "2FA verificado com sucesso"})
+    """
+    from django.utils import timezone
+    
+    request.session['2fa_verified_at'] = timezone.now().isoformat()
+    request.session.modified = True
+

@@ -17,6 +17,7 @@ from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.views import APIView
 
+from apps.core.decorators import require_2fa_verification  # P1-001: 2FA enforcement
 from apps.core.throttling import PasswordResetConfirmThrottle
 
 from .email_service import EmailService
@@ -108,6 +109,7 @@ class PasswordResetConfirmView(APIView):
     permission_classes = [AllowAny]
     throttle_classes = [PasswordResetConfirmThrottle]
 
+    @require_2fa_verification  # P1-001: Requer 2FA se usuário tem habilitado
     def post(self, request):
         uid = request.data.get("uid")
         token = request.data.get("token")

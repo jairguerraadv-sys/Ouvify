@@ -1,0 +1,9 @@
+Verificação de migrations foi pulada durante auditoria.
+
+Motivo: Requer conexão com banco de dados real (PostgreSQL recomendado).
+
+Para executar manualmente:
+  cd apps/backend
+  source .venv/bin/activate
+  export DATABASE_URL="postgresql://user:pass@localhost/ouvify_dev"
+  python manage.py makemigrations --check --dry-run

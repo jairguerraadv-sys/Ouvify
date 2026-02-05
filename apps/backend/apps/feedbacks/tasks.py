@@ -188,3 +188,29 @@ Ouvify - Gestão de Feedbacks
     except Exception as exc:
         logger.error(f"❌ Erro ao enviar email de novo feedback: {exc}")
         raise self.retry(exc=exc, countdown=60 * (2**self.request.retries))
+
+
+# =============================================================================
+# P2-004: Tarefas LGPD - Política de Retenção Automatizada
+# =============================================================================
+
+
+@shared_task(name="feedbacks.cleanup_old_archived_feedbacks")
+def cleanup_old_archived_feedbacks():
+    """Deleta feedbacks arquivados há mais de 2 anos conforme LGPD."""
+    from datetime import timedelta
+    from django.utils import timezone
+    from apps.feedbacks.models import Feedback
+
+    cutoff_date = timezone.now() - timedelta(days=730)
+    old_feedbacks = Feedback.objects.all_tenants().filter(
+        status="ARQUIVADO", data_atualizacao__lt=cutoff_date
+    )
+
+    count = old_feedbacks.count()
+    if count > 0:
+        old_feedbacks.delete()
+        logger.info(f"🗑️ [LGPD] {count} feedbacks arquivados há 2+ anos deletados")
+        return {"deleted": count}
+    
+    return {"deleted": 0}

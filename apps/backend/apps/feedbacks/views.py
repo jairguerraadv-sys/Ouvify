@@ -19,6 +19,7 @@ from apps.core.sanitizers import sanitize_html_input, sanitize_protocol_code
 from apps.core.throttling import FeedbackSubmissionThrottle, ProtocolLookupThrottle
 from apps.core.utils import get_client_ip, get_current_tenant
 from apps.core.utils.privacy import anonymize_ip
+from apps.feedbacks.throttles import ProtocoloConsultaThrottle
 
 from .constants import MAX_INTERACAO_MENSAGEM_LENGTH, FeedbackStatus, InteracaoTipo
 from .filters import FeedbackFilter
@@ -1094,10 +1095,28 @@ class FeedbackViewSet(viewsets.ModelViewSet):
 
         # ✅ CORREÇÃO CRÍTICA: Validar tenant antes de buscar feedback
         tenant = get_current_tenant()
-        if not tenant:
+        tenant_source = getattr(request, "tenant_source", None)
+        
+        # 🔒 SEGURANÇA: Rejeitar requisições onde tenant veio de fallback
+        # Fallback é usado apenas em desenvolvimento para testes internos.
+        # Endpoints públicos de segurança DEVEM ter tenant explícito.
+        if not tenant or tenant_source == "fallback":
             client_ip = get_client_ip(request)
+            
+            # Se não tinha X-Tenant-ID, retornar 400 (requisição mal formada)
+            if not request.META.get("HTTP_X_TENANT_ID"):
+                logger.warning(
+                    f"🚨 SEGURANÇA: Consulta sem X-Tenant-ID | "
+                    f"Protocolo: {codigo} | IP: {client_ip}"
+                )
+                return Response(
+                    {"error": "Identificação de tenant é obrigatória"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            
+            # Se tinha X-Tenant-ID mas é inválido, retornar 404 genérico
             logger.error(
-                f"🚨 SEGURANÇA: Tentativa de consulta sem tenant identificado | "
+                f"🚨 SEGURANÇA: Tentativa com tenant inválido | "
                 f"Protocolo: {codigo} | IP: {client_ip}"
             )
             return Response(
@@ -1128,10 +1147,10 @@ class FeedbackViewSet(viewsets.ModelViewSet):
                 )
 
                 # ✅ IMPORTANTE: Erro genérico para não revelar se protocolo existe
+                # 🔒 SEGURANÇA: NÃO incluir o código na resposta (evita enumeração)
                 return Response(
                     {
                         "error": "Protocolo não encontrado",
-                        "codigo": codigo,
                         "dica": "Verifique se o código foi digitado corretamente",
                     },
                     status=status.HTTP_404_NOT_FOUND,

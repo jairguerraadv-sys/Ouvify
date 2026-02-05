@@ -1,0 +1,47 @@
+[INFO] 2026-02-05 17:58:34,798 signals Signals de notificação para Feedback registrados
+SystemCheckError: System check identified some issues:
+
+ERRORS:
+?: (drf_spectacular.E001) Schema generation threw exception "Field name `nome` is not valid for model `User` in `apps.auditlog.serializers.AuditLogUserSerializer`."
+
+WARNINGS:
+?: (drf_spectacular.W001) /workspaces/Ouvify/apps/backend/apps/auditlog/views.py: Warning [AuditLogViewSet]: Failed to obtain model through view's queryset due to raised exception. Prevent this either by setting "queryset = Model.objects.none()" on the view, checking for "getattr(self, "swagger_fake_view", False)" in get_queryset() or by simply using @extend_schema. (Exception: Field 'id' expected a number but got <django.contrib.auth.models.AnonymousUser object at 0x75f49d20b860>.)
+?: (drf_spectacular.W001) /workspaces/Ouvify/apps/backend/apps/notifications/views.py: Warning [NotificationViewSet]: could not derive type of path parameter "id" because it is untyped and obtaining queryset from the viewset failed. Consider adding a type to the path (e.g. <int:id>) or annotating the parameter type with @extend_schema. Defaulting to "string".
+?: (drf_spectacular.W001) /workspaces/Ouvify/apps/backend/apps/notifications/views.py: Warning [PushSubscriptionViewSet]: could not derive type of path parameter "id" because it is untyped and obtaining queryset from the viewset failed. Consider adding a type to the path (e.g. <int:id>) or annotating the parameter type with @extend_schema. Defaulting to "string".
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/core/views/analytics.py: Error [AnalyticsDashboardView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/core/views/analytics.py: Error [AnalyticsView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/core/views/home.py: Error [home]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/core/views/two_factor_views.py: Error [TwoFactorSetupView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/logout_views.py: Error [LogoutAllDevicesView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/logout_views.py: Error [LogoutView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/subscription_management.py: Error [ManageSubscriptionView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/subscription_management.py: Error [ReactivateSubscriptionView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [CheckSubdominioView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [CreateCheckoutSessionView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [RegisterTenantView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [StripeWebhookView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [TenantInfoView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (drf_spectacular.W002) /workspaces/Ouvify/apps/backend/apps/tenants/views.py: Error [UploadBrandingView]: unable to guess serializer. This is graceful fallback handling for APIViews. Consider using GenericAPIView as view base class, if view is under your control. Either way you may want to add a serializer_class (or method). Ignoring view for now.
+?: (security.W003) You don't appear to be using Django's built-in cross-site request forgery protection via the middleware ('django.middleware.csrf.CsrfViewMiddleware' is not in your MIDDLEWARE). Enabling the middleware is the safest approach to ensure you don't leave any holes.
+?: (security.W004) You have not set a value for the SECURE_HSTS_SECONDS setting. If your entire site is served only over SSL, you may want to consider setting a value and enabling HTTP Strict Transport Security. Be sure to read the documentation first; enabling HSTS carelessly can cause serious, irreversible problems.
+?: (security.W008) Your SECURE_SSL_REDIRECT setting is not set to True. Unless your site should be available over both SSL and non-SSL connections, you may want to either set this setting True or configure a load balancer or reverse-proxy server to redirect all connections to HTTPS.
+?: (security.W009) Your SECRET_KEY has less than 50 characters, less than 5 unique characters, or it's prefixed with 'django-insecure-' indicating that it was generated automatically by Django. Please generate a long and random value, otherwise many of Django's security-critical features will be vulnerable to attack.
+?: (security.W012) SESSION_COOKIE_SECURE is not set to True. Using a secure-only session cookie makes it more difficult for network traffic sniffers to hijack user sessions.
+?: (security.W018) You should not have DEBUG set to True in deployment.
+
+System check identified 24 issues (0 silenced).
+✅ SECRET_KEY carregado de .env com sucesso.
+🌐 ALLOWED_HOSTS: ['localhost', '127.0.0.1', 'testserver', '.local', '.localhost', '.onrender.com', 'ouvify-backend.onrender.com']
+⚠️ Usando DATABASE_URL (Public Network) - Configure DATABASE_PRIVATE_URL para melhor performance
+⚠️ Cloudinary não configurado. Usando armazenamento local.
+================================================================================
+🟡 MODO DESENVOLVIMENTO ATIVO
+================================================================================
+📍 BASE_DIR: /workspaces/Ouvify/apps/backend
+🗄️  Database: django.db.backends.sqlite3
+🌐 CORS Origins: ['http://localhost:3000', 'http://127.0.0.1:3000', 'https://ouvify-frontend-jairguerraadv-sys-projects.vercel.app']
+🔑 SECRET_KEY: ✅ Configurada
+🛡️  Rate Limiting: ✅ Ativado (5 req/min para consulta de protocolo)
+💳 Stripe: ⚠️ Aguardando STRIPE_SECRET_KEY
+================================================================================
+🧪 Aplicando configurações de teste E2E...

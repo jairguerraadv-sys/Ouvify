@@ -15,6 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from apps.core.decorators import require_2fa_verification  # P1-001: 2FA enforcement
 from apps.feedbacks.models import Feedback, FeedbackInteracao
 from apps.tenants.models import Client
 
@@ -41,6 +42,7 @@ class AccountDeletionView(APIView):
 
     permission_classes = [IsAuthenticated]
 
+    @require_2fa_verification  # P1-001: Requer 2FA se usuário tem habilitado
     def delete(self, request):
         confirm = request.data.get("confirm", False)
         reason = request.data.get("reason", "Não informado")

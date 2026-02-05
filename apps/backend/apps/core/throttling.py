@@ -138,6 +138,35 @@ class LoginRateThrottle(UserRateThrottle):
         return self.get_ident(request)
 
 
+class TwoFactorSetupThrottle(UserRateThrottle):
+    """
+    Rate limiting para setup inicial de 2FA.
+
+    Limita a 5 requisições por hora para prevenir abuso.
+    Usuários normalmente configuram 2FA apenas uma vez.
+
+    Escopo: por user_id
+    """
+
+    scope = "two_factor_setup"
+
+    def allow_request(self, request, view):
+        # Desabilitar em modo de teste
+        if os.getenv("TESTING", "false").lower() == "true":
+            return True
+        return super().allow_request(request, view)
+
+    def get_cache_key(self, request, view):
+        """
+        Retorna chave de cache baseada no user_id do usuário autenticado.
+        """
+        if request.user and request.user.is_authenticated:
+            return f"throttle_2fa_setup_{request.user.pk}"
+
+        # Fallback para IP
+        return self.get_ident(request)
+
+
 class TwoFactorVerifyThrottle(UserRateThrottle):
     """
     Rate limiting para verificação de código 2FA (TwoFactorVerifyView).

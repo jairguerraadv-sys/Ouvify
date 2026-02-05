@@ -39,6 +39,8 @@ class TestFeedbackViewSet:
 
     @pytest.fixture
     def user(self, tenant):
+        from apps.tenants.models import TeamMember
+        
         user = User.objects.create_user(
             username="admin@testcompany.com",
             email="admin@testcompany.com",
@@ -47,11 +49,20 @@ class TestFeedbackViewSet:
         # Associar ao tenant
         tenant.owner = user
         tenant.save()
+        # Criar TeamMember para que o sistema de permissões funcione
+        TeamMember.objects.create(
+            user=user,
+            client=tenant,
+            role=TeamMember.OWNER,
+            status=TeamMember.ACTIVE
+        )
         return user
 
     @pytest.fixture
     def user2(self, tenant2):
         """Usuário do segundo tenant"""
+        from apps.tenants.models import TeamMember
+        
         user = User.objects.create_user(
             username="admin@othercompany.com",
             email="admin@othercompany.com",
@@ -59,6 +70,13 @@ class TestFeedbackViewSet:
         )
         tenant2.owner = user
         tenant2.save()
+        # Criar TeamMember para que o sistema de permissões funcione
+        TeamMember.objects.create(
+            user=user,
+            client=tenant2,
+            role=TeamMember.OWNER,
+            status=TeamMember.ACTIVE
+        )
         return user
 
     @pytest.fixture
@@ -253,15 +271,23 @@ class TestFeedbackViewSet:
     def test_consulta_protocolo_publico(self, api_client, tenant, feedback):
         """Teste consulta pública de protocolo"""
         url = reverse("feedback-consultar-protocolo")
-        response = api_client.get(url, {"protocolo": feedback.protocolo})
+        response = api_client.get(
+            url,
+            {"protocolo": feedback.protocolo},
+            HTTP_X_TENANT_ID=str(tenant.id),  # Tenant deve ser identificado
+        )
 
         # Pode retornar 200 se encontrar ou 404 se não
         assert response.status_code in [status.HTTP_200_OK, status.HTTP_404_NOT_FOUND]
 
-    def test_consulta_protocolo_invalido(self, api_client):
+    def test_consulta_protocolo_invalido(self, api_client, tenant):
         """Teste consulta de protocolo inexistente"""
         url = reverse("feedback-consultar-protocolo")
-        response = api_client.get(url, {"protocolo": "OUVY-FAKE-9999"})
+        response = api_client.get(
+            url,
+            {"protocolo": "OUVY-FAKE-9999"},
+            HTTP_X_TENANT_ID=str(tenant.id),  # Tenant deve ser identificado
+        )
 
         assert response.status_code == status.HTTP_404_NOT_FOUND
 

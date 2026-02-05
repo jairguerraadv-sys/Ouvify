@@ -35,6 +35,15 @@ class Feedback(TenantAwareModel):
         ("fechado", "Fechado"),
     ]
 
+    # Aliases para compatibilidade com testes
+    RECEBIDO = "pendente"  # Status inicial quando feedback é recebido
+    
+    # Aliases de tipo para compatibilidade com testes
+    DENUNCIA = "denuncia"
+    SUGESTAO = "sugestao"
+    ELOGIO = "elogio"
+    RECLAMACAO = "reclamacao"
+
     PRIORIDADE_CHOICES = [
         ("baixa", "Baixa"),
         ("media", "Média"),
@@ -195,6 +204,7 @@ class Feedback(TenantAwareModel):
         verbose_name_plural: str = "Feedbacks"
         ordering: list = ["-data_criacao"]
         indexes: list = [
+            # Índices originais
             models.Index(fields=["client", "tipo"]),
             models.Index(fields=["client", "status"]),
             models.Index(fields=["protocolo"]),  # ✅ JÁ EXISTE: protocolo indexado
@@ -206,6 +216,15 @@ class Feedback(TenantAwareModel):
             models.Index(
                 fields=["client", "assigned_to"]
             ),  # ✅ NOVO: Filtros por assignee
+            # P2-001: Novos índices para performance
+            models.Index(
+                fields=["client", "prioridade", "-data_criacao"],
+                name="feedback_priority_idx"
+            ),  # Dashboard filtrado por prioridade
+            models.Index(
+                fields=["client", "assigned_to", "status"],
+                name="feedback_assigned_status_idx"
+            ),  # Queries "meus feedbacks pendentes"
         ]
 
     def __str__(self):

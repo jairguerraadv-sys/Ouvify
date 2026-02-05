@@ -36,6 +36,14 @@ REST_FRAMEWORK["DEFAULT_THROTTLE_RATES"] = {
     "invitation_accept": "100000/minute",
     "protocolo_consulta": "100000/minute",
     "feedback_criacao": "100000/minute",
+    # FASE 3: Scopes de throttles específicos
+    "login": "100000/minute",
+    "two_factor_setup": "100000/minute",
+    "two_factor_verify": "100000/minute",
+    "password_reset_confirm": "100000/minute",
+    "tenant_registration": "100000/minute",
+    "feedback_submission": "100000/minute",
+    "protocol_lookup": "100000/minute",
 }
 
 # Desabilitar CSRF para testes (já que Playwright não mantém cookies CSRF facilmente)

@@ -65,6 +65,11 @@ app.conf.update(
             "task": "apps.core.tasks.cleanup_old_sessions",
             "schedule": 60 * 60 * 24,  # A cada 24 horas
         },
+        # P2-004: Tarefas LGPD
+        "cleanup-old-archived-feedbacks": {
+            "task": "feedbacks.cleanup_old_archived_feedbacks",
+            "schedule": {"hour": 3, "minute": 0},  # Diariamente às 03:00 UTC
+        },
     },
 )
 

@@ -11,7 +11,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from apps.core.throttling import TwoFactorVerifyThrottle
+from apps.core.throttling import TwoFactorSetupThrottle, TwoFactorVerifyThrottle
 
 from ..two_factor_service import TwoFactorAuthService
 

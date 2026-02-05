@@ -93,3 +93,6 @@ repo-audit: ## Rodar audit determinístico FE↔BE (gera tmp/repo_audit)
 
 repo-audit-cover: ## Rodar audit e gerar coverage TS a partir de orphans_backend
 	python scripts/repo_audit/run_api_audit.py --write-fe-coverage
+
+audit-backend: ## Auditoria determinística do backend (venv + deps + checks)
+	bash scripts/audit_backend.sh

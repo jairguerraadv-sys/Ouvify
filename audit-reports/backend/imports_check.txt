@@ -1,0 +1,3 @@
+Scanning: /workspaces/Ouvify/audit-reports/apps
+
+✅ Todos os arquivos parsearam com sucesso

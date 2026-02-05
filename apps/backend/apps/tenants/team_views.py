@@ -13,6 +13,9 @@ from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework_simplejwt.tokens import RefreshToken
 
+# ✅ CORREÇÃO RBAC (2026-02-05): Importar permissions customizadas
+from apps.core.permissions import IsOwnerOrAdmin
+
 from .decorators import require_permission
 from .mixins import PermissionRequiredMixin, TenantFilterMixin
 from .models import TeamInvitation, TeamMember
