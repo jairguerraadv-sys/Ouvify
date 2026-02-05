@@ -1,0 +1,19 @@
+
+> ouvify_frontend@0.1.0 test
+> jest --passWithNoTests
+
+PASS __tests__/feedbacks-page.test.tsx (6.468 s)
+PASS __tests__/dashboard.test.tsx (6.492 s)
+PASS __tests__/billing.test.tsx
+PASS __tests__/hooks.test.tsx
+PASS __tests__/seo.test.ts
+PASS __tests__/validation.test.ts
+PASS __tests__/Logo.test.tsx
+PASS __tests__/Button.test.tsx
+PASS __tests__/Badge.test.tsx
+
+Test Suites: 9 passed, 9 total
+Tests:       75 passed, 75 total
+Snapshots:   0 total
+Time:        23.744 s
+Ran all test suites.

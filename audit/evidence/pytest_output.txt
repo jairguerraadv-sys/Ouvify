@@ -1,0 +1,4 @@
+ImportError while loading conftest '/workspaces/Ouvify/apps/backend/conftest.py'.
+conftest.py:19: in <module>
+    from django.conf import settings
+E   ModuleNotFoundError: No module named 'django'

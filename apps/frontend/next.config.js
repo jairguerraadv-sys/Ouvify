@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+// Importar configuração de CSP
+const { generateCSP } = require("./csp-config.js");
+
 let nextConfig = {
   // Otimizações de imagem (Auditoria Fase 3)
   images: {
@@ -31,10 +34,18 @@ let nextConfig = {
 
   // Headers de segurança
   async headers() {
+    const env = process.env.NODE_ENV || "production";
+    const cspValue = generateCSP(env);
+
     return [
       {
         source: "/(.*)",
         headers: [
+          // Content Security Policy (P0.2 - Auditoria 2026-02-05)
+          {
+            key: "Content-Security-Policy",
+            value: cspValue,
+          },
           {
             key: "X-DNS-Prefetch-Control",
             value: "on",

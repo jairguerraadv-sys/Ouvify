@@ -1,0 +1,2515 @@
+{
+  "total_routes": 180,
+  "unique_endpoints": 174,
+  "endpoints": [
+    {
+      "method": "ANY",
+      "path": "/health/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/ready/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/painel-admin-ouvify-2026/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/tenant-info/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/upload-branding/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/register-tenant/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/tenants/webhook/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/analytics/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        },
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        },
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "ANY",
+      "path": "/api/auth/logout/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/auth/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/push/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/auditlog/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/consent/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/v1/billing/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/v1/webhooks/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/token/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/token/refresh/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/token/verify/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/logout/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/auth/me/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/users/me/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/account/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/export-data/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/api/csp-report/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/config/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/versions/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/versions/<int:pk>/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/user-consents/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/user-consents/<int:pk>/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/user-consents/accept/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/user-consents/pending/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/webhook/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/auth/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/login/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework/urls.py",
+          "details": {}
+        },
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/django/contrib/auth/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 2
+    },
+    {
+      "method": "ANY",
+      "path": "/logout/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework/urls.py",
+          "details": {}
+        },
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/django/contrib/auth/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 2
+    },
+    {
+      "method": "ANY",
+      "path": "/api-auth/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/<path:url>/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/django/contrib/flatpages/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/password_reset/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/django/contrib/auth/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/consentversion/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/consentversion/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/consentversion/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/consentversion/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/consentversion/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/consentversion/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "ConsentVersionViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/userconsent/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/userconsent/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/userconsent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/userconsent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/userconsent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/userconsent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/consent/views.py",
+          "details": {
+            "viewset": "UserConsentViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/tenantadmin/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/tenantadmin/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/tenantadmin/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/tenantadmin/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/tenantadmin/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/tenantadmin/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "viewset": "TenantAdminViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/tenantinfo/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "TenantInfoView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/uploadbranding/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "UploadBrandingView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/registertenant/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "RegisterTenantView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/checksubdominio/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "CheckSubdominioView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/createcheckoutsession/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "CreateCheckoutSessionView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/stripewebhook/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "StripeWebhookView"
+          }
+        },
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "view": "StripeWebhookView"
+          }
+        }
+      ],
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/userme/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "UserMeView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/subscription/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/tenants/views.py",
+          "details": {
+            "view": "SubscriptionView"
+          }
+        },
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/auditlog/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/auditlog/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/auditlog/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/auditlog/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/auditlog/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/auditlog/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/auditlogsummary/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/auditlogsummary/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/auditlogsummary/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/auditlogsummary/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/auditlogsummary/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/auditlogsummary/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "AuditLogSummaryViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/usersession/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/usersession/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/usersession/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/usersession/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/usersession/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/usersession/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/auditlog/views.py",
+          "details": {
+            "viewset": "UserSessionViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/feedback/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/feedback/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/feedback/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/feedback/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/feedback/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/feedback/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "FeedbackViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/tag/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/tag/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/tag/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/tag/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/tag/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/tag/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "TagViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/responsetemplate/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/responsetemplate/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/responsetemplate/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/responsetemplate/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/responsetemplate/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/responsetemplate/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/feedbacks/views.py",
+          "details": {
+            "viewset": "ResponseTemplateViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/pushsubscription/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/pushsubscription/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/pushsubscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/pushsubscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/pushsubscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/pushsubscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "PushSubscriptionViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/notification/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/notification/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/notification/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/notification/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/notification/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/notification/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/notificationpreference/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/notificationpreference/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/notificationpreference/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/notificationpreference/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/notificationpreference/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/notificationpreference/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/notifications/views.py",
+          "details": {
+            "viewset": "NotificationPreferenceViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookendpoint/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/webhookendpoint/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookendpoint/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/webhookendpoint/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/webhookendpoint/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/webhookendpoint/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEndpointViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookevent/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/webhookevent/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookevent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/webhookevent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/webhookevent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/webhookevent/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookEventViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookdelivery/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/webhookdelivery/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/webhookdelivery/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/webhookdelivery/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/webhookdelivery/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/webhookdelivery/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/webhooks/views.py",
+          "details": {
+            "viewset": "WebhookDeliveryViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/plan/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/plan/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/plan/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/plan/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/plan/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/plan/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "PlanViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/subscription/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/subscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/subscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/subscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/subscription/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "SubscriptionViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/invoice/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/invoice/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/invoice/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/invoice/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/invoice/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "viewset": "InvoiceViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/tokenbase/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework_simplejwt/views.py",
+          "details": {
+            "view": "TokenViewBase"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/spectacularapi/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+          "details": {
+            "view": "SpectacularAPIView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/spectacularyamlapi/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+          "details": {
+            "view": "SpectacularYAMLAPIView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/spectacularjsonapi/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+          "details": {
+            "view": "SpectacularJSONAPIView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/spectacularswagger/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+          "details": {
+            "view": "SpectacularSwaggerView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/spectacularredoc/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/drf_spectacular/views.py",
+          "details": {
+            "view": "SpectacularRedocView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/obtainauthtoken/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework/authtoken/views.py",
+          "details": {
+            "view": "ObtainAuthToken"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/schema/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/rest_framework/schemas/views.py",
+          "details": {
+            "view": "SchemaView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/user/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/user/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/user/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/user/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/user/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/user/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "UserViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/group/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "list"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
+      "path": "/group/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "create"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/group/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "retrieve"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PUT",
+      "path": "/group/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "PATCH",
+      "path": "/group/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "partial_update"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "DELETE",
+      "path": "/group/{id}/",
+      "type": "viewset",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "viewset": "GroupViewSet",
+            "action": "destroy"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/index/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/.venv/lib/python3.12/site-packages/tutorial/quickstart/views.py",
+          "details": {
+            "view": "Index"
+          }
+        }
+      ],
+      "count": 1
+    }
+  ],
+  "scan_date": "2026-02-05T21:24:25.266074"
+}

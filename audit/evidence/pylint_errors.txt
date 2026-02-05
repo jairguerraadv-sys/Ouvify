@@ -1,0 +1,593 @@
+************* Module apps.consent.models
+apps/consent/models.py:1:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/consent/models.py:2:0: E0401: Unable to import 'django.db' (import-error)
+apps/consent/models.py:3:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.consent.apps
+apps/consent/apps.py:1:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.consent.admin
+apps/consent/admin.py:1:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps.consent.views
+apps/consent/views.py:1:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/consent/views.py:2:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/consent/views.py:3:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/consent/views.py:4:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.consent.urls
+apps/consent/urls.py:1:0: E0401: Unable to import 'django.urls' (import-error)
+************* Module apps.consent.serializers
+apps/consent/serializers.py:1:0: E0401: Unable to import 'rest_framework' (import-error)
+************* Module apps.consent.management.commands.populate_consent_versions
+apps/consent/management/commands/populate_consent_versions.py:1:0: E0401: Unable to import 'django.core.management.base' (import-error)
+************* Module apps.consent.tests.test_consent
+apps/consent/tests/test_consent.py:11:0: E0401: Unable to import 'pytest' (import-error)
+apps/consent/tests/test_consent.py:12:0: E0401: Unable to import 'django.utils' (import-error)
+apps/consent/tests/test_consent.py:20:4: E0401: Unable to import 'django.contrib.auth' (import-error)
+************* Module apps.consent.migrations.0001_initial
+apps/consent/migrations/0001_initial.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/consent/migrations/0001_initial.py:4:0: E0401: Unable to import 'django.utils.timezone' (import-error)
+apps/consent/migrations/0001_initial.py:5:0: E0401: Unable to import 'django.conf' (import-error)
+apps/consent/migrations/0001_initial.py:6:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.mixins
+apps/tenants/mixins.py:6:0: E0401: Unable to import 'rest_framework.exceptions' (import-error)
+************* Module apps.tenants.services
+apps/tenants/services.py:5:0: E0401: Unable to import 'stripe' (import-error)
+apps/tenants/services.py:6:0: E0401: Unable to import 'django.conf' (import-error)
+apps/tenants/services.py:7:0: E0401: Unable to import 'stripe' (import-error)
+************* Module apps.tenants.upload_service
+apps/tenants/upload_service.py:10:0: E0401: Unable to import 'cloudinary' (import-error)
+apps/tenants/upload_service.py:11:0: E0401: Unable to import 'cloudinary.uploader' (import-error)
+apps/tenants/upload_service.py:12:0: E0401: Unable to import 'PIL' (import-error)
+************* Module apps.tenants.subscription_management
+apps/tenants/subscription_management.py:7:0: E0401: Unable to import 'stripe' (import-error)
+apps/tenants/subscription_management.py:8:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/subscription_management.py:9:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/tenants/subscription_management.py:10:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/tenants/subscription_management.py:11:0: E0401: Unable to import 'rest_framework.views' (import-error)
+apps/tenants/subscription_management.py:12:0: E0401: Unable to import 'stripe' (import-error)
+************* Module apps.tenants.logout_views
+apps/tenants/logout_views.py:11:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/logout_views.py:12:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/tenants/logout_views.py:13:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/tenants/logout_views.py:14:0: E0401: Unable to import 'rest_framework.views' (import-error)
+apps/tenants/logout_views.py:15:0: E0401: Unable to import 'rest_framework_simplejwt.token_blacklist.models' (import-error)
+apps/tenants/logout_views.py:19:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+************* Module apps.tenants.jwt_views
+apps/tenants/jwt_views.py:6:0: E0401: Unable to import 'rest_framework_simplejwt.serializers' (import-error)
+apps/tenants/jwt_views.py:7:0: E0401: Unable to import 'rest_framework_simplejwt.views' (import-error)
+************* Module apps.tenants.models
+apps/tenants/models.py:1:0: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+apps/tenants/models.py:2:0: E0401: Unable to import 'django.core.validators' (import-error)
+apps/tenants/models.py:3:0: E0401: Unable to import 'django.db' (import-error)
+apps/tenants/models.py:4:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.tenants.decorators
+apps/tenants/decorators.py:8:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/decorators.py:9:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.tenants.admin
+apps/tenants/admin.py:1:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps.tenants.team_views
+apps/tenants/team_views.py:6:0: E0401: Unable to import 'django.conf' (import-error)
+apps/tenants/team_views.py:7:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/tenants/team_views.py:8:0: E0401: Unable to import 'django.template.loader' (import-error)
+apps/tenants/team_views.py:9:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/team_views.py:10:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/tenants/team_views.py:11:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/tenants/team_views.py:12:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/tenants/team_views.py:13:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+apps/tenants/team_views.py:14:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+************* Module apps.tenants.views
+apps/tenants/views.py:5:0: E0401: Unable to import 'stripe' (import-error)
+apps/tenants/views.py:6:0: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+apps/tenants/views.py:7:0: E0401: Unable to import 'django.db' (import-error)
+apps/tenants/views.py:8:0: E0401: Unable to import 'django.utils.decorators' (import-error)
+apps/tenants/views.py:9:0: E0401: Unable to import 'django.views.decorators.cache' (import-error)
+apps/tenants/views.py:10:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/views.py:11:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/tenants/views.py:12:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/tenants/views.py:13:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/tenants/views.py:14:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+apps/tenants/views.py:15:0: E0401: Unable to import 'rest_framework.views' (import-error)
+apps/tenants/views.py:16:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+apps/tenants/views.py:160:12: E0401: Unable to import 'django.core.cache' (import-error)
+apps/tenants/views.py:280:12: E0401: Unable to import 'django.core.cache' (import-error)
+apps/tenants/views.py:503:12: E0401: Unable to import 'django.db.models' (import-error)
+apps/tenants/views.py:565:8: E0401: Unable to import 'django.db.models' (import-error)
+apps/tenants/views.py:654:8: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+************* Module apps.tenants.serializers
+apps/tenants/serializers.py:3:0: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+apps/tenants/serializers.py:4:0: E0401: Unable to import 'django.core.validators' (import-error)
+apps/tenants/serializers.py:5:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/serializers.py:273:8: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+************* Module apps.tenants.tests.test_team_invitation_and_branding_security
+apps/tenants/tests/test_team_invitation_and_branding_security.py:10:0: E0401: Unable to import 'pytest' (import-error)
+apps/tenants/tests/test_team_invitation_and_branding_security.py:11:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/tenants/tests/test_team_invitation_and_branding_security.py:12:0: E0401: Unable to import 'django.utils' (import-error)
+apps/tenants/tests/test_team_invitation_and_branding_security.py:13:0: E0401: Unable to import 'rest_framework.test' (import-error)
+apps/tenants/tests/test_team_invitation_and_branding_security.py:14:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+************* Module apps.tenants.tests.test_jwt_auth
+apps/tenants/tests/test_jwt_auth.py:5:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/tenants/tests/test_jwt_auth.py:6:0: E0401: Unable to import 'django.test' (import-error)
+apps/tenants/tests/test_jwt_auth.py:7:0: E0401: Unable to import 'rest_framework.test' (import-error)
+apps/tenants/tests/test_jwt_auth.py:8:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+apps/tenants/tests/test_jwt_auth.py:132:8: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.tenants.tests.test_auth_flows
+apps/tenants/tests/test_auth_flows.py:6:0: E0401: Unable to import 'pytest' (import-error)
+apps/tenants/tests/test_auth_flows.py:7:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/tenants/tests/test_auth_flows.py:8:0: E0401: Unable to import 'django.urls' (import-error)
+apps/tenants/tests/test_auth_flows.py:9:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/tests/test_auth_flows.py:10:0: E0401: Unable to import 'rest_framework.test' (import-error)
+apps/tenants/tests/test_auth_flows.py:11:0: E0401: Unable to import 'rest_framework_simplejwt.tokens' (import-error)
+************* Module apps.tenants.tests.test_upload
+apps/tenants/tests/test_upload.py:15:0: E0401: Unable to import 'pytest' (import-error)
+apps/tenants/tests/test_upload.py:16:0: E0401: Unable to import 'django.core.files.uploadedfile' (import-error)
+apps/tenants/tests/test_upload.py:17:0: E0401: Unable to import 'PIL' (import-error)
+************* Module apps.tenants.tests.test_tenant_views
+apps/tenants/tests/test_tenant_views.py:6:0: E0401: Unable to import 'pytest' (import-error)
+apps/tenants/tests/test_tenant_views.py:7:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/tenants/tests/test_tenant_views.py:8:0: E0401: Unable to import 'django.urls' (import-error)
+apps/tenants/tests/test_tenant_views.py:9:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/tenants/tests/test_tenant_views.py:10:0: E0401: Unable to import 'rest_framework.test' (import-error)
+************* Module apps.tenants.migrations.0002_alter_client_logo
+apps/tenants/migrations/0002_alter_client_logo.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0008_add_email_notifications_preference
+apps/tenants/migrations/0008_add_email_notifications_preference.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0006_add_team_member_and_invitation_models
+apps/tenants/migrations/0006_add_team_member_and_invitation_models.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/tenants/migrations/0006_add_team_member_and_invitation_models.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/tenants/migrations/0006_add_team_member_and_invitation_models.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0003_client_owner
+apps/tenants/migrations/0003_client_owner.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/tenants/migrations/0003_client_owner.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/tenants/migrations/0003_client_owner.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0004_client_data_fim_assinatura_client_plano_and_more
+apps/tenants/migrations/0004_client_data_fim_assinatura_client_plano_and_more.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0005_client_cor_secundaria_client_cor_texto_and_more
+apps/tenants/migrations/0005_client_cor_secundaria_client_cor_texto_and_more.py:3:0: E0401: Unable to import 'django.core.validators' (import-error)
+apps/tenants/migrations/0005_client_cor_secundaria_client_cor_texto_and_more.py:4:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0001_initial
+apps/tenants/migrations/0001_initial.py:3:0: E0401: Unable to import 'django.core.validators' (import-error)
+apps/tenants/migrations/0001_initial.py:4:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.tenants.migrations.0007_populate_team_members
+apps/tenants/migrations/0007_populate_team_members.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.auditlog.models
+apps/auditlog/models.py:6:0: E0401: Unable to import 'django.conf' (import-error)
+apps/auditlog/models.py:7:0: E0401: Unable to import 'django.contrib.contenttypes.fields' (import-error)
+apps/auditlog/models.py:8:0: E0401: Unable to import 'django.contrib.contenttypes.models' (import-error)
+apps/auditlog/models.py:9:0: E0401: Unable to import 'django.db' (import-error)
+apps/auditlog/models.py:10:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.auditlog.apps
+apps/auditlog/apps.py:1:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.auditlog.admin
+apps/auditlog/admin.py:5:0: E0401: Unable to import 'django.contrib' (import-error)
+apps/auditlog/admin.py:6:0: E0401: Unable to import 'django.utils.html' (import-error)
+************* Module apps.auditlog.signals
+apps/auditlog/signals.py:5:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/auditlog/signals.py:6:0: E0401: Unable to import 'django.contrib.auth.signals' (import-error)
+apps/auditlog/signals.py:11:0: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/auditlog/signals.py:12:0: E0401: Unable to import 'django.dispatch' (import-error)
+************* Module apps.auditlog.views
+apps/auditlog/views.py:7:0: E0401: Unable to import 'django.db.models' (import-error)
+apps/auditlog/views.py:8:0: E0401: Unable to import 'django.db.models.functions' (import-error)
+apps/auditlog/views.py:9:0: E0401: Unable to import 'django.utils' (import-error)
+apps/auditlog/views.py:10:0: E0401: Unable to import 'django_filters.rest_framework' (import-error)
+apps/auditlog/views.py:11:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/auditlog/views.py:12:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/auditlog/views.py:13:0: E0401: Unable to import 'rest_framework.filters' (import-error)
+apps/auditlog/views.py:14:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/auditlog/views.py:15:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/auditlog/views.py:195:8: E0401: Unable to import 'django.http' (import-error)
+apps/auditlog/views.py:374:12: E0401: Unable to import 'django.db.models' (import-error)
+************* Module apps.auditlog.urls
+apps/auditlog/urls.py:5:0: E0401: Unable to import 'django.urls' (import-error)
+apps/auditlog/urls.py:6:0: E0401: Unable to import 'rest_framework.routers' (import-error)
+************* Module apps.auditlog.serializers
+apps/auditlog/serializers.py:5:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/auditlog/serializers.py:6:0: E0401: Unable to import 'rest_framework' (import-error)
+************* Module apps.auditlog.tests.test_auditlog
+apps/auditlog/tests/test_auditlog.py:12:0: E0401: Unable to import 'pytest' (import-error)
+apps/auditlog/tests/test_auditlog.py:13:0: E0401: Unable to import 'django.utils' (import-error)
+apps/auditlog/tests/test_auditlog.py:22:4: E0401: Unable to import 'django.contrib.auth' (import-error)
+************* Module apps.auditlog.migrations.0001_initial
+apps/auditlog/migrations/0001_initial.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/auditlog/migrations/0001_initial.py:4:0: E0401: Unable to import 'django.utils.timezone' (import-error)
+apps/auditlog/migrations/0001_initial.py:5:0: E0401: Unable to import 'django.conf' (import-error)
+apps/auditlog/migrations/0001_initial.py:6:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.models
+apps/feedbacks/models.py:5:0: E0401: Unable to import 'cloudinary.models' (import-error)
+apps/feedbacks/models.py:6:0: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+apps/feedbacks/models.py:7:0: E0401: Unable to import 'django.db' (import-error)
+apps/feedbacks/models.py:323:12: E0401: Unable to import 'django.utils' (import-error)
+apps/feedbacks/models.py:337:8: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.feedbacks.throttles
+apps/feedbacks/throttles.py:10:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+************* Module apps.feedbacks.documents
+apps/feedbacks/documents.py:6:0: E0401: Unable to import 'django_elasticsearch_dsl' (import-error)
+apps/feedbacks/documents.py:7:0: E0401: Unable to import 'django_elasticsearch_dsl.registries' (import-error)
+************* Module apps.feedbacks.apps
+apps/feedbacks/apps.py:5:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.feedbacks.filters
+apps/feedbacks/filters.py:10:0: E0401: Unable to import 'django_filters' (import-error)
+************* Module apps.feedbacks.admin
+apps/feedbacks/admin.py:1:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps.feedbacks.signals
+apps/feedbacks/signals.py:13:0: E0401: Unable to import 'django.core.cache' (import-error)
+apps/feedbacks/signals.py:14:0: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/feedbacks/signals.py:15:0: E0401: Unable to import 'django.dispatch' (import-error)
+apps/feedbacks/signals.py:100:18: E1101: Class 'EmailService' has no 'send_feedback_response_notification' member (no-member)
+************* Module apps.feedbacks.export_service
+apps/feedbacks/export_service.py:15:0: E0401: Unable to import 'django.db' (import-error)
+apps/feedbacks/export_service.py:16:0: E0401: Unable to import 'django.http' (import-error)
+apps/feedbacks/export_service.py:17:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.feedbacks.tasks
+apps/feedbacks/tasks.py:11:0: E0401: Unable to import 'celery' (import-error)
+apps/feedbacks/tasks.py:12:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/tasks.py:13:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/feedbacks/tasks.py:14:0: E0401: Unable to import 'django.template.loader' (import-error)
+************* Module apps.feedbacks.views
+apps/feedbacks/views.py:5:0: E0401: Unable to import 'django.db.models' (import-error)
+apps/feedbacks/views.py:6:0: E0401: Unable to import 'django.utils' (import-error)
+apps/feedbacks/views.py:7:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/feedbacks/views.py:8:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/feedbacks/views.py:9:0: E0401: Unable to import 'rest_framework.parsers' (import-error)
+apps/feedbacks/views.py:10:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/feedbacks/views.py:169:18: E1120: No value for argument 'plan' in constructor call (no-value-for-parameter)
+apps/feedbacks/views.py:517:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/feedbacks/views.py:539:8: E0401: Unable to import 'django.db.models' (import-error)
+apps/feedbacks/views.py:609:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/feedbacks/views.py:610:8: E0401: Unable to import 'django.db.models' (import-error)
+apps/feedbacks/views.py:611:8: E0401: Unable to import 'django.db.models.functions' (import-error)
+apps/feedbacks/views.py:845:8: E0401: Unable to import 'django.http' (import-error)
+apps/feedbacks/views.py:1176:26: E0602: Undefined variable 'ProtocoloConsultaThrottle' (undefined-variable)
+apps/feedbacks/views.py:1300:8: E0401: Unable to import 'django.http' (import-error)
+apps/feedbacks/views.py:1640:8: E0401: Unable to import 'django.db.models' (import-error)
+apps/feedbacks/views.py:1813:8: E0401: Unable to import 'django.db.models' (import-error)
+************* Module apps.feedbacks.serializers
+apps/feedbacks/serializers.py:1:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/serializers.py:2:0: E0401: Unable to import 'django.utils' (import-error)
+apps/feedbacks/serializers.py:3:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/feedbacks/serializers.py:405:15: E1123: Unexpected keyword argument 'max_length' in function call (unexpected-keyword-arg)
+************* Module apps.feedbacks.automations
+apps/feedbacks/automations.py:16:0: E0401: Unable to import 'celery' (import-error)
+apps/feedbacks/automations.py:17:0: E0401: Unable to import 'django.utils' (import-error)
+apps/feedbacks/automations.py:153:4: E0401: Unable to import 'django.utils' (import-error)
+apps/feedbacks/automations.py:280:8: E0611: No name 'send_escalation_notification' in module 'apps.notifications.tasks' (no-name-in-module)
+apps/feedbacks/automations.py:300:12: E0611: No name 'send_sla_reminder' in module 'apps.notifications.tasks' (no-name-in-module)
+apps/feedbacks/automations.py:341:4: E0401: Unable to import 'django.db.models' (import-error)
+apps/feedbacks/automations.py:371:12: E0611: No name 'send_digest_email' in module 'apps.notifications.tasks' (no-name-in-module)
+************* Module apps.feedbacks.tests.test_performance
+apps/feedbacks/tests/test_performance.py:7:0: E0401: Unable to import 'django' (import-error)
+apps/feedbacks/tests/test_performance.py:8:0: E0401: Unable to import 'django.db' (import-error)
+apps/feedbacks/tests/test_performance.py:9:0: E0401: Unable to import 'django.test' (import-error)
+apps/feedbacks/tests/test_performance.py:10:0: E0401: Unable to import 'django.test.utils' (import-error)
+************* Module apps.feedbacks.tests.test_export_import
+apps/feedbacks/tests/test_export_import.py:10:0: E0401: Unable to import 'django.test' (import-error)
+************* Module apps.feedbacks.tests.test_views
+apps/feedbacks/tests/test_views.py:6:0: E0401: Unable to import 'pytest' (import-error)
+apps/feedbacks/tests/test_views.py:7:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/feedbacks/tests/test_views.py:8:0: E0401: Unable to import 'django.urls' (import-error)
+apps/feedbacks/tests/test_views.py:9:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/feedbacks/tests/test_views.py:10:0: E0401: Unable to import 'rest_framework.test' (import-error)
+************* Module apps.feedbacks.migrations.0008_add_feedback_assignment
+apps/feedbacks/migrations/0008_add_feedback_assignment.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0008_add_feedback_assignment.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0008_add_feedback_assignment.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0005_feedback_autor
+apps/feedbacks/migrations/0005_feedback_autor.py:4:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0005_feedback_autor.py:5:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0005_feedback_autor.py:6:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0002_feedback_data_resposta_feedback_protocolo_and_more
+apps/feedbacks/migrations/0002_feedback_data_resposta_feedback_protocolo_and_more.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0010_add_prioridade
+apps/feedbacks/migrations/0010_add_prioridade.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0012_add_response_template
+apps/feedbacks/migrations/0012_add_response_template.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0012_add_response_template.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0012_add_response_template.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0011_add_sla_tracking
+apps/feedbacks/migrations/0011_add_sla_tracking.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0003_feedbackinteracao
+apps/feedbacks/migrations/0003_feedbackinteracao.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0003_feedbackinteracao.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0003_feedbackinteracao.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0007_add_performance_indexes
+apps/feedbacks/migrations/0007_add_performance_indexes.py:20:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0006_alter_feedback_protocolo_and_more
+apps/feedbacks/migrations/0006_alter_feedback_protocolo_and_more.py:3:0: E0401: Unable to import 'cloudinary.models' (import-error)
+apps/feedbacks/migrations/0006_alter_feedback_protocolo_and_more.py:4:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0006_alter_feedback_protocolo_and_more.py:5:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0006_alter_feedback_protocolo_and_more.py:6:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0001_initial
+apps/feedbacks/migrations/0001_initial.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0001_initial.py:4:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0009_add_tags
+apps/feedbacks/migrations/0009_add_tags.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/feedbacks/migrations/0009_add_tags.py:4:0: E0401: Unable to import 'django.conf' (import-error)
+apps/feedbacks/migrations/0009_add_tags.py:5:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.feedbacks.migrations.0004_feedback_feedbacks_f_client__975d9a_idx_and_more
+apps/feedbacks/migrations/0004_feedback_feedbacks_f_client__975d9a_idx_and_more.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.core.middleware
+apps/core/middleware.py:29:16: E0401: Unable to import 'rest_framework_simplejwt.authentication' (import-error)
+apps/core/middleware.py:108:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/middleware.py:109:0: E0401: Unable to import 'django.http' (import-error)
+************* Module apps.core.exceptions
+apps/core/exceptions.py:8:0: E0401: Unable to import 'django.core.exceptions' (import-error)
+apps/core/exceptions.py:9:0: E0401: Unable to import 'django.http' (import-error)
+apps/core/exceptions.py:10:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/exceptions.py:11:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/exceptions.py:12:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.core.services
+apps/core/services.py:3:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/services.py:4:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/core/services.py:5:0: E0401: Unable to import 'django.template.loader' (import-error)
+apps/core/services.py:6:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/services.py:162:12: E0401: Unable to import 'django.db.models' (import-error)
+apps/core/services.py:230:12: E0401: Unable to import 'django.utils.crypto' (import-error)
+************* Module apps.core.models
+apps/core/models.py:3:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.core.permissions
+apps/core/permissions.py:16:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/permissions.py:352:8: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.core.profile_views
+apps/core/profile_views.py:7:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/profile_views.py:8:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/profile_views.py:9:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/profile_views.py:10:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.core.search_urls
+apps/core/search_urls.py:5:0: E0401: Unable to import 'django.urls' (import-error)
+apps/core/search_urls.py:7:0: E0611: No name 'search_views' in module 'apps.core.views' (no-name-in-module)
+************* Module apps.core.email_service
+apps/core/email_service.py:17:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/email_service.py:18:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/core/email_service.py:19:0: E0401: Unable to import 'django.utils.html' (import-error)
+************* Module apps.core.api_keys
+apps/core/api_keys.py:18:0: E0401: Unable to import 'django.db' (import-error)
+apps/core/api_keys.py:19:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/api_keys.py:196:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/api_keys.py:222:0: E0401: Unable to import 'rest_framework.authentication' (import-error)
+apps/core/api_keys.py:223:0: E0401: Unable to import 'rest_framework.exceptions' (import-error)
+************* Module apps.core.validators
+apps/core/validators.py:8:0: E0401: Unable to import 'django.core.exceptions' (import-error)
+************* Module apps.core.password_reset
+apps/core/password_reset.py:7:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/password_reset.py:8:0: E0401: Unable to import 'django.contrib.auth.models' (import-error)
+apps/core/password_reset.py:9:0: E0401: Unable to import 'django.contrib.auth.password_validation' (import-error)
+apps/core/password_reset.py:10:0: E0401: Unable to import 'django.contrib.auth.tokens' (import-error)
+apps/core/password_reset.py:11:0: E0401: Unable to import 'django.core.exceptions' (import-error)
+apps/core/password_reset.py:12:0: E0401: Unable to import 'django.utils.encoding' (import-error)
+apps/core/password_reset.py:13:0: E0401: Unable to import 'django.utils.http' (import-error)
+apps/core/password_reset.py:14:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/password_reset.py:15:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/password_reset.py:16:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/password_reset.py:17:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+apps/core/password_reset.py:18:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.core.health
+apps/core/health.py:8:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/health.py:9:0: E0401: Unable to import 'django.db' (import-error)
+apps/core/health.py:10:0: E0401: Unable to import 'django.http' (import-error)
+************* Module apps.core.search_service
+apps/core/search_service.py:9:0: E0401: Unable to import 'elasticsearch_dsl' (import-error)
+************* Module apps.core.decorators
+apps/core/decorators.py:8:0: E0401: Unable to import 'rest_framework.exceptions' (import-error)
+apps/core/decorators.py:49:22: E1120: No value for argument 'plan' in constructor call (no-value-for-parameter)
+apps/core/decorators.py:114:4: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/decorators.py:171:4: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/decorators.py:236:22: E1120: No value for argument 'plan' in constructor call (no-value-for-parameter)
+************* Module apps.core.cache_service
+apps/core/cache_service.py:12:0: E0401: Unable to import 'django.core.cache' (import-error)
+************* Module apps.core.two_factor_service
+apps/core/two_factor_service.py:14:0: E0401: Unable to import 'pyotp' (import-error)
+apps/core/two_factor_service.py:15:0: E0401: Unable to import 'qrcode' (import-error)
+apps/core/two_factor_service.py:16:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/core/two_factor_service.py:255:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/two_factor_service.py:264:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/two_factor_service.py:272:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/two_factor_service.py:279:8: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/two_factor_service.py:311:8: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.core.throttling
+apps/core/throttling.py:7:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+************* Module apps.core.two_factor_urls
+apps/core/two_factor_urls.py:5:0: E0401: Unable to import 'django.urls' (import-error)
+apps/core/two_factor_urls.py:7:0: E0611: No name 'two_factor_views' in module 'apps.core.views' (no-name-in-module)
+************* Module apps.core.lgpd_views
+apps/core/lgpd_views.py:12:0: E0401: Unable to import 'django.db' (import-error)
+apps/core/lgpd_views.py:13:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/lgpd_views.py:14:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/lgpd_views.py:15:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/lgpd_views.py:16:0: E0401: Unable to import 'rest_framework.views' (import-error)
+apps/core/lgpd_views.py:239:16: E0401: Unable to import 'django.http' (import-error)
+************* Module apps.core.security_middleware
+apps/core/security_middleware.py:8:0: E0401: Unable to import 'django.conf' (import-error)
+************* Module apps.core.tasks
+apps/core/tasks.py:10:0: E0401: Unable to import 'celery' (import-error)
+apps/core/tasks.py:11:0: E0401: Unable to import 'django.conf' (import-error)
+apps/core/tasks.py:12:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/core/tasks.py:13:0: E0401: Unable to import 'django.db' (import-error)
+apps/core/tasks.py:14:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/tasks.py:170:4: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/tasks.py:171:4: E0401: Unable to import 'django.db.models' (import-error)
+apps/core/tasks.py:203:4: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/tasks.py:222:4: E0401: Unable to import 'django.core.cache' (import-error)
+apps/core/tasks.py:223:4: E0401: Unable to import 'django.db.models' (import-error)
+apps/core/tasks.py:287:4: E0401: Unable to import 'django.contrib.sessions.models' (import-error)
+apps/core/tasks.py:326:4: E0401: Unable to import 'django.db.models' (import-error)
+************* Module apps.core.views
+apps/core/views.py:5:0: E0401: Unable to import 'django.http' (import-error)
+apps/core/views.py:6:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/views.py:7:0: E0401: Unable to import 'django.utils.html' (import-error)
+apps/core/views.py:8:0: E0401: Unable to import 'django.views.decorators.csrf' (import-error)
+apps/core/views.py:9:0: E0401: Unable to import 'django.views.decorators.http' (import-error)
+************* Module apps.core.serializers
+apps/core/serializers.py:7:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/core/serializers.py:8:0: E0401: Unable to import 'rest_framework' (import-error)
+************* Module apps.core.pagination
+apps/core/pagination.py:8:0: E0401: Unable to import 'rest_framework.pagination' (import-error)
+apps/core/pagination.py:9:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.core.views.two_factor_views
+apps/core/views/two_factor_views.py:7:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/views/two_factor_views.py:8:0: E0401: Unable to import 'drf_spectacular.utils' (import-error)
+apps/core/views/two_factor_views.py:9:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/views/two_factor_views.py:10:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/views/two_factor_views.py:11:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/views/two_factor_views.py:12:0: E0401: Unable to import 'rest_framework.views' (import-error)
+apps/core/views/two_factor_views.py:29:24: E0602: Undefined variable 'TwoFactorSetupThrottle' (undefined-variable)
+apps/core/views/two_factor_views.py:458:24: E0602: Undefined variable 'TwoFactorSetupThrottle' (undefined-variable)
+************* Module apps.core.views.csp
+apps/core/views/csp.py:4:0: E0401: Unable to import 'django.http' (import-error)
+apps/core/views/csp.py:5:0: E0401: Unable to import 'django.views.decorators.csrf' (import-error)
+apps/core/views/csp.py:6:0: E0401: Unable to import 'django.views.decorators.http' (import-error)
+************* Module apps.core.views.search_views
+apps/core/views/search_views.py:5:0: E0401: Unable to import 'drf_spectacular.types' (import-error)
+apps/core/views/search_views.py:6:0: E0401: Unable to import 'drf_spectacular.utils' (import-error)
+apps/core/views/search_views.py:7:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/core/views/search_views.py:8:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/views/search_views.py:9:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/views/search_views.py:10:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+apps/core/views/search_views.py:11:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.core.views.home
+apps/core/views/home.py:1:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/core/views/home.py:2:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/views/home.py:3:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.core.views.analytics
+apps/core/views/analytics.py:3:0: E0401: Unable to import 'django.db.models' (import-error)
+apps/core/views/analytics.py:4:0: E0401: Unable to import 'django.utils' (import-error)
+apps/core/views/analytics.py:5:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/core/views/analytics.py:6:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/core/views/analytics.py:7:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.core.tests.test_core_utils
+apps/core/tests/test_core_utils.py:6:0: E0401: Unable to import 'pytest' (import-error)
+apps/core/tests/test_core_utils.py:7:0: E0401: Unable to import 'django.core.exceptions' (import-error)
+apps/core/tests/test_core_utils.py:266:8: E0401: Unable to import 'django.test' (import-error)
+apps/core/tests/test_core_utils.py:282:8: E0401: Unable to import 'rest_framework.test' (import-error)
+************* Module apps.core.tests.test_ip_utils
+apps/core/tests/test_ip_utils.py:5:0: E0401: Unable to import 'django.test' (import-error)
+************* Module apps.core.tests.test_lgpd
+apps/core/tests/test_lgpd.py:12:0: E0401: Unable to import 'pytest' (import-error)
+apps/core/tests/test_lgpd.py:13:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/core/tests/test_lgpd.py:14:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.core.migrations.0001_add_api_keys
+apps/core/migrations/0001_add_api_keys.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/core/migrations/0001_add_api_keys.py:4:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.core.migrations.0002_add_api_key_model
+apps/core/migrations/0002_add_api_key_model.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/core/migrations/0002_add_api_key_model.py:4:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.core.utils
+apps/core/utils/__init__.py:6:0: E0401: Unable to import 'django.db.models' (import-error)
+apps/core/utils/__init__.py:7:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.notifications.models
+apps/notifications/models.py:6:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/notifications/models.py:7:0: E0401: Unable to import 'django.db' (import-error)
+apps/notifications/models.py:8:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.notifications.apps
+apps/notifications/apps.py:1:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.notifications.admin
+apps/notifications/admin.py:5:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps.notifications.signals
+apps/notifications/signals.py:8:0: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/notifications/signals.py:9:0: E0401: Unable to import 'django.dispatch' (import-error)
+************* Module apps.notifications.tasks
+apps/notifications/tasks.py:10:0: E0401: Unable to import 'celery' (import-error)
+apps/notifications/tasks.py:11:0: E0401: Unable to import 'django.conf' (import-error)
+apps/notifications/tasks.py:12:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/notifications/tasks.py:13:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.notifications.views
+apps/notifications/views.py:8:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/notifications/views.py:9:0: E0401: Unable to import 'django.utils' (import-error)
+apps/notifications/views.py:10:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/notifications/views.py:11:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/notifications/views.py:12:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/notifications/views.py:13:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/notifications/views.py:14:0: E0401: Unable to import 'rest_framework.throttling' (import-error)
+************* Module apps.notifications.urls
+apps/notifications/urls.py:5:0: E0401: Unable to import 'django.urls' (import-error)
+apps/notifications/urls.py:6:0: E0401: Unable to import 'rest_framework.routers' (import-error)
+************* Module apps.notifications.serializers
+apps/notifications/serializers.py:5:0: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/notifications/serializers.py:6:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/notifications/serializers.py:105:8: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.notifications.management.commands.generate_vapid_keys
+apps/notifications/management/commands/generate_vapid_keys.py:5:0: E0401: Unable to import 'django.core.management.base' (import-error)
+apps/notifications/management/commands/generate_vapid_keys.py:49:8: E0401: Unable to import 'cryptography.hazmat.primitives.serialization' (import-error)
+************* Module apps.notifications.tests.test_notifications
+apps/notifications/tests/test_notifications.py:13:0: E0401: Unable to import 'pytest' (import-error)
+apps/notifications/tests/test_notifications.py:22:4: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/notifications/tests/test_notifications.py:354:8: E0401: Unable to import 'django.contrib.auth' (import-error)
+************* Module apps.webhooks.services
+apps/webhooks/services.py:13:0: E0401: Unable to import 'celery' (import-error)
+apps/webhooks/services.py:14:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.webhooks.models
+apps/webhooks/models.py:16:0: E0401: Unable to import 'django.db' (import-error)
+apps/webhooks/models.py:17:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.webhooks.apps
+apps/webhooks/apps.py:6:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.webhooks.admin
+apps/webhooks/admin.py:6:0: E0401: Unable to import 'django.contrib' (import-error)
+apps/webhooks/admin.py:7:0: E0401: Unable to import 'django.utils.html' (import-error)
+************* Module apps.webhooks.signals
+apps/webhooks/signals.py:10:0: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/webhooks/signals.py:11:0: E0401: Unable to import 'django.dispatch' (import-error)
+************* Module apps.webhooks.tests
+apps/webhooks/tests.py:9:0: E0401: Unable to import 'django.test' (import-error)
+************* Module apps.webhooks.views
+apps/webhooks/views.py:8:0: E0401: Unable to import 'django.db.models' (import-error)
+apps/webhooks/views.py:9:0: E0401: Unable to import 'django.utils' (import-error)
+apps/webhooks/views.py:10:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/webhooks/views.py:11:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/webhooks/views.py:12:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/webhooks/views.py:13:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.webhooks.urls
+apps/webhooks/urls.py:6:0: E0401: Unable to import 'django.urls' (import-error)
+apps/webhooks/urls.py:7:0: E0401: Unable to import 'rest_framework.routers' (import-error)
+************* Module apps.webhooks.serializers
+apps/webhooks/serializers.py:6:0: E0401: Unable to import 'rest_framework' (import-error)
+************* Module apps.webhooks.migrations.0001_initial
+apps/webhooks/migrations/0001_initial.py:5:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/webhooks/migrations/0001_initial.py:6:0: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.billing.models
+apps/billing/models.py:11:0: E0401: Unable to import 'django.db' (import-error)
+apps/billing/models.py:12:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.billing.stripe_service
+apps/billing/stripe_service.py:16:0: E0401: Unable to import 'stripe' (import-error)
+apps/billing/stripe_service.py:17:0: E0401: Unable to import 'django.conf' (import-error)
+apps/billing/stripe_service.py:18:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.billing.feature_gating
+apps/billing/feature_gating.py:11:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/billing/feature_gating.py:12:0: E0401: Unable to import 'rest_framework.response' (import-error)
+************* Module apps.billing.apps
+apps/billing/apps.py:1:0: E0401: Unable to import 'django.apps' (import-error)
+************* Module apps.billing.admin
+apps/billing/admin.py:6:0: E0401: Unable to import 'django.contrib' (import-error)
+************* Module apps.billing.signals
+apps/billing/signals.py:12:0: E0401: Unable to import 'django.db' (import-error)
+apps/billing/signals.py:13:0: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/billing/signals.py:14:0: E0401: Unable to import 'django.dispatch' (import-error)
+************* Module apps.billing.tasks
+apps/billing/tasks.py:14:0: E0401: Unable to import 'celery' (import-error)
+apps/billing/tasks.py:15:0: E0401: Unable to import 'django.conf' (import-error)
+apps/billing/tasks.py:16:0: E0401: Unable to import 'django.core.mail' (import-error)
+apps/billing/tasks.py:17:0: E0401: Unable to import 'django.utils' (import-error)
+************* Module apps.billing.views
+apps/billing/views.py:17:0: E0401: Unable to import 'django.utils.decorators' (import-error)
+apps/billing/views.py:18:0: E0401: Unable to import 'django.views.decorators.csrf' (import-error)
+apps/billing/views.py:19:0: E0401: Unable to import 'rest_framework' (import-error)
+apps/billing/views.py:20:0: E0401: Unable to import 'rest_framework.decorators' (import-error)
+apps/billing/views.py:21:0: E0401: Unable to import 'rest_framework.permissions' (import-error)
+apps/billing/views.py:22:0: E0401: Unable to import 'rest_framework.response' (import-error)
+apps/billing/views.py:23:0: E0401: Unable to import 'rest_framework.views' (import-error)
+************* Module apps.billing.urls
+apps/billing/urls.py:6:0: E0401: Unable to import 'django.urls' (import-error)
+apps/billing/urls.py:7:0: E0401: Unable to import 'rest_framework.routers' (import-error)
+************* Module apps.billing.serializers
+apps/billing/serializers.py:6:0: E0401: Unable to import 'rest_framework' (import-error)
+************* Module apps.billing.management.commands.create_default_plans
+apps/billing/management/commands/create_default_plans.py:8:0: E0401: Unable to import 'django.core.management.base' (import-error)
+************* Module apps.billing.tests.test_billing
+apps/billing/tests/test_billing.py:18:0: E0401: Unable to import 'pytest' (import-error)
+apps/billing/tests/test_billing.py:19:0: E0401: Unable to import 'django.utils' (import-error)
+apps/billing/tests/test_billing.py:32:4: E0401: Unable to import 'django.contrib.auth' (import-error)
+apps/billing/tests/test_billing.py:92:8: E0401: Unable to import 'django.db.models.signals' (import-error)
+apps/billing/tests/test_billing.py:292:8: E0401: Unable to import 'django.db' (import-error)
+************* Module apps.billing.migrations.0001_create_billing_models
+apps/billing/migrations/0001_create_billing_models.py:3:0: E0401: Unable to import 'django.db.models.deletion' (import-error)
+apps/billing/migrations/0001_create_billing_models.py:4:0: E0401: Unable to import 'django.db' (import-error)
+
+-----------------------------------
+Your code has been rated at 7.71/10
+

@@ -1,0 +1,66 @@
+
+> ouvify_frontend@0.1.0 build
+> next build
+
+▲ Next.js 16.1.5 (Turbopack)
+- Experiments (use with caution):
+  · clientTraceMetadata
+  ✓ optimizeCss
+  · optimizePackageImports
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 45s
+  Running next.config.js provided runAfterProductionCompile ...
+✓ Completed runAfterProductionCompile in 1423ms
+  Running TypeScript ...
+  Collecting page data using 1 worker ...
+  Generating static pages using 1 worker (0/33) ...
+  Generating static pages using 1 worker (8/33) 
+  Generating static pages using 1 worker (16/33) 
+  Generating static pages using 1 worker (24/33) 
+✓ Generating static pages using 1 worker (33/33) in 3.0s
+  Finalizing page optimization ...
+
+Route (app)
+┌ ƒ /
+├ ƒ /_not-found
+├ ƒ /acompanhar
+├ ƒ /admin
+├ ƒ /admin/tenants/[id]
+├ ƒ /cadastro
+├ ƒ /convite/[token]
+├ ƒ /cookies
+├ ƒ /dashboard
+├ ƒ /dashboard/ajuda
+├ ƒ /dashboard/analytics
+├ ƒ /dashboard/assinatura
+├ ƒ /dashboard/auditlog
+├ ƒ /dashboard/configuracoes
+├ ƒ /dashboard/configuracoes/webhooks
+├ ƒ /dashboard/equipe
+├ ƒ /dashboard/feedbacks
+├ ƒ /dashboard/feedbacks/[protocolo]
+├ ƒ /dashboard/feedbacks/[protocolo]/edit
+├ ƒ /dashboard/perfil
+├ ƒ /dashboard/relatorios
+├ ƒ /demo
+├ ƒ /dev/design-system
+├ ƒ /enviar
+├ ƒ /lgpd
+├ ƒ /login
+├ ƒ /precos
+├ ƒ /privacidade
+├ ƒ /recuperar-senha
+├ ƒ /recuperar-senha/confirmar
+├ ƒ /recursos
+├ ƒ /recursos/documentacao
+├ ƒ /recursos/faq
+├ ƒ /recursos/seguranca
+└ ƒ /termos
+
+
+ƒ Proxy (Middleware)
+
+ƒ  (Dynamic)  server-rendered on demand
+
