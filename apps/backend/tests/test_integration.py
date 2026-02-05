@@ -28,6 +28,10 @@ class FeedbackAPITestCase(TestCase):
             username="testuser", email="test@example.com", password="testpass123"
         )
 
+        # Garantir que o usuário pertence ao tenant para evitar bloqueio de isolamento
+        self.tenant.owner = self.user
+        self.tenant.save(update_fields=["owner"])
+
         # Headers para simular tenant
         self.headers = {
             "HTTP_X_TENANT_ID": str(self.tenant.pk),

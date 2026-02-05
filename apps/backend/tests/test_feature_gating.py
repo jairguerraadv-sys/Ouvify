@@ -280,7 +280,7 @@ class FeedbackViewSetFeatureGatingTestCase(APITestCase):
 
         self.api_client = APIClient()
 
-        super().tearDownClass()
+        super().setUp()
 
     def test_free_plan_cannot_create_internal_notes(self):
         """Plano free não pode criar NOTA_INTERNA."""

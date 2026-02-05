@@ -70,7 +70,7 @@ class TestAnalyticsEndpoint:
 
     def test_analytics_sem_tenant_retorna_erro(self, api_client, tenant):
         """Analytics sem tenant identificado retorna erro."""
-        response = api_client.get("/api/v1/feedbacks/analytics/")
+        response = api_client.get("/api/feedbacks/analytics/")
         # Sem autenticação ou tenant, retorna erro
         assert response.status_code in [400, 401, 403]
 
@@ -82,8 +82,6 @@ class TestAnalyticsCalculations:
     def test_resumo_por_status(self, tenant, feedbacks_variados):
         """Verifica contagem por status."""
         set_current_tenant(tenant)
-
-        from django.db.models import Count, Q
 
         stats = Feedback.objects.filter(client=tenant).aggregate(
             total=Count("id"),
@@ -98,8 +96,6 @@ class TestAnalyticsCalculations:
     def test_metricas_sla(self, tenant, feedbacks_variados):
         """Verifica métricas de SLA."""
         set_current_tenant(tenant)
-
-        from django.db.models import Count, Q
 
         sla_stats = Feedback.objects.filter(
             client=tenant, data_primeira_resposta__isnull=False
@@ -146,7 +142,7 @@ class TestExportCSV:
 
     def test_export_sem_tenant_retorna_erro(self, api_client, tenant):
         """Export sem tenant identificado retorna erro."""
-        response = api_client.get("/api/v1/feedbacks/export-csv/")
+        response = api_client.get("/api/feedbacks/export-csv/")
         assert response.status_code in [400, 401, 403]
 
 
@@ -195,9 +191,6 @@ class TestTendencias:
     def test_tendencia_por_dia(self, tenant, feedback_factory):
         """Verifica cálculo de tendência por dia."""
         set_current_tenant(tenant)
-
-        from django.db.models import Count
-        from django.db.models.functions import TruncDate
 
         # Criar feedbacks em dias diferentes
         hoje = timezone.now()
