@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 
+from apps.billing.models import Plan, Subscription
 from apps.feedbacks.models import Feedback
 from apps.tenants.models import Client as TenantClient
 
@@ -18,7 +19,25 @@ class FeedbackAPITestCase(TestCase):
         """Configuração inicial para os testes"""
         self.client = Client()
 
-        # Criar tenant de teste
+        # Criar o plano FIRST (signal depends on it)
+        try:
+            plan = Plan.objects.get(slug="starter")
+        except Plan.DoesNotExist:
+            plan = Plan.objects.create(
+                name="Starter",
+                slug="starter",
+                price_cents=2900,
+                is_active=True,
+                trial_days=14,  # Must have trial days for signal to work
+                features={
+                    "analytics": False,
+                    "automations": False,
+                    "team_members": False,
+                },
+                limits={"feedbacks_per_month": 0},  # 0 = ilimitado
+            )
+
+        # Criar tenant de teste (post_save signal will create subscription)
         self.tenant = TenantClient.objects.create(
             nome="Empresa Teste", subdominio="teste", plano="starter", ativo=True
         )
