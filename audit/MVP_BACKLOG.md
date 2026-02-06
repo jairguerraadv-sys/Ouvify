@@ -1,4 +1,5 @@
 # 🎯 Backlog MVP - Ouvify
+
 **Data:** 05 de Fevereiro de 2026  
 **Status do MVP:** 88% completo - VIÁVEL para lançamento com pequenos ajustes
 
@@ -10,7 +11,7 @@
 **Bloqueadores (P0):** 0 ✅  
 **Alta Prioridade (P1):** 4 itens ⚠️  
 **Média Prioridade (P2):** 6 itens 📝  
-**Baixa Prioridade (P3):** 3 itens ℹ️  
+**Baixa Prioridade (P3):** 3 itens ℹ️
 
 **Esforço Total Estimado (P1):** 4-5 dias  
 **Recomendação:** Implementar P1 antes do lançamento público
@@ -24,6 +25,7 @@
 **O projeto está PRONTO para MVP do ponto de vista técnico.**
 
 Todos os componentes críticos estão funcionais:
+
 - ✅ Multi-tenant isolation robusto
 - ✅ Autenticação JWT com blacklist
 - ✅ CRUD de feedbacks completo
@@ -46,11 +48,13 @@ Todos os componentes críticos estão funcionais:
 **Esforço:** M (1 dia = 8h)
 
 **Arquivos afetados:**
+
 - `apps/backend/apps/core/views.py` (PasswordResetConfirmView)
 - `apps/backend/apps/core/account_views.py` (DeleteAccountView)
 - `apps/backend/apps/tenants/views.py` (transferir ownership)
 
 **Solução proposta:**
+
 ```python
 # Criar decorator
 from functools import wraps
@@ -71,6 +75,7 @@ class DeleteAccountView(APIView):
 ```
 
 **Critérios de aceite:**
+
 - [ ] Mudança de senha exige 2FA se habilitado
 - [ ] Exclusão de conta exige 2FA se habilitado
 - [ ] Transferência de ownership exige 2FA se habilitado
@@ -78,6 +83,7 @@ class DeleteAccountView(APIView):
 - [ ] Testado com usuário com 2FA habilitado e desabilitado
 
 **Teste manual:**
+
 1. Habilitar 2FA para um usuário
 2. Fazer login
 3. Tentar deletar conta SEM passar pelo flow de 2FA
@@ -97,6 +103,7 @@ class DeleteAccountView(APIView):
 **Esforço:** L (2-3 dias = 20h)
 
 **Arquivos a criar:**
+
 - `/docs/USER_GUIDE_COMPANY_ADMIN.md` (novo)
 - `/docs/USER_GUIDE_END_USER.md` (novo)
 - `/docs/TROUBLESHOOTING.md` (novo)
@@ -140,11 +147,12 @@ class DeleteAccountView(APIView):
 **Conteúdo necessário - Guia Usuário Final:**
 
 1.**Como enviar um feedback**
-   - Acessar o canal da empresa
-   - Escolher tipo (denúncia/reclamação/sugestão/elogio)
-   - Preencher formulário
-   - Anexar arquivos (opcional)
-   - Decidir: anônimo ou identificado
+
+- Acessar o canal da empresa
+- Escolher tipo (denúncia/reclamação/sugestão/elogio)
+- Preencher formulário
+- Anexar arquivos (opcional)
+- Decidir: anônimo ou identificado
 
 2. **Como acompanhar**
    - Salvar o código de protocolo (ex: OUVY-2026-0042)
@@ -166,6 +174,7 @@ class DeleteAccountView(APIView):
    - Como exportar/deletar dados
 
 **Critérios de aceite:**
+
 - [ ] Guia admin cobre 100% dos fluxos principais
 - [ ] Guia usuário é compreensível para leigo
 - [ ] Screenshots ou diagramas ilustrativos (mínimo 5 por guia)
@@ -184,11 +193,13 @@ class DeleteAccountView(APIView):
 **Esforço:** S (4h)
 
 **Arquivos afetados:**
+
 - `apps/backend/apps/core/views.py` (password reset, register)
 - `apps/backend/apps/tenants/views.py` (register tenant)
 - `apps/backend/config/settings.py` (config global)
 
 **Solução proposta:**
+
 ```python
 # Instalar django-ratelimit
 # requirements/base.txt: django-ratelimit==4.1.0
@@ -215,6 +226,7 @@ class PasswordResetView(APIView):
 ```
 
 **Endpoints que precisam rate limit:**
+
 - [ ] `POST /api/auth/register/` - 3/hora por IP
 - [ ] `POST /api/auth/password-reset/` - 5/hora por IP
 - [ ] `POST / /api/register-tenant/` - 2/hora por IP
@@ -222,6 +234,7 @@ class PasswordResetView(APIView):
 - [ ] `POST /api/feedbacks/` - 10/min por IP (anônimo)
 
 **Critérios de aceite:**
+
 - [ ] Todos os endpoints sensíveis têm rate limit
 - [ ] Response 429 (Too Many Requests) quando exceder
 - [ ] Mensagem de erro amigável com tempo de retry
@@ -239,6 +252,7 @@ class PasswordResetView(APIView):
 **Esforço:** S (2h)
 
 **Tarefas:**
+
 1. Backend: `pip-audit --requirement requirements/base.txt --format json > audit/evidence/pip_audit_final.json`
 2. Frontend: `npm audit --json > audit/evidence/npm_audit_final.json`
 3. Analisar outputs
@@ -253,6 +267,7 @@ class PasswordResetView(APIView):
    - Plano de ação para não resolvidas
 
 **Critérios de aceite:**
+
 - [ ] pip-audit executado sem erros
 - [ ] npm audit executado sem erros
 - [ ] Zero CVEs critical não resolvidas
@@ -272,13 +287,14 @@ class PasswordResetView(APIView):
 **Arquivos:** `apps/backend/apps/feedbacks/models.py`, nova migration
 
 **Índices a adicionar:**
+
 ```python
 class Meta:
     indexes = [
         # Já existentes (manter)
         models.Index(fields=['client', 'status', '-data_criacao']),
         models.Index(fields=['client', 'tipo']),
-        
+
         # NOVOS
         models.Index(fields=['client', 'prioridade', '-data_criacao']),
         models.Index(fields=['client', 'atribuido_para', 'status']),
@@ -293,7 +309,7 @@ class Meta:
 **Esforço:** S (1h)  
 **Impacto:** Reduz latência média 15-20%, reduz conexões ao DB
 
-` **Arquivo:** `apps/backend/config/settings.py`
+`**Arquivo:**`apps/backend/config/settings.py`
 
 ```python
 DATABASES = {
@@ -316,11 +332,13 @@ DATABASES = {
 **Impacto:** Elimina risco de XSS vazar tokens
 
 **Arquivos:**
+
 - `apps/backend/config/settings.py` (config de cookies)
 - `apps/frontend/lib/api.ts` (remover localStorage)
 - `apps/frontend/lib/auth.ts` (adaptar para cookies)
 
 **Mudanças necessárias:**
+
 - Backend define cookies httpOnly no response de login
 - Frontend não armazena tokens manualmente
 - CORS precisa de `credentials: 'include'`
@@ -365,6 +383,7 @@ Agendar no Celery Beat para rodar mensalmente.
 **Arquivo:** `/docs/RUNBOOK.md`
 
 **Seções obrigatórias:**
+
 1. Procedimentos de backup (DB, media)
 2. Restore de backup
 3. Rotação de secrets (SECRET_KEY, Stripe, Cloudinary)
@@ -407,6 +426,7 @@ jobs:
 ```
 
 **Tests prioritários:**
+
 - Login/logout
 - Criar feedback (anônimo e identificado)
 - Buscar por protocolo
@@ -417,10 +437,12 @@ jobs:
 ## ℹ️ P3 - BAIXA PRIORIDADE (pós-lançamento)
 
 ### P3-001: Limpeza de arquivos .pyc
+
 **Esforço:** S (30min)  
 **Impacto:** Limpeza do repo
 
 Adicionar ao `.gitignore`:
+
 ```
 **/*.pyc
 **/__pycache__/
@@ -432,10 +454,12 @@ Executar: `git rm --cached -r **/*.pyc`
 ---
 
 ### P3-002: Remover arquivos não usados
+
 **Esforço:** S (2h)  
 **Impacto:** Reduz confusão no código
 
 Revisar e remover:
+
 - `apps/tenants/logout_views.py`
 - `apps/tenants/jwt_views.py`
 - `apps/tenants/subscription_management.py`
@@ -445,15 +469,18 @@ Ou adicionar docstring explicando por que existem.
 ---
 
 ### P3-003: APM (Application Performance Monitoring)
+
 **Esforço:** M (1 dia)  
 **Impacto:** Observabilidade avançada
 
 Opções:
+
 - DataDog APM
 - New Relic
 - Elastic APM (já tem ElasticSearch)
 
 Métricas a rastrear:
+
 - Latência por endpoint (p50, p95, p99)
 - Taxa de erros
 - Throughput (req/s)
@@ -465,6 +492,7 @@ Métricas a rastrear:
 ## 📊 ESTIMATIVAS TOTAIS
 
 ### Por Prioridade
+
 - **P0:** 0 dias ✅
 - **P1:** 4-5 dias (32-40h)
 - **P2:** 6-7 dias (48-56h)
@@ -475,16 +503,19 @@ Métricas a rastrear:
 ### Cenários de Lançamento
 
 **🚀 Lançamento Rápido (1 semana):**
+
 - Implementar apenas P1
 - Lançar com documentação básica
 - Iterar baseado em feedback
 
 **✅ Lançamento Ideal (2-3 semanas):**
+
 - Implementar P1 completo
 - Implementar P2 selecionados (índices, pooling, runbook)
 - Lançar com confiança
 
 **🎯 Lançamento Premium (4 semanas):**
+
 - Implementar P1 + P2 completos
 - Alguns itens P3
 - 100% polido e profissional
@@ -496,17 +527,20 @@ Métricas a rastrear:
 **Sugerimos o "Lançamento Ideal" em 2-3 semanas:**
 
 **Semana 1 (P1):**
+
 - Dia 1-2: 2FA em operações sensíveis
 - Dia 3-4: Documentação de usuário
 - Dia 5: Rate limiting + Dependency audit
 
 **Semana 2 (P2 críticos):**
+
 - Dia 1: Índices de DB + Connection pooling
 - Dia 2: Política de retenção LGPD
 - Dia 3: Runbook operacional
 - Dia 4-5: E2E tests no CI
 
 **Semana 3 (Buffer e QA):**
+
 - Testes integrados
 - Correções de bugs encontrados
 - Preparação final de lançamento

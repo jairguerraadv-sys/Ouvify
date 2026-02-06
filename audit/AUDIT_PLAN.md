@@ -1,4 +1,5 @@
 # 🎯 PLANO DE AUDITORIA COMPLETA - OUVIFY
+
 **Data:** 05 de Fevereiro de 2026  
 **Framework:** ROMA (Reasoning On Multiple Abstractions)  
 **Executor:** GitHub Copilot Agent (Claude Sonnet 4.5)  
@@ -9,14 +10,17 @@
 ## 📊 CONTEXTO E OBJETIVOS
 
 ### Projeto
+
 **Nome:** Ouvify  
 **Tipo:** SaaS White Label - Canal de Feedback/Denúncia/Reclamação  
-**Arquitetura:** Monorepo  
-- **Backend:** Django 5.1, Python 3.13, PostgreSQL, Redis, ElasticSearch  
-- **Frontend:** Next.js 16, React 19, TypeScript  
+**Arquitetura:** Monorepo
+
+- **Backend:** Django 5.1, Python 3.13, PostgreSQL, Redis, ElasticSearch
+- **Frontend:** Next.js 16, React 19, TypeScript
 - **Deploy:** Render (backend) + Vercel (frontend)
 
 ### Objetivos da Auditoria
+
 1. **Status Atual:** Mapear completude do projeto (feature-complete?)
 2. **Integridade:** Duplicações, dead code, imports quebrados, rotas faltantes
 3. **Segurança:** Vulnerabilidades críticas (OWASP Top 10, secrets, auth, IDOR)
@@ -26,6 +30,7 @@
 7. **Backlog MVP:** Lista priorizada P0/P1/P2 para finalizar
 
 ### Restrições
+
 - ❌ Sem APIs externas (OpenAI, Gemini, Anthropic, OpenRouter)
 - ✅ Apenas recursos locais: Docker, Python, Node, curl, Copilot
 - ❌ Sem exfiltração de dados
@@ -37,19 +42,19 @@
 
 ### Macrotarefas (Mutuamente Exclusivas, Coletivamente Exaustivas)
 
-| ID | Macrotarefa | Script | Esforço | Output |
-|---|---|---|---|---|
-| **M0** | Bootstrap ROMA | `roma_bootstrap.sh` | 5min | ROMA rodando + health check |
-| **M1** | Inventário | `audit_inventory.sh` | 15min | `/audit/INVENTORY.md` |
-| **M2** | Integridade | `audit_integrity.sh` | 20min | `/audit/DUPLICATION_REDUNDANCY.md` |
-| **M3** | Backend |  `audit_backend.sh` | 30min | Testes + lint + validações |
-| **M4** | Frontend | `audit_frontend.sh` | 20min | Testes + build + rotas |
-| **M5** | Segurança | `audit_security.sh` | 45min | `/audit/SECURITY_REVIEW.md` |
-| **M6** | Performance | `audit_performance.sh` | 15min | `/audit/PERFORMANCE_REVIEW.md` |
-| **M7** | Conformidade LGPD | `audit_compliance_lgpd.sh` | 20min | `/audit/COMPLIANCE_LGPD.md` |
-| **M8** | Agregação | Copilot | 30min | `/audit/AUDIT_REPORT.md` + backlog |
-| **M9** | Verificação | Re-rodar scripts | 15min | Validar P0s corrigidos |
-| **M10** | Documentação | Copilot | 30min | `/docs/*` completos |
+| ID      | Macrotarefa       | Script                     | Esforço | Output                             |
+| ------- | ----------------- | -------------------------- | ------- | ---------------------------------- |
+| **M0**  | Bootstrap ROMA    | `roma_bootstrap.sh`        | 5min    | ROMA rodando + health check        |
+| **M1**  | Inventário        | `audit_inventory.sh`       | 15min   | `/audit/INVENTORY.md`              |
+| **M2**  | Integridade       | `audit_integrity.sh`       | 20min   | `/audit/DUPLICATION_REDUNDANCY.md` |
+| **M3**  | Backend           | `audit_backend.sh`         | 30min   | Testes + lint + validações         |
+| **M4**  | Frontend          | `audit_frontend.sh`        | 20min   | Testes + build + rotas             |
+| **M5**  | Segurança         | `audit_security.sh`        | 45min   | `/audit/SECURITY_REVIEW.md`        |
+| **M6**  | Performance       | `audit_performance.sh`     | 15min   | `/audit/PERFORMANCE_REVIEW.md`     |
+| **M7**  | Conformidade LGPD | `audit_compliance_lgpd.sh` | 20min   | `/audit/COMPLIANCE_LGPD.md`        |
+| **M8**  | Agregação         | Copilot                    | 30min   | `/audit/AUDIT_REPORT.md` + backlog |
+| **M9**  | Verificação       | Re-rodar scripts           | 15min   | Validar P0s corrigidos             |
+| **M10** | Documentação      | Copilot                    | 30min   | `/docs/*` completos                |
 
 **Total Estimado:** 4 horas
 
@@ -58,6 +63,7 @@
 ## 📋 FASE B: PLANNER - PLANO DETALHADO
 
 ### M0: Bootstrap ROMA ✅ CONCLUÍDO
+
 - [x] Instalar Flask
 - [x] Iniciar servidor ROMA local
 - [x] Health check: http://127.0.0.1:5000/health
@@ -73,7 +79,8 @@
 **Script:** `audit_inventory.sh`
 
 **Checklist:**
-- [ ] Estrutura de diretórios (excluir node_modules, __pycache__)
+
+- [ ] Estrutura de diretórios (excluir node_modules, **pycache**)
 - [ ] Apps Django: `/apps/backend/apps/*`
 - [ ] Páginas Next.js: `/apps/frontend/app/*`
 - [ ] Dependências: `pip list`, `npm list`
@@ -87,6 +94,7 @@
 **Output:** `/audit/INVENTORY.md`
 
 **DoD:**
+
 - Mapa completo do monorepo
 - Lista de rotas backend e frontend
 - Diagrama de arquitetura
@@ -99,6 +107,7 @@
 **Script:** `audit_integrity.sh`
 
 **Checklist:**
+
 - [ ] Buscar pastas legacy: `old/`, `backup/`, `v1/`, `v2/`, `tmp/`
 - [ ] Dependências duplicadas (Python + Node)
 - [ ] Código duplicado (funções/componentes similares)
@@ -113,6 +122,7 @@
 **Output:** `/audit/DUPLICATION_REDUNDANCY.md`
 
 **DoD:**
+
 - Lista de duplicações com decisão (manter/remover)
 - Top 10 imports quebrados identificados
 - Dead code catalogado
@@ -125,6 +135,7 @@
 **Script:** `audit_backend.sh`
 
 **Checklist:**
+
 - [ ] Rodar testes: `pytest --cov`
 - [ ] Cobertura mínima: 70%
 - [ ] Linter: `pylint apps/`
@@ -136,11 +147,13 @@
 - [ ] Migrations íntegras (`makemigrations --check`)
 - [ ] Endpoints principais funcionam (smoke tests)
 
-**Output:** 
+**Output:**
+
 - `/audit/evidence/backend_tests.log`
 - `/audit/evidence/backend_lint.log`
 
 **DoD:**
+
 - Testes passam
 - Cobertura ≥ 70% ou gaps identificados
 - Validação multi-tenant confirmada
@@ -153,23 +166,26 @@
 **Script:** `audit_frontend.sh`
 
 **Checklist:**
+
 - [ ] Rodar testes: `npm run test`
 - [ ] Build produção: `npm run build`
 - [ ] Linter: `npm run lint`
 - [ ] Type checking: `tsc --noEmit`
 - [ ] Rotas principais existem (páginas críticas)
 - [ ] API calls apontam para URLs corretas
-- [ ] Env vars configuradas (NEXT_PUBLIC_*)
+- [ ] Env vars configuradas (NEXT*PUBLIC*\*)
 - [ ] Bundle size aceitável (< 200KB gzipped)
 - [ ] Lazy loading implementado
 - [ ] XSS prevention (sanitização de HTML)
 
 **Output:**
+
 - `/audit/evidence/frontend_tests.log`
 - `/audit/evidence/frontend_build.log`
 - `/audit/evidence/frontend_lint.log`
 
 **DoD:**
+
 - Build passa sem erros
 - Rotas principais mapeadas
 - Bundle size documentado
@@ -182,6 +198,7 @@
 **Script:** `audit_security.sh`
 
 **Checklist:**
+
 - [ ] **Secrets scan:**
   - [ ] `.env` não commitado
   - [ ] Nenhum token/chave hardcoded em código
@@ -215,6 +232,7 @@
 **Output:** `/audit/SECURITY_REVIEW.md`
 
 **DoD:**
+
 - Vulnerabilidades CRÍTICAS = 0 (ou mitigadas)
 - Vulnerabilidades ALTAS ≤ 2 (com plano)
 - Secrets não expostos
@@ -227,6 +245,7 @@
 **Script:** `audit_performance.sh`
 
 **Checklist:**
+
 - [ ] **Backend:**
   - [ ] Endpoints críticos: latência < 500ms (p95)
   - [ ] N+1 queries (verificar `select_related`, `prefetch_related`)
@@ -245,6 +264,7 @@
 **Output:** `/audit/PERFORMANCE_REVIEW.md`
 
 **DoD:**
+
 - Latência de endpoints críticos medida
 - N+1 identificados (top 3)
 - Bundle size documentado
@@ -257,6 +277,7 @@
 **Script:** `audit_compliance_lgpd.sh`
 
 **Checklist:**
+
 - [x] Mapear dados pessoais coletados
 - [x] Verificar direitos do titular (Art. 18)
 - [x] Base legal (consentimento, legítimo interesse)
@@ -270,6 +291,7 @@
 **Output:** `/audit/COMPLIANCE_LGPD.md` (30KB, template completo)
 
 **DoD:**
+
 - Mapa completo de dados pessoais
 - Direitos do titular verificados
 - Gaps P0/P1/P2 identificados
@@ -282,6 +304,7 @@
 **Executor:** Copilot (após todos os scripts)
 
 **Checklist:**
+
 - [ ] Consolidar todos os logs de evidência
 - [ ] Criar `/audit/AUDIT_REPORT.md` com:
   - [ ] Status geral do projeto (% completude)
@@ -294,11 +317,13 @@
   - [ ] P2 (melhorias)
   - [ ] Para cada item: descrição, impacto, esforço, arquivos, critério de aceite
 
-**Output:** 
+**Output:**
+
 - `/audit/AUDIT_REPORT.md`
 - `/audit/MVP_BACKLOG.md`
 
 **DoD:**
+
 - Relatório consolidado completo
 - Backlog acionável
 - Decisões documentadas
@@ -310,6 +335,7 @@
 **Executor:** Copilot + scripts
 
 **Checklist:**
+
 - [ ] Re-rodar scripts para validar correções
 - [ ] Verificar que P0s foram resolvidos ou mitigados
 - [ ] Documentar antes/depois
@@ -317,6 +343,7 @@
 **Output:** `/audit/evidence/verifier_rerun.log`
 
 **DoD:**
+
 - P0s comprovadamente corrigidos
 - Evidências registradas
 
@@ -327,6 +354,7 @@
 **Executor:** Copilot
 
 **Checklist:**
+
 - [ ] `/docs/README.md` - Overview do produto
 - [ ] `/docs/SETUP_LOCAL.md` - Como rodar local (ROMA + Ouvify)
 - [ ] `/docs/DEPLOYMENT.md` - Render/Vercel deploy
@@ -339,6 +367,7 @@
 - [ ] `/docs/ADR/` - 3-5 decisões arquiteturais
 
 **DoD:**
+
 - Todos os documentos criados/atualizados
 - Setup local funcional (30min para rodar)
 - Manuais claros e objetivos
@@ -367,6 +396,7 @@
 ```
 
 ### Critérios de Parada (Exit on Failure)
+
 - **P0 detectado em segurança:** parar, corrigir, re-rodar
 - **Testes críticos falhando:** parar, corrigir, re-rodar
 - **Build quebrado:** parar, corrigir, re-rodar
@@ -376,6 +406,7 @@
 ## 📊 FASE D: AGGREGATOR - CONSOLIDAÇÃO
 
 Após execução de todos os scripts:
+
 1. Ler todos os logs em `/audit/evidence/`
 2. Consolidar findings em categorias (P0/P1/P2)
 3. Gerar relatório final `/audit/AUDIT_REPORT.md`
@@ -396,6 +427,7 @@ Após execução de todos os scripts:
 ## 🎯 DEFINITION OF DONE GERAL
 
 Não finalizar antes de:
+
 - [ ] ROMA rodando e saudável
 - [ ] Todos os scripts executados
 - [ ] Relatório `/audit/AUDIT_REPORT.md` completo
@@ -409,15 +441,15 @@ Não finalizar antes de:
 
 ## 📈 MÉTRICAS DE SUCESSO
 
-| Métrica | Baseline | Objetivo | Atual |
-|---------|----------|----------|-------|
-| Vulnerabilidades Críticas | ? | 0 | ? |
-| Cobertura de Testes Backend | ? | ≥70% | ? |
-| Cobertura de Testes Frontend | ? | ≥60% | ? |
-| Bundle Size (First Load) | ? | <200KB | ? |
-| Latência p95 (endpoints) | ? | <500ms | ? |
-| Documentação Completa | ? | 100% | ? |
-| Completude MVP | ~85% | 95% | ? |
+| Métrica                      | Baseline | Objetivo | Atual |
+| ---------------------------- | -------- | -------- | ----- |
+| Vulnerabilidades Críticas    | ?        | 0        | ?     |
+| Cobertura de Testes Backend  | ?        | ≥70%     | ?     |
+| Cobertura de Testes Frontend | ?        | ≥60%     | ?     |
+| Bundle Size (First Load)     | ?        | <200KB   | ?     |
+| Latência p95 (endpoints)     | ?        | <500ms   | ?     |
+| Documentação Completa        | ?        | 100%     | ?     |
+| Completude MVP               | ~85%     | 95%      | ?     |
 
 ---
 

@@ -14,21 +14,25 @@ Escopo: autenticação/autorização (frontend Next.js + backend Django/DRF), co
 ## Arquitetura atual (observada)
 
 ### Backend
+
 - DRF default: `IsAuthenticated` por padrão.
 - Auth classes habilitadas (ordem): JWT (`JWTAuthentication`), Token legacy (`TokenAuthentication`), Session (`SessionAuthentication`).
 - SimpleJWT: `ROTATE_REFRESH_TOKENS=True`, `BLACKLIST_AFTER_ROTATION=True`, access lifetime 15min, refresh lifetime 7d.
 
 Arquivos-chave:
+
 - `apps/backend/config/settings.py`
 - `apps/backend/apps/tenants/jwt_views.py`
 - `apps/backend/apps/tenants/logout_views.py`
 - `apps/backend/apps/tenants/views.py`
 
 ### Frontend
+
 - `apiClient` injeta `Authorization: Bearer <access_token>` e faz refresh em 401.
 - Proteção de rotas via componente client-side `ProtectedRoute`.
 
 Arquivos-chave:
+
 - `apps/frontend/lib/api.ts`
 - `apps/frontend/contexts/AuthContext.tsx`
 - `apps/frontend/components/ProtectedRoute.tsx`
@@ -36,6 +40,7 @@ Arquivos-chave:
 ## Achados
 
 ### CRÍTICO — Validação de sessão “falha aberto” no `ProtectedRoute`
+
 - Evidência: `apps/frontend/components/ProtectedRoute.tsx` (antes)
   - Em erro de rede ou status inesperado na verificação, o código marcava `isAuthenticated=true`.
 - Impacto:
@@ -43,6 +48,7 @@ Arquivos-chave:
 - Status: **corrigido** (agora falha fechado e redireciona).
 
 ### ALTO — Drift de chaves de token no frontend
+
 - Evidência (antes):
   - `apps/frontend/contexts/AuthContext.tsx`: `access_token`/`refresh_token` no login, mas `auth_token` no register.
   - `apps/frontend/components/ProtectedRoute.tsx`: lia `auth_token`.
@@ -52,6 +58,7 @@ Arquivos-chave:
 - Status: **corrigido** para `access_token`/`refresh_token`.
 
 ### ALTO — `storage.set()` serializa tokens como JSON
+
 - Evidência (antes):
   - `apps/frontend/lib/helpers.ts` define `storage.set()` como `JSON.stringify(value)`.
   - `apps/frontend/app/login/page.tsx` e `apps/frontend/app/cadastro/page.tsx` armazenavam token via `storage.set('auth_token', token)`.
@@ -60,6 +67,7 @@ Arquivos-chave:
 - Status: **mitigado** nas rotas de login/cadastro (agora usam `localStorage.setItem()` e JWT).
 
 ### MÉDIO — Backend ainda expõe TokenAuth legacy
+
 - Evidência:
   - `apps/backend/config/settings.py` inclui `TokenAuthentication`.
   - `apps/backend/apps/tenants/views.py:RegisterTenantView` cria `Token` DRF.
@@ -68,6 +76,7 @@ Arquivos-chave:
 - Status: **parcialmente mitigado** (frontend migrou para JWT; backend mantém compat).
 
 ### MÉDIO — Tokens em `localStorage`
+
 - Evidência:
   - `apps/frontend/lib/api.ts` e `apps/frontend/contexts/AuthContext.tsx`.
 - Impacto:
@@ -77,10 +86,12 @@ Arquivos-chave:
 ## Correções aplicadas (diffs)
 
 ### Backend
+
 - `apps/backend/apps/tenants/views.py`
   - `RegisterTenantView` agora emite `access` e `refresh` (SimpleJWT) além do `token` legacy.
 
 ### Frontend
+
 - `apps/frontend/contexts/AuthContext.tsx`
   - `register()` agora usa JWT (`access_token`/`refresh_token`) e não grava mais `auth_token`.
   - `login()` deixa o caller decidir o redirect (removeu `router.push('/dashboard')`).
@@ -95,6 +106,7 @@ Arquivos-chave:
   - Passou a armazenar `access_token`/`refresh_token` e objetos `user`/`tenant` compatíveis com `AuthContext`.
 
 ### Testes
+
 - `apps/frontend/tests/e2e/auth-login.spec.ts`
 - `apps/frontend/tests/e2e/fixtures.ts`
   - Atualizados para validar `access_token` (JWT).

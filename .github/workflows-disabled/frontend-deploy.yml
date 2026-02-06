@@ -4,11 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'apps/frontend/**'
-      - 'packages/**'
-      - 'package.json'
-      - 'turbo.json'
-      - '.github/workflows/frontend-deploy.yml'
+      - "apps/frontend/**"
+      - "packages/**"
+      - "package.json"
+      - "turbo.json"
+      - ".github/workflows/frontend-deploy.yml"
   workflow_dispatch:
 
 env:
@@ -19,29 +19,29 @@ jobs:
   deploy:
     name: Deploy Frontend to Vercel
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: apps/frontend/package-lock.json
-      
+
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
-      
+
       - name: Pull Vercel Environment Information
         working-directory: apps/frontend
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
-      
+
       - name: Build Project Artifacts
         working-directory: apps/frontend
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
-      
+
       - name: Deploy Project to Vercel
         working-directory: apps/frontend
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

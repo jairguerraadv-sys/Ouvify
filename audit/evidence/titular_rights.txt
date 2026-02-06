@@ -1,0 +1,31 @@
+=== Verificação de Direitos do Titular (LGPD Art. 18) ===
+
+## Endpoints LGPD encontrados:
+✓ apps/core/lgpd_views.py existe
+
+### Views/Endpoints:
+class AccountDeletionView(APIView):
+    def delete(self, request):
+class DataExportView(APIView):
+    def get(self, request):
+
+## Direitos que DEVEM estar implementados:
+
+1. Direito de ACESSO (Art. 18, I e II):
+   - Usuário pode visualizar seus próprios dados?
+   - Possível exportar dados em formato estruturado?
+   Status: ✓ Encontrado 'export' em lgpd_views.py
+
+2. Direito de RETIFICAÇÃO (Art. 18, III):
+   - Usuário pode corrigir seus dados?
+
+3. Direito de EXCLUSÃO (Art. 18, VI):
+   - Usuário pode deletar sua conta?
+
+4. Direito de PORTABILIDADE (Art. 18, V):
+   - Dados exportados em JSON/CSV?
+
+5. Direito de INFORMAÇÃO (Art. 18, VIII):
+   - Existe política de privacidade?
+   - Usuário é informado sobre tratamento?
+

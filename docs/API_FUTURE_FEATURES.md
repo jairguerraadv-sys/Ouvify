@@ -11,6 +11,7 @@
 **🎉 MÓDULO 2FA COMPLETO!** Frontend e backend totalmente integrados e funcionais.
 
 **Arquivos Implementados:**
+
 - ✅ Hook: `apps/frontend/hooks/use-2fa.ts` (200 linhas)
 - ✅ Componentes: `apps/frontend/components/2fa/` (4 componentes)
 - ✅ Página Config: `apps/frontend/app/dashboard/configuracoes/seguranca/page.tsx`
@@ -34,13 +35,14 @@ Este documento cataloga todas as funcionalidades implementadas no backend mas qu
 
 **Status:** ✅ Backend 100% + ✅ Frontend 100% = 🟢 **FUNCIONAL**  
 **Data de Implementação:** 06/02/2026  
-**Prioridade:** ~~🟡 Média (Sprint 2-3)~~ → ✅ **COMPLETO**  
+**Prioridade:** ~~🟡 Média (Sprint 2-3)~~ → ✅ **COMPLETO**
 
 ### 🎉 Implementação Completa
 
 O módulo 2FA foi **100% implementado** no frontend, incluindo:
 
 #### Frontend Implementado
+
 - ✅ **Hook:** `hooks/use-2fa.ts` - Gerenciamento completo de API 2FA
 - ✅ **Página de Configuração:** `/dashboard/configuracoes/seguranca` - Ativar/desativar 2FA
 - ✅ **Wizard de Setup:** Modal com QR Code e backup codes
@@ -62,14 +64,14 @@ O módulo 2FA foi **100% implementado** no frontend, incluindo:
 
 ### Endpoints Disponíveis (Backend)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| POST | `/api/auth/2fa/setup/` | Inicia configuração do 2FA (gera secret + QR Code) |
-| POST | `/api/auth/2fa/confirm/` | Confirma configuração após escanear QR Code |
-| POST | `/api/auth/2fa/verify/` | Valida código 2FA no login |
-| POST | `/api/auth/2fa/disable/` | Desativa 2FA para o usuário |
-| GET | `/api/auth/2fa/status/` | Consulta status do 2FA (ativo/inativo) |
-| POST | `/api/auth/2fa/backup-codes/regenerate/` | Gera novos códigos de backup |
+| Método | Endpoint                                 | Descrição                                          |
+| ------ | ---------------------------------------- | -------------------------------------------------- |
+| POST   | `/api/auth/2fa/setup/`                   | Inicia configuração do 2FA (gera secret + QR Code) |
+| POST   | `/api/auth/2fa/confirm/`                 | Confirma configuração após escanear QR Code        |
+| POST   | `/api/auth/2fa/verify/`                  | Valida código 2FA no login                         |
+| POST   | `/api/auth/2fa/disable/`                 | Desativa 2FA para o usuário                        |
+| GET    | `/api/auth/2fa/status/`                  | Consulta status do 2FA (ativo/inativo)             |
+| POST   | `/api/auth/2fa/backup-codes/regenerate/` | Gera novos códigos de backup                       |
 
 ### Implementação Backend
 
@@ -118,15 +120,15 @@ apps/frontend/app/(dashboard)/configuracoes/seguranca/
 // apps/frontend/hooks/use-2fa.ts
 export function use2FA() {
   const setup2FA = async () => {
-    return await api.post('/api/auth/2fa/setup/');
+    return await api.post("/api/auth/2fa/setup/");
   };
 
   const confirm2FA = async (code: string) => {
-    return await api.post('/api/auth/2fa/confirm/', { code });
+    return await api.post("/api/auth/2fa/confirm/", { code });
   };
 
   const verify2FA = async (code: string) => {
-    return await api.post('/api/auth/2fa/verify/', { code });
+    return await api.post("/api/auth/2fa/verify/", { code });
   };
 
   return { setup2FA, confirm2FA, verify2FA };
@@ -159,6 +161,7 @@ npm install qrcode.react  # Para exibir QR Code
 O módulo LGPD/Consentimento foi **100% implementado** no frontend, incluindo:
 
 #### Frontend Implementado
+
 - ✅ **Hook:** `hooks/use-consent.ts` - Gerenciamento completo de API de consentimento
 - ✅ **Componente:** `components/consent/ConsentCheckbox.tsx` - Checkbox expandível com termos LGPD
 - ✅ **Integração Feedback:** `/enviar/page.tsx` - Checkbox obrigatório antes de enviar denúncia
@@ -183,25 +186,25 @@ O módulo LGPD/Consentimento foi **100% implementado** no frontend, incluindo:
 
 #### Versões de Consentimento (Admin)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/consent/versions/` | Lista todas as versões de termos |
-| GET | `/api/consent/versions/{id}/` | Detalhes de uma versão específica |
-| GET | `/api/consent/versions/required/` | Retorna versões que exigem consentimento |
+| Método | Endpoint                          | Descrição                                |
+| ------ | --------------------------------- | ---------------------------------------- |
+| GET    | `/api/consent/versions/`          | Lista todas as versões de termos         |
+| GET    | `/api/consent/versions/{id}/`     | Detalhes de uma versão específica        |
+| GET    | `/api/consent/versions/required/` | Retorna versões que exigem consentimento |
 
 #### Consentimentos do Usuário
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/consent/user-consents/` | Lista consentimentos do usuário autenticado |
-| POST | `/api/consent/user-consents/` | Cria novo consentimento |
-| GET | `/api/consent/user-consents/{id}/` | Detalhes de um consentimento |
-| PUT | `/api/consent/user-consents/{id}/` | Atualiza consentimento |
-| DELETE | `/api/consent/user-consents/{id}/` | Revoga consentimento |
-| POST | `/api/consent/user-consents/accept/` | Aceita consentimento (usuário autenticado) |
-| POST | `/api/consent/user-consents/accept_anonymous/` | Aceita consentimento (denúncia anônima) |
-| POST | `/api/consent/user-consents/{id}/revoke/` | Revoga consentimento específico |
-| GET | `/api/consent/user-consents/pending/` | Lista consentimentos pendentes |
+| Método | Endpoint                                       | Descrição                                   |
+| ------ | ---------------------------------------------- | ------------------------------------------- |
+| GET    | `/api/consent/user-consents/`                  | Lista consentimentos do usuário autenticado |
+| POST   | `/api/consent/user-consents/`                  | Cria novo consentimento                     |
+| GET    | `/api/consent/user-consents/{id}/`             | Detalhes de um consentimento                |
+| PUT    | `/api/consent/user-consents/{id}/`             | Atualiza consentimento                      |
+| DELETE | `/api/consent/user-consents/{id}/`             | Revoga consentimento                        |
+| POST   | `/api/consent/user-consents/accept/`           | Aceita consentimento (usuário autenticado)  |
+| POST   | `/api/consent/user-consents/accept_anonymous/` | Aceita consentimento (denúncia anônima)     |
+| POST   | `/api/consent/user-consents/{id}/revoke/`      | Revoga consentimento específico             |
+| GET    | `/api/consent/user-consents/pending/`          | Lista consentimentos pendentes              |
 
 ### Implementação Backend
 
@@ -253,12 +256,12 @@ apps/frontend/
 ```typescript
 // apps/frontend/hooks/use-consent.ts
 export function useConsent() {
-  const { data: required } = useSWR('/api/consent/versions/required/');
-  const { data: myConsents } = useSWR('/api/consent/user-consents/');
-  const { data: pending } = useSWR('/api/consent/user-consents/pending/');
+  const { data: required } = useSWR("/api/consent/versions/required/");
+  const { data: myConsents } = useSWR("/api/consent/user-consents/");
+  const { data: pending } = useSWR("/api/consent/user-consents/pending/");
 
   const acceptConsent = async (versionId: number) => {
-    return await api.post('/api/consent/user-consents/accept/', {
+    return await api.post("/api/consent/user-consents/accept/", {
       version_id: versionId,
     });
   };
@@ -287,7 +290,9 @@ export function ConsentModal({ onAccept, onDecline }: ConsentModalProps) {
           <input
             type="checkbox"
             checked={accepted[version.id]}
-            onChange={(e) => setAccepted({ ...accepted, [version.id]: e.target.checked })}
+            onChange={(e) =>
+              setAccepted({ ...accepted, [version.id]: e.target.checked })
+            }
           />
           <label>{version.title}</label>
           <p>{version.description}</p>
@@ -314,15 +319,15 @@ export function ConsentModal({ onAccept, onDecline }: ConsentModalProps) {
 **Status:** ✅ Backend 100% funcional | ❌ Frontend 0%  
 **Prioridade:** 🟢 Baixa (Sprint 3-4)  
 **Esforço Estimado:** 3-4 horas  
-**Dependência:** ElasticSearch deve estar configurado em produção  
+**Dependência:** ElasticSearch deve estar configurado em produção
 
 ### Endpoints Disponíveis
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/search/` | Busca global em feedbacks, usuários, tags |
-| GET | `/api/search/autocomplete/` | Busca incremental (typeahead) |
-| GET | `/api/search/protocol/{protocolo}/` | Busca avançada por protocolo |
+| Método | Endpoint                            | Descrição                                 |
+| ------ | ----------------------------------- | ----------------------------------------- |
+| GET    | `/api/search/`                      | Busca global em feedbacks, usuários, tags |
+| GET    | `/api/search/autocomplete/`         | Busca incremental (typeahead)             |
+| GET    | `/api/search/protocol/{protocolo}/` | Busca avançada por protocolo              |
 
 ### Implementação Backend
 
@@ -366,7 +371,7 @@ export function useSearch(query: string) {
   const debouncedQuery = useDebounce(query, 300);
 
   const { data, isLoading } = useSWR(
-    debouncedQuery ? `/api/search/autocomplete/?q=${debouncedQuery}` : null
+    debouncedQuery ? `/api/search/autocomplete/?q=${debouncedQuery}` : null,
   );
 
   const search = async (filters?: SearchFilters) => {
@@ -383,7 +388,7 @@ export function useSearch(query: string) {
 ```tsx
 // apps/frontend/components/GlobalSearch/SearchBar.tsx
 export function SearchBar() {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const { suggestions, isLoading } = useSearch(query);
 
   return (
@@ -411,6 +416,7 @@ export function SearchBar() {
 ### Configuração Necessária
 
 **Backend (Django Settings):**
+
 ```python
 # settings.py
 ELASTICSEARCH_DSL = {
@@ -421,6 +427,7 @@ ELASTICSEARCH_DSL = {
 ```
 
 **Docker Compose (desenvolvimento):**
+
 ```yaml
 # docker-compose.yml
 services:
@@ -445,31 +452,33 @@ services:
 
 **Status:** ✅ Backend 80% funcional | ⚠️ Frontend 50%  
 **Prioridade:** 🟢 Baixa (Sprint 3-4)  
-**Esforço Estimado:** 2-3 horas  
+**Esforço Estimado:** 2-3 horas
 
 ### Endpoints Órfãos (Não Usados pelo Frontend)
 
-| Método | Endpoint | Descrição | Status Frontend |
-|--------|----------|-----------|-----------------|
-| GET | `/api/push/notifications/` | Lista todas as notificações | ❌ Não usado |
-| GET | `/api/push/preferences/` | Lista preferências gerais | ❌ Não usado |
-| PATCH | `/api/push/preferences/{id}/` | Atualiza preferência por ID | ❌ Não usado |
+| Método | Endpoint                      | Descrição                   | Status Frontend |
+| ------ | ----------------------------- | --------------------------- | --------------- |
+| GET    | `/api/push/notifications/`    | Lista todas as notificações | ❌ Não usado    |
+| GET    | `/api/push/preferences/`      | Lista preferências gerais   | ❌ Não usado    |
+| PATCH  | `/api/push/preferences/{id}/` | Atualiza preferência por ID | ❌ Não usado    |
 
 ### Endpoints Integrados ✅
 
-| Método | Endpoint | Descrição | Status Frontend |
-|--------|----------|-----------|-----------------|
-| GET | `/api/push/preferences/me/` | Minhas preferências | ✅ Usado |
-| PATCH | `/api/push/preferences/me/` | Atualizar minhas preferências | ✅ Usado |
-| POST | `/api/push/notifications/send/` | Enviar notificação | ✅ Usado |
+| Método | Endpoint                        | Descrição                     | Status Frontend |
+| ------ | ------------------------------- | ----------------------------- | --------------- |
+| GET    | `/api/push/preferences/me/`     | Minhas preferências           | ✅ Usado        |
+| PATCH  | `/api/push/preferences/me/`     | Atualizar minhas preferências | ✅ Usado        |
+| POST   | `/api/push/notifications/send/` | Enviar notificação            | ✅ Usado        |
 
 ### Recomendação
 
 **✅ Manter endpoints órfãos:**
+
 - `/api/push/notifications/` → Útil para admin listar todas as notificações enviadas
 - `/api/push/preferences/` → Útil para admin gerenciar preferências globais
 
 **❌ Não precisa UI:**
+
 - São endpoints administrativos que podem ser consumidos via scripts ou ferramentas como Postman
 
 ---
@@ -478,28 +487,31 @@ services:
 
 **Status:** ✅ Backend 100% funcional | ⚠️ Frontend 78%  
 **Prioridade:** 🟢 Baixa (Sprint 3)  
-**Esforço Estimado:** 1 hora  
+**Esforço Estimado:** 1 hora
 
 ### Endpoints Órfãos
 
-| Método | Endpoint | Descrição | Valor |
-|--------|----------|-----------|-------|
-| GET | `/api/response-templates/by-category/` | Lista templates agrupados por categoria | 🟡 Médio |
-| POST | `/api/response-templates/render/` | Renderiza template com dados de feedback | 🟢 Baixo |
+| Método | Endpoint                               | Descrição                                | Valor    |
+| ------ | -------------------------------------- | ---------------------------------------- | -------- |
+| GET    | `/api/response-templates/by-category/` | Lista templates agrupados por categoria  | 🟡 Médio |
+| POST   | `/api/response-templates/render/`      | Renderiza template com dados de feedback | 🟢 Baixo |
 
 ### Implementação Recomendada
 
 **1. Filtro por Categoria:**
+
 ```tsx
 // apps/frontend/app/(dashboard)/templates/page.tsx
-const { data: grouped } = useSWR('/api/response-templates/by-category/');
+const { data: grouped } = useSWR("/api/response-templates/by-category/");
 
 return (
   <div>
     {Object.entries(grouped).map(([category, templates]) => (
       <div key={category}>
         <h3>{category}</h3>
-        {templates.map((t) => <TemplateCard template={t} />)}
+        {templates.map((t) => (
+          <TemplateCard template={t} />
+        ))}
       </div>
     ))}
   </div>
@@ -507,6 +519,7 @@ return (
 ```
 
 **2. Render de Template:**
+
 - Opcional: Pode ser feito no frontend com template string
 - Backend pode adicionar lógica complexa (ex: condicionais, formatação)
 
@@ -523,6 +536,7 @@ return (
 O módulo de **Audit Log estava COMPLETO** no sistema! Além disso, foram adicionadas melhorias:
 
 #### Frontend Implementado (Original)
+
 - ✅ **Página:** `/dashboard/auditlog` - Dashboard com 3 tabs (Analytics, Logs, Segurança)
 - ✅ **API Client:** `lib/audit-log.ts` - Cliente HTTP com todas as funções
 - ✅ **Componentes:**
@@ -535,6 +549,7 @@ O módulo de **Audit Log estava COMPLETO** no sistema! Além disso, foram adicio
 - ✅ **Analytics:** Total de logs, usuários ativos, série temporal, top usuários
 
 #### Melhorias Adicionadas
+
 - ✅ **Hook:** `hooks/use-audit-log.ts` (270 linhas)
   - Usa SWR para cache automático e revalidação
   - API simplificada e reativa
@@ -546,6 +561,7 @@ O módulo de **Audit Log estava COMPLETO** no sistema! Além disso, foram adicio
   - Detalhes expandíveis inline
 
 #### Fluxo de Usuário
+
 1. **Analytics:** Dashboard → Auditlog → Tab "Analytics" → Ver métricas (logs totais, usuários ativos, gráficos)
 2. **Logs:** Tab "Logs" → Filtrar (ação, severidade, data) → Ver tabela → Clicar log → Detalhes
 3. **Exportação:** Aplicar filtros → Botão "Export CSV" → Download arquivo
@@ -555,15 +571,15 @@ O módulo de **Audit Log estava COMPLETO** no sistema! Além disso, foram adicio
 
 ### Endpoints Disponíveis (Backend)
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/api/auditlog/logs/` | Lista todos os logs (paginado, filtros) |
-| GET | `/api/auditlog/logs/{id}/` | Detalhes de um log específico |
-| GET | `/api/auditlog/logs/analytics/` | Analytics consolidados (30 dias) |
-| GET | `/api/auditlog/logs/actions/` | Lista de ações disponíveis para filtro |
-| GET | `/api/auditlog/logs/export/` | Exporta logs para CSV (máx 10k) |
-| GET | `/api/auditlog/summaries/` | Resumos agregados por data |
-| GET | `/api/auditlog/sessions/` | Sessões de usuário ativas |
+| Método | Endpoint                        | Descrição                               |
+| ------ | ------------------------------- | --------------------------------------- |
+| GET    | `/api/auditlog/logs/`           | Lista todos os logs (paginado, filtros) |
+| GET    | `/api/auditlog/logs/{id}/`      | Detalhes de um log específico           |
+| GET    | `/api/auditlog/logs/analytics/` | Analytics consolidados (30 dias)        |
+| GET    | `/api/auditlog/logs/actions/`   | Lista de ações disponíveis para filtro  |
+| GET    | `/api/auditlog/logs/export/`    | Exporta logs para CSV (máx 10k)         |
+| GET    | `/api/auditlog/summaries/`      | Resumos agregados por data              |
+| GET    | `/api/auditlog/sessions/`       | Sessões de usuário ativas               |
 
 ### Implementação Backend
 
@@ -574,6 +590,7 @@ O módulo de **Audit Log estava COMPLETO** no sistema! Além disso, foram adicio
 ### Frontend Original (Descoberto)
 
 **Estrutura Existente:**
+
 ```
 apps/frontend/
 ├── lib/audit-log.ts                    # API client
@@ -587,6 +604,7 @@ apps/frontend/
 ### Melhorias Adicionadas
 
 **Novos Arquivos:**
+
 ```
 apps/frontend/
 ├── hooks/use-audit-log.ts             # Hook com SWR (270 linhas)
@@ -595,17 +613,20 @@ apps/frontend/
 ```
 
 **Documentação:**
+
 - [AUDITLOG_IMPLEMENTATION_REPORT.md](AUDITLOG_IMPLEMENTATION_REPORT.md) - Análise completa do módulo
 
 ### Recomendação
 
 **✅ Sistema Completo:**
+
 - Frontend 100% funcional com dashboard, filtros, paginação e exportação
 - Melhorias adicionadas: Hook com SWR, componente responsivo
 - Pronto para uso em produção
 - Não requer ação adicional
 
 **🚀 Melhorias Futuras (Opcional):**
+
 - Gráficos interativos (Recharts/Chart.js)
 - Alertas automáticos por email
 - Real-time updates via WebSocket
@@ -615,18 +636,19 @@ apps/frontend/
 
 ## 📊 7. BILLING (Rotas CRUD não usadas)
 
-**Status:** ✅ Backend 100% funcional | ⚠️ Frontend 71%  
+**Status:** ✅ Backend 100% funcional | ⚠️ Frontend 71%
 
 ### Endpoints Órfãos
 
-| Método | Endpoint | Descrição | Valor |
-|--------|----------|-----------|-------|
-| GET | `/api/v1/billing/subscription/` | Lista todas as subscriptions (admin) | 🟡 Médio |
-| GET | `/api/v1/billing/subscription/{id}/` | Detalhes de subscription específica | 🟢 Baixo |
+| Método | Endpoint                             | Descrição                            | Valor    |
+| ------ | ------------------------------------ | ------------------------------------ | -------- |
+| GET    | `/api/v1/billing/subscription/`      | Lista todas as subscriptions (admin) | 🟡 Médio |
+| GET    | `/api/v1/billing/subscription/{id}/` | Detalhes de subscription específica  | 🟢 Baixo |
 
 ### Recomendação
 
 **Manter para Admin Multi-Tenant:**
+
 - Útil para superadmin gerenciar subscriptions de todos os tenants
 - Não precisa UI no MVP
 - Pode ser implementado em dashboard admin futuro
@@ -637,53 +659,58 @@ apps/frontend/
 
 ### ✅ Implementado (Sprint 1 - Concluído)
 
-| Feature | Esforço Real | ROI | Data Conclusão |
-|---------|--------------|-----|----------------|
-| **2FA** | 8h | Alto (Security Premium) | **06/02/2026** ✅ |
+| Feature | Esforço Real | ROI                     | Data Conclusão    |
+| ------- | ------------ | ----------------------- | ----------------- |
+| **2FA** | 8h           | Alto (Security Premium) | **06/02/2026** ✅ |
 
 ### 🔴 Alta Prioridade (Impacto Direto no Negócio)
 
 | Feature | Esforço | ROI | Sprint Recomendado |
-|---------|---------|-----|-------------------|
-| - | - |- | - |
+| ------- | ------- | --- | ------------------ |
+| -       | -       | -   | -                  |
 
 ### 🟡 Média Prioridade (Compliance e Segurança)
 
-| Feature | Esforço | ROI | Sprint Recomendado |
-|---------|---------|-----|-------------------|
-| **Consent LGPD** | 4-6h | Alto (Compliance) | Sprint 2 |
+| Feature          | Esforço | ROI               | Sprint Recomendado |
+| ---------------- | ------- | ----------------- | ------------------ |
+| **Consent LGPD** | 4-6h    | Alto (Compliance) | Sprint 2           |
 
 ### 🟢 Baixa Prioridade (Nice-to-have)
 
-| Feature | Esforço | ROI | Sprint Recomendado |
-|---------|---------|-----|-------------------|
-| **Busca Global** | 3-4h | Médio (UX) | Sprint 3 |
-| **Response Templates Filtros** | 1h | Baixo | Sprint 3 |
+| Feature                        | Esforço | ROI        | Sprint Recomendado |
+| ------------------------------ | ------- | ---------- | ------------------ |
+| **Busca Global**               | 3-4h    | Médio (UX) | Sprint 3           |
+| **Response Templates Filtros** | 1h      | Baixo      | Sprint 3           |
 
 ---
 
 ## 🎯 ROADMAP SUGERIDO
 
 ### ~~Sprint 1 (CONCLUÍDO)~~ ✅
+
 - ✅ **Implementar UI de 2FA (8h)** - COMPLETO 06/02/2026
   - ✅ Hook use-2fa.ts
-  - ✅ Componentes (QR Code, Backup Codes, Modais)  
+  - ✅ Componentes (QR Code, Backup Codes, Modais)
   - ✅ Página de configuração `/dashboard/configuracoes/seguranca`
   - ✅ Página de verificação `/login/2fa`
   - ✅ Integração com login existente
   - ✅ Documentação completa
 
 ### Sprint 2 (Próxima)
+
 ### Sprint 2 (Próxima)
+
 - ✅ Implementar UI de Consentimento LGPD (4-6h)
 - ✅ Adicionar modal de consentimento no `/cadastro` e `/enviar`
 - ✅ Página de gerenciamento de consentimentos `/dashboard/configuracoes/privacidade`
 
 ### Sprint 3
+
 - ⚠️ Busca Global (se ElasticSearch estiver disponível)
 - ✅ Melhorias em Response Templates
 
-### Sprint 4  
+### Sprint 4
+
 - ⚠️ Busca Global (se não feito na Sprint 3)
 - ✅ Melhorias em Response Templates
 
@@ -732,13 +759,14 @@ apps/frontend/
 # 4. 2FA desativado
 ```
 
-###  🧪 COMO TESTAR VIA SWAGGER (Outros Módulos)
+### 🧪 COMO TESTAR VIA SWAGGER (Outros Módulos)
 
 **URL:** http://localhost:8000/swagger/ ou http://localhost:8000/redoc/
 
 **Exemplos de Testes:**
 
 ### 1. Testar 2FA Setup (Backend)
+
 ```bash
 curl -X POST http://localhost:8000/api/auth/2fa/setup/ \
   -H "Authorization: Bearer <token>" \
@@ -746,12 +774,14 @@ curl -X POST http://localhost:8000/api/auth/2fa/setup/ \
 ```
 
 ### 2. Testar Consent
+
 ```bash
 curl -X GET http://localhost:8000/api/consent/versions/required/ \
   -H "Content-Type: application/json"
 ```
 
 ### 3. Testar Busca
+
 ```bash
 curl -X GET http://localhost:8000/api/search/?q=denuncia \
   -H "Authorization: Bearer <token>"
@@ -762,12 +792,14 @@ curl -X GET http://localhost:8000/api/search/?q=denuncia \
 ## 📚 REFERÊNCIAS TÉCNICAS
 
 ### Backend
+
 - [apps/backend/apps/consent/](apps/backend/apps/consent/) - LGPD Consent Management
 - [apps/backend/apps/core/two_factor_urls.py](apps/backend/apps/core/two_factor_urls.py) - 2FA URLs
 - [apps/backend/apps/core/search_urls.py](apps/backend/apps/core/search_urls.py) - Search URLs
 - [apps/backend/apps/notifications/](apps/backend/apps/notifications/) - Push Notifications
 
 ### Documentação
+
 - [audit/INTEGRATION_AUDIT_PHASE1.md](audit/INTEGRATION_AUDIT_PHASE1.md) - Auditoria de Integração
 - [docs/FIX_REPORT_PHASE2.md](docs/FIX_REPORT_PHASE2.md) - Correções Fase 2
 
@@ -792,5 +824,5 @@ Antes de implementar qualquer feature deste documento:
 
 ---
 
-*Documento gerado por Ouvify Architect (ROMA Framework)*  
-*Última atualização: 06/02/2026*
+_Documento gerado por Ouvify Architect (ROMA Framework)_  
+_Última atualização: 06/02/2026_

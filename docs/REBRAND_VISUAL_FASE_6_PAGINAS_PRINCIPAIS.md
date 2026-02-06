@@ -17,6 +17,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 ### **Fase 6.0: Páginas Críticas (7 páginas)**
 
 ### 1. **Landing Page** - `apps/frontend/app/(marketing)/page.tsx`
+
 - **Linhas totais:** 456
 - **Correções:** 1 classe antiga
   - `text-secondary-600` → `text-secondary`
@@ -24,6 +25,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Button, Badge, Card, Chip (Hero section)
 
 ### 2. **Dashboard Overview** - `apps/frontend/app/dashboard/page.tsx`
+
 - **Linhas totais:** 338
 - **Correções:** 30+ classes antigas
   - **KPIs Array (4 × 2 classes = 8):**
@@ -49,6 +51,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Card (KPIs), Badge (status/activity), Button, Charts
 
 ### 3. **Feedbacks List** - `apps/frontend/app/dashboard/feedbacks/page.tsx`
+
 - **Linhas totais:** 341
 - **Correções:** 20+ classes antigas
   - **Status Badge Variants:**
@@ -71,6 +74,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Badge (status + categoria), Table, Input (search), Button
 
 ### 4. **Feedback Detail View** - `apps/frontend/app/dashboard/feedbacks/[protocolo]/page.tsx`
+
 - **Linhas totais:** 708
 - **Correções:** 5 classes antigas (StatusBadge component)
   - **StatusBadge refatorado:**
@@ -80,6 +84,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Badge (status), Button, Card, Tabs
 
 ### 5. **Feedback Edit Page** - `apps/frontend/app/dashboard/feedbacks/[protocolo]/edit/page.tsx`
+
 - **Linhas totais:** 318
 - **Correções:** 15+ classes antigas
   - `text-text-secondary` → `text-muted-foreground` (7 instâncias em labels)
@@ -93,6 +98,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Input, Textarea, Select, Button, Card
 
 ### 6. **Configurações** - `apps/frontend/app/dashboard/configuracoes/page.tsx`
+
 - **Linhas totais:** 604
 - **Correções:** 3 classes antigas (Zona de Perigo card)
   - `border-error-200 bg-error-50` → `border-error bg-error/10`
@@ -101,6 +107,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Card (danger zone), Button (destructive)
 
 ### 7. **Webhooks Settings** - `apps/frontend/app/dashboard/configuracoes/webhooks/page.tsx`
+
 - **Linhas totais:** 711
 - **Correções:** 5 classes antigas
   - `bg-background-tertiary` → `bg-muted`
@@ -114,6 +121,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 ### **Fase 6.1: Admin Pages (3 páginas) ✅ COMPLETA**
 
 ### 8. **Admin Dashboard** - `apps/frontend/app/admin/page.tsx`
+
 - **Linhas totais:** 818
 - **Correções:** 20+ classes antigas
   - **KPICard color props (6 instâncias):**
@@ -136,6 +144,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** KPICard (custom), Badge (status), Table, Button, DropdownMenu
 
 ### 9. **Admin Tenant Details** - `apps/frontend/app/admin/tenants/[id]/page.tsx`
+
 - **Linhas totais:** 541
 - **Correções:** 15+ classes antigas
   - **Header Badges (2):**
@@ -157,6 +166,7 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 - **Componentes validados:** Badge (status/plano), StatsCard (custom), Card, Icons
 
 ### 10. **Demo Page** - `apps/frontend/app/demo/page.tsx`
+
 - **Linhas totais:** 383
 - **Correções:** 8 classes antigas
   - **CheckCircle icons:**
@@ -177,59 +187,59 @@ Aplicar os componentes rebrandizados da Fase 5 (Button, Badge, Card, Input, Toas
 
 ### **Old Palette → Design Tokens**
 
-| **Categoria** | **Antes (❌ Incorreto)** | **Depois (✅ Correto)** |
-|---------------|--------------------------|-------------------------|
-| **Text Colors (numbered)** | `text-primary-600` | `text-primary` |
-| | `text-success-700` | `text-success` |
-| | `text-error-400` | `text-error` |
-| | `text-warning-800` | `text-warning` |
-| **Background Colors (numbered)** | `bg-primary-50` | `bg-primary/10` |
-| | `bg-success-100` | `bg-success/10` |
-| | `bg-error-100` | `bg-error/10` |
-| | `bg-warning-light` | `bg-warning/10` |
-| **Border Colors (numbered)** | `border-primary-200` | `border-primary` |
-| | `border-error-300` | `border-error` |
-| | `border-border-light` | `border-border` |
-| **Old Token Names** | `text-text-primary` | `text-foreground` |
-| | `text-text-secondary` | `text-muted-foreground` |
-| | `text-text-tertiary` | `text-muted-foreground` |
-| | `text-text-link` | `text-primary` |
-| | `bg-background-tertiary` | `bg-muted` |
-| | `bg-background-secondary` | `bg-muted` |
+| **Categoria**                    | **Antes (❌ Incorreto)**  | **Depois (✅ Correto)** |
+| -------------------------------- | ------------------------- | ----------------------- |
+| **Text Colors (numbered)**       | `text-primary-600`        | `text-primary`          |
+|                                  | `text-success-700`        | `text-success`          |
+|                                  | `text-error-400`          | `text-error`            |
+|                                  | `text-warning-800`        | `text-warning`          |
+| **Background Colors (numbered)** | `bg-primary-50`           | `bg-primary/10`         |
+|                                  | `bg-success-100`          | `bg-success/10`         |
+|                                  | `bg-error-100`            | `bg-error/10`           |
+|                                  | `bg-warning-light`        | `bg-warning/10`         |
+| **Border Colors (numbered)**     | `border-primary-200`      | `border-primary`        |
+|                                  | `border-error-300`        | `border-error`          |
+|                                  | `border-border-light`     | `border-border`         |
+| **Old Token Names**              | `text-text-primary`       | `text-foreground`       |
+|                                  | `text-text-secondary`     | `text-muted-foreground` |
+|                                  | `text-text-tertiary`      | `text-muted-foreground` |
+|                                  | `text-text-link`          | `text-primary`          |
+|                                  | `bg-background-tertiary`  | `bg-muted`              |
+|                                  | `bg-background-secondary` | `bg-muted`              |
 
 ### **Badge Variants (refatoração)**
 
 **Antes (❌):**
+
 ```tsx
-<Badge className="bg-success-100 text-success-700">
-  Resolvido
-</Badge>
+<Badge className="bg-success-100 text-success-700">Resolvido</Badge>
 ```
 
 **Depois (✅):**
+
 ```tsx
-<Badge variant="success">
-  Resolvido
-</Badge>
+<Badge variant="success">Resolvido</Badge>
 ```
 
 ### **Color Functions (refatoração)**
 
 **Antes (❌):**
+
 ```tsx
 const getActivityColor = (tipo: string) => {
-  if (tipo === 'denúncia') return 'bg-error-100 text-error-600';
-  if (tipo === 'sugestão') return 'bg-success-100 text-success-600';
-  return 'bg-background-tertiary text-text-secondary';
+  if (tipo === "denúncia") return "bg-error-100 text-error-600";
+  if (tipo === "sugestão") return "bg-success-100 text-success-600";
+  return "bg-background-tertiary text-text-secondary";
 };
 ```
 
 **Depois (✅):**
+
 ```tsx
 const getActivityColor = (tipo: string) => {
-  if (tipo === 'denúncia') return 'bg-error/10 text-error';
-  if (tipo === 'sugestão') return 'bg-success/10 text-success';
-  return 'bg-muted text-muted-foreground';
+  if (tipo === "denúncia") return "bg-error/10 text-error";
+  if (tipo === "sugestão") return "bg-success/10 text-success";
+  return "bg-muted text-muted-foreground";
 };
 ```
 
@@ -238,6 +248,7 @@ const getActivityColor = (tipo: string) => {
 ## ⚠️ Páginas Restantes (Não Auditadas)
 
 Aproximadamente 29 páginas não foram auditadas (de um total de 39 páginas):
+
 - Marketing: `/recursos`, `/privacidade`, `/lgpd`, `/cookies`, `/faq`, `/termos`, `/precos`
 - Dashboard: `/perfil`, `/equipe`, `/analytics`, `/relatorios`, `/auditlog`, `/assinatura`, `/ajuda`, `/privacidade`
 - Auth: `/login`, `/cadastro`, `/recuperar-senha`, `/login/2fa`
@@ -251,14 +262,14 @@ Aproximadamente 29 páginas não foram auditadas (de um total de 39 páginas):
 
 ### **Cobertura de Correções (Atualizado - Fase 6.1)**
 
-| **Métrica** | **Valor** |
-|-------------|-----------|
-| **Total de páginas (.tsx)** | 39 |
-| **Páginas auditadas** | 10 (26%) |
-| **Páginas corrigidas** | 10 (26%) |
-| **Classes antigas substituídas** | 150+ |
-| **Erros TypeScript introduzidos** | 0 ✅ |
-| **Componentes validados** | 8 (Button, Badge, Card, Input, Textarea, Select, Switch, Table) |
+| **Métrica**                       | **Valor**                                                       |
+| --------------------------------- | --------------------------------------------------------------- |
+| **Total de páginas (.tsx)**       | 39                                                              |
+| **Páginas auditadas**             | 10 (26%)                                                        |
+| **Páginas corrigidas**            | 10 (26%)                                                        |
+| **Classes antigas substituídas**  | 150+                                                            |
+| **Erros TypeScript introduzidos** | 0 ✅                                                            |
+| **Componentes validados**         | 8 (Button, Badge, Card, Input, Textarea, Select, Switch, Table) |
 
 ### **Páginas Críticas (Cobertura 100%)**
 
@@ -268,13 +279,13 @@ Aproximadamente 29 páginas não foram auditadas (de um total de 39 páginas):
 ✅ Feedback Detail  
 ✅ Feedback Edit  
 ✅ Configurações  
-✅ Webhooks  
+✅ Webhooks
 
 ### **Páginas Admin (Cobertura 100%)**
 
 ✅ Admin Dashboard  
 ✅ Admin Tenant Details  
-✅ Demo Page  
+✅ Demo Page
 
 ### **Páginas Pendentes (Impact: Very Low)**
 
@@ -306,6 +317,7 @@ Todos os 10 arquivos corrigidos passam na validação TypeScript sem erros:
 ### **Responsividade (✅ Herança da Fase 3)**
 
 Todos os componentes corrigidos herdam as classes responsivas da Fase 3:
+
 - Mobile-first approach mantido
 - Breakpoints Tailwind preservados (`sm:`, `md:`, `lg:`, `xl:`)
 - Gap systems mantidos (`gap-4 md:gap-6`)
@@ -313,6 +325,7 @@ Todos os componentes corrigidos herdam as classes responsivas da Fase 3:
 ### **Contraste WCAG (✅ Tokens corretos)**
 
 Uso dos design tokens garante conformidade WCAG AA:
+
 - `text-foreground` = contraste 7:1 (AAA)
 - `text-muted-foreground` = contraste 4.5:1 (AA)
 - `text-primary` = contraste 4.5:1 com `bg-background` (AA)
@@ -325,11 +338,13 @@ Uso dos design tokens garante conformidade WCAG AA:
 ### **1. Padrão de Badge com className é antipadrão**
 
 **Problema:**
+
 ```tsx
 <Badge className="bg-success-100 text-success-700">Resolvido</Badge>
 ```
 
 **Solução:**
+
 ```tsx
 <Badge variant="success">Resolvido</Badge>
 ```
@@ -339,18 +354,20 @@ Uso dos design tokens garante conformidade WCAG AA:
 ### **2. Funções de cor devem retornar tokens, não classes numeradas**
 
 **Problema:**
+
 ```tsx
 const getColor = (status: string) => {
-  if (status === 'ativo') return 'bg-success-100 text-success-700';
-  return 'bg-neutral-100 text-neutral-700';
+  if (status === "ativo") return "bg-success-100 text-success-700";
+  return "bg-neutral-100 text-neutral-700";
 };
 ```
 
 **Solução:**
+
 ```tsx
 const getColor = (status: string) => {
-  if (status === 'ativo') return 'bg-success/10 text-success';
-  return 'bg-muted text-muted-foreground';
+  if (status === "ativo") return "bg-success/10 text-success";
+  return "bg-muted text-muted-foreground";
 };
 ```
 
@@ -359,16 +376,15 @@ const getColor = (status: string) => {
 ### **3. Prefira variants de componentes sobre classes customizadas**
 
 **Antes:**
+
 ```tsx
-<Badge 
-  variant="outline" 
-  className="bg-primary-100 text-primary-700"
->
+<Badge variant="outline" className="bg-primary-100 text-primary-700">
   Em Análise
 </Badge>
 ```
 
 **Depois:**
+
 ```tsx
 <Badge variant="default">Em Análise</Badge>
 ```
@@ -382,6 +398,7 @@ const getColor = (status: string) => {
 ### **Fase 6.2: Auditoria Completa (Estimado: 2-3 horas)**
 
 Auditar as 29 páginas restantes para identificar:
+
 - Páginas que já estão corretas (herdam componentes Fase 5)
 - Páginas que precisam de correções pontuais
 - Páginas que precisam refatoração
@@ -391,6 +408,7 @@ Auditar as 29 páginas restantes para identificar:
 ### **Fase 7: Animações & Polish (Estimado: 3 horas) - RECOMENDADO**
 
 Implementar micro-interações e animações:
+
 - Hover states refinados
 - Transitions suaves
 - Loading states
@@ -413,6 +431,7 @@ Implementar micro-interações e animações:
 **Status da Fase 6:** ✅ **COMPLETA** (26% cobertura total, **100% páginas de alto impacto + admin**)
 
 **Impacto:**
+
 - ✅ Landing page: Primeira impressão profissional
 - ✅ Dashboard: Consistência visual em todas as KPIs e cards
 - ✅ Feedbacks: Fluxo principal de uso com design tokens corretos

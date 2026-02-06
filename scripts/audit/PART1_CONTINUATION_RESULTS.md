@@ -10,7 +10,6 @@ Notas:
 
 - Para manter o tempo razoável, esta execução ignora arquivos > 350KB ou > 6000 linhas.
 
-
 ```
 Blocos duplicados (min-lines=20):
 ================================================================================
@@ -21,8 +20,8 @@ Blocos duplicados (min-lines=20):
   - apps/backend/tests/test_automations.py:22
   --- trecho (primeiras 5 linhas) ---
   from apps.core.utils import set_current_tenant
-  
-  
+
+
   @pytest.fixture(autouse=True)
   def skip_celery_tasks(monkeypatch):
 
@@ -31,8 +30,8 @@ Blocos duplicados (min-lines=20):
   - apps/backend/tests/test_analytics.py:27
   - apps/backend/tests/test_automations.py:23
   --- trecho (primeiras 5 linhas) ---
-  
-  
+
+
   @pytest.fixture(autouse=True)
   def skip_celery_tasks(monkeypatch):
       """Mocka tasks Celery."""
@@ -42,7 +41,7 @@ Blocos duplicados (min-lines=20):
   - apps/backend/tests/test_analytics.py:28
   - apps/backend/tests/test_automations.py:24
   --- trecho (primeiras 5 linhas) ---
-  
+
   @pytest.fixture(autouse=True)
   def skip_celery_tasks(monkeypatch):
       """Mocka tasks Celery."""
@@ -57,7 +56,7 @@ Blocos duplicados (min-lines=20):
   def skip_celery_tasks(monkeypatch):
       """Mocka tasks Celery."""
       monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
-  
+
 
 [5] Repetições: 3 | Arquivos: 3
   - apps/backend/tests/test_api_keys.py:26
@@ -67,7 +66,7 @@ Blocos duplicados (min-lines=20):
   def skip_celery_tasks(monkeypatch):
       """Mocka tasks Celery."""
       monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
-  
+
       import apps.notifications.tasks as notif_tasks
 
 [6] Repetições: 3 | Arquivos: 3
@@ -77,7 +76,7 @@ Blocos duplicados (min-lines=20):
   --- trecho (primeiras 5 linhas) ---
       """Mocka tasks Celery."""
       monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
-  
+
       import apps.notifications.tasks as notif_tasks
       monkeypatch.setattr(notif_tasks, 'send_feedback_created_push', MagicMock())
 
@@ -87,7 +86,7 @@ Blocos duplicados (min-lines=20):
   - apps/backend/tests/test_automations.py:28
   --- trecho (primeiras 5 linhas) ---
       monkeypatch.setenv('CELERY_TASK_ALWAYS_EAGER', 'True')
-  
+
       import apps.notifications.tasks as notif_tasks
       monkeypatch.setattr(notif_tasks, 'send_feedback_created_push', MagicMock())
       monkeypatch.setattr(notif_tasks, 'send_status_update_push', MagicMock())
@@ -98,7 +97,7 @@ Blocos duplicados (min-lines=20):
   --- trecho (primeiras 5 linhas) ---
     useSearchParams: jest.fn(() => new URLSearchParams()),
   }));
-  
+
   jest.mock('@/contexts/AuthContext', () => ({
     useAuth: jest.fn(() => ({
 
@@ -107,7 +106,7 @@ Blocos duplicados (min-lines=20):
   - apps/frontend/__tests__/feedbacks-page.test.tsx:24
   --- trecho (primeiras 5 linhas) ---
   }));
-  
+
   jest.mock('@/contexts/AuthContext', () => ({
     useAuth: jest.fn(() => ({
       isAuthenticated: true,
@@ -116,7 +115,7 @@ Blocos duplicados (min-lines=20):
   - apps/frontend/__tests__/dashboard.test.tsx:25
   - apps/frontend/__tests__/feedbacks-page.test.tsx:25
   --- trecho (primeiras 5 linhas) ---
-  
+
   jest.mock('@/contexts/AuthContext', () => ({
     useAuth: jest.fn(() => ({
       isAuthenticated: true,
@@ -126,7 +125,7 @@ Blocos duplicados (min-lines=20):
   - apps/backend/tests/test_analytics.py:33
   - apps/backend/tests/test_automations.py:29
   --- trecho (primeiras 5 linhas) ---
-  
+
       import apps.notifications.tasks as notif_tasks
       monkeypatch.setattr(notif_tasks, 'send_feedback_created_push', MagicMock())
       monkeypatch.setattr(notif_tasks, 'send_status_update_push', MagicMock())
@@ -140,7 +139,6 @@ Notas:
 - Isto NÃO prova que o arquivo está morto (Next/Django podem referenciar por convenção, strings, settings, roteamento).
 
 - Use como fila de revisão manual (ex.: remover/arquivar ou adicionar referência explícita).
-
 
 ```
 Backend: arquivos potencialmente não referenciados
@@ -172,7 +170,6 @@ Total (suspeitos): 23
 - apps/backend/apps/webhooks/tests.py: não importado por heurística (pode ser usado via Django wiring/strings)
 - apps/backend/apps/webhooks/views.py: não importado por heurística (pode ser usado via Django wiring/strings)
 ```
-
 
 ```
 Frontend: arquivos potencialmente não referenciados

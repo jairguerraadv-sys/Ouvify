@@ -1,0 +1,29 @@
+=== Segurança dos Dados (LGPD Art. 46) ===
+
+## 1. Criptografia em Trânsito:
+✓ SECURE_SSL_REDIRECT ativado
+✓ SESSION_COOKIE_SECURE ativado
+
+## 2. Criptografia em Repouso:
+PostgreSQL padrão: NÃO criptografa automaticamente
+Opções:
+  - Transparent Data Encryption (TDE) no DB (nível infra)
+  - Criptografia de campos sensíveis (nível aplicação)
+  - Managed database com encryption at rest (Render/AWS RDS)
+
+⚠️  Documentar solução adotada
+
+## 3. Controle de Acesso (Multi-tenant):
+✓ Isolamento multi-tenant encontrado (get_queryset filtra por client)
+
+## 4. Logs de Auditoria:
+✓ App auditlog existe
+
+## 5. Mascaramento de Dados Sensíveis em Logs:
+Verificando se logs não vazam dados...
+/workspaces/Ouvify/apps/backend/test_security_fixes.py:    print(f"\n✓ Usa secrets.choice(): {'✅ SIM' if uses_secrets else '❌ NÃO'}")
+/workspaces/Ouvify/apps/backend/tests/test_integration.py:        self.client.login(username="testuser", password="testpass123")
+/workspaces/Ouvify/apps/backend/apps/tenants/logout_views.py:Views para logout com invalidação de token.
+/workspaces/Ouvify/apps/backend/apps/tenants/logout_views.py:from rest_framework_simplejwt.token_blacklist.models import (
+/workspaces/Ouvify/apps/backend/apps/tenants/logout_views.py:from rest_framework_simplejwt.tokens import RefreshToken
+✓ Não encontrado vazamento óbvio em logs

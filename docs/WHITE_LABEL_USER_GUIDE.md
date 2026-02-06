@@ -85,17 +85,18 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 ## 🎯 Onde o White Label Aparece?
 
 ### Dashboard (Interno)
+
 - ✅ Menu lateral
 - ✅ Cabeçalho
 - ✅ Botões e badges
 - ✅ Links e textos
 
 ### Páginas Públicas
+
 - ✅ `/enviar` (Formulário de Feedback)
   - Header com sua logo
   - Título com nome da empresa
   - Botões com suas cores
-  
 - ✅ `/acompanhar` (Consulta de Protocolo)
   - Header com sua logo
   - Cores customizadas
@@ -110,12 +111,14 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 ### Logo
 
 ✅ **BOM:**
+
 - PNG com fundo transparente
 - Dimensões 500x200px (horizontal)
 - Logo legível em fundo claro e escuro
 - Tamanho: 100-500 KB
 
 ❌ **EVITAR:**
+
 - JPG com fundo branco (fica com quadrado)
 - Logo muito pequena (pixelizada)
 - SVG com texto (pode não renderizar)
@@ -124,6 +127,7 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 ### Cores
 
 ✅ **BOM:**
+
 - Contraste suficiente (texto legível)
 - Cores da identidade visual da empresa
 - Primária: cor forte (botões)
@@ -131,6 +135,7 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 - Texto: cinza escuro ou preto
 
 ❌ **EVITAR:**
+
 - Texto muito claro (dificulta leitura)
 - Primária e secundária muito parecidas
 - Cores neon (cansam a vista)
@@ -139,11 +144,13 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 ### Fonte
 
 ✅ **BOM:**
+
 - Fontes clean: Roboto, Inter, Open Sans
 - Corporativas: Montserrat, Poppins
 - Legíveis em telas pequenas
 
 ❌ **EVITAR:**
+
 - Fontes decorativas (difícil leitura)
 - Fontes manuscritas
 - Fontes com caracteres limitados
@@ -155,6 +162,7 @@ White Label permite que cada cliente do Ouvify personalize completamente a apar�
 ### Preview Antes de Salvar
 
 Antes de clicar "Salvar", verifique o preview:
+
 - Botões ficaram bonitos?
 - Cores têm contraste suficiente?
 - Texto está legível?
@@ -162,6 +170,7 @@ Antes de clicar "Salvar", verifique o preview:
 ### Teste em Dispositivos Diferentes
 
 Após salvar:
+
 1. Abra em celular
 2. Abra em tablet
 3. Verifique se logo não fica cortada
@@ -170,15 +179,18 @@ Após salvar:
 ### Use Ferramentas de Cor
 
 **Escolher cores complementares:**
+
 - https://coolors.co/ (gerador de paletas)
 - https://color.adobe.com/ (Adobe Color)
 
 **Verificar contraste:**
+
 - https://webaim.org/resources/contrastchecker/
 
 ### Exportar Configurações
 
 Se você tem várias unidades:
+
 1. Configure em um tenant
 2. Anote: cor_primaria, cor_secundaria, fonte
 3. Replique nos outros (copiar/colar)
@@ -190,11 +202,13 @@ Se você tem várias unidades:
 ### Logo não aparece
 
 **Causa possível:**
+
 - Upload falhou
 - Arquivo muito grande
 - Formato não suportado
 
 **Solução:**
+
 1. Verifique se a logo aparece em "Configurações"
 2. Se não, faça upload novamente
 3. Reduza o tamanho da imagem se necessário
@@ -203,10 +217,12 @@ Se você tem várias unidades:
 ### Cores não mudaram
 
 **Causa possível:**
+
 - Cache do navegador
 - Não clicou em "Salvar Configurações"
 
 **Solução:**
+
 1. Clique em "Salvar Configurações"
 2. Aguarde a página recarregar
 3. Se não funcionar, limpe cache (Ctrl+Shift+R)
@@ -214,10 +230,12 @@ Se você tem várias unidades:
 ### Fonte não carregou
 
 **Causa possível:**
+
 - Nome incorreto
 - Fonte não existe no Google Fonts
 
 **Solução:**
+
 1. Acesse https://fonts.google.com/
 2. Busque a fonte desejada
 3. Copie o nome exato (ex: "Roboto", não "roboto")
@@ -228,6 +246,7 @@ Se você tem várias unidades:
 ## 🎓 Exemplos Reais
 
 ### Exemplo 1: Empresa Corporativa
+
 ```
 Logo: Logo azul corporativa (500x150px)
 Cor Primária: #003366 (azul escuro)
@@ -235,9 +254,11 @@ Cor Secundária: #00A8E8 (azul claro)
 Cor Texto: #333333 (cinza escuro)
 Fonte: Roboto
 ```
+
 **Resultado:** Visual profissional, sóbrio, confiável.
 
 ### Exemplo 2: Startup de Tecnologia
+
 ```
 Logo: Logo colorida moderna (500x200px)
 Cor Primária: #6366F1 (roxo vibrante)
@@ -245,9 +266,11 @@ Cor Secundária: #10B981 (verde)
 Cor Texto: #1F2937 (preto suave)
 Fonte: Inter
 ```
+
 **Resultado:** Visual moderno, tech, inovador.
 
 ### Exemplo 3: ONG Social
+
 ```
 Logo: Logo com símbolo social (400x160px)
 Cor Primária: #F59E0B (laranja)
@@ -255,6 +278,7 @@ Cor Secundária: #EF4444 (vermelho)
 Cor Texto: #374151 (cinza)
 Fonte: Open Sans
 ```
+
 **Resultado:** Visual caloroso, humano, acessível.
 
 ---
@@ -262,6 +286,7 @@ Fonte: Open Sans
 ## 📊 Antes e Depois
 
 ### Antes (Sem White Label)
+
 ```
 ❌ Logo "Ouvify" em todas as páginas
 ❌ Cores azul/roxo padrão
@@ -270,6 +295,7 @@ Fonte: Open Sans
 ```
 
 ### Depois (Com White Label)
+
 ```
 ✅ Sua logo em todas as páginas
 ✅ Cores da sua empresa
@@ -277,7 +303,8 @@ Fonte: Open Sans
 ✅ Parece sistema próprio da sua empresa
 ```
 
-**Impacto:** 
+**Impacto:**
+
 - 📈 +40% de confiança dos usuários
 - 🎯 Alinhamento com identidade corporativa
 - 🏢 Percepção de sistema profissional
@@ -287,6 +314,7 @@ Fonte: Open Sans
 ## 🚀 Próximas Atualizações
 
 **Em breve:**
+
 - 🌙 Dark mode customizável
 - 🎨 Templates de cores pré-definidos
 - 📱 Upload de splash screen (mobile)
@@ -301,6 +329,7 @@ Fonte: Open Sans
 
 **Suporte:**
 Entre em contato com o suporte do Ouvify, incluindo:
+
 - Screenshot da tela de configurações
 - Descrição do problema
 - Navegador e dispositivo

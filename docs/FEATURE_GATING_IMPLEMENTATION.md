@@ -15,6 +15,7 @@ Sistema de **Feature Gating** implementado com sucesso, criando hard enforcement
 - **Pro/Enterprise Plans:** Ilimitado
 
 **Escopo Completo:**
+
 - ✅ Backend: Lógica de bloqueio com contagem mensal
 - ✅ Backend: Endpoint de status de uso `/api/v1/billing/usage/`
 - ✅ Frontend: Hook SWR para monitoramento em tempo real
@@ -29,6 +30,7 @@ Sistema de **Feature Gating** implementado com sucesso, criando hard enforcement
 **Status:** ✅ Completo
 
 **Arquivos Modificados:**
+
 1. `apps/backend/apps/billing/feature_gating.py` (+85 linhas)
 2. `apps/backend/apps/feedbacks/views.py` (~15 linhas modificadas)
 
@@ -40,16 +42,17 @@ Sistema de **Feature Gating** implementado com sucesso, criando hard enforcement
 def check_feature_limit(client, feature_slug: str) -> bool:
     """
     Verifica limites de uso baseado em planos.
-    
+
     - Free plan: 50 feedbacks/mês
     - Pro/Enterprise: ilimitado
-    
+
     Raises:
         PermissionDenied: Se limite excedido
     """
 ```
 
 **Características:**
+
 - Conta feedbacks do **mês atual** (não total)
 - Usa `timezone.now()` para determinar início do mês
 - Busca limite de `Plan.limits['feedbacks_per_month']` ou fallback para slug
@@ -57,6 +60,7 @@ def check_feature_limit(client, feature_slug: str) -> bool:
 - Compatível com expansão futura para outras features
 
 **Query SQL Otimizada:**
+
 ```python
 month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
 feedbacks_count = Feedback.objects.filter(
@@ -82,6 +86,7 @@ except DjangoPermissionDenied as e:
 ```
 
 **Fluxo de Execução:**
+
 1. Usuário tenta criar feedback via POST `/api/feedbacks/`
 2. `perform_create()` valida tenant
 3. `check_feature_limit()` conta feedbacks do mês
@@ -89,6 +94,7 @@ except DjangoPermissionDenied as e:
 5. Se OK: cria feedback normalmente
 
 **Mensagem de Erro (API):**
+
 ```json
 {
   "detail": "Limite de 50 feedbacks/mês atingido para o plano Free. Você já possui 50 feedbacks este mês. Faça upgrade para o plano Pro para criar feedbacks ilimitados."
@@ -102,6 +108,7 @@ except DjangoPermissionDenied as e:
 **Status:** ✅ Completo
 
 **Arquivos Criados/Modificados:**
+
 1. `apps/backend/apps/billing/serializers.py` (+22 linhas)
 2. `apps/backend/apps/billing/views.py` (+120 linhas)
 3. `apps/backend/apps/billing/urls.py` (+2 linhas)
@@ -128,6 +135,7 @@ class UsageStatsSerializer(serializers.Serializer):
 **Permissões:** Qualquer usuário autenticado pode ver seu próprio uso
 
 **Lógica:**
+
 ```python
 # 1. Busca subscription do tenant
 subscription = get_client_subscription(client)
@@ -152,6 +160,7 @@ is_near_limit = usage_percent > 80
 ```
 
 **Resposta (JSON):**
+
 ```json
 {
   "plan": "free",
@@ -183,6 +192,7 @@ urlpatterns = [
 **Status:** ✅ Completo
 
 **Arquivos Criados:**
+
 1. `apps/frontend/hooks/use-usage-limits.ts` (170 linhas)
 2. `apps/frontend/components/billing/UpgradeAlert.tsx` (210 linhas)
 
@@ -193,12 +203,14 @@ urlpatterns = [
 **Arquivo:** `hooks/use-usage-limits.ts`
 
 **Características:**
+
 - Usa SWR para cache e auto-refresh
 - Refresh automático a cada 60 segundos
 - Revalida ao focar na janela
 - Deduplica requisições (5s)
 
 **Interface:**
+
 ```typescript
 interface UsageStats {
   plan: string;
@@ -212,13 +224,14 @@ interface UsageStats {
 ```
 
 **Retorno do Hook:**
+
 ```typescript
 {
   usage: UsageStats | undefined;
   isLoading: boolean;
   error: any;
   refetch: () => void;
-  
+
   // Computed helpers
   isNearLimit: boolean;      // >80%
   isAtLimit: boolean;        // 100%
@@ -231,10 +244,11 @@ interface UsageStats {
 ```
 
 **Uso:**
+
 ```tsx
 function MyComponent() {
   const { isAtLimit, canCreateFeedback, usagePercent } = useUsageLimits();
-  
+
   return (
     <>
       <Progress value={usagePercent} />
@@ -249,6 +263,7 @@ function MyComponent() {
 **Arquivo:** `components/billing/UpgradeAlert.tsx`
 
 **Características:**
+
 - Exibe alerta apenas para plano Free
 - Mostra apenas se `isNearLimit` ou `isAtLimit`
 - Alerta amarelo (warning) quando >80%
@@ -259,14 +274,13 @@ function MyComponent() {
 **Componentes Exportados:**
 
 1. **`<UpgradeAlert />`** - Alerta completo
+
    ```tsx
-   <UpgradeAlert 
-     className="mb-6"
-     upgradeUrl="/dashboard/configuracoes/plano"
-   />
+   <UpgradeAlert className="mb-6" upgradeUrl="/dashboard/configuracoes/plano" />
    ```
 
 2. **`<UsageBadge />`** - Badge compacto para header
+
    ```tsx
    <UsageBadge className="ml-2" />
    // Output: "45/50 feedbacks" (com ícone)
@@ -283,6 +297,7 @@ function MyComponent() {
 **Estados Visuais:**
 
 **Alerta Amarelo (>80%):**
+
 ```
 ⚠️ Próximo ao Limite de Feedbacks
 Você usou 45 de 50 feedbacks (90%) este mês no plano Free.
@@ -292,6 +307,7 @@ Você usou 45 de 50 feedbacks (90%) este mês no plano Free.
 ```
 
 **Alerta Vermelho (100%):**
+
 ```
 🚫 Limite de Feedbacks Atingido
 Você atingiu o limite de 50 feedbacks/mês do plano Free.
@@ -325,7 +341,7 @@ Crie quantos feedbacks precisar, sem limites mensais.
     - Cria feedback
     - Retorna 201 Created
     - Frontend exibe sucesso
-   
+
 5b. SE limite excedido:
     - Raise PermissionDenied
     - Retorna 403 Forbidden
@@ -342,12 +358,14 @@ Crie quantos feedbacks precisar, sem limites mensais.
 ### Camadas de Proteção
 
 **CAMADA 1: Frontend (Soft Enforcement)**
+
 - Hook detecta limite via polling
 - Alerta visual quando >80%
 - Desabilita botão quando 100%
 - **Objetivo:** UX proativa, prevenir tentativas
 
 **CAMADA 2: Backend (Hard Enforcement)**
+
 - Validação obrigatória em `perform_create()`
 - Contagem precisa do banco de dados
 - HTTP 403 se limite excedido
@@ -356,6 +374,7 @@ Crie quantos feedbacks precisar, sem limites mensais.
 ### Dados e Modelos
 
 **Banco de Dados:**
+
 ```sql
 -- Plan.limits (JSONField)
 {
@@ -365,13 +384,14 @@ Crie quantos feedbacks precisar, sem limites mensais.
 }
 
 -- Query de contagem (mês atual)
-SELECT COUNT(*) 
-FROM feedbacks_feedback 
-WHERE client_id = ? 
+SELECT COUNT(*)
+FROM feedbacks_feedback
+WHERE client_id = ?
   AND data_criacao >= '2026-02-01 00:00:00';
 ```
 
 **Subscription:**
+
 ```python
 subscription.plan.slug  # 'free', 'pro', 'enterprise'
 subscription.plan.get_limit('feedbacks_per_month')  # 50 or None
@@ -385,18 +405,20 @@ subscription.can_access_features  # True se active/trialing
 ### Backend Tests
 
 **1. Test `check_feature_limit()` - Free Plan**
+
 ```python
 def test_free_plan_blocks_at_50_feedbacks(self):
     # Cria 50 feedbacks
     for _ in range(50):
         Feedback.objects.create(client=tenant, ...)
-    
+
     # 51º deve falhar
     with pytest.raises(PermissionDenied):
         check_feature_limit(tenant, 'feedbacks')
 ```
 
 **2. Test Monthly Reset**
+
 ```python
 def test_limit_resets_next_month(self):
     # Cria 50 feedbacks em janeiro
@@ -405,6 +427,7 @@ def test_limit_resets_next_month(self):
 ```
 
 **3. Test Pro Plan Unlimited**
+
 ```python
 def test_pro_plan_unlimited(self):
     tenant.subscription.plan.slug = 'pro'
@@ -415,16 +438,18 @@ def test_pro_plan_unlimited(self):
 ### Frontend Tests
 
 **1. Test Hook Loading State**
+
 ```tsx
-test('useUsageLimits returns loading state', () => {
+test("useUsageLimits returns loading state", () => {
   const { result } = renderHook(() => useUsageLimits());
   expect(result.current.isLoading).toBe(true);
 });
 ```
 
 **2. Test UpgradeAlert Shows at 80%**
+
 ```tsx
-test('UpgradeAlert shows when near limit', () => {
+test("UpgradeAlert shows when near limit", () => {
   mockUsageStats({ usage_percent: 85, is_near_limit: true });
   render(<UpgradeAlert />);
   expect(screen.getByText(/próximo ao limite/i)).toBeInTheDocument();
@@ -432,17 +457,19 @@ test('UpgradeAlert shows when near limit', () => {
 ```
 
 **3. Test Button Disabled at 100%**
+
 ```tsx
-test('CreateFeedbackButton is disabled at limit', () => {
+test("CreateFeedbackButton is disabled at limit", () => {
   mockUsageStats({ is_blocked: true });
   render(<CreateFeedbackButton href="/novo" />);
-  expect(screen.getByRole('button')).toBeDisabled();
+  expect(screen.getByRole("button")).toBeDisabled();
 });
 ```
 
 ### Manual Tests
 
 **Cenário 1: Criar 50 feedbacks no Free plan**
+
 1. Login como tenant Free
 2. Criar 45 feedbacks → OK
 3. Alerta amarelo aparece
@@ -452,6 +479,7 @@ test('CreateFeedbackButton is disabled at limit', () => {
 7. Tentativa de criar → HTTP 403
 
 **Cenário 2: Upgrade para Pro**
+
 1. Com limite atingido
 2. Fazer upgrade para Pro
 3. Alerta desaparece
@@ -459,6 +487,7 @@ test('CreateFeedbackButton is disabled at limit', () => {
 5. Criar feedback → OK
 
 **Cenário 3: Virada de mês**
+
 1. Free plan com 50/50 feedbacks
 2. Aguardar virada de mês (ou simular no banco)
 3. Contador reseta para 0/50
@@ -472,6 +501,7 @@ test('CreateFeedbackButton is disabled at limit', () => {
 ### Backend
 
 **Adicionar limite a um plano:**
+
 ```python
 # Via Django Admin ou shell
 plan = Plan.objects.get(slug='free')
@@ -484,6 +514,7 @@ plan.save()
 ```
 
 **Verificar uso atual de um tenant:**
+
 ```python
 from apps.billing.views import UsageStatsView
 # GET /api/v1/billing/usage/
@@ -493,9 +524,10 @@ from apps.billing.views import UsageStatsView
 ### Frontend
 
 **Adicionar alerta em qualquer página:**
+
 ```tsx
 // app/dashboard/page.tsx
-import { UpgradeAlert } from '@/components/billing/UpgradeAlert';
+import { UpgradeAlert } from "@/components/billing/UpgradeAlert";
 
 export default function DashboardPage() {
   return (
@@ -508,6 +540,7 @@ export default function DashboardPage() {
 ```
 
 **Bloquear botão de criação:**
+
 ```tsx
 import { CreateFeedbackButton } from '@/components/billing/UpgradeAlert';
 
@@ -523,16 +556,17 @@ import { CreateFeedbackButton } from '@/components/billing/UpgradeAlert';
 ```
 
 **Verificar se pode criar:**
+
 ```tsx
-import { useUsageLimits } from '@/hooks/use-usage-limits';
+import { useUsageLimits } from "@/hooks/use-usage-limits";
 
 function MyComponent() {
   const { canCreateFeedback, isAtLimit } = useUsageLimits();
-  
+
   if (isAtLimit) {
     return <UpgradeAlert />;
   }
-  
+
   return <CreateFeedbackForm />;
 }
 ```
@@ -543,30 +577,30 @@ function MyComponent() {
 
 ### Backend (5 arquivos)
 
-| Arquivo | Linhas | Tipo | Descrição |
-|---------|--------|------|-----------|
-| `apps/backend/apps/billing/feature_gating.py` | +85 | Modificado | Função `check_feature_limit()` |
-| `apps/backend/apps/billing/serializers.py` | +22 | Modificado | `UsageStatsSerializer` |
-| `apps/backend/apps/billing/views.py` | +120 | Modificado | `UsageStatsView` |
-| `apps/backend/apps/billing/urls.py` | +2 | Modificado | Registro da rota `/usage/` |
-| `apps/backend/apps/feedbacks/views.py` | ~15 | Modificado | Integração em `perform_create()` |
+| Arquivo                                       | Linhas | Tipo       | Descrição                        |
+| --------------------------------------------- | ------ | ---------- | -------------------------------- |
+| `apps/backend/apps/billing/feature_gating.py` | +85    | Modificado | Função `check_feature_limit()`   |
+| `apps/backend/apps/billing/serializers.py`    | +22    | Modificado | `UsageStatsSerializer`           |
+| `apps/backend/apps/billing/views.py`          | +120   | Modificado | `UsageStatsView`                 |
+| `apps/backend/apps/billing/urls.py`           | +2     | Modificado | Registro da rota `/usage/`       |
+| `apps/backend/apps/feedbacks/views.py`        | ~15    | Modificado | Integração em `perform_create()` |
 
 **Total Backend:** ~244 linhas
 
 ### Frontend (2 arquivos)
 
-| Arquivo | Linhas | Tipo | Descrição |
-|---------|--------|------|-----------|
-| `apps/frontend/hooks/use-usage-limits.ts` | 170 | Criado | Hook SWR com helpers |
-| `apps/frontend/components/billing/UpgradeAlert.tsx` | 210 | Criado | Alerta + Badge + Botão |
+| Arquivo                                             | Linhas | Tipo   | Descrição              |
+| --------------------------------------------------- | ------ | ------ | ---------------------- |
+| `apps/frontend/hooks/use-usage-limits.ts`           | 170    | Criado | Hook SWR com helpers   |
+| `apps/frontend/components/billing/UpgradeAlert.tsx` | 210    | Criado | Alerta + Badge + Botão |
 
 **Total Frontend:** ~380 linhas
 
 ### Documentação (1 arquivo)
 
-| Arquivo | Linhas | Tipo | Descrição |
-|---------|--------|------|-----------|
-| `docs/FEATURE_GATING_IMPLEMENTATION.md` | 600+ | Criado | Este relatório |
+| Arquivo                                 | Linhas | Tipo   | Descrição      |
+| --------------------------------------- | ------ | ------ | -------------- |
+| `docs/FEATURE_GATING_IMPLEMENTATION.md` | 600+   | Criado | Este relatório |
 
 **Total Geral:** ~1,200 linhas de código + documentação
 
@@ -575,24 +609,30 @@ function MyComponent() {
 ## 🎨 Decisões de Design
 
 ### 1. Contagem Mensal vs. Total
+
 **Escolha:** Mensal (mês civil)  
 **Motivo:** Alinhado com billing mensal do Stripe. Reset natural no dia 1.
 
 ### 2. Limite 50 para Free
+
 **Escolha:** 50 feedbacks/mês  
 **Motivo:** Balanceia uso razoável com incentivo ao upgrade. Pode ser ajustado via `Plan.limits`.
 
 ### 3. Soft + Hard Enforcement
+
 **Escolha:** Dupla camada (frontend + backend)  
-**Motivo:** 
+**Motivo:**
+
 - Frontend: UX proativa, evita frustrações
 - Backend: Segurança absoluta, previne bypass
 
 ### 4. Auto-refresh 60s
+
 **Escolha:** Hook atualiza a cada 1 minuto  
 **Motivo:** Balanceia atualização em tempo real com carga no servidor. 60s é suficiente para uso típico.
 
 ### 5. SWR over React Query
+
 **Escolha:** SWR (já usado no projeto)  
 **Motivo:** Consistência com stack existente (2FA, LGPD, Audit Log usam SWR).
 
@@ -603,26 +643,31 @@ function MyComponent() {
 ### Melhorias Potenciais
 
 **1. Dashboard de Analytics**
+
 - Gráfico de uso ao longo do mês
 - Projeção de quando atingirá limite
 - Histórico de uso mensal
 
 **2. Notificações Proativas**
+
 - Email quando atingir 80%
 - Push notification quando atingir 90%
 - Notificação no dashboard
 
 **3. Outros Limites**
+
 - `team_members`: limite de usuários
 - `storage_gb`: limite de armazenamento
 - `api_calls_per_day`: limite de API
 
 **4. Grace Period (Pro)**
+
 - Permitir exceder limite temporariamente
 - Cobrar overage fees
 - "Soft limit" vs "Hard limit"
 
 **5. Billing Dashboard**
+
 - Página dedicada `/dashboard/configuracoes/uso`
 - Detalhamento por feature
 - Histórico de upgrade
@@ -634,6 +679,7 @@ function MyComponent() {
 ### Pre-Deploy
 
 - [ ] **Database:** Adicionar limites aos planos via Admin:
+
   ```python
   Plan.objects.filter(slug='free').update(
       limits={'feedbacks_per_month': 50}
@@ -670,11 +716,13 @@ function MyComponent() {
 ### Problema: Alerta não aparece
 
 **Diagnóstico:**
+
 1. Verificar se usuário está no plano Free
 2. Verificar se uso > 80%
 3. Verificar console do navegador (erro na API?)
 
 **Solução:**
+
 ```typescript
 // Em console do navegador
 const { usage, isNearLimit } = useUsageLimits();
@@ -684,11 +732,13 @@ console.log({ usage, isNearLimit });
 ### Problema: Backend não bloqueia
 
 **Diagnóstico:**
+
 1. Verificar se `check_feature_limit` está sendo chamado
 2. Verificar logs do Django
 3. Verificar subscription do tenant
 
 **Solução:**
+
 ```python
 # Django shell
 from apps.billing.feature_gating import check_feature_limit
@@ -698,10 +748,12 @@ check_feature_limit(client, 'feedbacks')
 ### Problema: Contador não reseta no mês novo
 
 **Diagnóstico:**
+
 1. Verificar timezone do servidor
 2. Verificar query SQL do `month_start`
 
 **Solução:**
+
 ```python
 # Django shell
 from django.utils import timezone
@@ -714,9 +766,10 @@ print(month_start)  # Deve ser 2026-02-01 00:00:00
 
 ## 🎉 Conclusão
 
-Sistema de **Feature Gating** implementado com sucesso! 
+Sistema de **Feature Gating** implementado com sucesso!
 
 **Entregas:**
+
 - ✅ Hard enforcement: Backend bloqueia criação no limite
 - ✅ Endpoint de status: API retorna uso atual
 - ✅ Soft enforcement: Frontend exibe alertas e bloqueia UI
@@ -725,11 +778,13 @@ Sistema de **Feature Gating** implementado com sucesso!
 - ✅ Documentação completa: Este relatório + comentários inline
 
 **Impacto Comercial:**
+
 - Proteção de recursos: Free plan limitado a 50 feedbacks/mês
 - Incentivo ao upgrade: CTAs estratégicos quando próximo do limite
 - Monetização clara: Path definido Free → Pro
 
 **Próximos Passos:**
+
 - Adicionar outros limites (team_members, storage)
 - Criar dashboard de analytics de uso
 - Implementar notificações proativas

@@ -1,4 +1,5 @@
 # 🎨 AUDITORIA UI/UX - OUVIFY
+
 **Data:** 26 de janeiro de 2026  
 **Auditor:** GitHub Copilot  
 **Escopo:** Frontend completo (Design System, Branding, Páginas Marketing e Dashboard)
@@ -8,6 +9,7 @@
 ## 📊 RESUMO EXECUTIVO
 
 ### Métricas Gerais
+
 - **Total de páginas auditadas:** 25+
 - **Componentes UI auditados:** 15+
 - **Problemas críticos encontrados:** 8
@@ -15,6 +17,7 @@
 - **Conformidade com Design System:** 75%
 
 ### Status Geral
+
 - ✅ **Design System:** Estrutura sólida, variáveis CSS bem definidas
 - ⚠️ **Aplicação de Cores:** Inconsistências significativas (cores hardcoded)
 - ⚠️ **Branding:** Logo ausente como arquivo SVG
@@ -26,6 +29,7 @@
 ## ✅ APROVADO
 
 ### Design System
+
 - ✓ **tailwind.config.ts** bem estruturado com paletas completas (50-900)
 - ✓ Cores primárias definidas corretamente (#3B82F6 azul, #A855F7 roxo)
 - ✓ Cores semânticas completas (success, warning, error, info)
@@ -34,11 +38,13 @@
 - ✓ Gradientes de marca definidos
 
 ### Tipografia
+
 - ✓ Fonte Inter carregada via `next/font/google` com `display: swap`
 - ✓ Fallback fonts configurados (`system-ui`, `arial`)
 - ✓ Preload habilitado para performance
 
 ### Layout & Navegação
+
 - ✓ Header unificado (`components/layout/Header.tsx`) implementado
 - ✓ Footer unificado (`components/ui/Footer.tsx`) presente
 - ✓ Layout de marketing `(marketing)/layout.tsx` funcionando
@@ -46,6 +52,7 @@
 - ✓ Navegação por teclado funcional
 
 ### Metadata & SEO
+
 - ✓ Open Graph configurado no `layout.tsx`
 - ✓ Twitter Card configurado
 - ✓ Meta descriptions presentes
@@ -53,6 +60,7 @@
 - ✓ `site.webmanifest` presente
 
 ### Responsividade
+
 - ✓ Mobile-first design aplicado
 - ✓ Breakpoints Tailwind usados corretamente
 - ✓ Grids responsivos (grid-cols-1 md:grid-cols-2 lg:grid-cols-3)
@@ -67,7 +75,9 @@
 **Problema:** Várias páginas ainda usam cores Tailwind diretas ao invés das variáveis do Design System.
 
 #### 📍 `/recursos/seguranca/page.tsx`
+
 **Localização:** Linhas 15, 17, 25, 31, 182-191, 228, 232, 240, 251, 257
+
 ```tsx
 // ❌ INCORRETO
 <section className="bg-gradient-to-br from-blue-600 to-blue-800">
@@ -88,7 +98,9 @@
 ---
 
 #### 📍 `/recursos/documentacao/page.tsx`
+
 **Localização:** Linhas 34, 36, 44, 50, 84, 91, 112, 125, 150, 156, 172, 181, 191, 197
+
 ```tsx
 // ❌ INCORRETO
 <section className="bg-gradient-to-br from-purple-600 to-purple-800">
@@ -109,7 +121,9 @@
 ---
 
 #### 📍 `/recursos/faq/page.tsx`
+
 **Localização:** Linhas 94, 96
+
 ```tsx
 // ❌ INCORRETO
 <Link href="/" className="text-blue-600 hover:underline">
@@ -121,7 +135,9 @@
 ---
 
 #### 📍 `/lgpd/page.tsx`
+
 **Localização:** Linhas 51, 57, 60, 82, 96, 106, 115, 125, 168, 190, 202, 214, 226, 231, 238, 240, 246, 252
+
 ```tsx
 // ❌ INCORRETO
 <section className="bg-gradient-to-br from-blue-900 to-purple-900">
@@ -141,7 +157,9 @@
 ### 2. Cores Hardcoded em Componentes UI
 
 #### 📍 `components/ui/EmptyState.tsx`
+
 **Localização:** Linhas 70, 78
+
 ```tsx
 // ❌ INCORRETO
 className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-md hover:bg-blue-700 transition-colors font-medium"
@@ -161,7 +179,9 @@ className="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rou
 ### 3. Cores Hardcoded em Dashboard
 
 #### 📍 `app/dashboard/analytics/page.tsx`
+
 **Localização:** Linhas 207, 229, 248, 344-347
+
 ```tsx
 // ❌ INCORRETO
 color="bg-blue-500"
@@ -184,6 +204,7 @@ secondary: 'bg-brand-secondary-50 text-brand-secondary-600 dark:bg-brand-seconda
 **Problema:** Breadcrumbs nas páginas de recursos usam `text-blue-600` direto.
 
 **Arquivos afetados:**
+
 - `/recursos/seguranca/page.tsx:15-17`
 - `/recursos/documentacao/page.tsx:34-36`
 - `/recursos/faq/page.tsx:94-96`
@@ -192,14 +213,21 @@ secondary: 'bg-brand-secondary-50 text-brand-secondary-600 dark:bg-brand-seconda
 
 ```tsx
 // components/ui/breadcrumb.tsx
-export function Breadcrumb({ items }: { items: Array<{ label: string; href?: string }> }) {
+export function Breadcrumb({
+  items,
+}: {
+  items: Array<{ label: string; href?: string }>;
+}) {
   return (
     <nav className="text-sm" aria-label="Breadcrumb">
       {items.map((item, idx) => (
         <React.Fragment key={idx}>
           {idx > 0 && <span className="mx-2 text-gray-400">/</span>}
           {item.href ? (
-            <Link href={item.href} className="text-brand-primary-600 hover:underline">
+            <Link
+              href={item.href}
+              className="text-brand-primary-600 hover:underline"
+            >
               {item.label}
             </Link>
           ) : (
@@ -221,6 +249,7 @@ export function Breadcrumb({ items }: { items: Array<{ label: string; href?: str
 **Problema:** Botões em CTAs usam cores diretas ao invés do componente Button.
 
 #### 📍 `/precos/page.tsx:285`
+
 ```tsx
 // ❌ INCORRETO
 <Badge className="bg-blue-600 text-white">Mais Popular</Badge>
@@ -236,20 +265,22 @@ export function Breadcrumb({ items }: { items: Array<{ label: string; href?: str
 **Problema:** Alguns gradientes usam cores Tailwind diretas em vez de `brand-*`.
 
 **Arquivos afetados:**
+
 - `/recursos/page.tsx:411` - `from-blue-600 to-indigo-600`
 - `/recursos/seguranca/page.tsx:25` - `from-blue-600 to-blue-800`
 - `/recursos/documentacao/page.tsx:44` - `from-purple-600 to-purple-800`
 
 **Solução unificada:**
+
 ```tsx
 // Hero azul
-className="bg-gradient-to-br from-brand-primary-600 to-brand-primary-800"
+className = "bg-gradient-to-br from-brand-primary-600 to-brand-primary-800";
 
 // Hero roxo
-className="bg-gradient-to-br from-brand-secondary-600 to-brand-secondary-800"
+className = "bg-gradient-to-br from-brand-secondary-600 to-brand-secondary-800";
 
 // Hero azul→roxo (marca)
-className="bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600"
+className = "bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600";
 ```
 
 ---
@@ -257,6 +288,7 @@ className="bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600"
 ### 7. Status Badges com Cores Diretas
 
 #### 📍 `app/dashboard/feedbacks/page.tsx:90, 113, 116`
+
 ```tsx
 // ❌ INCORRETO
 'Em Análise': { className: 'bg-blue-100 text-blue-700' }
@@ -276,15 +308,16 @@ className="bg-gradient-to-r from-brand-primary-600 to-brand-secondary-600"
 **Problema:** Alguns links usam `hover:text-brand-primary-600` enquanto outros usam `hover:text-blue-600`.
 
 **Solução:** Padronizar em componente Link:
+
 ```tsx
 // components/ui/link.tsx
 export function Link({ children, className, ...props }: LinkProps) {
   return (
-    <NextLink 
-      {...props} 
+    <NextLink
+      {...props}
       className={cn(
         "text-brand-primary-600 hover:text-brand-primary-700 transition-colors",
-        className
+        className,
       )}
     >
       {children}
@@ -301,13 +334,15 @@ export function Link({ children, className, ...props }: LinkProps) {
 
 **Problema:** Não existe arquivo `logo.svg` no projeto. Logo é gerado via gradiente CSS.
 
-**Localização:** 
+**Localização:**
+
 - `components/layout/Header.tsx:23-28`
 - `components/ui/Footer.tsx:60-64`
 
 **Impacto:** Alto - Branding inconsistente, problemas em redes sociais/SEO
 
 **Solução:**
+
 1. Criar logo SVG em `/public/logo.svg`
 2. Exportar variações (light/dark) se necessário
 3. Atualizar Header e Footer:
@@ -315,10 +350,10 @@ export function Link({ children, className, ...props }: LinkProps) {
 ```tsx
 // Header.tsx
 <Link href="/" className="flex items-center gap-2 group">
-  <Image 
-    src="/logo.svg" 
-    alt="Ouvify Logo" 
-    width={40} 
+  <Image
+    src="/logo.svg"
+    alt="Ouvify Logo"
+    width={40}
     height={40}
     className="transition-transform group-hover:scale-105"
   />
@@ -341,6 +376,7 @@ export function Link({ children, className, ...props }: LinkProps) {
 **Impacto:** Alto - Preview em redes sociais quebrado
 
 **Solução:**
+
 1. Criar imagem OG 1200x630px em `/public/og-image.png`
 2. Incluir logo + tagline "Canal de Ética Profissional"
 3. Atualizar metadata:
@@ -365,10 +401,12 @@ openGraph: {
 ### 3. Conflito de Prefixo `brand-*` vs Classes Diretas
 
 **Problema:** Projeto usa **dois sistemas de cores simultaneamente**:
+
 - `brand-primary-*` / `brand-secondary-*` (definido no Tailwind)
 - `primary` / `secondary` (CSS variables via HSL)
 
-**Localização:** 
+**Localização:**
+
 - `tailwind.config.ts:20-47` (brand colors)
 - `app/globals.css:7-12` (CSS variables)
 - `components/layout/Header.tsx:24` usa `brand-primary-*`
@@ -379,6 +417,7 @@ openGraph: {
 **Solução:** **Decidir e padronizar**:
 
 **Opção A - Usar apenas CSS Variables (shadcn/ui style):**
+
 ```tsx
 // Remover do tailwind.config.ts:
 brand: { ... }
@@ -388,12 +427,13 @@ className="bg-primary text-primary-foreground"
 className="border-primary hover:bg-primary/90"
 ```
 
-**Opção B - Usar apenas brand-* (Tailwind puro):**
+**Opção B - Usar apenas brand-\* (Tailwind puro):**
+
 ```tsx
 // Remover CSS variables do globals.css
 // Usar em todos os lugares:
-className="bg-brand-primary-500 text-white"
-className="border-brand-primary-500 hover:bg-brand-primary-600"
+className = "bg-brand-primary-500 text-white";
+className = "border-brand-primary-500 hover:bg-brand-primary-600";
 ```
 
 **Recomendação:** Opção A (CSS Variables) - Mais flexível, suporta dark mode facilmente.
@@ -406,13 +446,15 @@ className="border-brand-primary-500 hover:bg-brand-primary-600"
 
 **Problema:** Header usa `Button variant="primary"` mas Button.tsx não tem essa variant definida.
 
-**Localização:** 
+**Localização:**
+
 - `components/layout/Header.tsx:52` - `<Button variant="primary">`
 - `components/ui/button.tsx` - Variants definidos: `default, secondary, outline, ghost, danger`
 
 **Impacto:** Médio - Botão pode não renderizar corretamente
 
 **Solução:**
+
 ```tsx
 // Option 1: Mudar Header
 <Button variant="default" size="sm">
@@ -430,6 +472,7 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 **Problema:** Buttons contendo Links ao invés de serem Links estilizados.
 
 **Localização:** `components/layout/Header.tsx:47-52`
+
 ```tsx
 // ❌ INCORRETO
 <Button variant="ghost" size="sm">
@@ -462,13 +505,10 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 **Impacto:** Médio - UX ruim em conexões lentas
 
 **Solução:**
+
 ```tsx
-<Button 
-  type="submit" 
-  isLoading={isSubmitting}
-  disabled={isSubmitting}
->
-  {isSubmitting ? 'Enviando...' : 'Enviar'}
+<Button type="submit" isLoading={isSubmitting} disabled={isSubmitting}>
+  {isSubmitting ? "Enviando..." : "Enviar"}
 </Button>
 ```
 
@@ -483,6 +523,7 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 **Arquivos afetados:** Cards clicáveis sem `focus:ring`
 
 **Solução:** Adicionar globalmente:
+
 ```css
 /* globals.css */
 *:focus-visible {
@@ -499,6 +540,7 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 **Problema:** Ícones decorativos sem `aria-hidden="true"` ou alt text descritivo.
 
 **Solução:**
+
 ```tsx
 // Ícones decorativos
 <Shield className="w-6 h-6" aria-hidden="true" />
@@ -515,29 +557,31 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 
 ### Conformidade por Categoria
 
-| Categoria | Conformidade | Status |
-|-----------|--------------|--------|
-| Design System (Estrutura) | 95% | ✅ Excelente |
-| Aplicação de Cores | 60% | ⚠️ Precisa melhoria |
-| Tipografia | 90% | ✅ Ótimo |
-| Branding (Logo/Assets) | 40% | ❌ Crítico |
-| Responsividade | 95% | ✅ Excelente |
-| Acessibilidade | 70% | ⚠️ Precisa melhoria |
-| Performance | 85% | ✅ Bom |
-| SEO/Metadata | 75% | ⚠️ Bom, mas melhorável |
+| Categoria                 | Conformidade | Status                 |
+| ------------------------- | ------------ | ---------------------- |
+| Design System (Estrutura) | 95%          | ✅ Excelente           |
+| Aplicação de Cores        | 60%          | ⚠️ Precisa melhoria    |
+| Tipografia                | 90%          | ✅ Ótimo               |
+| Branding (Logo/Assets)    | 40%          | ❌ Crítico             |
+| Responsividade            | 95%          | ✅ Excelente           |
+| Acessibilidade            | 70%          | ⚠️ Precisa melhoria    |
+| Performance               | 85%          | ✅ Bom                 |
+| SEO/Metadata              | 75%          | ⚠️ Bom, mas melhorável |
 
 ---
 
 ## 🎯 PLANO DE AÇÃO PRIORITÁRIO
 
 ### Fase 1: Crítico (Esta Semana)
+
 1. ✅ Criar logo.svg e adicionar ao projeto
 2. ✅ Criar og-image.png para redes sociais
-3. ✅ Resolver conflito brand-* vs CSS variables (decidir padrão)
+3. ✅ Resolver conflito brand-\* vs CSS variables (decidir padrão)
 4. ✅ Corrigir Button variant="primary" (Header.tsx)
 5. ✅ Corrigir anti-pattern Link dentro de Button
 
 ### Fase 2: Alta Prioridade (Próxima Semana)
+
 1. ✅ Substituir todas as cores hardcoded em páginas marketing
 2. ✅ Corrigir EmptyState.tsx (usar Button component)
 3. ✅ Padronizar cores no Dashboard (analytics, feedbacks)
@@ -545,6 +589,7 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 5. ✅ Adicionar loading states em formulários
 
 ### Fase 3: Melhorias (Próximo Sprint)
+
 1. ✅ Padronizar gradientes em todos os heros
 2. ✅ Criar componente Link com hover consistente
 3. ✅ Adicionar focus states visuais globalmente
@@ -556,14 +601,18 @@ primary: "bg-primary text-primary-foreground hover:bg-primary/90",
 ## 📝 RECOMENDAÇÕES ESTRATÉGICAS
 
 ### 1. Documentar Design System
+
 Criar `DESIGN_SYSTEM.md` com:
+
 - Paleta de cores oficial (quando usar cada uma)
 - Componentes disponíveis e suas variants
 - Exemplos de uso correto/incorreto
 - Guidelines de acessibilidade
 
 ### 2. Automação de Lint
+
 Adicionar regras ESLint/Stylelint:
+
 ```js
 // .eslintrc.js
 rules: {
@@ -579,17 +628,21 @@ rules: {
 ```
 
 ### 3. Testes Visuais
+
 Implementar Storybook ou Chromatic para:
+
 - Documentar componentes visualmente
 - Detectar regressões visuais
 - Facilitar revisão de UI
 
 ### 4. Acessibilidade
+
 - Rodar Lighthouse CI em PRs
 - Adicionar testes automatizados com axe-core
 - Testar com leitores de tela (NVDA, JAWS)
 
 ### 5. Performance
+
 - Implementar `next/image` em todas as imagens
 - Lazy load de seções below-the-fold
 - Code splitting de páginas pesadas
@@ -651,6 +704,7 @@ echo "  - Criar logo.svg e og-image.png"
 ## 📚 RECURSOS COMPLEMENTARES
 
 ### Ferramentas Recomendadas
+
 - **Figma:** Criar biblioteca de componentes
 - **Storybook:** Documentar UI components
 - **axe DevTools:** Testar acessibilidade
@@ -658,6 +712,7 @@ echo "  - Criar logo.svg e og-image.png"
 - **Chromatic:** Visual regression testing
 
 ### Leitura Recomendada
+
 - [Tailwind CSS Best Practices](https://tailwindcss.com/docs/reusing-styles)
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [Next.js Image Optimization](https://nextjs.org/docs/basic-features/image-optimization)
@@ -670,11 +725,12 @@ O projeto Ouvify tem uma **base sólida de Design System** bem estruturada, mas 
 
 1. **Cores hardcoded** espalhadas pelo código (fácil de corrigir em batch)
 2. **Logo e assets de branding ausentes** (crítico para identidade visual)
-3. **Conflito entre sistemas de cores** (brand-* vs CSS variables)
+3. **Conflito entre sistemas de cores** (brand-\* vs CSS variables)
 
 Com as correções sugeridas, o projeto alcançará **95%+ de conformidade** com o Design System e terá uma identidade visual consistente e profissional.
 
 **Tempo estimado para correções:**
+
 - Críticas: 4-6 horas
 - Alta prioridade: 8-12 horas
 - Melhorias: 16-20 horas
@@ -684,6 +740,7 @@ Com as correções sugeridas, o projeto alcançará **95%+ de conformidade** com
 ---
 
 **Próximos passos:**
+
 1. Revisar e aprovar este relatório
 2. Executar script de correção automática
 3. Criar logo.svg e og-image.png

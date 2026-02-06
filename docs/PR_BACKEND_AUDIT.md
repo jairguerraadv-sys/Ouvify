@@ -7,6 +7,7 @@ Implementar infraestrutura completa de auditoria determinística do backend Djan
 ## ✅ Resultado
 
 **Comando único para auditoria completa:**
+
 ```bash
 make audit-backend
 ```
@@ -40,6 +41,7 @@ make audit-backend
 ### ✏️ Arquivos Modificados
 
 4. **`Makefile`** (+3 linhas)
+
    ```makefile
    audit-backend: ## Auditoria determinística do backend
        bash scripts/audit_backend.sh
@@ -52,6 +54,7 @@ make audit-backend
 ## 🔍 O que o Script Faz
 
 ### 1. Configuração Automática de Ambiente
+
 ```bash
 ✅ Cria/reutiliza virtualenv em apps/backend/.venv
 ✅ Atualiza pip para versão mais recente
@@ -59,18 +62,21 @@ make audit-backend
 ```
 
 ### 2. Verificações Django
+
 ```bash
 ✅ Django system check (configurações básicas)
 ✅ Validação de migrations (documentado, requer DB real)
 ```
 
 ### 3. Validação de Testes
+
 ```bash
 ✅ pytest --collect-only (374 testes encontrados)
 ✅ Nenhum erro de import ou dependência faltando
 ```
 
 ### 4. Verificação de Imports
+
 ```bash
 ✅ AST parsing de todos os arquivos Python
 ✅ Detecção de syntax errors ou imports quebrados
@@ -80,6 +86,7 @@ make audit-backend
 ## 📊 Evidências de Sucesso
 
 ### Antes da Correção
+
 ```bash
 $ python manage.py check
 ModuleNotFoundError: No module named 'django'
@@ -89,6 +96,7 @@ bash: pytest: command not found
 ```
 
 ### Depois da Correção
+
 ```bash
 $ make audit-backend
 [INFO] 🐍 Configurando Python virtualenv...
@@ -101,6 +109,7 @@ $ make audit-backend
 ```
 
 ### Saídas Geradas
+
 ```
 audit-reports/backend/
 ├── django_check.txt       # 24 warnings (esperados para dev)
@@ -113,6 +122,7 @@ audit-reports/backend/
 ## 🚀 Integração CI/CD
 
 ### GitHub Actions
+
 ```yaml
 - name: Backend Audit
   run: make audit-backend
@@ -125,6 +135,7 @@ audit-reports/backend/
 ```
 
 ### GitLab CI
+
 ```yaml
 backend-audit:
   script:
@@ -136,13 +147,13 @@ backend-audit:
 
 ## ✅ Critérios de Aceite (DoD)
 
-| Critério | Status | Evidência |
-|----------|--------|-----------|
+| Critério                                   | Status        | Evidência                   |
+| ------------------------------------------ | ------------- | --------------------------- |
 | ❌ → ✅ Não falhar por falta de Django/DRF | **✅ PASSOU** | Dependencies auto-installed |
-| ❌ → ✅ Passar `python manage.py check` | **✅ PASSOU** | django_check.txt gerado |
-| ❌ → ✅ Coletar testes sem erro | **✅ PASSOU** | 374 tests collected |
-| ❌ → ✅ Imports sem typos | **✅ PASSOU** | All files parsed OK |
-| ❌ → ✅ Comando único documentado | **✅ PASSOU** | `make audit-backend` |
+| ❌ → ✅ Passar `python manage.py check`    | **✅ PASSOU** | django_check.txt gerado     |
+| ❌ → ✅ Coletar testes sem erro            | **✅ PASSOU** | 374 tests collected         |
+| ❌ → ✅ Imports sem typos                  | **✅ PASSOU** | All files parsed OK         |
+| ❌ → ✅ Comando único documentado          | **✅ PASSOU** | `make audit-backend`        |
 
 ## 🔧 Uso Local
 
@@ -187,16 +198,19 @@ pytest --collect-only
 ## 🏆 Impacto
 
 ### Desenvolvedores
+
 - ✅ Comando único para validar ambiente
 - ✅ Detecção precoce de problemas
 - ✅ Onboarding simplificado
 
 ### CI/CD
+
 - ✅ Reproduzível em qualquer ambiente limpo
 - ✅ Sem dependências de venv pré-existente
 - ✅ Logs estruturados para debug
 
 ### Qualidade
+
 - ✅ Garantia de que dependências estão corretas
 - ✅ Validação automática de imports
 - ✅ Prevenção de regressões
@@ -220,6 +234,7 @@ pytest --collect-only
 **Revisores:** Por favor, validem executando `make audit-backend` em ambiente limpo (sem venv pré-existente).
 
 **Merge Checklist:**
+
 - [ ] Script executa sem erros em ambiente limpo
 - [ ] Documentação está clara e completa
 - [ ] Makefile target funciona

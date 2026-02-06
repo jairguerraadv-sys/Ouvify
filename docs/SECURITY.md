@@ -46,6 +46,7 @@ O Ouvify implementa segurança em múltiplas camadas:
 ### 2.1 JWT (JSON Web Tokens)
 
 **Configuração:**
+
 ```python
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
@@ -57,6 +58,7 @@ SIMPLE_JWT = {
 ```
 
 **Fluxo:**
+
 1. Usuário faz login com email/senha
 2. Backend retorna `access_token` (15 min) e `refresh_token` (7 dias)
 3. Frontend armazena tokens no `localStorage`
@@ -69,6 +71,7 @@ SIMPLE_JWT = {
 **Implementação:** TOTP via `pyotp`
 
 **Fluxo:**
+
 1. Usuário habilita 2FA em Configurações
 2. Sistema gera secret e QR code
 3. Usuário escaneia com app autenticador (Google Authenticator, Authy)
@@ -76,6 +79,7 @@ SIMPLE_JWT = {
 5. Login passa a exigir código 2FA
 
 **Endpoints:**
+
 - `POST /api/auth/2fa/enable/` - Habilitar
 - `POST /api/auth/2fa/confirm/` - Confirmar setup
 - `POST /api/auth/2fa/verify/` - Verificar no login
@@ -86,6 +90,7 @@ SIMPLE_JWT = {
 **Hashing:** Django PBKDF2 (padrão)
 
 **Validações:**
+
 - Mínimo 8 caracteres
 - Pelo menos 1 letra maiúscula
 - Pelo menos 1 número
@@ -95,6 +100,7 @@ SIMPLE_JWT = {
 ### 2.4 Reset de Senha
 
 **Fluxo:**
+
 1. Usuário solicita reset com email
 2. Sistema gera token único (expira em 1h)
 3. Email enviado com link
@@ -107,12 +113,12 @@ SIMPLE_JWT = {
 
 ### 3.1 Roles e Permissões
 
-| Role | Feedbacks | Equipe | Config | Billing | Admin |
-|------|-----------|--------|--------|---------|-------|
-| OWNER | CRUD | CRUD | CRUD | CRUD | ✅ |
-| ADMIN | CRUD | CRUD | Read | Read | ❌ |
-| MODERATOR | CRU | Read | ❌ | ❌ | ❌ |
-| VIEWER | Read | ❌ | ❌ | ❌ | ❌ |
+| Role      | Feedbacks | Equipe | Config | Billing | Admin |
+| --------- | --------- | ------ | ------ | ------- | ----- |
+| OWNER     | CRUD      | CRUD   | CRUD   | CRUD    | ✅    |
+| ADMIN     | CRUD      | CRUD   | Read   | Read    | ❌    |
+| MODERATOR | CRU       | Read   | ❌     | ❌      | ❌    |
+| VIEWER    | Read      | ❌     | ❌     | ❌      | ❌    |
 
 ### 3.2 Implementação
 
@@ -147,6 +153,7 @@ class TenantAwareManager(models.Manager):
 ```
 
 **Garantias:**
+
 - ✅ Queries filtradas automaticamente por tenant
 - ✅ Criação de objetos associa tenant automaticamente
 - ✅ Não é possível acessar dados de outro tenant
@@ -155,6 +162,7 @@ class TenantAwareManager(models.Manager):
 ### 4.2 Identificação do Tenant
 
 Ordem de prioridade:
+
 1. Header `X-Tenant-ID` (para APIs)
 2. Subdomínio da URL
 3. Token JWT claims
@@ -192,11 +200,11 @@ def sanitize_rich_text(value: str, allow_links=False) -> str:
 
 ```typescript
 // lib/sanitize.ts
-import DOMPurify from 'isomorphic-dompurify';
+import DOMPurify from "isomorphic-dompurify";
 
 export function sanitizeHTML(dirty: string): string {
   return DOMPurify.sanitize(dirty, {
-    ALLOWED_TAGS: ['b', 'i', 'u', 'strong', 'em', 'p', 'br'],
+    ALLOWED_TAGS: ["b", "i", "u", "strong", "em", "p", "br"],
     ALLOWED_ATTR: [],
   });
 }
@@ -216,7 +224,7 @@ export function sanitizeHTML(dirty: string): string {
 ### 6.1 Content Security Policy (CSP)
 
 ```http
-Content-Security-Policy: 
+Content-Security-Policy:
   default-src 'self';
   script-src 'self' 'nonce-xxx' 'strict-dynamic' https://js.stripe.com;
   style-src 'self' 'unsafe-inline';
@@ -266,12 +274,12 @@ REST_FRAMEWORK = {
 
 ### 7.2 Endpoints Protegidos
 
-| Endpoint | Limite | Escopo |
-|----------|--------|--------|
-| POST /api/token/ | 5/min | Por IP |
-| POST /api/feedbacks/ | 10/min | Por IP |
-| GET /api/feedbacks/consultar-protocolo/ | 20/min | Por IP |
-| API geral (autenticado) | 100/min | Por tenant |
+| Endpoint                                | Limite  | Escopo     |
+| --------------------------------------- | ------- | ---------- |
+| POST /api/token/                        | 5/min   | Por IP     |
+| POST /api/feedbacks/                    | 10/min  | Por IP     |
+| GET /api/feedbacks/consultar-protocolo/ | 20/min  | Por IP     |
+| API geral (autenticado)                 | 100/min | Por tenant |
 
 ---
 
@@ -279,13 +287,13 @@ REST_FRAMEWORK = {
 
 ### 8.1 Direitos do Titular
 
-| Direito | Implementação | Endpoint |
-|---------|--------------|----------|
-| Acesso | Exportação de dados | `GET /api/export-data/` |
-| Retificação | Edição de perfil | `PATCH /api/auth/me/` |
-| Exclusão | Direito ao esquecimento | `DELETE /api/account/` |
-| Portabilidade | Export JSON/CSV | `GET /api/export-data/?format=csv` |
-| Oposição | Preferências de notificação | Settings |
+| Direito       | Implementação               | Endpoint                           |
+| ------------- | --------------------------- | ---------------------------------- |
+| Acesso        | Exportação de dados         | `GET /api/export-data/`            |
+| Retificação   | Edição de perfil            | `PATCH /api/auth/me/`              |
+| Exclusão      | Direito ao esquecimento     | `DELETE /api/account/`             |
+| Portabilidade | Export JSON/CSV             | `GET /api/export-data/?format=csv` |
+| Oposição      | Preferências de notificação | Settings                           |
 
 ### 8.2 Consentimento
 
@@ -416,12 +424,12 @@ CORS_ALLOWED_HEADERS = [
 
 ### 12.1 Classificação
 
-| Severidade | Descrição | Tempo de Resposta |
-|------------|-----------|-------------------|
-| P0 Crítico | Vazamento de dados, acesso não autorizado | Imediato |
-| P1 Alto | Vulnerabilidade explorável | 4 horas |
-| P2 Médio | Falha de segurança sem exploração | 24 horas |
-| P3 Baixo | Melhoria de segurança | 7 dias |
+| Severidade | Descrição                                 | Tempo de Resposta |
+| ---------- | ----------------------------------------- | ----------------- |
+| P0 Crítico | Vazamento de dados, acesso não autorizado | Imediato          |
+| P1 Alto    | Vulnerabilidade explorável                | 4 horas           |
+| P2 Médio   | Falha de segurança sem exploração         | 24 horas          |
+| P3 Baixo   | Melhoria de segurança                     | 7 dias            |
 
 ### 12.2 Processo
 
@@ -472,4 +480,4 @@ CORS_ALLOWED_HEADERS = [
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

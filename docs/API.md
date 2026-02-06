@@ -5,6 +5,7 @@
 A API do Ouvify é RESTful, baseada em Django REST Framework, com autenticação JWT.
 
 **Base URLs:**
+
 - Produção: `https://ouvify-production.up.railway.app`
 - Staging: `https://ouvify-staging.up.railway.app`
 - Local: `http://localhost:8000`
@@ -36,6 +37,7 @@ Content-Type: application/json
 ```
 
 **Response 200:**
+
 ```json
 {
   "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
@@ -71,6 +73,7 @@ Content-Type: application/json
 ```
 
 **Response 200:**
+
 ```json
 {
   "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
@@ -110,6 +113,7 @@ Content-Type: application/json
 ```
 
 **Response 201:**
+
 ```json
 {
   "id": 1,
@@ -134,6 +138,7 @@ GET /api/check-subdominio/?subdominio=empresa-abc
 ```
 
 **Response 200:**
+
 ```json
 {
   "disponivel": true,
@@ -149,6 +154,7 @@ Authorization: Bearer <token>
 ```
 
 **Response 200:**
+
 ```json
 {
   "id": 1,
@@ -216,6 +222,7 @@ X-Tenant-ID: 1
 | `page_size` | int | Itens por página (max 100) |
 
 **Response 200:**
+
 ```json
 {
   "count": 42,
@@ -236,7 +243,7 @@ X-Tenant-ID: 1
       "data_criacao": "2026-01-30T10:30:00Z",
       "data_atualizacao": "2026-01-30T10:30:00Z",
       "assigned_to": null,
-      "tags": [{"id": 1, "nome": "Urgente", "cor": "#EF4444"}]
+      "tags": [{ "id": 1, "nome": "Urgente", "cor": "#EF4444" }]
     }
   ]
 }
@@ -259,6 +266,7 @@ Content-Type: application/json
 ```
 
 **Response 201:**
+
 ```json
 {
   "id": 1,
@@ -277,6 +285,7 @@ GET /api/feedbacks/consultar-protocolo/?protocolo=OUVY-A7B3-X9K2
 ```
 
 **Response 200:**
+
 ```json
 {
   "protocolo": "OUVY-A7B3-X9K2",
@@ -346,6 +355,7 @@ Content-Type: application/json
 ```
 
 **Tipos de Interação:**
+
 - `resposta_empresa` - Resposta visível ao usuário
 - `nota_interna` - Nota visível apenas para equipe
 - `resposta_usuario` - Resposta do usuário
@@ -358,6 +368,7 @@ Authorization: Bearer <token>
 ```
 
 **Response 200:**
+
 ```json
 {
   "total": 150,
@@ -380,13 +391,13 @@ Authorization: Bearer <token>
     "critica": 10
   },
   "ultimos_7_dias": [
-    {"data": "2026-01-24", "count": 5},
-    {"data": "2026-01-25", "count": 8}
+    { "data": "2026-01-24", "count": 5 },
+    { "data": "2026-01-25", "count": 8 }
   ],
   "tempo_medio_resposta_horas": 4.5,
   "top_tags": [
-    {"nome": "Urgente", "count": 25},
-    {"nome": "Bug", "count": 18}
+    { "nome": "Urgente", "count": 25 },
+    { "nome": "Bug", "count": 18 }
   ]
 }
 ```
@@ -403,6 +414,7 @@ Authorization: Bearer <token>
 ```
 
 **Response 200:**
+
 ```json
 {
   "results": [
@@ -481,6 +493,7 @@ Authorization: Bearer <token>
 ```
 
 **Response 200:**
+
 ```json
 {
   "results": [
@@ -555,6 +568,7 @@ GET /api/v1/billing/plans/
 ```
 
 **Response 200:**
+
 ```json
 {
   "results": [
@@ -591,6 +605,7 @@ Content-Type: application/json
 ```
 
 **Response 200:**
+
 ```json
 {
   "checkout_url": "https://checkout.stripe.com/c/pay/...",
@@ -651,6 +666,7 @@ Content-Type: application/json
 ```
 
 **Eventos Disponíveis:**
+
 - `feedback.created`
 - `feedback.updated`
 - `feedback.status_changed`
@@ -715,6 +731,7 @@ Authorization: Bearer <token>
 ```
 
 **Response 200:**
+
 ```json
 {
   "secret": "JBSWY3DPEHPK3PXP",
@@ -751,27 +768,27 @@ Content-Type: application/json
 
 ## Códigos de Status
 
-| Código | Descrição |
-|--------|-----------|
-| 200 | Sucesso |
-| 201 | Criado com sucesso |
-| 400 | Requisição inválida |
-| 401 | Não autenticado |
-| 403 | Sem permissão |
-| 404 | Não encontrado |
-| 429 | Rate limit excedido |
-| 500 | Erro interno |
+| Código | Descrição           |
+| ------ | ------------------- |
+| 200    | Sucesso             |
+| 201    | Criado com sucesso  |
+| 400    | Requisição inválida |
+| 401    | Não autenticado     |
+| 403    | Sem permissão       |
+| 404    | Não encontrado      |
+| 429    | Rate limit excedido |
+| 500    | Erro interno        |
 
 ---
 
 ## Rate Limits
 
-| Endpoint | Limite |
-|----------|--------|
-| Login | 5/minuto por IP |
-| Criar Feedback | 10/minuto por IP |
-| API geral | 100/minuto por tenant |
-| Consulta Protocolo | 20/minuto por IP |
+| Endpoint           | Limite                |
+| ------------------ | --------------------- |
+| Login              | 5/minuto por IP       |
+| Criar Feedback     | 10/minuto por IP      |
+| API geral          | 100/minuto por tenant |
+| Consulta Protocolo | 20/minuto por IP      |
 
 ---
 
@@ -790,4 +807,4 @@ Todos os endpoints de listagem usam paginação:
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

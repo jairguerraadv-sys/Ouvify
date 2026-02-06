@@ -1,4 +1,5 @@
 # 🤖 PROMPT MASTER DE AUDITORIA - OUVIFY
+
 ## Prompt Completo para GitHub Copilot no VS Code
 
 ---
@@ -8,6 +9,7 @@
 Você está auditando o **Ouvify**, uma plataforma SaaS White Label de canal de feedback de usuários (denúncias, reclamações, sugestões, elogios) com código de rastreio. O sistema é multi-tenant onde empresas-clientes pagam mensalidade para usar.
 
 **Stack:**
+
 - Backend: Python 3.11 + Django 5.1 + DRF + PostgreSQL + Celery + Redis
 - Frontend: Next.js 16 + React 19 + TypeScript + Tailwind CSS + Radix UI
 - Pagamentos: Stripe
@@ -440,4 +442,4 @@ A auditoria estará completa quando:
 
 ---
 
-*Use este prompt como guia para realizar uma auditoria completa e sistemática do projeto Ouvify.*
+_Use este prompt como guia para realizar uma auditoria completa e sistemática do projeto Ouvify._

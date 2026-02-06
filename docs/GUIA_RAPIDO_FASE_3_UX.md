@@ -25,12 +25,14 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **text-foreground** (21:1 contraste - WCAG AAA)
 
 **Use para:**
+
 - ✅ Valores de KPIs (dados críticos)
 - ✅ Títulos de atividades/feedbacks (conteúdo primário)
 - ✅ Textos de tabelas (scanning visual)
 - ✅ Heading values (h1-h6)
 
 **Exemplo:**
+
 ```tsx
 // ❌ ANTES (contraste 6.2:1)
 <div className="text-3xl font-bold text-secondary-600 mb-1">
@@ -48,12 +50,14 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **text-muted-foreground** (WCAG AA)
 
 **Use para:**
+
 - ✅ Labels secundários (subtítulos de cards)
 - ✅ Descrições complementares
 - ✅ Placeholders (com `placeholder:` prefix)
 - ✅ Meta informações (datas, autores)
 
 **Exemplo:**
+
 ```tsx
 // ❌ ANTES (token não-semântico)
 <p className="text-sm font-medium text-text-secondary">
@@ -71,10 +75,12 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **text-text-primary** (Legacy - Use com cuidado)
 
 **Use para:**
+
 - ℹ️ Componentes antigos que ainda não foram migrados
 - ℹ️ Quando for refatorar, migre para `text-foreground`
 
 **Exemplo:**
+
 ```tsx
 // ⚠️ LEGACY (ainda funciona, mas não é ideal)
 <Label className="text-text-primary">Nome Completo</Label>
@@ -90,11 +96,13 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **Gap (Grid/Flex)**
 
 **Use `gap-4 md:gap-6` para:**
+
 - ✅ Grids de cards (KPIs, widgets)
 - ✅ Layouts de dashboard
 - ✅ Seções com múltiplos elementos
 
 **Exemplo:**
+
 ```tsx
 // ❌ ANTES (fixo em todos os tamanhos)
 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -108,6 +116,7 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ```
 
 **Justificativa:**
+
 - Mobile: `gap-4` (16px) - Telas pequenas precisam de menos espaço
 - Desktop: `gap-6` (24px) - Telas grandes comportam mais espaçamento
 
@@ -116,11 +125,13 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **Padding (Container)**
 
 **Use `px-4 sm:px-6 lg:px-8` para:**
+
 - ✅ Containers principais (`<PageContent>`)
 - ✅ Cards grandes
 - ✅ Seções full-width
 
 **Exemplo:**
+
 ```tsx
 <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
   {/* Content */}
@@ -134,27 +145,32 @@ A **Fase 3** focou em **polimento da UX** e **conformidade WCAG AA/AAA**. Princi
 ### **Mensagem de Criptografia**
 
 **Quando usar:**
+
 - ✅ Formulários públicos (envio de feedback, contato)
 - ✅ Páginas de pagamento
 - ✅ Dados sensíveis (LGPD)
 
 **Exemplo:**
+
 ```tsx
 import { Lock } from "lucide-react";
 
 <Button type="submit" className="w-full" size="lg">
   <Send className="mr-2 h-4 w-4" />
   Enviar Feedback
-</Button>
+</Button>;
 
-{/* Security Trust Message */}
+{
+  /* Security Trust Message */
+}
 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
   <Lock className="h-3.5 w-3.5" />
   <p>Suas informações são protegidas por criptografia de ponta a ponta</p>
-</div>
+</div>;
 ```
 
 **Personalização:**
+
 ```tsx
 // Variante: Dark background
 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-4 p-3 rounded-lg bg-muted/50">
@@ -217,29 +233,32 @@ import { Lock } from "lucide-react";
 
 ## 📊 TABELA DE CORES - QUANDO USAR
 
-| Token Semântico | Contraste | Uso Indicado | Exemplo |
-|-----------------|-----------|--------------|---------|
-| `text-foreground` | **21:1** (AAA) | Valores, títulos, conteúdo crítico | KPIs, atividades, feedbacks |
-| `text-muted-foreground` | ~7:1 (AA) | Labels secundários, descrições | Subtítulos de cards, meta info |
-| `text-text-primary` | ~16:1 (AAA) | Legacy (migrar para `text-foreground`) | Componentes antigos |
-| `text-text-secondary` | ~10:1 (AA) | Deprecated (migrar para `text-muted-foreground`) | Não usar em novos códigos |
-| `text-text-tertiary` | ~5:1 (AA) | Placeholders, hints | `placeholder:text-text-tertiary` |
-| `text-primary` | ~6:1 (AA) | Links, CTAs, ícones | Botões primary, links inline |
-| `text-success` | ~5.5:1 (AA) | Mensagens de sucesso | Badges, toasts |
-| `text-error` | ~5:1 (AA) | Mensagens de erro | Validação, alerts |
-| `text-warning` | ~4.8:1 (AA) | Alertas de atenção | Warnings, cautionary messages |
+| Token Semântico         | Contraste      | Uso Indicado                                     | Exemplo                          |
+| ----------------------- | -------------- | ------------------------------------------------ | -------------------------------- |
+| `text-foreground`       | **21:1** (AAA) | Valores, títulos, conteúdo crítico               | KPIs, atividades, feedbacks      |
+| `text-muted-foreground` | ~7:1 (AA)      | Labels secundários, descrições                   | Subtítulos de cards, meta info   |
+| `text-text-primary`     | ~16:1 (AAA)    | Legacy (migrar para `text-foreground`)           | Componentes antigos              |
+| `text-text-secondary`   | ~10:1 (AA)     | Deprecated (migrar para `text-muted-foreground`) | Não usar em novos códigos        |
+| `text-text-tertiary`    | ~5:1 (AA)      | Placeholders, hints                              | `placeholder:text-text-tertiary` |
+| `text-primary`          | ~6:1 (AA)      | Links, CTAs, ícones                              | Botões primary, links inline     |
+| `text-success`          | ~5.5:1 (AA)    | Mensagens de sucesso                             | Badges, toasts                   |
+| `text-error`            | ~5:1 (AA)      | Mensagens de erro                                | Validação, alerts                |
+| `text-warning`          | ~4.8:1 (AA)    | Alertas de atenção                               | Warnings, cautionary messages    |
 
 ---
 
 ## 🔍 AUDITORIA DE COMPONENTES
 
 ### **Card** ✅ PASS
+
 ```tsx
 // Usa tokens semânticos corretamente
 <Card className="border-border-light bg-background">
   <CardHeader>
     <CardTitle className="text-foreground">Título</CardTitle>
-    <CardDescription className="text-muted-foreground">Descrição</CardDescription>
+    <CardDescription className="text-muted-foreground">
+      Descrição
+    </CardDescription>
   </CardHeader>
 </Card>
 ```
@@ -247,6 +266,7 @@ import { Lock } from "lucide-react";
 ---
 
 ### **Button** ✅ PASS
+
 ```tsx
 // CVA (Class Variance Authority) com focus states WCAG AA
 <Button
@@ -260,6 +280,7 @@ import { Lock } from "lucide-react";
 ---
 
 ### **Input** ✅ PASS
+
 ```tsx
 // Placeholder com token semântico
 <Input
@@ -271,6 +292,7 @@ import { Lock } from "lucide-react";
 ---
 
 ### **Badge** ✅ PASS
+
 ```tsx
 // Variantes com design system
 <Badge variant="default">Primary</Badge>
@@ -287,6 +309,7 @@ import { Lock } from "lucide-react";
 **Localização:** `components/ui/empty-state.tsx` (394 linhas)
 
 **Variantes Disponíveis:**
+
 - `default` - Estado vazio genérico
 - `no-data` - Sem dados
 - `no-results` - Busca sem resultados
@@ -297,6 +320,7 @@ import { Lock } from "lucide-react";
 - `custom` - Personalizado
 
 **Exemplo de Uso:**
+
 ```tsx
 import { EmptyState } from "@/components/ui/empty-state";
 import { FileText, Search } from "lucide-react";
@@ -388,6 +412,7 @@ npx eslint apps/frontend/app/**/*.tsx --fix
 ### **Problema: Contraste ainda parece baixo**
 
 **Solução:**
+
 ```tsx
 // Use text-foreground (21:1) ao invés de text-muted-foreground (~7:1)
 <p className="text-foreground">Texto crítico</p>
@@ -398,11 +423,10 @@ npx eslint apps/frontend/app/**/*.tsx --fix
 ### **Problema: Spacing muito grande em mobile**
 
 **Solução:**
+
 ```tsx
 // Use gap-4 md:gap-6 (mobile-first)
-<div className="grid gap-4 md:gap-6">
-  {/* Cards */}
-</div>
+<div className="grid gap-4 md:gap-6">{/* Cards */}</div>
 ```
 
 ---
@@ -410,13 +434,14 @@ npx eslint apps/frontend/app/**/*.tsx --fix
 ### **Problema: Formulário sem mensagem de segurança**
 
 **Solução:**
+
 ```tsx
 import { Lock } from "lucide-react";
 
 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground mt-4">
   <Lock className="h-3.5 w-3.5" />
   <p>Suas informações são protegidas por criptografia de ponta a ponta</p>
-</div>
+</div>;
 ```
 
 ---
@@ -424,6 +449,7 @@ import { Lock } from "lucide-react";
 ### **Problema: EmptyState não encontrado**
 
 **Solução:**
+
 ```tsx
 // Import correto
 import { EmptyState } from "@/components/ui/empty-state";
@@ -433,7 +459,7 @@ import { EmptyState } from "@/components/ui/empty-state";
   icon={FileText}
   title="Nenhum item encontrado"
   description="Descrição do estado vazio"
-/>
+/>;
 ```
 
 ---

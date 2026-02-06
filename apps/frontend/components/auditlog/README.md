@@ -11,37 +11,43 @@ Componentes React/TypeScript para visualização de logs de auditoria do sistema
 Hook otimizado com SWR para consumo da API de audit logs.
 
 **Uso:**
+
 ```tsx
-import { useAuditLog, useAuditLogExport } from '@/hooks/use-audit-log';
+import { useAuditLog, useAuditLogExport } from "@/hooks/use-audit-log";
 
 function MyAuditPage() {
   const {
-    logs,          // AuditLog[]
-    count,         // Total de registros
-    totalPages,    // Total de páginas
-    currentPage,   // Página atual
-    analytics,     // AuditAnalytics (dashboard data)
+    logs, // AuditLog[]
+    count, // Total de registros
+    totalPages, // Total de páginas
+    currentPage, // Página atual
+    analytics, // AuditAnalytics (dashboard data)
     availableActions, // ActionOption[] (para filtros)
-    isLoading,     // boolean
-    refetchLogs,   // () => Promise<any>
+    isLoading, // boolean
+    refetchLogs, // () => Promise<any>
   } = useAuditLog({
-    action: 'FEEDBACK_CREATED',
-    severity: 'ERROR',
-    date_from: '2026-01-01',
-    date_to: '2026-02-01',
+    action: "FEEDBACK_CREATED",
+    severity: "ERROR",
+    date_from: "2026-01-01",
+    date_to: "2026-02-01",
     page: 1,
     page_size: 20,
   });
 
   return (
     <div>
-      {isLoading ? <Skeleton /> : logs?.map(log => <div>{log.description}</div>)}
+      {isLoading ? (
+        <Skeleton />
+      ) : (
+        logs?.map((log) => <div>{log.description}</div>)
+      )}
     </div>
   );
 }
 ```
 
 **Vantagens:**
+
 - ✅ Cache automático (SWR)
 - ✅ Revalidação em foco/reconexão
 - ✅ Deduplicação de requests
@@ -54,13 +60,15 @@ function MyAuditPage() {
 Tabela responsiva de audit logs com paginação melhorada.
 
 **Uso:**
+
 ```tsx
-import { AuditLogTable } from '@/components/auditlog/AuditLogTable';
-import { useAuditLog } from '@/hooks/use-audit-log';
+import { AuditLogTable } from "@/components/auditlog/AuditLogTable";
+import { useAuditLog } from "@/hooks/use-audit-log";
 
 function MyPage() {
   const [page, setPage] = useState(1);
-  const { logs, count, totalPages, currentPage, pageSize, isLoading } = useAuditLog({ page });
+  const { logs, count, totalPages, currentPage, pageSize, isLoading } =
+    useAuditLog({ page });
 
   return (
     <AuditLogTable
@@ -71,13 +79,14 @@ function MyPage() {
       pageSize={pageSize}
       isLoading={isLoading}
       onPageChange={setPage}
-      onLogClick={(log) => console.log('Clicked:', log)}
+      onLogClick={(log) => console.log("Clicked:", log)}
     />
   );
 }
 ```
 
 **Features:**
+
 - ✅ Design responsivo mobile-first
 - ✅ Cards mobile em vez de tabela horizontal scroll
 - ✅ Paginação com números de página (não apenas prev/next)
@@ -94,24 +103,26 @@ function MyPage() {
 Cliente HTTP para API de audit logs (implementação original).
 
 **Uso:**
+
 ```typescript
-import { getAuditLogs, exportAuditLogs } from '@/lib/audit-log';
+import { getAuditLogs, exportAuditLogs } from "@/lib/audit-log";
 
 // Buscar logs
 const response = await getAuditLogs({
-  action: 'LOGIN',
+  action: "LOGIN",
   page: 1,
   page_size: 25,
 });
 console.log(response.results); // AuditLog[]
-console.log(response.count);   // number
+console.log(response.count); // number
 
 // Exportar CSV
-const blob = await exportAuditLogs({ date_from: '2026-01-01' });
+const blob = await exportAuditLogs({ date_from: "2026-01-01" });
 // Download manual do blob
 ```
 
 **Quando usar:**
+
 - ✅ Queries únicas (não reativas)
 - ✅ Scripts ou jobs
 - ✅ SSR (Server-Side Rendering)
@@ -123,32 +134,38 @@ const blob = await exportAuditLogs({ date_from: '2026-01-01' });
 Implementação original com 3 componentes.
 
 #### `AuditLogTable.tsx` (468 linhas)
+
 Tabela com filtros integrados e sheet lateral.
 
 **Uso:**
-```tsx
-import { AuditLogTable } from '@/components/audit/AuditLogTable';
 
-<AuditLogTable />
+```tsx
+import { AuditLogTable } from "@/components/audit/AuditLogTable";
+
+<AuditLogTable />;
 ```
 
 **Features:**
+
 - ✅ Filtros: Ação, Severidade, Data, Busca
 - ✅ Paginação: 10/25/50/100 itens
 - ✅ Exportação CSV
 - ✅ Sheet lateral para detalhes
 
 #### `AnalyticsDashboard.tsx`
+
 Dashboard com gráficos e métricas.
 
 **Uso:**
-```tsx
-import { AnalyticsDashboard } from '@/components/audit/AnalyticsDashboard';
 
-<AnalyticsDashboard />
+```tsx
+import { AnalyticsDashboard } from "@/components/audit/AnalyticsDashboard";
+
+<AnalyticsDashboard />;
 ```
 
 **Exibe:**
+
 - Total de logs (30 dias)
 - Usuários ativos únicos
 - Breakdown por ação
@@ -156,13 +173,15 @@ import { AnalyticsDashboard } from '@/components/audit/AnalyticsDashboard';
 - Top 5 usuários
 
 #### `SecurityAlertsCard.tsx`
+
 Card de alertas de segurança.
 
 **Uso:**
-```tsx
-import { SecurityAlertsCard } from '@/components/audit/SecurityAlertsCard';
 
-<SecurityAlertsCard maxItems={10} />
+```tsx
+import { SecurityAlertsCard } from "@/components/audit/SecurityAlertsCard";
+
+<SecurityAlertsCard maxItems={10} />;
 ```
 
 ---
@@ -170,22 +189,26 @@ import { SecurityAlertsCard } from '@/components/audit/SecurityAlertsCard';
 ## 🎯 Qual Usar?
 
 ### Use o Hook (`use-audit-log.ts`) quando:
+
 - ✅ Componentes reativos (revalidação automática)
 - ✅ Múltiplas queries na mesma página
 - ✅ Precisar de cache automático
 - ✅ **RECOMENDADO para novos desenvolvimentos**
 
 ### Use o API Client (`lib/audit-log.ts`) quando:
+
 - ✅ Scripts ou jobs (não React)
 - ✅ SSR (getServerSideProps)
 - ✅ Queries únicas sem necessidade de revalidação
 
 ### Use o Componente Novo (`components/auditlog/AuditLogTable.tsx`) quando:
+
 - ✅ Precisar de layout mobile-first
 - ✅ Paginação com números de página
 - ✅ Detalhes expandíveis inline
 
 ### Use os Componentes Originais (`components/audit/`) quando:
+
 - ✅ Precisar de filtros integrados no componente
 - ✅ Sheet lateral para detalhes
 - ✅ Já está usando na página existente
@@ -197,20 +220,20 @@ import { SecurityAlertsCard } from '@/components/audit/SecurityAlertsCard';
 ### Página Customizada de Audit Logs
 
 ```tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useAuditLog, useAuditLogExport } from '@/hooks/use-audit-log';
-import { AuditLogTable } from '@/components/auditlog/AuditLogTable';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Download, Filter } from 'lucide-react';
+import { useState } from "react";
+import { useAuditLog, useAuditLogExport } from "@/hooks/use-audit-log";
+import { AuditLogTable } from "@/components/auditlog/AuditLogTable";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Download, Filter } from "lucide-react";
 
 export default function MyAuditPage() {
   const [filters, setFilters] = useState({
     page: 1,
     page_size: 20,
-    severity: 'ERROR',
+    severity: "ERROR",
   });
 
   const {
@@ -247,7 +270,9 @@ export default function MyAuditPage() {
           <Card>
             <CardContent className="p-6">
               <p className="text-sm text-muted-foreground">Usuários Ativos</p>
-              <p className="text-3xl font-bold">{analytics.total_users_active}</p>
+              <p className="text-3xl font-bold">
+                {analytics.total_users_active}
+              </p>
             </CardContent>
           </Card>
           <Card>
@@ -264,8 +289,10 @@ export default function MyAuditPage() {
         <CardContent className="p-6">
           <div className="flex items-center gap-4">
             <select
-              value={filters.severity || ''}
-              onChange={(e) => setFilters({ ...filters, severity: e.target.value, page: 1 })}
+              value={filters.severity || ""}
+              onChange={(e) =>
+                setFilters({ ...filters, severity: e.target.value, page: 1 })
+              }
               className="px-4 py-2 border rounded"
             >
               <option value="">Todas as severidades</option>
@@ -277,7 +304,7 @@ export default function MyAuditPage() {
 
             <Button onClick={handleExport} disabled={isExporting}>
               <Download className="w-4 h-4 mr-2" />
-              {isExporting ? 'Exportando...' : 'Exportar CSV'}
+              {isExporting ? "Exportando..." : "Exportar CSV"}
             </Button>
           </div>
         </CardContent>
@@ -303,6 +330,7 @@ export default function MyAuditPage() {
 ## 📊 Tipos TypeScript
 
 ### `AuditLog`
+
 ```typescript
 interface AuditLog {
   id: number;
@@ -310,7 +338,7 @@ interface AuditLog {
   action: string;
   action_display: string;
   action_icon: string;
-  severity: 'INFO' | 'WARNING' | 'ERROR' | 'CRITICAL';
+  severity: "INFO" | "WARNING" | "ERROR" | "CRITICAL";
   severity_display: string;
   description: string;
   user: AuditLogUser | null;
@@ -323,20 +351,22 @@ interface AuditLog {
 ```
 
 ### `AuditLogFilters`
+
 ```typescript
 interface AuditLogFilters {
-  action?: string;       // 'LOGIN', 'FEEDBACK_CREATED', etc.
-  severity?: string;     // 'INFO', 'WARNING', 'ERROR', 'CRITICAL'
-  user?: number;         // User ID
-  date_from?: string;    // YYYY-MM-DD
-  date_to?: string;      // YYYY-MM-DD
-  search?: string;       // Busca textual
-  page?: number;         // Página atual
-  page_size?: number;    // Itens por página (10/25/50/100)
+  action?: string; // 'LOGIN', 'FEEDBACK_CREATED', etc.
+  severity?: string; // 'INFO', 'WARNING', 'ERROR', 'CRITICAL'
+  user?: number; // User ID
+  date_from?: string; // YYYY-MM-DD
+  date_to?: string; // YYYY-MM-DD
+  search?: string; // Busca textual
+  page?: number; // Página atual
+  page_size?: number; // Itens por página (10/25/50/100)
 }
 ```
 
 ### `AuditAnalytics`
+
 ```typescript
 interface AuditAnalytics {
   total_logs: number;
@@ -362,37 +392,37 @@ interface AuditAnalytics {
 ### Cores por Severidade
 
 ```tsx
-INFO: 'info'       // Badge azul
-WARNING: 'warning' // Badge amarelo
-ERROR: 'error'     // Badge vermelho claro
-CRITICAL: 'destructive' // Badge vermelho escuro
+INFO: "info"; // Badge azul
+WARNING: "warning"; // Badge amarelo
+ERROR: "error"; // Badge vermelho claro
+CRITICAL: "destructive"; // Badge vermelho escuro
 ```
 
 ### Ícones por Ação
 
 ```tsx
-LOGIN: '🔑'
-LOGOUT: '🚪'
-LOGIN_FAILED: '🚫'
-FEEDBACK_CREATED: '📝'
-FEEDBACK_UPDATED: '📋'
-DELETE: '🗑️'
-SECURITY_ALERT: '🚨'
-CREATE: '➕'
-UPDATE: '✏️'
-VIEW: '👁️'
+LOGIN: "🔑";
+LOGOUT: "🚪";
+LOGIN_FAILED: "🚫";
+FEEDBACK_CREATED: "📝";
+FEEDBACK_UPDATED: "📋";
+DELETE: "🗑️";
+SECURITY_ALERT: "🚨";
+CREATE: "➕";
+UPDATE: "✏️";
+VIEW: "👁️";
 // ... etc
 ```
 
 ### Formatação de Data
 
 ```typescript
-import { formatTimestamp, formatRelativeTime } from '@/hooks/use-audit-log';
+import { formatTimestamp, formatRelativeTime } from "@/hooks/use-audit-log";
 
-formatTimestamp('2026-02-06T14:30:00Z');
+formatTimestamp("2026-02-06T14:30:00Z");
 // "06/02/2026, 14:30:00"
 
-formatRelativeTime('2026-02-06T14:30:00Z');
+formatRelativeTime("2026-02-06T14:30:00Z");
 // "há 2 horas"
 ```
 
@@ -403,12 +433,12 @@ formatRelativeTime('2026-02-06T14:30:00Z');
 ### Teste 1: Hook com SWR
 
 ```tsx
-import { renderHook, waitFor } from '@testing-library/react';
-import { useAuditLog } from '@/hooks/use-audit-log';
+import { renderHook, waitFor } from "@testing-library/react";
+import { useAuditLog } from "@/hooks/use-audit-log";
 
-test('busca logs com filtros', async () => {
+test("busca logs com filtros", async () => {
   const { result } = renderHook(() =>
-    useAuditLog({ severity: 'ERROR', page: 1 })
+    useAuditLog({ severity: "ERROR", page: 1 }),
   );
 
   await waitFor(() => expect(result.current.isLoading).toBe(false));
@@ -421,23 +451,23 @@ test('busca logs com filtros', async () => {
 ### Teste 2: Componente de Tabela
 
 ```tsx
-import { render, screen } from '@testing-library/react';
-import { AuditLogTable } from '@/components/auditlog/AuditLogTable';
+import { render, screen } from "@testing-library/react";
+import { AuditLogTable } from "@/components/auditlog/AuditLogTable";
 
 const mockLogs = [
   {
     id: 1,
-    timestamp: '2026-02-06T14:30:00Z',
-    action: 'LOGIN',
-    action_display: 'Login',
-    severity: 'INFO',
-    description: 'User logged in',
-    user: { id: 1, email: 'user@test.com', nome: 'Test User' },
+    timestamp: "2026-02-06T14:30:00Z",
+    action: "LOGIN",
+    action_display: "Login",
+    severity: "INFO",
+    description: "User logged in",
+    user: { id: 1, email: "user@test.com", nome: "Test User" },
     // ... outros campos
   },
 ];
 
-test('renderiza tabela de logs', () => {
+test("renderiza tabela de logs", () => {
   render(
     <AuditLogTable
       logs={mockLogs}
@@ -447,11 +477,11 @@ test('renderiza tabela de logs', () => {
       pageSize={20}
       isLoading={false}
       onPageChange={() => {}}
-    />
+    />,
   );
 
-  expect(screen.getByText('Test User')).toBeInTheDocument();
-  expect(screen.getByText('Login')).toBeInTheDocument();
+  expect(screen.getByText("Test User")).toBeInTheDocument();
+  expect(screen.getByText("Login")).toBeInTheDocument();
 });
 ```
 
@@ -467,12 +497,12 @@ test('renderiza tabela de logs', () => {
 
 ## 🏆 Resumo
 
-| Abordagem | Arquivo | Quando Usar | Status |
-|-----------|---------|-------------|--------|
-| **Hook SWR** | `hooks/use-audit-log.ts` | Componentes reativos | ✨ **Recomendado** |
-| **API Client** | `lib/audit-log.ts` | Scripts, SSR | ✅ Original |
-| **Tabela Nova** | `components/auditlog/AuditLogTable.tsx` | Mobile-first | ✨ **Nova** |
-| **Tabela Original** | `components/audit/AuditLogTable.tsx` | Filtros integrados | ✅ Original |
+| Abordagem           | Arquivo                                 | Quando Usar          | Status             |
+| ------------------- | --------------------------------------- | -------------------- | ------------------ |
+| **Hook SWR**        | `hooks/use-audit-log.ts`                | Componentes reativos | ✨ **Recomendado** |
+| **API Client**      | `lib/audit-log.ts`                      | Scripts, SSR         | ✅ Original        |
+| **Tabela Nova**     | `components/auditlog/AuditLogTable.tsx` | Mobile-first         | ✨ **Nova**        |
+| **Tabela Original** | `components/audit/AuditLogTable.tsx`    | Filtros integrados   | ✅ Original        |
 
 **Recomendação:** Use `use-audit-log.ts` + `components/auditlog/AuditLogTable.tsx` para novos desenvolvimentos.
 

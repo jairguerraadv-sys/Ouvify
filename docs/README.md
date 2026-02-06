@@ -52,17 +52,17 @@
 
 ### Stack Tecnológico
 
-| Camada | Tecnologia | Versão |
-|--------|------------|--------|
-| Frontend | Next.js + React | 16.1.5 / 19.2.4 |
-| Backend | Django + DRF | 5.1.5 / 3.15.2 |
-| Database | PostgreSQL | 16 |
-| Cache | Redis | 7.x |
-| Storage | Cloudinary | - |
-| Payments | Stripe | API v2024 |
-| Auth | JWT (SimpleJWT) | 5.5.1 |
-| Task Queue | Celery | 5.6.2 |
-| Monitoring | Sentry | 2.50.0 |
+| Camada     | Tecnologia      | Versão          |
+| ---------- | --------------- | --------------- |
+| Frontend   | Next.js + React | 16.1.5 / 19.2.4 |
+| Backend    | Django + DRF    | 5.1.5 / 3.15.2  |
+| Database   | PostgreSQL      | 16              |
+| Cache      | Redis           | 7.x             |
+| Storage    | Cloudinary      | -               |
+| Payments   | Stripe          | API v2024       |
+| Auth       | JWT (SimpleJWT) | 5.5.1           |
+| Task Queue | Celery          | 5.6.2           |
+| Monitoring | Sentry          | 2.50.0          |
 
 ---
 
@@ -164,15 +164,15 @@ npm run test:e2e         # Playwright E2E
 
 ## 📖 Documentação
 
-| Documento | Descrição |
-|-----------|-----------|
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Arquitetura e decisões técnicas |
-| [API.md](./API.md) | Documentação completa da API |
-| [DATABASE.md](./DATABASE.md) | Esquema do banco e migrações |
-| [SETUP.md](./SETUP.md) | Guia de setup do ambiente |
-| [DEPLOYMENT.md](./DEPLOYMENT.md) | Guia de deploy (Railway + Vercel) |
-| [SECURITY.md](./SECURITY.md) | Políticas de segurança |
-| [TESTING.md](./TESTING.md) | Guia de testes |
+| Documento                            | Descrição                         |
+| ------------------------------------ | --------------------------------- |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Arquitetura e decisões técnicas   |
+| [API.md](./API.md)                   | Documentação completa da API      |
+| [DATABASE.md](./DATABASE.md)         | Esquema do banco e migrações      |
+| [SETUP.md](./SETUP.md)               | Guia de setup do ambiente         |
+| [DEPLOYMENT.md](./DEPLOYMENT.md)     | Guia de deploy (Railway + Vercel) |
+| [SECURITY.md](./SECURITY.md)         | Políticas de segurança            |
+| [TESTING.md](./TESTING.md)           | Guia de testes                    |
 
 ---
 
@@ -190,17 +190,17 @@ npm run test:e2e         # Playwright E2E
 
 ## 💰 Planos
 
-| Feature | Free | Starter | Pro |
-|---------|------|---------|-----|
-| Feedbacks/mês | 50 | 500 | ∞ |
-| Usuários | 1 | 5 | ∞ |
-| Notas Internas | ❌ | ✅ | ✅ |
-| Anexos | ❌ | ❌ | ✅ |
-| White Label | ❌ | ✅ | ✅ |
-| API Access | ❌ | ❌ | ✅ |
-| Webhooks | ❌ | ❌ | ✅ |
-| Suporte | Community | Email | Priority |
-| Storage | 1GB | 10GB | 100GB |
+| Feature        | Free      | Starter | Pro      |
+| -------------- | --------- | ------- | -------- |
+| Feedbacks/mês  | 50        | 500     | ∞        |
+| Usuários       | 1         | 5       | ∞        |
+| Notas Internas | ❌        | ✅      | ✅       |
+| Anexos         | ❌        | ❌      | ✅       |
+| White Label    | ❌        | ✅      | ✅       |
+| API Access     | ❌        | ❌      | ✅       |
+| Webhooks       | ❌        | ❌      | ✅       |
+| Suporte        | Community | Email   | Priority |
+| Storage        | 1GB       | 10GB    | 100GB    |
 
 ---
 
@@ -220,6 +220,7 @@ npm run test:e2e
 ```
 
 **Cobertura Atual:**
+
 - Backend: ~75%
 - Frontend: ~45%
 - E2E: Fluxos críticos cobertos
@@ -259,4 +260,4 @@ Proprietário - © 2026 Ouvify. Todos os direitos reservados.
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

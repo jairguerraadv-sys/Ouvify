@@ -1,4 +1,5 @@
 # 🔍 RELATÓRIO DE AUDITORIA COMPLETA - OUVIFY
+
 **Data:** 05 de Fevereiro de 2026  
 **Versão:** 1.0  
 **Auditor:** GitHub Copilot (Claude Sonnet 4.5)  
@@ -9,24 +10,26 @@
 ## 📋 SUMÁRIO EXECUTIVO
 
 ### Status Geral do Projeto
+
 **COMPLETUDE GERAL: 85%**
 
-| Categoria | Status | Nota |
-|-----------|--------|------|
-| Estrutura e Organização | ✅ Excelente | 95% |
-| Segurança | ✅ Ótimo | 90% |
-| Performance | ⚠️ Bom | 80% |
-| Funcionalidades Core | ✅ Ótimo | 90% |
-| Testes | ⚠️ Adequado | 75% |
-| Documentação | ⚠️ Parcial | 60% |
-| Conformidade LGPD/GDPR | ✅ Excelente | 95% |
-| Deploy e DevOps | ✅ Ótimo | 85% |
+| Categoria               | Status       | Nota |
+| ----------------------- | ------------ | ---- |
+| Estrutura e Organização | ✅ Excelente | 95%  |
+| Segurança               | ✅ Ótimo     | 90%  |
+| Performance             | ⚠️ Bom       | 80%  |
+| Funcionalidades Core    | ✅ Ótimo     | 90%  |
+| Testes                  | ⚠️ Adequado  | 75%  |
+| Documentação            | ⚠️ Parcial   | 60%  |
+| Conformidade LGPD/GDPR  | ✅ Excelente | 95%  |
+| Deploy e DevOps         | ✅ Ótimo     | 85%  |
 
 ### Resumo de Vulnerabilidades Críticas
-- **Críticas:** 0  
-- **Altas:** 2  
-- **Médias:** 5  
-- **Baixas:** 8  
+
+- **Críticas:** 0
+- **Altas:** 2
+- **Médias:** 5
+- **Baixas:** 8
 
 ---
 
@@ -67,21 +70,25 @@ Ouvify/
 ```
 
 **✅ PONTOS FORTES:**
+
 - Arquitetura monorepo bem organizada
 - Separação clara backend/frontend
 - Apps Django modulares (Single Responsibility Principle)
 - Estrutura escalável
 
 **⚠️ PONTOS DE ATENÇÃO:**
+
 - 15.770 arquivos `.pyc` compilados (limpar com `.gitignore`)
 - Alguns arquivos de configuração duplicados entre raiz e `/apps/backend`
 
 ### 1.2 Dependências
 
 #### Backend (Python)
+
 **Total:** 100+ pacotes em `requirements/base.txt`
 
 **Principais:**
+
 - Django 5.1.15
 - djangorestframework 3.15.2
 - djangorestframework-simplejwt 5.5.1 (JWT auth)
@@ -94,9 +101,11 @@ Ouvify/
 **✅ POSITIVO:** Todas as dependências estão atualizadas (verificado em Feb/2026)
 
 #### Frontend (TypeScript/React)
+
 **Total:** 70+ pacotes em `package.json`
 
 **Principais:**
+
 - next 16.1.5
 - react 19.2.4
 - typescript 5.x
@@ -110,6 +119,7 @@ Ouvify/
 ### 1.3 Padrões de Projeto Utilizados
 
 ✅ **Backend (Django):**
+
 - **MVC (MTV):** Models, Templates (API), Views
 - **Repository Pattern:** Managers customizados (`TenantAwareManager`)
 - **Middleware Pattern:** Multi-tenancy, segurança, throttling
@@ -117,6 +127,7 @@ Ouvify/
 - **Strategy Pattern:** Múltiplos backends de email/storage
 
 ✅ **Frontend (React):**
+
 - **Component Pattern:** Atomic Design
 - **Context API:** Autenticação, tema, tenant
 - **Custom Hooks:** Lógica reutilizável
@@ -131,6 +142,7 @@ Ouvify/
 #### Backend - Endpoints API (Django REST Framework)
 
 **✅ ROTAS PÚBLICAS (sem autenticação):**
+
 ```
 GET  /                                  # Home/Health
 GET  /health/                           # Health check
@@ -144,6 +156,7 @@ POST /api/feedbacks/responder-protocolo/ # Responder feedback (público com prot
 ```
 
 **🔒 ROTAS AUTENTICADAS:**
+
 ```
 # Feedbacks
 GET/POST    /api/feedbacks/                    # CRUD feedbacks
@@ -196,6 +209,7 @@ GET/PATCH   /api/admin/tenants/                 # Administrar tenants
 #### Frontend - Páginas (Next.js App Router)
 
 **Páginas Públicas:**
+
 - `/` - Landing page
 - `/precos` - Página de preços
 - `/login` - Login
@@ -206,6 +220,7 @@ GET/PATCH   /api/admin/tenants/                 # Administrar tenants
 - `/privacidade`, `/termos`, `/lgpd`, `/cookies` - Políticas
 
 **Páginas Autenticadas (Dashboard):**
+
 - `/dashboard` - Overview
 - `/dashboard/feedbacks` - Lista de feedbacks
 - `/dashboard/feedbacks/[protocolo]` - Detalhe do feedback
@@ -220,6 +235,7 @@ GET/PATCH   /api/admin/tenants/                 # Administrar tenants
 - `/dashboard/ajuda` - Central de ajuda
 
 **Páginas Admin (superuser):**
+
 - `/admin` - Painel admin
 - `/admin/tenants/[id]` - Detalhes do tenant
 
@@ -233,6 +249,7 @@ GET/PATCH   /api/admin/tenants/                 # Administrar tenants
 ### 2.3 Variáveis de Ambiente
 
 **Backend (.env.example):**
+
 ```bash
 # Críticas (OBRIGATÓRIAS em produção)
 SECRET_KEY=                    # ✅ Validação implementada
@@ -263,9 +280,11 @@ ALLOWED_HOSTS=                # ✅ Validado em produção
 ### 3.1 OWASP Top 10 - Compliance
 
 #### A01:2021 - Broken Access Control
+
 **STATUS: ✅ PROTEGIDO**
 
 **Implementações:**
+
 1. **Multi-tenancy Isolation:**
    - `TenantAwareModel` garante filtro automático por tenant
    - `TenantIsolationMiddleware` valida membership do usuário
@@ -285,6 +304,7 @@ ALLOWED_HOSTS=                # ✅ Validado em produção
    ```
 
 #### A02:2021 - Cryptographic Failures
+
 **STATUS: ✅ PROTEGIDO**
 
 - SECRET_KEY obrigatória em produção
@@ -294,14 +314,17 @@ ALLOWED_HOSTS=                # ✅ Validado em produção
 - IPs anonimizados para LGPD
 
 #### A03:2021 - Injection
+
 **STATUS: ✅ PROTEGIDO**
 
 **SQL Injection:**
+
 - ✅ Django ORM (parameterizado)
 - ✅ Nenhum `.raw()` ou `.execute()` direto detectado
 - ⚠️ ElasticSearch usa queries parametrizadas
 
 **XSS (Cross-Site Scripting):**
+
 ```python
 # apps/core/sanitizers.py
 def sanitize_html_input(value: str) -> str:
@@ -321,6 +344,7 @@ def sanitize_rich_text(text: str) -> str:
 **✅ Frontend:** Uso de `DOMPurify` para sanitização + `SafeText` component
 
 #### A04:2021 - Insecure Design
+
 **STATUS: ✅ BOM**
 
 - Multi-tenancy desde o design
@@ -328,9 +352,11 @@ def sanitize_rich_text(text: str) -> str:
 - Audit log completo
 
 #### A05:2021 - Security Misconfiguration
+
 **STATUS: ⚠️ ATENÇÃO - 2 issues**
 
 **✅ CORRETO:**
+
 ```python
 DEBUG = False  # Produção
 ALLOWED_HOSTS = ['.onrender.com', '.vercel.app']
@@ -340,14 +366,17 @@ X_FRAME_OPTIONS = 'DENY'
 ```
 
 **⚠️ ATENÇÃO 1:** CSRF middleware habilitado mas não usado em API JWT
+
 - **Impacto:** MÉDIO (não afeta API, mas admin Django precisa)
 - **Recomendação:** Manter para Django Admin
 
 **⚠️ ATENÇÃO 2:** CSP (Content Security Policy) ainda em modo `report-only` em algumas envs
+
 - **Impacto:** BAIXO
 - **Recomendação:** Forçar `enforce` em produção
 
 #### A06:2021 - Vulnerable Components
+
 **STATUS: ✅ ATUALIZADO**
 
 - Todas as dependências atualizadas (Feb/2026)
@@ -355,9 +384,11 @@ X_FRAME_OPTIONS = 'DENY'
 - Sem CVEs conhecidos
 
 #### A07:2021 - Authentication Failures
+
 **STATUS: ✅ PROTEGIDO**
 
 **Implementações:**
+
 1. JWT com blacklist
 2. Refresh token rotation
 3. 2FA disponível (`apps.core.two_factor_urls`)
@@ -365,6 +396,7 @@ X_FRAME_OPTIONS = 'DENY'
 5. Audit log de todas as tentativas de login
 
 #### A08:2021 - Software and Data Integrity
+
 **STATUS: ✅ PROTEGIDO**
 
 - Requirements pinados
@@ -372,9 +404,11 @@ X_FRAME_OPTIONS = 'DENY'
 - Webhook signatures (Stripe)
 
 #### A09:2021 - Logging Failures
+
 **STATUS: ✅ EXCELENTE**
 
 **AuditLog implementado:**
+
 ```python
 class AuditLog(models.Model):
     action = models.CharField(max_length=50)  # LOGIN, CREATE, UPDATE, DELETE
@@ -390,6 +424,7 @@ class AuditLog(models.Model):
 **Sentry para errors:** Todas exceções enviadas para Sentry em produção
 
 #### A10:2021 - Server-Side Request Forgery (SSRF)
+
 **STATUS: ✅ PROTEGIDO**
 
 - Webhooks validam URLs antes de enviar
@@ -398,14 +433,14 @@ class AuditLog(models.Model):
 
 ### 3.2 Resumo de Vulnerabilidades Encontradas
 
-| ID | Severidade | Tipo | Localização | Status |
-|----|------------|------|-------------|--------|
-| V001 | MÉDIA | CSP Report-Only | `config/settings.py` | ⚠️ Pendente |
-| V002 | MÉDIA | CSRF habilitado sem uso | `config/settings.py` MIDDLEWARE | ✅ OK (Admin precisa) |
-| V003 | BAIXA | 15k arquivos .pyc | `.gitignore` incompleto | ⚠️ Pendente |
-| V004 | BAIXA | SECRET_KEY em .env.example | Risco de commit acidental | ✅ Documentado |
-| V005 | ALTA | ElasticSearch sem autenticação | `ELASTICSEARCH_URL` | ⚠️ Verificar em prod |
-| V006 | ALTA | Redis sem senha | `REDIS_URL` | ⚠️ Verificar em prod |
+| ID   | Severidade | Tipo                           | Localização                     | Status                |
+| ---- | ---------- | ------------------------------ | ------------------------------- | --------------------- |
+| V001 | MÉDIA      | CSP Report-Only                | `config/settings.py`            | ⚠️ Pendente           |
+| V002 | MÉDIA      | CSRF habilitado sem uso        | `config/settings.py` MIDDLEWARE | ✅ OK (Admin precisa) |
+| V003 | BAIXA      | 15k arquivos .pyc              | `.gitignore` incompleto         | ⚠️ Pendente           |
+| V004 | BAIXA      | SECRET_KEY em .env.example     | Risco de commit acidental       | ✅ Documentado        |
+| V005 | ALTA       | ElasticSearch sem autenticação | `ELASTICSEARCH_URL`             | ⚠️ Verificar em prod  |
+| V006 | ALTA       | Redis sem senha                | `REDIS_URL`                     | ⚠️ Verificar em prod  |
 
 ---
 
@@ -416,6 +451,7 @@ class AuditLog(models.Model):
 #### Backend
 
 **✅ N+1 Queries Prevention:**
+
 ```python
 # apps/feedbacks/views.py
 def get_queryset(self):
@@ -428,6 +464,7 @@ def get_queryset(self):
 ```
 
 **✅ Cache Redis:**
+
 ```python
 CACHES = {
     'default': {
@@ -441,10 +478,12 @@ CACHES = {
 ```
 
 **✅ Database Indexing:**
+
 - Indexes em `created_at`, `status`, `client_id`
 - Unique constraint em `protocolo`
 
 **✅ Celery Tasks:**
+
 - Emails assíncronos
 - Webhooks em background
 - Processamento de arquivos
@@ -452,12 +491,14 @@ CACHES = {
 #### Frontend
 
 **✅ Next.js Optimizations:**
+
 - App Router (React Server Components)
 - Dynamic imports com `next/dynamic`
 - Image optimization com `next/image`
 - Font optimization
 
 **✅ Bundle Analysis:**
+
 - Bundle analyzer configurado
 - Tree shaking habilitado
 - Code splitting automático
@@ -465,6 +506,7 @@ CACHES = {
 ### 4.2 Gargalos Identificados
 
 **⚠️ MÉDIA PRIORIDADE:**
+
 1. **Listagem de feedbacks sem paginação em alguns casos**
    - **Impacto:** Lentidão com >1000 feedbacks
    - **Fix:** Implementar paginação consistente (DRF `PageNumberPagination`)
@@ -479,13 +521,13 @@ CACHES = {
 
 ### 4.3 Métricas de Performance (Simuladas)
 
-| Métrica | Valor Atual | Recomendado | Status |
-|---------|-------------|-------------|--------|
-| First Contentful Paint | 1.2s | <1.8s | ✅ |
-| Time to Interactive | 2.8s | <3.8s | ✅ |
-| API Response (p50) | 120ms | <200ms | ✅ |
-| API Response (p95) | 450ms | <800ms | ✅ |
-| Bundle Size (First Load) | 180KB | <200KB | ✅ |
+| Métrica                  | Valor Atual | Recomendado | Status |
+| ------------------------ | ----------- | ----------- | ------ |
+| First Contentful Paint   | 1.2s        | <1.8s       | ✅     |
+| Time to Interactive      | 2.8s        | <3.8s       | ✅     |
+| API Response (p50)       | 120ms       | <200ms      | ✅     |
+| API Response (p95)       | 450ms       | <800ms      | ✅     |
+| Bundle Size (First Load) | 180KB       | <200KB      | ✅     |
 
 ---
 
@@ -494,6 +536,7 @@ CACHES = {
 ### 5.1 Implementações
 
 **✅ DIREITO AO ESQUECIMENTO:**
+
 ```python
 # DELETE /api/account/
 class AccountDeletionView(APIView):
@@ -503,6 +546,7 @@ class AccountDeletionView(APIView):
 ```
 
 **✅ PORTABILIDADE DE DADOS:**
+
 ```python
 # GET /api/export-data/
 class DataExportView(APIView):
@@ -512,6 +556,7 @@ class DataExportView(APIView):
 ```
 
 **✅ GESTÃO DE CONSENTIMENTO:**
+
 ```python
 class ConsentVersion(models.Model):
     document_type = models.CharField(choices=[
@@ -530,6 +575,7 @@ class UserConsent(models.Model):
 ```
 
 **✅ ANONIMIZAÇÃO DE IP:**
+
 ```python
 def anonymize_ip(ip_address: str) -> str:
     """
@@ -540,25 +586,26 @@ def anonymize_ip(ip_address: str) -> str:
 ```
 
 **✅ AUDIT LOG COMPLETO:**
+
 - Todas ações sensíveis logadas
 - Histórico de consentimentos
 - Acessos a dados pessoais
 
 ### 5.2 Checklist de Conformidade
 
-| Requisito LGPD/GDPR | Status | Implementação |
-|----------------------|--------|---------------|
-| ✅ Base legal para tratamento | ✅ | Consentimento explícito + Contrato |
-| ✅ Consentimento granular | ✅ | `ConsentVersion` model |
-| ✅ Direito de acesso | ✅ | `/api/export-data/` |
-| ✅ Direito ao esquecimento | ✅ | `/api/account/` DELETE |
-| ✅ Portabilidade de dados | ✅ | Export JSON/CSV |
-| ✅ Notificação de incidentes | ✅ | Sentry + Email admin |
-| ✅ DPO/Encarregado | ⚠️ | Definir responsável |
-| ✅ Política de Privacidade | ✅ | `/privacidade` |
-| ✅ Termos de Uso | ✅ | `/termos` |
-| ✅ Anonimização de logs | ✅ | IPs anonimizados |
-| ✅ Backup seguro | ⚠️ | Railway automático (verificar criptografia) |
+| Requisito LGPD/GDPR           | Status | Implementação                               |
+| ----------------------------- | ------ | ------------------------------------------- |
+| ✅ Base legal para tratamento | ✅     | Consentimento explícito + Contrato          |
+| ✅ Consentimento granular     | ✅     | `ConsentVersion` model                      |
+| ✅ Direito de acesso          | ✅     | `/api/export-data/`                         |
+| ✅ Direito ao esquecimento    | ✅     | `/api/account/` DELETE                      |
+| ✅ Portabilidade de dados     | ✅     | Export JSON/CSV                             |
+| ✅ Notificação de incidentes  | ✅     | Sentry + Email admin                        |
+| ✅ DPO/Encarregado            | ⚠️     | Definir responsável                         |
+| ✅ Política de Privacidade    | ✅     | `/privacidade`                              |
+| ✅ Termos de Uso              | ✅     | `/termos`                                   |
+| ✅ Anonimização de logs       | ✅     | IPs anonimizados                            |
+| ✅ Backup seguro              | ⚠️     | Railway automático (verificar criptografia) |
 
 ---
 
@@ -566,68 +613,68 @@ def anonymize_ip(ip_address: str) -> str:
 
 ### 6.1 Core Features (MVP) - Status
 
-| Feature | Status | Completude | Notas |
-|---------|--------|------------|-------|
-| **Sistema de Feedback** | ✅ | 100% | CRUD completo |
-| Criar feedback (público) | ✅ | 100% | `/api/feedbacks/` POST |
-| Consultar por protocolo | ✅ | 100% | Anônimo, sem auth |
-| Responder feedback (cidadão) | ✅ | 100% | Atualizar status |
-| Adicionar interações | ✅ | 100% | Histórico completo |
-| Upload de arquivos | ✅ | 100% | Cloudinary |
-| Código de rastreamento | ✅ | 100% | Protocolo único gerado |
-| **Multi-Tenancy** | ✅ | 100% | Isolamento total |
-| Registro de empresa | ✅ | 100% | Self-service signup |
-| Subdomínio personalizado | ✅ | 100% | `empresa.ouvify.com` |
-| Branding (logo/cores) | ✅ | 90% | Logo OK, cores parcial |
-| Isolamento de dados | ✅ | 100% | `TenantAwareModel` |
-| **Autenticação** | ✅ | 100% | JWT robusto |
-| Login/Logout | ✅ | 100% | JWT com blacklist |
-| Registro de usuário | ✅ | 100% | Validação completa |
-| Reset de senha | ✅ | 100% | Email transacional |
-| 2FA (Two-Factor Auth) | ✅ | 90% | Implementado, falta UI |
-| **Team Management** | ✅ | 95% | Multi-usuário |
-| Convidar membros | ✅ | 100% | Email invitation |
-| Gerenciar permissões | ✅ | 90% | Roles: owner/admin/viewer |
-| Suspender/reativar | ✅ | 100% | Status management |
-| **Notifications** | ✅ | 85% | Push + Email |
-| Push Notifications | ✅ | 80% | Service Worker |
-| Email transacional | ✅ | 100% | SendGrid ready |
-| Preferências de notificação | ✅ | 90% | Por canal + tipo |
-| **Analytics & Reporting** | ✅ | 80% | Dashboard básico |
-| Dashboard stats | ✅ | 90% | Feedbacks por status/tipo |
-| Relatórios exportáveis | ⚠️ | 60% | CSV básico, falta PDF |
-| Gráficos interativos | ✅ | 80% | Recharts |
-| **Billing (Stripe)** | ✅ | 90% | Checkout completo |
-| Planos e preços | ✅ | 100% | Starter/Pro definidos |
-| Checkout Stripe | ✅ | 100% | Webhook configurado |
-| Gestão de assinatura | ✅ | 90% | Upgrade/downgrade |
-| Invoices/Faturas | ✅ | 85% | Histórico disponível |
-| **Webhooks** | ✅ | 85% | Integrações externas |
-| Gerenciar endpoints | ✅ | 90% | CRUD + validação |
-| Eventos disponíveis | ✅ | 85% | feedback.created, .updated, .resolved |
-| Retry automático | ✅ | 90% | Exponential backoff |
-| Logs de entrega | ✅ | 100% | WebhookDelivery model |
-| **Audit Log** | ✅ | 100% | Compliance |
-| Log de ações | ✅ | 100% | Todas ações críticas |
-| Histórico de sessões | ✅ | 100% | Login/logout tracking |
-| Filtros e busca | ✅ | 90% | Por usuário, ação, data |
-| **LGPD/GDPR** | ✅ | 95% | Conformidade |
-| Consentimento | ✅ | 100% | Versioned consent |
-| Export de dados | ✅ | 100% | JSON/CSV |
-| Exclusão de conta | ✅ | 100% | Irreversível |
-| Anonimização | ✅ | 90% | IPs + histórico |
+| Feature                      | Status | Completude | Notas                                 |
+| ---------------------------- | ------ | ---------- | ------------------------------------- |
+| **Sistema de Feedback**      | ✅     | 100%       | CRUD completo                         |
+| Criar feedback (público)     | ✅     | 100%       | `/api/feedbacks/` POST                |
+| Consultar por protocolo      | ✅     | 100%       | Anônimo, sem auth                     |
+| Responder feedback (cidadão) | ✅     | 100%       | Atualizar status                      |
+| Adicionar interações         | ✅     | 100%       | Histórico completo                    |
+| Upload de arquivos           | ✅     | 100%       | Cloudinary                            |
+| Código de rastreamento       | ✅     | 100%       | Protocolo único gerado                |
+| **Multi-Tenancy**            | ✅     | 100%       | Isolamento total                      |
+| Registro de empresa          | ✅     | 100%       | Self-service signup                   |
+| Subdomínio personalizado     | ✅     | 100%       | `empresa.ouvify.com`                  |
+| Branding (logo/cores)        | ✅     | 90%        | Logo OK, cores parcial                |
+| Isolamento de dados          | ✅     | 100%       | `TenantAwareModel`                    |
+| **Autenticação**             | ✅     | 100%       | JWT robusto                           |
+| Login/Logout                 | ✅     | 100%       | JWT com blacklist                     |
+| Registro de usuário          | ✅     | 100%       | Validação completa                    |
+| Reset de senha               | ✅     | 100%       | Email transacional                    |
+| 2FA (Two-Factor Auth)        | ✅     | 90%        | Implementado, falta UI                |
+| **Team Management**          | ✅     | 95%        | Multi-usuário                         |
+| Convidar membros             | ✅     | 100%       | Email invitation                      |
+| Gerenciar permissões         | ✅     | 90%        | Roles: owner/admin/viewer             |
+| Suspender/reativar           | ✅     | 100%       | Status management                     |
+| **Notifications**            | ✅     | 85%        | Push + Email                          |
+| Push Notifications           | ✅     | 80%        | Service Worker                        |
+| Email transacional           | ✅     | 100%       | SendGrid ready                        |
+| Preferências de notificação  | ✅     | 90%        | Por canal + tipo                      |
+| **Analytics & Reporting**    | ✅     | 80%        | Dashboard básico                      |
+| Dashboard stats              | ✅     | 90%        | Feedbacks por status/tipo             |
+| Relatórios exportáveis       | ⚠️     | 60%        | CSV básico, falta PDF                 |
+| Gráficos interativos         | ✅     | 80%        | Recharts                              |
+| **Billing (Stripe)**         | ✅     | 90%        | Checkout completo                     |
+| Planos e preços              | ✅     | 100%       | Starter/Pro definidos                 |
+| Checkout Stripe              | ✅     | 100%       | Webhook configurado                   |
+| Gestão de assinatura         | ✅     | 90%        | Upgrade/downgrade                     |
+| Invoices/Faturas             | ✅     | 85%        | Histórico disponível                  |
+| **Webhooks**                 | ✅     | 85%        | Integrações externas                  |
+| Gerenciar endpoints          | ✅     | 90%        | CRUD + validação                      |
+| Eventos disponíveis          | ✅     | 85%        | feedback.created, .updated, .resolved |
+| Retry automático             | ✅     | 90%        | Exponential backoff                   |
+| Logs de entrega              | ✅     | 100%       | WebhookDelivery model                 |
+| **Audit Log**                | ✅     | 100%       | Compliance                            |
+| Log de ações                 | ✅     | 100%       | Todas ações críticas                  |
+| Histórico de sessões         | ✅     | 100%       | Login/logout tracking                 |
+| Filtros e busca              | ✅     | 90%        | Por usuário, ação, data               |
+| **LGPD/GDPR**                | ✅     | 95%        | Conformidade                          |
+| Consentimento                | ✅     | 100%       | Versioned consent                     |
+| Export de dados              | ✅     | 100%       | JSON/CSV                              |
+| Exclusão de conta            | ✅     | 100%       | Irreversível                          |
+| Anonimização                 | ✅     | 90%        | IPs + histórico                       |
 
 ### 6.2 Features Faltantes (Nice to Have)
 
-| Feature | Prioridade | Estimativa | Impacto |
-|---------|------------|------------|---------|
-| **Relatórios em PDF** | MÉDIA | 3 dias | Médio - Profissionalismo |
-| **Automações avançadas** | BAIXA | 5 dias | Baixo - Power users |
-| **API Pública (v2)** | MÉDIA | 4 dias | Médio - Integrações |
-| **Widget embarcável** | ALTA | 5 dias | Alto - Facilita adoção |
-| **App mobile (PWA)** | BAIXA | 7 dias | Médio - UX mobile |
-| **ElasticSearch full** | BAIXA | 3 dias | Baixo - Busca avançada |
-| **Temas personalizáveis** | BAIXA | 4 dias | Baixo - White label avançado |
+| Feature                   | Prioridade | Estimativa | Impacto                      |
+| ------------------------- | ---------- | ---------- | ---------------------------- |
+| **Relatórios em PDF**     | MÉDIA      | 3 dias     | Médio - Profissionalismo     |
+| **Automações avançadas**  | BAIXA      | 5 dias     | Baixo - Power users          |
+| **API Pública (v2)**      | MÉDIA      | 4 dias     | Médio - Integrações          |
+| **Widget embarcável**     | ALTA       | 5 dias     | Alto - Facilita adoção       |
+| **App mobile (PWA)**      | BAIXA      | 7 dias     | Médio - UX mobile            |
+| **ElasticSearch full**    | BAIXA      | 3 dias     | Baixo - Busca avançada       |
+| **Temas personalizáveis** | BAIXA      | 4 dias     | Baixo - White label avançado |
 
 ---
 
@@ -636,6 +683,7 @@ def anonymize_ip(ip_address: str) -> str:
 ### 7.1 Cobertura de Testes
 
 **Backend (Python):**
+
 - **Arquivos de teste:** 37+ arquivos (`test_*.py`)
 - **Testes implementados:**
   - `test_tenant_isolation.py` - Isolamento multi-tenancy
@@ -651,6 +699,7 @@ def anonymize_ip(ip_address: str) -> str:
 **Cobertura estimada:** ~70-75%
 
 **Frontend (TypeScript/React):**
+
 - **Arquivos de teste:** 7 arquivos (`.test.tsx`)
   - `Button.test.tsx`, `Logo.test.tsx`, `Badge.test.tsx`
   - `dashboard.test.tsx`, `feedbacks-page.test.tsx`
@@ -659,6 +708,7 @@ def anonymize_ip(ip_address: str) -> str:
 **Cobertura estimada:** ~40-50% (BAIXA - necessita expansão)
 
 **E2E (Playwright):**
+
 - Configurado em `playwright.config.ts`
 - Scripts em `/app/frontend/e2e`
 - **Status:** Parcialmente implementado
@@ -666,12 +716,14 @@ def anonymize_ip(ip_address: str) -> str:
 ### 7.2 Áreas Sem Testes
 
 **⚠️ PRIORIDADE ALTA:**
+
 - Upload de arquivos (FeedbackArquivo)
 - Fluxo completo de checkout Stripe
 - Webhooks delivery retry
 - Password reset flow
 
 **⚠️ PRIORIDADE MÉDIA:**
+
 - Notificações push
 - Export de dados LGPD
 - Analytics dashboard completo
@@ -689,17 +741,18 @@ def anonymize_ip(ip_address: str) -> str:
 
 ### 8.1 Ambientes
 
-| Ambiente | Backend | Frontend | Status |
-|----------|---------|----------|--------|
-| **Produção** | Render | Vercel | ✅ Deploy automático |
-| **Staging** | Render | Vercel | ⚠️ Configurar |
-| **Development** | Local | Local | ✅ Docker-compose |
+| Ambiente        | Backend | Frontend | Status               |
+| --------------- | ------- | -------- | -------------------- |
+| **Produção**    | Render  | Vercel   | ✅ Deploy automático |
+| **Staging**     | Render  | Vercel   | ⚠️ Configurar        |
+| **Development** | Local   | Local    | ✅ Docker-compose    |
 
 ### 8.2 CI/CD
 
 **⚠️ AUSENTE:** Nenhum pipeline CI/CD detectado (.github/workflows/)
 
 **Recomendações:**
+
 1. GitHub Actions para testes automáticos
 2. Deploy automático após merge na main
 3. Lint e type-check obrigatórios
@@ -707,11 +760,13 @@ def anonymize_ip(ip_address: str) -> str:
 ### 8.3 Monitoring
 
 **✅ IMPLEMENTADO:**
+
 - Sentry para error tracking
 - Health checks (`/health/`, `/ready/`)
 - Audit Log para ações de usuário
 
 **⚠️ PARCIAL:**
+
 - Prometheus + Grafana configurado em `/monitoring/` mas não deployado
 - Logs centralizados ausentes (recomenda: ELK Stack ou Loki)
 
@@ -728,7 +783,7 @@ graph TB
         A --> A2[TailwindCSS]
         A --> A3[Context API Auth/Tenant]
     end
-    
+
     subgraph "BACKEND - Render"
         B[Django 5.1 REST API] --> B1[Multi-Tenancy Middleware]
         B --> B2[JWT Authentication]
@@ -738,7 +793,7 @@ graph TB
         B3 --> B6[Billing Module]
         B3 --> B7[Webhooks Module]
     end
-    
+
     subgraph "DATABASES"
         C[(PostgreSQL - Railway)] --> C1[Feedback Data]
         C --> C2[User/Tenant Data]
@@ -747,14 +802,14 @@ graph TB
         D --> D2[Celery Queue]
         D --> D3[Rate Limiting]
     end
-    
+
     subgraph "EXTERNAL SERVICES"
         E[Cloudinary] --> E1[File Storage]
         F[Stripe] --> F1[Payments]
         G[SendGrid] --> G1[Emails]
         H[Sentry] --> H1[Error Monitoring]
     end
-    
+
     A -->|API Calls + JWT| B
     B --> C
     B --> D
@@ -762,7 +817,7 @@ graph TB
     B --> F
     B --> G
     B --> H
-    
+
     style A fill:#61DAFB,stroke:#333,stroke-width:2px
     style B fill:#092E20,stroke:#333,stroke-width:2px,color:#fff
     style C fill:#336791,stroke:#333,stroke-width:2px
@@ -778,7 +833,7 @@ sequenceDiagram
     participant M as TenantMiddleware
     participant D as Database
     participant V as View
-    
+
     U->>F: Acessa empresa-x.ouvify.com
     F->>M: Request com subdomain header
     M->>D: SELECT * FROM tenants WHERE subdominio='empresa-x'
@@ -800,16 +855,16 @@ sequenceDiagram
     participant A as /api/token/
     participant R as /api/token/refresh/
     participant P as Protected Endpoint
-    
+
     U->>F: Login (email, password)
     F->>A: POST {email, password}
     A-->>F: {access, refresh, tenant_id}
     F->>F: localStorage.setItem('access', ...)
     F->>P: GET /api/feedbacks/ (Authorization: Bearer <access>)
     P-->>F: 200 OK + data
-    
+
     Note over F,P: Access token expira (15 min)
-    
+
     F->>P: GET /api/feedbacks/ (access expirado)
     P-->>F: 401 Unauthorized
     F->>R: POST /api/token/refresh/ {refresh}
@@ -824,32 +879,32 @@ sequenceDiagram
 
 ### 10.1 Críticas (Imediato - 0-3 dias)
 
-| ID | Tarefa | Tempo | Responsável |
-|----|--------|-------|-------------|
-| C1 | Configurar senha Redis em produção | 1h | DevOps |
-| C2 | Habilitar autenticação ElasticSearch | 2h | DevOps |
-| C3 | Forçar CSP `enforce` em produção | 1h | Backend |
-| C4 | Adicionar testes E2E críticos | 2d | QA/Dev |
+| ID  | Tarefa                               | Tempo | Responsável |
+| --- | ------------------------------------ | ----- | ----------- |
+| C1  | Configurar senha Redis em produção   | 1h    | DevOps      |
+| C2  | Habilitar autenticação ElasticSearch | 2h    | DevOps      |
+| C3  | Forçar CSP `enforce` em produção     | 1h    | Backend     |
+| C4  | Adicionar testes E2E críticos        | 2d    | QA/Dev      |
 
 ### 10.2 Altas (Sprint Atual - 1 semana)
 
-| ID | Tarefa | Tempo | Responsável |
-|----|--------|-------|-------------|
-| A1 | Implementar CI/CD pipeline | 1d | DevOps |
-| A2 | Aumentar cobertura de testes frontend | 3d | Frontend |
-| A3 | Configurar Prometheus/Grafana deploy | 1d | DevOps |
-| A4 | Limpar 15k arquivos .pyc e ajustar .gitignore | 1h | Backend |
-| A5 | Implementar widget embarcável | 5d | Frontend/Backend |
+| ID  | Tarefa                                        | Tempo | Responsável      |
+| --- | --------------------------------------------- | ----- | ---------------- |
+| A1  | Implementar CI/CD pipeline                    | 1d    | DevOps           |
+| A2  | Aumentar cobertura de testes frontend         | 3d    | Frontend         |
+| A3  | Configurar Prometheus/Grafana deploy          | 1d    | DevOps           |
+| A4  | Limpar 15k arquivos .pyc e ajustar .gitignore | 1h    | Backend          |
+| A5  | Implementar widget embarcável                 | 5d    | Frontend/Backend |
 
 ### 10.3 Médias (Próximos 2 Sprints)
 
-| ID | Tarefa | Tempo | Responsável |
-|----|--------|-------|-------------|
-| M1 | Geração de relatórios PDF | 3d | Backend |
-| M2 | API Pública v2 | 4d | Backend |
-| M3 | Cache em Analytics Dashboard | 1d | Backend |
-| M4 | Logs centralizados (ELK/Loki) | 2d | DevOps |
-| M5 | PWA mobile app | 7d | Frontend |
+| ID  | Tarefa                        | Tempo | Responsável |
+| --- | ----------------------------- | ----- | ----------- |
+| M1  | Geração de relatórios PDF     | 3d    | Backend     |
+| M2  | API Pública v2                | 4d    | Backend     |
+| M3  | Cache em Analytics Dashboard  | 1d    | Backend     |
+| M4  | Logs centralizados (ELK/Loki) | 2d    | DevOps      |
+| M5  | PWA mobile app                | 7d    | Frontend    |
 
 ---
 
@@ -858,23 +913,27 @@ sequenceDiagram
 ### 11.1 Pontos Fortes (Strengths)
 
 ✅ **Arquitetura sólida e escalável**
+
 - Multi-tenancy robusto com isolamento total
 - Modularização clara (Django apps + Next.js)
 - Stack moderno e atualizado
 
 ✅ **Segurança bem implementada**
+
 - JWT com blacklist e rotation
 - Sanitização de inputs (XSS prevention)
 - Audit log completo
 - LGPD/GDPR compliance
 
 ✅ **Features core completas**
+
 - Sistema de feedback funcional 100%
 - Team management implementado
 - Billing Stripe integrado
 - Webhooks funcionais
 
 ✅ **Boas práticas de código**
+
 - Type hints no backend
 - TypeScript no frontend
 - Padrões de projeto consistentes
@@ -882,55 +941,63 @@ sequenceDiagram
 ### 11.2 Pontos de Melhoria (Weaknesses)
 
 ⚠️ **Testes insuficientes**
+
 - Frontend com apenas 40-50% cobertura
 - Faltam testes E2E completos
 - Load testing não executado
 
 ⚠️ **DevOps ausente**
+
 - Sem CI/CD pipeline
 - Monitoring parcial (Prometheus não deployado)
 - Logs centralizados ausentes
 
 ⚠️ **Documentação incompleta**
+
 - Sem README.md completo na raiz
 - Falta guia de setup para novos devs
 - API docs ausentes (sem Swagger UI deployado)
 
 ⚠️ **Performance**
+
 - Paginação inconsistente
 - Analytics sem cache
 - ElasticSearch não configurado em todos ambientes
 
 ### 11.3 Riscos Técnicos
 
-| Risco | Probabilidade | Impacto | Mitigação |
-|-------|---------------|---------|-----------|
-| Redis sem autenticação exposto | Baixa | Crítico | Configurar senha + firewall |
-| Escalabilidade limitada sem cache analytics | Média | Alto | Implementar cache Redis |
-| Falha em deploy sem CI/CD | Alta | Médio | GitHub Actions |
-| Perda de dados sem backup testado | Baixa | Crítico | Testar restore Railway |
+| Risco                                       | Probabilidade | Impacto | Mitigação                   |
+| ------------------------------------------- | ------------- | ------- | --------------------------- |
+| Redis sem autenticação exposto              | Baixa         | Crítico | Configurar senha + firewall |
+| Escalabilidade limitada sem cache analytics | Média         | Alto    | Implementar cache Redis     |
+| Falha em deploy sem CI/CD                   | Alta          | Médio   | GitHub Actions              |
+| Perda de dados sem backup testado           | Baixa         | Crítico | Testar restore Railway      |
 
 ### 11.4 Roadmap Sugerido
 
 **SPRINT 1 (2 semanas) - Estabilização:**
+
 - ✅ Corrigir vulnerabilidades críticas
 - ✅ Implementar CI/CD
 - ✅ Aumentar cobertura de testes
 - ✅ Deploy Prometheus/Grafana
 
 **SPRINT 2 (2 semanas) - Melhorias Core:**
+
 - ✅ Widget embarcável
 - ✅ Relatórios PDF
 - ✅ Cache em analytics
 - ✅ Documentação completa
 
 **SPRINT 3 (2 semanas) - Escalabilidade:**
+
 - ✅ API Pública v2
 - ✅ PWA Mobile
 - ✅ Load testing
 - ✅ Otimizações de performance
 
 **SPRINT 4 (2 semanas) - Advanced Features:**
+
 - ✅ Automações avançadas
 - ✅ Temas personalizáveis
 - ✅ ElasticSearch full deployment
@@ -950,6 +1017,7 @@ sequenceDiagram
 ### 12.1 Stack Completo
 
 **Backend:**
+
 - Python 3.13
 - Django 5.1.15
 - Django REST Framework 3.15.2
@@ -958,6 +1026,7 @@ sequenceDiagram
 - Celery 5.6.2
 
 **Frontend:**
+
 - Next.js 16.1.5
 - React 19.2.4
 - TypeScript 5.x
@@ -965,6 +1034,7 @@ sequenceDiagram
 - Axios 1.13
 
 **Infrastructure:**
+
 - Render (Backend)
 - Vercel (Frontend)
 - Railway (Postgres + Redis)
@@ -986,7 +1056,7 @@ sequenceDiagram
 **Ferramentas:** Copilot Agent, grep, semantic search, manual review  
 **Tempo de Auditoria:** 2 horas  
 **Arquivos Analisados:** ~600 arquivos (Python, TypeScript, configs)  
-**Linhas de Código:** ~50.000 LOC (estimado)  
+**Linhas de Código:** ~50.000 LOC (estimado)
 
 ---
 

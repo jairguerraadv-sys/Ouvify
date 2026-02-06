@@ -29,11 +29,12 @@
 - [ ] **Type checking**: `pyright` (backend), `tsc --noEmit` (frontend)
 - [ ] **Security audit**: `pip-audit` (backend), `npm audit` (frontend)
 - [ ] **Build successful locally**:
+
   ```bash
   # Backend
   cd apps/backend && pip install -r requirements/prod.txt
   python manage.py collectstatic --noinput
-  
+
   # Frontend
   cd apps/frontend && npm run build
   ```
@@ -62,6 +63,7 @@ All P0 issues from previous audits must be resolved:
 - [x] ✅ **P0.5 - Audit Logging**: Complete action tracking
 
 **Verification:**
+
 ```bash
 # Check CSP is configured
 grep -r "Content-Security-Policy" apps/frontend/next.config.js
@@ -118,6 +120,7 @@ CSRF_COOKIE_SECURE=True
 ```
 
 **Critical Values to Generate:**
+
 ```bash
 # Django SECRET_KEY (50+ characters)
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
@@ -153,12 +156,14 @@ NEXT_PUBLIC_ENV=production
 ### Railway PostgreSQL
 
 **Create Database:**
+
 1. Go to [railway.app](https://railway.app)
 2. New Project → PostgreSQL
 3. Copy `DATABASE_URL`
 4. Set connection limit: 20 (or per plan)
 
 **Run Migrations:**
+
 ```bash
 # Set DATABASE_URL locally for migration
 export DATABASE_URL="postgresql://user:password@host:port/ouvify"
@@ -178,11 +183,13 @@ python manage.py loaddata fixtures/initial_data.json
 ```
 
 **Verify Tables:**
+
 ```bash
 psql $DATABASE_URL -c "\dt"
 ```
 
 Expected tables (30+):
+
 - `auth_user`, `tenants_client`, `feedbacks_feedback`, `billing_subscription`, `auditlog_auditlog`, `consent_consentversion`, `two_factor_twofactorauth`, etc.
 
 ---
@@ -190,11 +197,13 @@ Expected tables (30+):
 ### Redis Setup (Railway)
 
 **Create Redis:**
+
 1. Railway → New Service → Redis
 2. Copy `REDIS_URL`
 3. No schema migration needed
 
 **Test Connection:**
+
 ```bash
 redis-cli -u $REDIS_URL ping
 # Expected: PONG
@@ -230,6 +239,7 @@ redis-cli -u $REDIS_URL ping
 7. **Deploy**
 
 **Monitor Deployment:**
+
 - Watch logs in real-time
 - Look for: `Starting gunicorn` and `Listening at: http://0.0.0.0:XXXX`
 
@@ -238,6 +248,7 @@ redis-cli -u $REDIS_URL ping
 ### Celery Worker (Background Tasks)
 
 **Create Background Worker:**
+
 1. Render → New → Background Worker
 2. **Settings:**
    - **Name**: `ouvify-celery-worker`
@@ -251,6 +262,7 @@ redis-cli -u $REDIS_URL ping
    - **Environment**: Copy from web service
 
 **Celery Beat (Scheduled Tasks):**
+
 1. Create another Background Worker
 2. **Start Command**:
    ```bash
@@ -282,6 +294,7 @@ redis-cli -u $REDIS_URL ping
 6. **Deploy**
 
 **Custom Domain Setup:**
+
 ```
 Type: CNAME
 Host: app
@@ -298,6 +311,7 @@ TTL: 3600
 **Run these immediately after deployment:**
 
 #### 1. Health Checks
+
 ```bash
 # Backend
 curl https://ouvify-backend.onrender.com/health/
@@ -309,6 +323,7 @@ curl -I https://ouvify.vercel.app
 ```
 
 #### 2. User Registration
+
 1. Go to `/cadastro`
 2. Fill company form
 3. Submit
@@ -320,6 +335,7 @@ psql $DATABASE_URL -c "SELECT email FROM tenants_client ORDER BY created_at DESC
 ```
 
 #### 3. Login & 2FA
+
 1. Log in with test account
 2. Enable 2FA in Security settings
 3. Log out
@@ -327,6 +343,7 @@ psql $DATABASE_URL -c "SELECT email FROM tenants_client ORDER BY created_at DESC
 5. Verify backup codes work
 
 #### 4. Feedback Submission (Public Page)
+
 1. Go to `{test-subdomain}.ouvify.com`
 2. Submit anonymous feedback
 3. Save protocol number
@@ -334,11 +351,13 @@ psql $DATABASE_URL -c "SELECT email FROM tenants_client ORDER BY created_at DESC
 5. Track feedback by protocol
 
 #### 5. White-Label (Branding)
+
 1. Admin: Upload logo, change colors
 2. Visit public page
 3. Verify: Logo displays, colors applied
 
 #### 6. Billing (Stripe)
+
 1. Admin: Go to Subscription
 2. Click "Upgrade to Pro"
 3. Enter test card: `4242 4242 4242 4242`
@@ -346,11 +365,13 @@ psql $DATABASE_URL -c "SELECT email FROM tenants_client ORDER BY created_at DESC
 5. Verify: Plan upgraded in dashboard
 
 #### 7. Audit Log
+
 1. Admin: Perform actions (create feedback, change settings)
 2. Go to Audit & Analytics → Logs
 3. Verify: Actions logged with correct user, timestamp, IP
 
 #### 8. LGPD Consent
+
 1. New user: Create account
 2. First login: ConsentGate modal appears
 3. Try closing: Can't (blocking modal)
@@ -376,12 +397,14 @@ npm run build
 ### Security Tests
 
 #### CSP Headers
+
 ```bash
 curl -I https://ouvify.vercel.app | grep -i content-security-policy
 # Expected: Content-Security-Policy header present
 ```
 
 #### Rate Limiting
+
 ```bash
 # Try 10 failed logins rapidly
 for i in {1..10}; do
@@ -393,6 +416,7 @@ done
 ```
 
 #### HTTPS Redirect
+
 ```bash
 curl -I http://ouvify-backend.onrender.com
 # Expected: 301 redirect to https://
@@ -405,6 +429,7 @@ curl -I http://ouvify-backend.onrender.com
 ### Sentry (Error Tracking)
 
 **Setup:**
+
 1. [sentry.io](https://sentry.io) → Create Project
 2. Add DSN to backend and frontend `.env`
 3. Test by triggering an error:
@@ -415,6 +440,7 @@ curl -I http://ouvify-backend.onrender.com
 4. Check Sentry dashboard for error
 
 **Alert Rules:**
+
 - **Critical**: Any ERROR-level event → Email immediately
 - **Performance**: Response time >2s → Slack notification
 
@@ -423,15 +449,18 @@ curl -I http://ouvify-backend.onrender.com
 ### Uptime Monitoring
 
 **Options:**
+
 - **UptimeRobot** (free, 5min checks)
 - **Pingdom**
 - **Better Uptime**
 
 **Monitor URLs:**
+
 - `https://ouvify-backend.onrender.com/health/` (every 5min)
 - `https://ouvify.vercel.app` (every 5min)
 
 **Alert if:**
+
 - Status code ≠ 200
 - Response time >3s
 - Down for >5 minutes
@@ -441,11 +470,13 @@ curl -I http://ouvify-backend.onrender.com
 ### Database Backups
 
 **Railway PostgreSQL:**
+
 1. Dashboard → Database → Backups
 2. Enable automatic daily backups at 2 AM UTC
 3. Retention: 7 days (Starter) or 30 days (Pro)
 
 **Manual Backup:**
+
 ```bash
 pg_dump $DATABASE_URL > backup_$(date +%Y%m%d).sql
 # Upload to S3 or Google Drive
@@ -458,16 +489,19 @@ pg_dump $DATABASE_URL > backup_$(date +%Y%m%d).sql
 ### If Deployment Fails
 
 **Backend (Render):**
+
 1. Render dashboard → ouvify-backend → "Rollback"
 2. Select previous successful deploy
 3. Confirm
 
 **Frontend (Vercel):**
+
 1. Vercel dashboard → ouvify → Deployments
 2. Find previous working deployment
 3. Click "..." → "Promote to Production"
 
 **Database (if migration issue):**
+
 ```bash
 # Rollback last migration
 python manage.py migrate <app_name> <previous_migration_number>
@@ -503,9 +537,9 @@ Before marking deployment as complete:
 - [ ] Documentation updated
 - [ ] Stakeholders notified
 
-**Deployment Lead:** _____________________  
-**Date:** _____ / _____ / 2026  
-**Time:** _____ : _____ UTC  
+**Deployment Lead:** **********\_**********  
+**Date:** **\_** / **\_** / 2026  
+**Time:** **\_** : **\_** UTC
 
 ---
 

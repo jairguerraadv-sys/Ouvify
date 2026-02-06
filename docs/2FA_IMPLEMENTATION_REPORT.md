@@ -13,15 +13,15 @@ O **módulo de autenticação de dois fatores (2FA)** foi **100% implementado** 
 
 ### Métricas de Implementação
 
-| Métrica | Valor |
-|---------|-------|
-| **Arquivos Criados** | 10 |
-| **Linhas de Código** | ~1.500 |
-| **Componentes React** | 4 |
-| **Páginas Criadas** | 2 |
-| **Hooks Customizados** | 1 |
-| **Endpoints Integrados** | 6 |
-| **Cobertura de Funcionalidades** | 100% |
+| Métrica                          | Valor  |
+| -------------------------------- | ------ |
+| **Arquivos Criados**             | 10     |
+| **Linhas de Código**             | ~1.500 |
+| **Componentes React**            | 4      |
+| **Páginas Criadas**              | 2      |
+| **Hooks Customizados**           | 1      |
+| **Endpoints Integrados**         | 6      |
+| **Cobertura de Funcionalidades** | 100%   |
 
 ---
 
@@ -59,14 +59,14 @@ apps/frontend/
 
 ### Endpoints Consumidos
 
-| Endpoint | Método | Uso | Status |
-|----------|--------|-----|--------|
-| `/api/auth/2fa/status/` | GET | Consulta status do 2FA | ✅ Integrado |
-| `/api/auth/2fa/setup/` | POST | Inicia configuração (gera QR Code) | ✅ Integrado |
-| `/api/auth/2fa/confirm/` | POST | Confirma código e ativa 2FA | ✅ Integrado |
-| `/api/auth/2fa/verify/` | POST | Verifica código no login | ✅ Integrado |
-| `/api/auth/2fa/disable/` | POST | Desativa 2FA (senha + código) | ✅ Integrado |
-| `/api/auth/2fa/backup-codes/regenerate/` | POST | Regenera códigos de backup | ✅ Integrado |
+| Endpoint                                 | Método | Uso                                | Status       |
+| ---------------------------------------- | ------ | ---------------------------------- | ------------ |
+| `/api/auth/2fa/status/`                  | GET    | Consulta status do 2FA             | ✅ Integrado |
+| `/api/auth/2fa/setup/`                   | POST   | Inicia configuração (gera QR Code) | ✅ Integrado |
+| `/api/auth/2fa/confirm/`                 | POST   | Confirma código e ativa 2FA        | ✅ Integrado |
+| `/api/auth/2fa/verify/`                  | POST   | Verifica código no login           | ✅ Integrado |
+| `/api/auth/2fa/disable/`                 | POST   | Desativa 2FA (senha + código)      | ✅ Integrado |
+| `/api/auth/2fa/backup-codes/regenerate/` | POST   | Regenera códigos de backup         | ✅ Integrado |
 
 ### Fluxo de Dados
 
@@ -89,7 +89,7 @@ sequenceDiagram
     F->>B: POST /api/auth/2fa/confirm/ {code}
     B-->>F: {message: "2FA ativado"}
     F->>U: Exibe backup codes
-    
+
     Note over U,A: LOGIN COM 2FA
     U->>F: Login (email + senha)
     F->>B: POST /api/token/
@@ -112,12 +112,14 @@ sequenceDiagram
 ### 1. Hook: `use2FA()`
 
 **Responsabilidades:**
+
 - Gerenciamento de estado do 2FA (ativo/inativo)
 - Comunicação com API do backend
 - Tratamento de erros e feedback ao usuário
 - Cache e revalidação via SWR
 
 **APIs Expostas:**
+
 ```typescript
 {
   status: TwoFactorStatusResponse | undefined;
@@ -135,6 +137,7 @@ sequenceDiagram
 ### 2. Componente: `TwoFactorQRCode`
 
 **Funcionalidades:**
+
 - Renderiza QR Code em base64
 - Exibe código secreto para entrada manual
 - Botão de copiar código
@@ -142,6 +145,7 @@ sequenceDiagram
 - Design responsivo
 
 **Props:**
+
 ```typescript
 {
   qrCodeDataUrl: string;
@@ -153,6 +157,7 @@ sequenceDiagram
 ### 3. Componente: `BackupCodesDisplay`
 
 **Funcionalidades:**
+
 - Grid de 10 códigos de backup
 - Botão para copiar todos os códigos
 - Botão para baixar arquivo .txt
@@ -160,6 +165,7 @@ sequenceDiagram
 - Formatação XXXX-XXXX
 
 **Props:**
+
 ```typescript
 {
   codes: string[];
@@ -170,6 +176,7 @@ sequenceDiagram
 ### 4. Componente: `TwoFactorSetupModal`
 
 **Funcionalidades:**
+
 - Wizard multi-etapas (loading → QR → verify → backup)
 - Validação em tempo real
 - Suporte a Enter key
@@ -177,6 +184,7 @@ sequenceDiagram
 - Tratamento de erros
 
 **Etapas:**
+
 1. **Loading:** Geração de credenciais
 2. **QR Code:** Exibição e escaneamento
 3. **Verify:** Input de código de 6 dígitos
@@ -186,6 +194,7 @@ sequenceDiagram
 ### 5. Componente: `TwoFactorDisableModal`
 
 **Funcionalidades:**
+
 - Validação dupla (senha + código 2FA)
 - Avisos de segurança
 - Suporte a TOTP e backup codes
@@ -194,6 +203,7 @@ sequenceDiagram
 ### 6. Página: `/dashboard/configuracoes/seguranca`
 
 **Funcionalidades:**
+
 - Card de status do 2FA (ativo/inativo)
 - Informações de quando foi ativado
 - Contagem de backup codes restantes
@@ -204,6 +214,7 @@ sequenceDiagram
 ### 7. Página: `/login/2fa`
 
 **Funcionalidades:**
+
 - Input de código TOTP (6 dígitos)
 - Alternância para backup code (XXXX-XXXX)
 - Detecção automática de formato
@@ -251,6 +262,7 @@ sequenceDiagram
 **Pré-requisitos:** Usuário autenticado, 2FA inativo
 
 **Fluxo:**
+
 1. Acessa `/dashboard/configuracoes/seguranca`
 2. Clica em "Ativar 2FA"
 3. Modal abre com QR Code
@@ -266,6 +278,7 @@ sequenceDiagram
 **Pré-requisitos:** Usuário tem 2FA ativo
 
 **Fluxo:**
+
 1. Acessa `/login`
 2. Digite email e senha
 3. Sistema detecta 2FA ativo
@@ -281,6 +294,7 @@ sequenceDiagram
 **Pré-requisitos:** Usuário perdeu acesso ao app autenticador
 
 **Fluxo:**
+
 1. Na página `/login/2fa`
 2. Clica em "Usar código de backup"
 3. Digite código XXXX-XXXX
@@ -294,6 +308,7 @@ sequenceDiagram
 **Pré-requisitos:** Usuário autenticado, 2FA ativo
 
 **Fluxo:**
+
 1. Acessa `/dashboard/configuracoes/seguranca`
 2. Clica em "Desabilitar 2FA"
 3. Modal solicita senha atual
@@ -308,37 +323,37 @@ sequenceDiagram
 
 ### Testes Funcionais
 
-| Teste | Status | Notas |
-|-------|--------|-------|
-| Ativação de 2FA com QR Code | ✅ | Google Authenticator testado |
-| Confirmação de código TOTP | ✅ | Validação com janela de ±30s |
-| Display de backup codes | ✅ | Download e cópia funcionando |
-| Login com 2FA ativo | ✅ | Redirecionamento correto |
-| Verificação de código no login | ✅ | Aceita TOTP e backup code |
-| Uso de backup code | ✅ | Código consumido corretamente |
-| Desativação de 2FA | ✅ | Requer senha + código |
-| Detecção automática no login | ✅ | Chama `/api/auth/2fa/status/` |
+| Teste                          | Status | Notas                         |
+| ------------------------------ | ------ | ----------------------------- |
+| Ativação de 2FA com QR Code    | ✅     | Google Authenticator testado  |
+| Confirmação de código TOTP     | ✅     | Validação com janela de ±30s  |
+| Display de backup codes        | ✅     | Download e cópia funcionando  |
+| Login com 2FA ativo            | ✅     | Redirecionamento correto      |
+| Verificação de código no login | ✅     | Aceita TOTP e backup code     |
+| Uso de backup code             | ✅     | Código consumido corretamente |
+| Desativação de 2FA             | ✅     | Requer senha + código         |
+| Detecção automática no login   | ✅     | Chama `/api/auth/2fa/status/` |
 
 ### Testes de UX
 
-| Teste | Status | Notas |
-|-------|--------|-------|
-| Responsividade mobile | ✅ | Cards adaptam corretamente |
-| Feedback de erro | ✅ | Mensagens claras e contextuais |
-| Animações de transição | ✅ | Wizard fluido |
-| Acessibilidade (ARIA) | ✅ | Labels e roles corretos |
-| Copiar código secreto | ✅ | Clipboard API funcionando |
-| Download de backup codes | ✅ | Arquivo .txt gerado corretamente |
+| Teste                    | Status | Notas                            |
+| ------------------------ | ------ | -------------------------------- |
+| Responsividade mobile    | ✅     | Cards adaptam corretamente       |
+| Feedback de erro         | ✅     | Mensagens claras e contextuais   |
+| Animações de transição   | ✅     | Wizard fluido                    |
+| Acessibilidade (ARIA)    | ✅     | Labels e roles corretos          |
+| Copiar código secreto    | ✅     | Clipboard API funcionando        |
+| Download de backup codes | ✅     | Arquivo .txt gerado corretamente |
 
 ### Testes de Segurança
 
-| Teste | Status | Notas |
-|-------|--------|-------|
-| Rate limiting (5 tentativas) | ✅ | Backend bloqueia após limite |
-| Proteção de rota `/login/2fa` | ✅ | Redireciona se não autenticado |
-| Secret não exposto | ✅ | Apenas exibido durante setup |
-| Backup codes únicos | ✅ | Consumo correto no backend |
-| JWT mantido após 2FA | ✅ | Token não regenerado |
+| Teste                         | Status | Notas                          |
+| ----------------------------- | ------ | ------------------------------ |
+| Rate limiting (5 tentativas)  | ✅     | Backend bloqueia após limite   |
+| Proteção de rota `/login/2fa` | ✅     | Redireciona se não autenticado |
+| Secret não exposto            | ✅     | Apenas exibido durante setup   |
+| Backup codes únicos           | ✅     | Consumo correto no backend     |
+| JWT mantido após 2FA          | ✅     | Token não regenerado           |
 
 ---
 
@@ -448,11 +463,11 @@ sequenceDiagram
 
 **Engenheiro Responsável:** Ouvify Frontend Engineer (ROMA)  
 **Data de Conclusão:** 06/02/2026  
-**Versão:** 1.0.0  
+**Versão:** 1.0.0
 
 **Issues conhecidos:** Nenhum  
 **Bugs reportados:** 0  
-**Status de Produção:** ✅ Pronto para deploy  
+**Status de Produção:** ✅ Pronto para deploy
 
 ---
 
@@ -471,6 +486,6 @@ A feature está **pronta para produção** e oferece aos usuários da Ouvify uma
 
 ---
 
-*Relatório gerado automaticamente pelo Ouvify Engineering Team*  
-*Sistema ROMA - Rapid Orchestration & Modular Architecture*  
-*© 2026 Ouvify - Todos os direitos reservados*
+_Relatório gerado automaticamente pelo Ouvify Engineering Team_  
+_Sistema ROMA - Rapid Orchestration & Modular Architecture_  
+_© 2026 Ouvify - Todos os direitos reservados_

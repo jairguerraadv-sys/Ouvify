@@ -71,8 +71,8 @@ export default function LoginPage() {
       
       // Verificar se o usuário tem 2FA ativo
       try {
-        const response = await apiClient.get("/api/2fa/status/");
-        
+        const response = await apiClient.get("/api/auth/2fa/status/");
+
         // Se 2FA está ativo, redirecionar para verificação
         if (response.data?.enabled) {
           const redirect =

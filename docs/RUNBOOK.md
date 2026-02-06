@@ -29,22 +29,22 @@ graph TB
     subgraph "Frontend"
         Next[Next.js App<br/>Vercel]
     end
-    
+
     subgraph "Backend"
         Django[Django API<br/>Render]
         Celery[Celery Workers<br/>Render]
     end
-    
+
     subgraph "Dados"
         PG[(PostgreSQL<br/>Render)]
         Redis[(Redis<br/>Render)]
     end
-    
+
     subgraph "Externos"
         Email[SendGrid/SMTP]
         Storage[Media Storage]
     end
-    
+
     Next -->|HTTPS| Django
     Django --> PG
     Django --> Redis
@@ -56,14 +56,14 @@ graph TB
 
 ### 1.2 Serviços
 
-|  Serviço | Provedor | URL | Responsabilidade |
-|---------|----------|-----|------------------|
-| **Frontend** | Vercel | ouvify.vercel.app | Interface web, marketing, dashboards |
-| **Backend API** | Render | ouvify-backend.onrender.com | API REST, autenticação, lógica de negócio |
-| **Celery Workers** | Render | (background service) | Tarefas assíncronas, emails, notificações |
-| **PostgreSQL** | Render | (internal) | Banco de dados principal |
-| **Redis** | Render | (internal) | Cache + fila Celery |
-| **DNS** | Vercel/Render | - | Subdomínios multi-tenant |
+| Serviço            | Provedor      | URL                         | Responsabilidade                          |
+| ------------------ | ------------- | --------------------------- | ----------------------------------------- |
+| **Frontend**       | Vercel        | ouvify.vercel.app           | Interface web, marketing, dashboards      |
+| **Backend API**    | Render        | ouvify-backend.onrender.com | API REST, autenticação, lógica de negócio |
+| **Celery Workers** | Render        | (background service)        | Tarefas assíncronas, emails, notificações |
+| **PostgreSQL**     | Render        | (internal)                  | Banco de dados principal                  |
+| **Redis**          | Render        | (internal)                  | Cache + fila Celery                       |
+| **DNS**            | Vercel/Render | -                           | Subdomínios multi-tenant                  |
 
 ### 1.3 Ambientes
 
@@ -78,6 +78,7 @@ graph TB
 ### 2.1 Ferramentas
 
 #### 2.1.1 Render Dashboard
+
 - **URL:** https://dashboard.render.com
 - **O que monitorar:**
   - Status dos serviços (online/offline)
@@ -86,6 +87,7 @@ graph TB
   - Deploys recentes
 
 #### 2.1.2 Vercel Dashboard
+
 - **URL:** https://vercel.com/dashboard
 - **O que monitorar:**
   - Deploys do frontend
@@ -94,6 +96,7 @@ graph TB
   - Erros de build
 
 #### 2.1.3 Prometheus + Grafana (se configurado)
+
 - **URL:** `http://{SERVER}:3000` (Grafana)
 - **Dashboards:**
   - Django requests (latência, taxa de erro)
@@ -103,19 +106,20 @@ graph TB
 
 ### 2.2 Métricas Críticas
 
-| Métrica | Threshold Normal | Alerta | Crítico |
-|---------|------------------|--------|---------|
-| **API Response Time (p95)** | < 500ms | > 1s | > 3s |
-| **API Error Rate** | < 0.5% | > 2% | > 5% |
-| **CPU Usage** | < 70% | > 85% | > 95% |
-| **Memory Usage** | < 80% | > 90% | > 95% |
-| **DB Connections** | < 80 (de 100) | > 90 | > 95 |
-| **Celery Queue Size** | < 50 | > 500 | > 1000 |
-| **Disk Space** | < 75% | > 85% | > 95% |
+| Métrica                     | Threshold Normal | Alerta | Crítico |
+| --------------------------- | ---------------- | ------ | ------- |
+| **API Response Time (p95)** | < 500ms          | > 1s   | > 3s    |
+| **API Error Rate**          | < 0.5%           | > 2%   | > 5%    |
+| **CPU Usage**               | < 70%            | > 85%  | > 95%   |
+| **Memory Usage**            | < 80%            | > 90%  | > 95%   |
+| **DB Connections**          | < 80 (de 100)    | > 90   | > 95    |
+| **Celery Queue Size**       | < 50             | > 500  | > 1000  |
+| **Disk Space**              | < 75%            | > 85%  | > 95%   |
 
 ### 2.3 Logs
 
 #### 2.3.1 Backend (Django)
+
 ```bash
 # Via Render dashboard
 render logs -app ouvify-backend --tail 100
@@ -125,6 +129,7 @@ render logs -app ouvify-backend --tail 100
 ```
 
 **Níveis de log:**
+
 - `DEBUG`: Desenvolvimento apenas
 - `INFO`: Operações normais (login, cadastro, feedback enviado)
 - `WARNING`: Situações incomuns mas recuperáveis
@@ -132,16 +137,19 @@ render logs -app ouvify-backend --tail 100
 - `CRITICAL`: Falhas graves (DB down, Redis down)
 
 #### 2.3.2 Celery Workers
+
 ```bash
 render logs -service ouvify-celery --tail 100
 ```
 
 **O que procurar:**
+
 - `[ERROR] Task failed`: Tarefa assíncrona falhou
 - `Broker connection lost`: Redis down
 - `Task timed out`: Tarefa demorou muito
 
 #### 2.3.3 Frontend (Next.js)
+
 ```bash
 # Via Vercel dashboard: Deployments > {deploy} > Logs
 
@@ -152,16 +160,18 @@ render logs -service ouvify-celery --tail 100
 ### 2.4 Alertas (Recomendados)
 
 **Configurar via:**
+
 - Prometheus Alertmanager (se usando)
 - Render notifications
 - Vercel integrations (Slack, Discord, email)
 - Sentry (para erros de aplicação)
 
 **Alertas essenciais:**
+
 1. ⚠️ **API Down** (não responde por 2min)
 2. ⚠️ **Error rate > 5%** por 5min
 3. ⚠️ **CPU > 95%** por 10min
-4. ⚠️ **DB connections > 95** 
+4. ⚠️ **DB connections > 95**
 5. ⚠️ **Celery queue > 1000 tasks**
 6. ⚠️ **Disk > 90%**
 
@@ -172,11 +182,13 @@ render logs -service ouvify-celery --tail 100
 ### 3.1 PostgreSQL
 
 #### 3.1.1 Backups Automáticos (Render)
+
 - **Frequência:** Diários (automático pelo Render no plano pago)
 - **Retenção:** 7 dias (grátis) ou 30 dias (pago)
 - **Localização:** Managediado pelo Render
 
 **Verificar:**
+
 ```bash
 # Via Render dashboard:
 # PostgreSQL service > Settings > Backups
@@ -185,6 +197,7 @@ render logs -service ouvify-celery --tail 100
 #### 3.1.2 Backups Manuais
 
 **Exportar dump:**
+
 ```bash
 # 1. Pegar connection string
 render env get DATABASE_URL -service ouvify-backend
@@ -200,6 +213,7 @@ aws s3 cp backup_*.dump.gz s3://ouvify-backups/db/
 ```
 
 **Agendar (cron):**
+
 ```bash
 # crontab -e
 # Todo dia às 03:00 UTC
@@ -233,6 +247,7 @@ python manage.py shell
 **Redis é cache/fila, NÃO precisa backup regular.**
 
 Mas se precisar preservar dados temporários:
+
 ```bash
 # Salvar snapshot
 redis-cli -h $REDIS_HOST -p $REDIS_PORT -a $REDIS_PASSWORD BGSAVE
@@ -244,6 +259,7 @@ scp redis-server:/var/lib/redis/dump.rdb ./redis_backup_$(date +%Y%m%d).rdb
 ### 3.3 Arquivos de Mídia
 
 **Se usando armazenamento local (não recomendado para prod):**
+
 ```bash
 # Sincronizar com S3/GCS
 aws s3 sync /app/media/ s3://ouvify-media-backup/
@@ -253,6 +269,7 @@ rsync -avz /app/media/ backup-server:/backups/ouvify-media/
 ```
 
 **Se usando S3/GCS (recomendado):**
+
 - Habilitar versionamento no bucket
 - Configurar lifecycle policy (mover para Glacier após 90 dias)
 - Habilitar cross-region replication
@@ -260,6 +277,7 @@ rsync -avz /app/media/ backup-server:/backups/ouvify-media/
 ### 3.4 Código
 
 **Git é o backup!** Mas:
+
 ```bash
 # Clonar todos os repos em backup
 git clone --mirror git@github.com:ouvify/ouvify.git
@@ -271,6 +289,7 @@ tar -czf ouvify_repos_$(date +%Y%m%d).tar.gz ouvify.git/
 ### 3.5 Variáveis de Ambiente / Secrets
 
 **Render:**
+
 ```bash
 # Exportar env vars
 render env list -service ouvify-backend > env_backup_$(date +%Y%m%d).txt
@@ -281,6 +300,7 @@ rm env_backup_*.txt  # Deletar plaintext
 ```
 
 **Vercel:**
+
 ```bash
 # Via dashboard: Settings > Environment Variables > Download
 # Ou CLI:
@@ -294,11 +314,13 @@ vercel env ls --environment production > vercel_env_backup.txt
 ### 4.1 API Não Responde (502/503/504)
 
 **Sintomas:**
+
 - Frontend exibe "Erro ao conectar com servidor"
 - Render dashboard mostra serviço "Unhealthy"
 - Logs mostram `TimeoutError` ou `Connection refused`
 
 **Diagnóstico:**
+
 ```bash
 # 1. Verificar status do serviço
 curl -I https://ouvify-backend.onrender.com/api/health
@@ -311,12 +333,14 @@ render logs -app ouvify-backend --tail 50
 ```
 
 **Causas comuns:**
+
 1. **Deploy com erro:** Código quebrado
 2. **OOM (Out of Memory):** Processo matado
 3. **DB connection pool esgotada:** MAX_CONNECTIONS atingido
 4. **Cold start:** Render desligou serviço (plano free)
 
 **Solução:**
+
 ```bash
 # Se deploy recente, fazer rollback (ver seção 6)
 render rollback -service ouvify-backend
@@ -333,11 +357,13 @@ render rollback -service ouvify-backend
 ### 4.2 Alta Latência (API Lenta)
 
 **Sintomas:**
+
 - Páginas carregam devagar
 - Métricas mostram p95 > 3s
 - Usuários reclamam de lentidão
 
 **Diagnóstico:**
+
 ```bash
 # 1. Verificar queries lentas no PostgreSQL
 psql $DATABASE_URL -c "
@@ -354,12 +380,14 @@ redis-cli -h $REDIS_HOST INFO stats | grep hit_rate
 ```
 
 **Causas comuns:**
+
 1. **Queries N+1:** Falta de select_related/prefetch_related
 2. **Cache miss:** Redis down ou cache frio
 3. **Falta de índices:** DB fazendo full table scans
 4. **CPU throttling:** Instância muito pequena
 
 **Solução:**
+
 ```bash
 # 1. Otimizar queries (ver MVP_BACKLOG.md P2-001)
 # Adicionar select_related nos ViewSets
@@ -379,11 +407,13 @@ python manage.py dbshell
 ### 4.3 Celery Tasks Acumulando
 
 **Sintomas:**
+
 - Emails não chegam
 - Notificações atrasadas
 - Render dashboard mostra fila grande
 
 **Diagnóstico:**
+
 ```bash
 # 1. Ver tamanho da fila
 redis-cli -h $REDIS_HOST LLEN celery
@@ -396,11 +426,13 @@ redis-cli -h $REDIS_HOST SMEMBERS celery@workers
 ```
 
 **Causas comuns:**
+
 1. **Worker crashando:** Erro no código de tarefa
 2. **Too many tasks:** Pico de uso
 3. **Tarefa travada:** Loop infinito, timeout
 
 **Solução:**
+
 ```bash
 # 1. Restart workers
 render restart -service ouvify-celery
@@ -418,11 +450,13 @@ redis-cli -h $REDIS_HOST DEL celery
 ### 4.4 Erro de Autenticação (JWT)
 
 **Sintomas:**
+
 - Usuários deslogados automaticamente
 - Frontend exibe "Token inválido"
 - API retorna 401 Unauthorized
 
 **Diagnóstico:**
+
 ```bash
 # 1. Verificar logs de auth
 render logs -service ouvify-backend | grep "TokenError"
@@ -438,12 +472,14 @@ python manage.py shell
 ```
 
 **Causas comuns:**
+
 1. **SECRET_KEY mudou:** Invalidou todos tokens
 2. **Token expirado:** ACCESS_TOKEN_LIFETIME muito curto
 3. **Blacklist ativa:** Token foi revogado
 4. **Clock skew:** Diferença de relógio entre servidores
 
 **Solução:**
+
 ```bash
 # 1. Se SECRET_KEY mudou acidentalmente, restaurar valor antigo
 render env set SECRET_KEY="{valor_antigo}" -service ouvify-backend
@@ -466,11 +502,13 @@ sudo ntpdate time.google.com
 **⚠️ CRÍTICO: Usuário vendo dados de outro tenant!**
 
 **Sintomas:**
+
 - Usuário da empresa A vê feedback da empresa B
 - Dashboard mostra feedbacks errados
 - Logs mostram acesso a client_id incorreto
 
 **Diagnóstico:**
+
 ```bash
 # 1. Verificar logs de acesso suspeito
 render logs -service ouvify-backend | grep "client_id" | grep ERROR
@@ -483,12 +521,14 @@ cat apps/backend/config/middleware.py | grep TenantMiddleware
 ```
 
 **Causas comuns:**
+
 1. **ViewSet sem filtro de client:** Esqueceu de adicionar filter(client=request.user.client)
 2. **Middleware bypass:** Request sem tenant context
 3. **Admin sem filtro:** Django Admin mostrando todos tenants
 4. **Query direto sem filtro:** `.objects.all()` sem .filter(client=...)
 
 **Solução IMEDIATA:**
+
 ```bash
 # 1. DESLIGAR SERVIÇO (se confirmado vazamento)
 render suspend -service ouvify-backend
@@ -517,10 +557,12 @@ render resume -service ouvify-backend
 ### 4.6 Email Não Chega
 
 **Sintomas:**
+
 - Usuário não recebe email de confirmação
 - Logs mostram `SMTPException` ou `Connection refused`
 
 **Diagnóstico:**
+
 ```bash
 # 1. Verificar configuração SMTP
 render env get EMAIL_HOST -service ouvify-backend
@@ -536,6 +578,7 @@ curl https://status.sendgrid.com/api/v2/status.json
 ```
 
 **Solução:**
+
 ```bash
 # 1. Se credenciais erradas, corrigir
 render env set EMAIL_HOST_PASSWORD="{nova_senha}" -service ouvify-backend
@@ -556,6 +599,7 @@ python manage.py shell
 ### 5.1 Deploy Automatizado (Recomendado)
 
 **Backend (Render):**
+
 ```bash
 # 1. Merge para branch main
 git checkout main
@@ -570,6 +614,7 @@ curl https://ouvify-backend.onrender.com/api/health
 ```
 
 **Frontend (Vercel):**
+
 ```bash
 # 1. Merge para main
 git checkout main
@@ -586,6 +631,7 @@ curl -I https://ouvify.vercel.app
 ### 5.2 Deploy Manual
 
 **Backend:**
+
 ```bash
 cd apps/backend
 
@@ -608,6 +654,7 @@ render run "python manage.py collectstatic --noinput" -service ouvify-backend
 ```
 
 **Frontend:**
+
 ```bash
 cd apps/frontend
 
@@ -649,12 +696,14 @@ curl https://ouvify.vercel.app | grep "Ouvify"
 ### 6.1 Rollback Backend (Render)
 
 **Via Dashboard:**
+
 1. Acessar https://dashboard.render.com
 2. Selecionar serviço `ouvify-backend`
 3. Aba "Events" → Deploy anterior com ✅
 4. Clicar nos 3 pontos → "Redeploy"
 
 **Via CLI:**
+
 ```bash
 # 1. Ver deploys recentes
 render deploys list -service ouvify-backend
@@ -667,6 +716,7 @@ render redeploy -service ouvify-backend --deploy {deploy_id}
 ```
 
 **Rollback de Migrations (CUIDADO!):**
+
 ```bash
 # 1. Verificar migration atual
 render run "python manage.py showmigrations" -service ouvify-backend
@@ -684,11 +734,13 @@ render run "python manage.py migrate feedbacks 0012" -service ouvify-backend
 ### 6.2 Rollback Frontend (Vercel)
 
 **Via Dashboard:**
+
 1. Acessar https://vercel.com/dashboard
 2. Deployments → {deployment anterior}
 3. Clicar nos 3 pontos → "Promote to Production"
 
 **Via CLI:**
+
 ```bash
 # 1. Listar deployments
 vercel ls
@@ -700,12 +752,14 @@ vercel promote {deployment_url}
 ### 6.3 Quando Fazer Rollback?
 
 **⚠️ Rollback IMEDIATO se:**
+
 - Error rate > 10% nos primeiros 5min
 - Endpoint crítico down (login, criar feedback)
 - Vazamento de dados entre tenants
 - Perda de dados (migrations destrutivas)
 
 **⏳ Investigar primeiro (não rollback) se:**
+
 - 1-2 erros isolados (pode ser request inválido)
 - Latência ligeiramente maior (pode ser cold start)
 - Erro em feature nova não-crítica
@@ -717,6 +771,7 @@ vercel promote {deployment_url}
 ### 7.1 Manutenção Preventiva Semanal
 
 **Segunda-feira, 10:00:**
+
 ```bash
 # 1. Verificar métricas da semana anterior
 # Grafana > Dashboard > Last 7 days
@@ -744,6 +799,7 @@ python manage.py shell
 ### 7.2 Manutenção Mensal
 
 **Primeira segunda do mês, 14:00:**
+
 ```bash
 # 1. Auditoria de segurança
 cd /workspaces/Ouvify
@@ -788,6 +844,7 @@ psql $DATABASE_URL -c "VACUUM ANALYZE;"
 **Se precisar desligar o sistema:**
 
 **1. Notificar usuários (48h antes):**
+
 ```python
 # Script para enviar email para todos admins de tenants
 python manage.py shell
@@ -800,6 +857,7 @@ python manage.py shell
 ```
 
 **2. Ativar modo manutenção:**
+
 ```bash
 
 # Frontend: criar arquivo especial
@@ -823,6 +881,7 @@ render env set MAINTENANCE_MODE=true -service ouvify-backend
 ```
 
 **3. Fazer manutenção:**
+
 ```bash
 # Exemplo: migration grande
 render run "python manage.py migrate --fake-initial" -service ouvify-backend
@@ -833,6 +892,7 @@ git checkout v2.0.0
 ```
 
 **4. Desativar modo manutenção:**
+
 ```bash
 # Backend
 render env unset MAINTENANCE_MODE -service ouvify-backend
@@ -847,6 +907,7 @@ vercel --prod
 ## 8. Checklist de Plantão
 
 ### 8.1 Início de Plantão
+
 - [ ] Verificar status de todos serviços (dashboard Render + Vercel)
 - [ ] Ler últimas 50 linhas de logs (`render logs --tail 50`)
 - [ ] Verificar métricas (latência, error rate)
@@ -856,12 +917,14 @@ vercel --prod
 - [ ] Ler handoff do plantão anterior (se houver)
 
 ### 8.2 Durante o Plantão
+
 - [ ] Monitorar alertas (Slack, email, SMS)
 - [ ] Se receber alerta, seguir playbook de incidente (Seção 4)
 - [ ] Documentar todos incidentes em `/docs/incidents/YYYY-MM-DD.md`
 - [ ] Responder tickets de suporte críticos (SLA: 2h)
 
 ### 8.3 Fim de Plantão
+
 - [ ] Documentar incidentes do turno
 - [ ] Passar handoff para próximo plantonista
 - [ ] Verificar se alguma ação pendente (ex: aguardando resposta de provedor)
@@ -873,36 +936,39 @@ vercel --prod
 
 ### 9.1 Time Interno
 
-| Função | Nome | Email | Telefone | Horário |
-|--------|------|-------|----------|---------|
-| **SRE Lead** | TBD | sre@ouvify.com | +55 11 xxxx-xxxx | 24/7 |
-| **CTO** | TBD | cto@ouvify.com | +55 11 xxxx-xxxx | 8-18h |
-| **Backend Lead** | TBD | backend@ouvify.com | - | 8-18h |
-| **Frontend Lead** | TBD | frontend@ouvify.com | - | 8-18h |
+| Função            | Nome | Email               | Telefone         | Horário |
+| ----------------- | ---- | ------------------- | ---------------- | ------- |
+| **SRE Lead**      | TBD  | sre@ouvify.com      | +55 11 xxxx-xxxx | 24/7    |
+| **CTO**           | TBD  | cto@ouvify.com      | +55 11 xxxx-xxxx | 8-18h   |
+| **Backend Lead**  | TBD  | backend@ouvify.com  | -                | 8-18h   |
+| **Frontend Lead** | TBD  | frontend@ouvify.com | -                | 8-18h   |
 
 ### 9.2 Provedores
 
-| Serviço | Suporte | Status Page | SLA |
-|---------|---------|-------------|-----|
-| **Render** | support@render.com | https://status.render.com | 99.9% |
-| **Vercel** | support@vercel.com | https://vercel-status.com | 99.99% |
+| Serviço      | Suporte              | Status Page                 | SLA    |
+| ------------ | -------------------- | --------------------------- | ------ |
+| **Render**   | support@render.com   | https://status.render.com   | 99.9%  |
+| **Vercel**   | support@vercel.com   | https://vercel-status.com   | 99.99% |
 | **SendGrid** | support@sendgrid.com | https://status.sendgrid.com | 99.95% |
 
 ### 9.3 Escalação
 
 **Severidade 1 (Produção Down):**
+
 1. Tentar resolvernos primeiros 15min (via runbook)
 2. Se não resolver, chamar SRE Lead
 3. Se > 30min, chamar CTO
 4. Notificar clientes (status page + email)
 
 **Severidade 2 (Degradação):**
+
 1. Tentar resolver nos primeiros 30min
 2. Se não resolver, chamar SRE Lead
 3. Se > 2h, chamar CTO
 4. Notificar clientes se impacto estende > 4h
 
 **Severidade 3 (Não urgente):**
+
 1. Documentar e adicionar no backlog
 2. Resolver durante horário comercial
 
@@ -913,6 +979,7 @@ vercel --prod
 ### A. Scripts Úteis
 
 **1. Health check completo:**
+
 ```bash
 #!/bin/bash
 # /scripts/health_check.sh
@@ -945,6 +1012,7 @@ echo "=== Done ==="
 ```
 
 **2. Limpar dados antigos:**
+
 ```bash
 #!/bin/bash
 # /scripts/cleanup_old_data.sh
@@ -986,14 +1054,17 @@ EOF
 **Responsável:** Nome
 
 ## 1. Resumo
+
 Uma ou duas frases sobre o que aconteceu.
 
 ## 2. Impacto
+
 - **Usuários afetados:** ~500 usuários (10% da base)
 - **Duração:** 1h 30min
 - **Funcionalidades impactadas:** Login, criar feedback
 
 ## 3. Linha do Tempo
+
 - 14:30: Alerta de high error rate
 - 14:35: Investigação iniciada
 - 14:45: Causa identificada (DB connection pool)
@@ -1002,12 +1073,15 @@ Uma ou duas frases sobre o que aconteceu.
 - 16:00: Incidente resolvido
 
 ## 4. Causa Raiz
+
 ...
 
 ## 5. Ações Tomadas
+
 ...
 
 ## 6. Ações Futuras (Follow-up)
+
 - [ ] Tarefa 1 (responsável: X, prazo: Y)
 - [ ] Tarefa 2
 ```

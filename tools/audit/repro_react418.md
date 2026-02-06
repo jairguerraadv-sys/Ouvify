@@ -3,6 +3,7 @@
 ## Contexto
 
 Erro observado em produção:
+
 ```
 Minified React error #418
 ```
@@ -12,6 +13,7 @@ Minified React error #418
 ## O que significa Error #418?
 
 Erro #418 no React geralmente indica:
+
 - **Hydration mismatch** - HTML inicial (SSR) != HTML do cliente
 - **Marcação inválida** - Tags HTML aninhadas incorretamente
 - **Uso de APIs do browser durante SSR** - `window`, `document`, `localStorage` etc.
@@ -27,6 +29,7 @@ npm run dev
 ```
 
 **Por quê?**
+
 - Modo dev mostra erro completo (não-minificado)
 - Inclui stack trace com arquivo e linha
 - Mensagem de erro detalhada
@@ -34,6 +37,7 @@ npm run dev
 ### 2. Navegar para a rota problemática
 
 Baseado nos logs, o erro provavelmente ocorre em:
+
 - `/` (home page)
 - `/login`
 - `/cadastro`
@@ -65,11 +69,13 @@ Buscar diferenças usando `diff`.
 ### A. Hydration Mismatch
 
 **Sintomas:**
+
 - Warning no console: "Text content did not match"
 - Erro #418
 - Flash of unstyled content (FOUC)
 
 **Como verificar:**
+
 ```bash
 grep -r "new Date()" apps/frontend/
 grep -r "Math.random()" apps/frontend/
@@ -88,23 +94,25 @@ function Component() {
 
 // ✅ CORRETO
 function Component() {
-  const [date, setDate] = useState<string>('');
-  
+  const [date, setDate] = useState<string>("");
+
   useEffect(() => {
     setDate(new Date().toLocaleString()); // Apenas no cliente
   }, []);
-  
-  return <div>{date || 'Loading...'}</div>;
+
+  return <div>{date || "Loading..."}</div>;
 }
 ```
 
 ### B. Marcação HTML Inválida
 
 **Sintomas:**
+
 - Tags aninhadas incorretamente (ex: `<p>` dentro de `<p>`)
 - Atributos inválidos
 
 **Como verificar:**
+
 ```bash
 # Validar HTML
 curl https://ouvify.vercel.app/ | npx html-validator
@@ -113,10 +121,12 @@ curl https://ouvify.vercel.app/ | npx html-validator
 ### C. Third-party Scripts (Stripe, Analytics)
 
 **Sintomas:**
+
 - Erro ocorre após certos eventos
 - Related a scripts externos
 
 **Como verificar:**
+
 ```javascript
 // Desabilitar temporariamente no código
 // Comment out Stripe/Analytics initialization

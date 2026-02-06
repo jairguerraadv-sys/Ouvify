@@ -17,6 +17,7 @@
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 1.1 Configuração JWT
+
 **Arquivo:** `apps/backend/config/settings.py:660-670`
 
 ```python
@@ -30,6 +31,7 @@ SIMPLE_JWT = {
 ```
 
 **Status:** ✅ **SEGURO**
+
 - Tokens de acesso de curta duração (15 min)
 - Refresh tokens rotativos
 - Blacklist após rotação
@@ -40,17 +42,20 @@ SIMPLE_JWT = {
 #### 🔴 ALTA: Ausência de Verificação 2FA Obrigatória em Rotas Sensíveis
 
 **Descrição:** Não há enforcement de 2FA para operações críticas como:
+
 - Alteração de senha
 - Exclusão de conta
 - Mudança de papel (role) de membros da equipe
 - Transferência de ownership
 
 **Arquivos Afetados:**
+
 - `apps/backend/apps/core/views.py` (PasswordResetConfirmView)
 - `apps/backend/apps/core/account_views.py` (DeleteAccountView)
 - `apps/backend/apps/tenants/team_views.py` (TeamMemberViewSet)
 
 **Correção Sugerida:**
+
 ```python
 # Criar permission customizada
 from rest_framework.permissions import BasePermission
@@ -64,25 +69,25 @@ class Requires2FAForSensitiveOperation(BasePermission):
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        
+
         # Verificar se 2FA está habilitado
         user_profile = getattr(request.user, 'userprofile', None)
         if not user_profile or not user_profile.two_factor_enabled:
             return False
-        
+
         # Para operações sensíveis, verificar timestamp recente de verificação 2FA
         last_2fa_verify = request.session.get('last_2fa_verify_timestamp')
         if not last_2fa_verify:
             return False
-        
+
         # Exigir re-verificação se passou mais de 15 minutos
         from datetime import datetime, timedelta
         from django.utils import timezone
-        
+
         last_verify_time = datetime.fromisoformat(last_2fa_verify)
         if timezone.now() - last_verify_time > timedelta(minutes=15):
             return False
-        
+
         return True
 
 # Aplicar em views sensíveis
@@ -108,7 +113,9 @@ SECRET_KEY = os.getenv("SECRET_KEY", "CHANGE-ME-IN-PRODUCTION")
 **Problema:** Secret key é usada para assinatura de tokens JWT. Se vazar, todos os tokens podem ser forjados.
 
 **Correção:**
+
 1. Gerar secret robusta:
+
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(64))"
 ```
@@ -116,6 +123,7 @@ python -c "import secrets; print(secrets.token_urlsafe(64))"
 2. Armazenar em secret management (Railway/Render Secrets)
 
 3. Adicionar rotação automática de secrets:
+
 ```python
 # Suportar múltiplas secrets para rotação sem downtime
 JWT_SIGNING_KEYS = [
@@ -141,6 +149,7 @@ SIMPLE_JWT = {
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 2.1 Hierarquia de Roles
+
 **Arquivo:** `apps/backend/apps/tenants/models.py:362-421`
 
 ```python
@@ -160,65 +169,69 @@ class TeamMember(models.Model):
 **Descrição:** Não existem arquivos `permissions.py` implementando verificações de role em nível de objeto.
 
 **Busca Realizada:**
+
 ```bash
 $ find apps/backend -name "*permissions*.py"
 # Resultado: Nenhum arquivo encontrado
 ```
 
-**Impacto:** 
+**Impacto:**
+
 - Todas as views usam apenas `IsAuthenticated` ou `AllowAny`
 - Não há verificação se o usuário tem role adequada para ação
 - VIEWER pode modificar dados que deveria apenas visualizar
 - MODERATOR pode acessar funções administrativas
 
 **Arquivos Críticos sem Permission Check:**
+
 - `apps/backend/apps/feedbacks/views.py` - FeedbackViewSet
 - `apps/backend/apps/tenants/team_views.py` - TeamMemberViewSet
 - `apps/backend/apps/webhooks/views.py` - WebhookEndpointViewSet
 
 **Correção Necessária:**
+
 ```python
 # apps/backend/apps/core/permissions.py (CRIAR)
 from rest_framework import permissions
 
 class IsOwner(permissions.BasePermission):
     """Apenas OWNER pode executar esta ação"""
-    
+
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        
+
         from apps.core.utils import get_current_tenant
         tenant = get_current_tenant()
-        
+
         if not tenant:
             return False
-        
+
         membership = request.user.team_memberships.filter(
-            client=tenant, 
+            client=tenant,
             status='ACTIVE'
         ).first()
-        
+
         return membership and membership.role == 'OWNER'
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """OWNER ou ADMIN podem executar"""
-    
+
     def has_permission(self, request, view):
         if not request.user.is_authenticated:
             return False
-        
+
         from apps.core.utils import get_current_tenant
         tenant = get_current_tenant()
-        
+
         if not tenant:
             return False
-        
+
         membership = request.user.team_memberships.filter(
-            client=tenant, 
+            client=tenant,
             status='ACTIVE'
         ).first()
-        
+
         return membership and membership.role in ['OWNER', 'ADMIN']
 
 class CanModifyFeedback(permissions.BasePermission):
@@ -226,32 +239,32 @@ class CanModifyFeedback(permissions.BasePermission):
     OWNER/ADMIN/MODERATOR podem modificar feedbacks
     VIEWER apenas leitura
     """
-    
+
     def has_permission(self, request, view):
         if request.method in permissions.SAFE_METHODS:
             return True
-        
+
         if not request.user.is_authenticated:
             return False
-        
+
         from apps.core.utils import get_current_tenant
         tenant = get_current_tenant()
-        
+
         if not tenant:
             return False
-        
+
         membership = request.user.team_memberships.filter(
             client=tenant,
             status='ACTIVE'
         ).first()
-        
+
         return membership and membership.role in ['OWNER', 'ADMIN', 'MODERATOR']
 
 # Aplicar nas views:
 class FeedbackViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, CanModifyFeedback]
     # ...
-    
+
 class TeamMemberViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, IsOwnerOrAdmin]
     # ...
@@ -272,11 +285,12 @@ class TeamMemberViewSet(viewsets.ModelViewSet):
 **Problema:** Permite superusuários se passarem por outros tenants, mas não há log obrigatório em auditlog.
 
 **Correção:**
+
 ```python
 @action(detail=True, methods=["post"])
 def impersonate(self, request, pk=None):
     tenant = self.get_object()
-    
+
     # ✅ ADICIONAR: Log de auditoria obrigatório
     from apps.auditlog.utils import log_action
     log_action(
@@ -293,7 +307,7 @@ def impersonate(self, request, pk=None):
         },
         severity='CRITICAL'  # Impersonate é operação crítica
     )
-    
+
     # Código original...
 ```
 
@@ -307,12 +321,15 @@ def impersonate(self, request, pk=None):
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 3.1 Suporte TOTP Completo
+
 **Arquivos:**
+
 - `apps/backend/apps/core/two_factor_service.py` - Serviço principal
 - `apps/backend/apps/core/views/two_factor_views.py` - Endpoints
 - `apps/backend/apps/core/two_factor_urls.py` - URLs
 
 **Endpoints Disponíveis:**
+
 - ✅ `POST /api/auth/2fa/setup/` - Iniciar configuração
 - ✅ `POST /api/auth/2fa/confirm/` - Confirmar com código
 - ✅ `POST /api/auth/2fa/verify/` - Verificar no login
@@ -329,18 +346,19 @@ def impersonate(self, request, pk=None):
 **Problema:** Proprietários de tenant podem operar sem 2FA, aumentando risco de comprometimento.
 
 **Correção:**
+
 ```python
 # apps/backend/apps/tenants/models.py
 class TeamMember(models.Model):
     # ...
-    
+
     def requires_2fa(self) -> bool:
         """
         Verifica se o membro deve ter 2FA obrigatório
         """
         # OWNER e ADMIN devem ter 2FA
         return self.role in [self.OWNER, self.ADMIN]
-    
+
     def enforce_2fa_enabled(self):
         """
         Lança exceção se 2FA não está habilitado mas é obrigatório
@@ -358,18 +376,18 @@ class TeamMember(models.Model):
 class Enforce2FAMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
-    
+
     def __call__(self, request):
         if request.user.is_authenticated:
             from apps.core.utils import get_current_tenant
             tenant = get_current_tenant()
-            
+
             if tenant:
                 membership = request.user.team_memberships.filter(
                     client=tenant,
                     status='ACTIVE'
                 ).first()
-                
+
                 if membership:
                     try:
                         membership.enforce_2fa_enabled()
@@ -377,7 +395,7 @@ class Enforce2FAMiddleware:
                         # Exceto para endpoints de setup de 2FA
                         if not request.path.startswith('/api/auth/2fa/'):
                             raise
-        
+
         return self.get_response(request)
 ```
 
@@ -391,6 +409,7 @@ class Enforce2FAMiddleware:
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 4.1 Default Authentication Global
+
 **Arquivo:** `apps/backend/config/settings.py:542`
 
 ```python
@@ -409,21 +428,23 @@ REST_FRAMEWORK = {
 
 **Rotas Públicas Identificadas:**
 
-| Endpoint | Método | Arquivo | Throttle? |
-|----------|--------|---------|-----------|
-| `/api/feedbacks` | POST | `apps/backend/apps/feedbacks/views.py:183` | ⚠️ Genérico |
-| `/api/feedbacks/consultar-protocolo` | GET | `apps/backend/apps/feedbacks/views.py:323` | ⚠️ Genérico |
-| `/api/feedbacks/{id}/adicionar-interacao` | POST | `apps/backend/apps/feedbacks/views.py:1016` | ⚠️ Genérico |
-| `/api/feedbacks/{id}/responder-protocolo` | POST | `apps/backend/apps/feedbacks/views.py:1149` | ⚠️ Genérico |
-| `/api/billing/plans` | GET | `apps/backend/apps/billing/views.py:51` | ❌ Nenhum |
-| `/api/billing/webhook` | POST | `apps/backend/apps/billing/views.py:228` | ❌ Nenhum |
+| Endpoint                                  | Método | Arquivo                                     | Throttle?   |
+| ----------------------------------------- | ------ | ------------------------------------------- | ----------- |
+| `/api/feedbacks`                          | POST   | `apps/backend/apps/feedbacks/views.py:183`  | ⚠️ Genérico |
+| `/api/feedbacks/consultar-protocolo`      | GET    | `apps/backend/apps/feedbacks/views.py:323`  | ⚠️ Genérico |
+| `/api/feedbacks/{id}/adicionar-interacao` | POST   | `apps/backend/apps/feedbacks/views.py:1016` | ⚠️ Genérico |
+| `/api/feedbacks/{id}/responder-protocolo` | POST   | `apps/backend/apps/feedbacks/views.py:1149` | ⚠️ Genérico |
+| `/api/billing/plans`                      | GET    | `apps/backend/apps/billing/views.py:51`     | ❌ Nenhum   |
+| `/api/billing/webhook`                    | POST   | `apps/backend/apps/billing/views.py:228`    | ❌ Nenhum   |
 
 **Problema:** Endpoints públicos usam apenas `AnonRateThrottle` genérico (100/day), permitindo:
+
 - Spam de feedbacks
 - Enumeração de protocolos
 - Abuso de webhook (DoS)
 
 **Correção:**
+
 ```python
 # apps/backend/apps/feedbacks/throttling.py (CRIAR)
 from rest_framework.throttling import AnonRateThrottle
@@ -454,7 +475,7 @@ class WebhookThrottle(AnonRateThrottle):
 
 # Aplicar nas views:
 class FeedbackViewSet(viewsets.ModelViewSet):
-    
+
     def get_throttles(self):
         if self.action == 'create':
             return [FeedbackSubmissionThrottle()]
@@ -492,6 +513,7 @@ path("painel-admin-ouvify-2026/", admin.site.urls),
 **Problema:** Embora não seja simplesmente `/admin/`, a URL é previsível.
 
 **Correção:**
+
 ```python
 # Gerar slug aleatório e armazenar em variável de ambiente
 import os
@@ -515,6 +537,7 @@ DJANGO_ADMIN_PATH="x7k2p9m4a8q1z5/"  # Slug aleatório
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 5.1 Configuração CORS Restritiva
+
 **Arquivo:** `apps/backend/config/settings.py:471-512`
 
 ```python
@@ -557,11 +580,13 @@ if not DEBUG:
 ```
 
 **Problema:** Valida apenas `localhost`, mas não valida:
+
 - Origins com `http://` (inseguro)
 - IPs privados (192.168.x.x, 10.x.x.x)
 - Origins mal-formadas
 
 **Correção:**
+
 ```python
 import re
 from urllib.parse import urlparse
@@ -569,14 +594,14 @@ from urllib.parse import urlparse
 if not DEBUG:
     for origin in CORS_ALLOWED_ORIGINS.split(','):
         origin = origin.strip()
-        
+
         # Validar que é HTTPS (exceto localhost para testes locais controlados)
         if not origin.startswith('https://'):
             if not any(dev in origin for dev in ['localhost', '127.0.0.1']):
                 raise ImproperlyConfigured(
                     f"🔴 CORS origin inseguro em produção: {origin}. Use HTTPS."
                 )
-        
+
         # Validar formato de URL
         try:
             parsed = urlparse(origin)
@@ -586,7 +611,7 @@ if not DEBUG:
             raise ImproperlyConfigured(
                 f"🔴 CORS origin mal-formado: {origin}. Erro: {e}"
             )
-        
+
         # Bloquear IPs privados
         ip_private_pattern = r'^https?://(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)'
         if re.match(ip_private_pattern, origin):
@@ -605,6 +630,7 @@ if not DEBUG:
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 6.1 Rate Limiting por Tenant
+
 **Arquivo:** `apps/backend/apps/core/throttling.py:46-91`
 
 ```python
@@ -613,7 +639,7 @@ class TenantRateThrottle(UserRateThrottle):
     Rate limiting por tenant (não por usuário individual)
     """
     rate = 'tenant'
-    
+
     def get_cache_key(self, request, view):
         tenant = get_current_tenant()
         if tenant:
@@ -622,6 +648,7 @@ class TenantRateThrottle(UserRateThrottle):
 ```
 
 **Configuração:** `apps/backend/config/settings.py:555-564`
+
 ```python
 "DEFAULT_THROTTLE_CLASSES": [
     "rest_framework.throttling.AnonRateThrottle",
@@ -642,15 +669,16 @@ class TenantRateThrottle(UserRateThrottle):
 
 **Rotas Críticas sem Throttle Específico:**
 
-| Endpoint | Risco | Throttle Atual |
-|----------|-------|----------------|
-| `POST /api/auth/login` | Brute force de senha | ❌ Genérico (1000/dia) |
-| `POST /api/password-reset/request` | Spam de emails | ⚠️ PasswordResetRateThrottle (5/hour) |
-| `POST /api/password-reset/confirm` | Brute force de token | ❌ Genérico |
-| `POST /api/auth/2fa/verify` | Brute force de código 2FA | ❌ Genérico |
-| `POST /api/register-tenant` | Criação massiva de tenants | ❌ Genérico |
+| Endpoint                           | Risco                      | Throttle Atual                        |
+| ---------------------------------- | -------------------------- | ------------------------------------- |
+| `POST /api/auth/login`             | Brute force de senha       | ❌ Genérico (1000/dia)                |
+| `POST /api/password-reset/request` | Spam de emails             | ⚠️ PasswordResetRateThrottle (5/hour) |
+| `POST /api/password-reset/confirm` | Brute force de token       | ❌ Genérico                           |
+| `POST /api/auth/2fa/verify`        | Brute force de código 2FA  | ❌ Genérico                           |
+| `POST /api/register-tenant`        | Criação massiva de tenants | ❌ Genérico                           |
 
 **Correção:**
+
 ```python
 # apps/backend/apps/core/throttling.py
 
@@ -726,6 +754,7 @@ REST_FRAMEWORK = {
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 7.1 Sanitização em Utils
+
 **Arquivo:** `apps/backend/apps/core/utils/__init__.py:162-183`
 
 ```python
@@ -735,23 +764,24 @@ def sanitize_string(value: str, max_length: int = 200) -> str:
     """
     if not isinstance(value, str):
         return ""
-    
+
     # Remove caracteres de controle
     value = "".join(char for char in value if char.isprintable() or char.isspace())
-    
+
     # Remove espaços duplicados
     sanitized = " ".join(value.split())
-    
+
     # Trunca ao tamanho máximo
     if len(sanitized) > max_length:
         sanitized = sanitized[:max_length]
-    
+
     return sanitized.strip()
 ```
 
 **Status:** ✅ **IMPLEMENTADO**
 
 #### 7.2 Escaping em Templates de Email
+
 **Arquivo:** `apps/backend/apps/core/email_templates.py:210-213`
 
 ```python
@@ -777,11 +807,12 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = ['titulo', 'descricao', 'protocolo', ...]
-    
+
     # ❌ Nenhuma sanitização em titulo/descricao
 ```
 
 **Correção:**
+
 ```python
 from apps.core.utils import sanitize_string
 
@@ -789,15 +820,15 @@ class FeedbackSerializer(serializers.ModelSerializer):
     class Meta:
         model = Feedback
         fields = ['titulo', 'descricao', 'protocolo', ...]
-    
+
     def validate_titulo(self, value):
         """Sanitiza título antes de salvar"""
         return sanitize_string(value, max_length=200)
-    
+
     def validate_descricao(self, value):
         """Sanitiza descrição antes de salvar"""
         return sanitize_string(value, max_length=5000)
-    
+
     def validate(self, attrs):
         """Sanitização adicional para campos de texto rico"""
         if 'resposta' in attrs and attrs['resposta']:
@@ -813,6 +844,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
 ```
 
 **Arquivos que Precisam de Sanitização:**
+
 - `apps/backend/apps/feedbacks/serializers.py` (FeedbackSerializer, InteracaoSerializer)
 - `apps/backend/apps/tenants/serializers.py` (ClientSerializer, TeamMemberSerializer)
 - `apps/backend/apps/response_templates/serializers.py` (ResponseTemplateSerializer)
@@ -839,6 +871,7 @@ ALLOWED_FILE_TYPES = [
 **Problema:** Valida apenas MIME type informado pelo cliente (facilmente forjável). Não valida conteúdo real do arquivo.
 
 **Correção:**
+
 ```python
 # apps/backend/apps/core/file_validators.py (CRIAR)
 import magic
@@ -853,23 +886,23 @@ def validate_file_content(file):
     file.seek(0)
     file_head = file.read(2048)
     file.seek(0)
-    
+
     # Detectar tipo MIME real
     mime = magic.from_buffer(file_head, mime=True)
-    
+
     ALLOWED_MIMES = {
         'image/jpeg', 'image/png', 'image/gif', 'image/webp',
         'application/pdf',
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     }
-    
+
     if mime not in ALLOWED_MIMES:
         raise ValidationError(
             f"Tipo de arquivo não permitido: {mime}. "
             f"Apenas imagens, PDFs e documentos Office são aceitos."
         )
-    
+
     # Validar que extensão corresponde ao tipo
     extension = file.name.split('.')[-1].lower()
     mime_to_ext = {
@@ -881,7 +914,7 @@ def validate_file_content(file):
         'application/msword': ['doc'],
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['docx'],
     }
-    
+
     if extension not in mime_to_ext.get(mime, []):
         raise ValidationError(
             f"Extensão do arquivo ({extension}) não corresponde ao tipo real ({mime})"
@@ -896,6 +929,7 @@ class FeedbackSerializer(serializers.ModelSerializer):
 ```
 
 **Requisito:** Instalar `python-magic`:
+
 ```bash
 pip install python-magic
 ```
@@ -911,6 +945,7 @@ pip install python-magic
 ### ✅ IMPLEMENTAÇÕES CORRETAS
 
 #### 8.1 TenantAwareModel e TenantAwareManager
+
 **Arquivo:** `apps/backend/apps/core/models.py:7-92`
 
 ```python
@@ -918,16 +953,16 @@ class TenantAwareManager(models.Manager):
     def get_queryset(self):
         queryset = super().get_queryset()
         tenant = get_current_tenant()
-        
+
         if tenant is not None:
             return queryset.filter(client=tenant)  # ✅ Filtro automático
-        
+
         return queryset.none()  # ✅ Retorna vazio se sem tenant
 
 class TenantAwareModel(models.Model):
     client = models.ForeignKey("tenants.Client", on_delete=models.CASCADE)
     objects = TenantAwareManager()
-    
+
     def save(self, *args, **kwargs):
         if not self.pk and not getattr(self, "client_id", None):
             tenant = get_current_tenant()
@@ -942,6 +977,7 @@ class TenantAwareModel(models.Model):
 **Status:** ✅ **ARQUITETURA ROBUSTA**
 
 #### 8.2 TenantMiddleware
+
 **Arquivo:** `apps/backend/apps/core/middleware.py` (não listado mas referenciado)
 
 **Status:** ✅ **IMPLEMENTADO** (baseado em uso de `get_current_tenant()`)
@@ -962,27 +998,29 @@ class TenantAwareModel(models.Model):
 def consultar_protocolo(self, request):
     """Permite cliente externo consultar seu feedback via protocolo"""
     protocolo = request.query_params.get("protocolo")
-    
+
     # ❌ VULNERÁVEL: Busca em TODOS os feedbacks sem validar tenant
     feedback = get_queryset().filter(protocolo=protocolo).first()
-    
+
     if not feedback:
         return Response(
             {"error": "Protocolo não encontrado"},
             status=status.HTTP_404_NOT_FOUND,
         )
-    
+
     # ❌ VAZAMENTO: Retorna feedback de qualquer tenant
     serializer = self.get_serializer(feedback)
     return Response(serializer.data)
 ```
 
 **Problema CRÍTICO:**
+
 1. Endpoint público não valida tenant via header `X-Tenant-ID`
 2. Protocolos podem ser enumerados (ex: OUV-2026-000001, OUV-2026-000002)
 3. Atacante pode consultar feedbacks de QUALQUER tenant
 
 **Prova de Conceito:**
+
 ```bash
 # Enumerar protocolos de outro tenant
 for i in {1..1000}; do
@@ -992,6 +1030,7 @@ done
 ```
 
 **Correção URGENTE:**
+
 ```python
 @action(
     detail=False,
@@ -1004,23 +1043,23 @@ def consultar_protocolo(self, request):
     Consulta feedback via protocolo com validação de tenant
     """
     protocolo = request.query_params.get("protocolo")
-    
+
     if not protocolo:
         return Response(
             {"error": "Parâmetro 'protocolo' é obrigatório"},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    
+
     # ✅ OBRIGATÓRIO: Validar tenant via header ou subdomínio
     tenant_id = request.headers.get("X-Tenant-ID")
     tenant_subdomain = request.headers.get("X-Tenant-Subdomain")
-    
+
     if not tenant_id and not tenant_subdomain:
         return Response(
             {"error": "Header X-Tenant-ID ou X-Tenant-Subdomain obrigatório"},
             status=status.HTTP_400_BAD_REQUEST,
         )
-    
+
     # Buscar tenant
     try:
         if tenant_id:
@@ -1032,7 +1071,7 @@ def consultar_protocolo(self, request):
             {"error": "Tenant não encontrado ou inativo"},
             status=status.HTTP_404_NOT_FOUND,
         )
-    
+
     # ✅ SEGURO: Buscar apenas no tenant específico
     try:
         feedback = Feedback.objects.filter(
@@ -1041,13 +1080,13 @@ def consultar_protocolo(self, request):
         ).first()
     except Feedback.DoesNotExist:
         feedback = None
-    
+
     if not feedback:
         return Response(
             {"error": "Protocolo não encontrado neste tenant"},
             status=status.HTTP_404_NOT_FOUND,
         )
-    
+
     # ✅ Retornar apenas dados do feedback específico
     serializer = FeedbackPublicSerializer(feedback)  # Serializer reduzido
     return Response(serializer.data)
@@ -1093,7 +1132,7 @@ def adicionar_interacao(self, request, pk=None):
     # Lógica complexa com 2 caminhos:
     # 1. Autenticado: usa tenant do middleware
     # 2. Anônimo: valida tenant via header X-Tenant-ID
-    
+
     tenant_id = request.headers.get("X-Tenant-ID")
     if tenant_id:
         tenant_id_int = int(str(tenant_id).strip())
@@ -1111,7 +1150,8 @@ def adicionar_interacao(self, request, pk=None):
 
 **Problema:** Lógica dual (autenticado vs anônimo) aumenta superfície de ataque.
 
-**Recomendação:** 
+**Recomendação:**
+
 1. Dividir em 2 endpoints separados:
    - `POST /api/feedbacks/{id}/adicionar-interacao` (autenticado)
    - `POST /api/public/feedbacks/{protocol}/add-interaction` (anônimo com X-Tenant-ID)
@@ -1126,26 +1166,26 @@ def adicionar_interacao(self, request, pk=None):
 
 ### Por Gravidade
 
-| Gravidade | Quantidade | % Total |
-|-----------|------------|---------|
-| 🔴 Crítica | 1 | 8.3% |
-| 🔴 Alta | 3 | 25.0% |
-| 🟡 Média | 5 | 41.7% |
-| 🟠 Baixa | 3 | 25.0% |
-| **Total** | **12** | **100%** |
+| Gravidade  | Quantidade | % Total  |
+| ---------- | ---------- | -------- |
+| 🔴 Crítica | 1          | 8.3%     |
+| 🔴 Alta    | 3          | 25.0%    |
+| 🟡 Média   | 5          | 41.7%    |
+| 🟠 Baixa   | 3          | 25.0%    |
+| **Total**  | **12**     | **100%** |
 
 ### Por Categoria
 
-| Categoria | Crítica | Alta | Média | Baixa | Total |
-|-----------|---------|------|-------|-------|-------|
-| Autenticação | 0 | 1 | 1 | 0 | 2 |
-| Autorização | 0 | 1 | 1 | 0 | 2 |
-| 2FA | 0 | 0 | 1 | 0 | 1 |
-| Proteção de Rotas | 0 | 0 | 0 | 1 | 1 |
-| CORS | 0 | 0 | 1 | 0 | 1 |
-| Rate Limiting | 1 | 1 | 0 | 0 | 2 |
-| Input Sanitization | 0 | 0 | 1 | 1 | 2 |
-| Multi-Tenancy | 1 | 0 | 1 | 0 | 2 |
+| Categoria          | Crítica | Alta | Média | Baixa | Total |
+| ------------------ | ------- | ---- | ----- | ----- | ----- |
+| Autenticação       | 0       | 1    | 1     | 0     | 2     |
+| Autorização        | 0       | 1    | 1     | 0     | 2     |
+| 2FA                | 0       | 0    | 1     | 0     | 1     |
+| Proteção de Rotas  | 0       | 0    | 0     | 1     | 1     |
+| CORS               | 0       | 0    | 1     | 0     | 1     |
+| Rate Limiting      | 1       | 1    | 0     | 0     | 2     |
+| Input Sanitization | 0       | 0    | 1     | 1     | 2     |
+| Multi-Tenancy      | 1       | 0    | 1     | 0     | 2     |
 
 ---
 
@@ -1154,6 +1194,7 @@ def adicionar_interacao(self, request, pk=None):
 ### 🔥 EMERGÊNCIA (Próximas 24h)
 
 #### 1. CRÍTICA: Corrigir Vazamento de Dados em `/api/feedbacks/consultar-protocolo`
+
 - **Arquivo:** `apps/backend/apps/feedbacks/views.py:323`
 - **Ação:** Implementar validação de tenant via header
 - **Responsável:** Backend Lead
@@ -1161,6 +1202,7 @@ def adicionar_interacao(self, request, pk=None):
 - **Teste:** Script de enumeração de protocolos
 
 #### 2. ALTA: Implementar Rate Limiting em Rotas de Autenticação
+
 - **Arquivo:** `apps/backend/apps/core/throttling.py`
 - **Ação:** Criar throttles específicos para login, 2FA, password reset
 - **Responsável:** Backend Security
@@ -1172,6 +1214,7 @@ def adicionar_interacao(self, request, pk=None):
 ### 📅 CURTO PRAZO (Próxima Semana)
 
 #### 3. ALTA: Criar Permissions Customizadas para RBAC
+
 - **Arquivo:** `apps/backend/apps/core/permissions.py` (CRIAR)
 - **Ação:** Implementar IsOwner, IsOwnerOrAdmin, CanModifyFeedback
 - **Responsável:** Backend Lead
@@ -1179,14 +1222,16 @@ def adicionar_interacao(self, request, pk=None):
 - **Teste:** Testes automatizados de permission por role
 
 #### 4. ALTA: Exigir 2FA para Operações Sensíveis
+
 - **Arquivos:** `apps/core/account_views.py`, `apps/tenants/team_views.py`
 - **Ação:** Criar permission Requires2FAForSensitiveOperation
 - **Responsável:** Backend Security
 - **Esforço:** 4h
 
 #### 5. MÉDIA: Aplicar Sanitização em Todos os Serializers
+
 - **Arquivos:** `apps/feedbacks/serializers.py`, `apps/tenants/serializers.py`
-- **Ação:** Adicionar validate_* methods com sanitize_string
+- **Ação:** Adicionar validate\_\* methods com sanitize_string
 - **Responsável:** Backend Dev
 - **Esforço:** 6h
 
@@ -1195,24 +1240,28 @@ def adicionar_interacao(self, request, pk=None):
 ### 📆 MÉDIO PRAZO (Próximo Mês)
 
 #### 6. MÉDIA: Forçar 2FA para OWNER e ADMIN
+
 - **Arquivo:** `apps/backend/apps/tenants/models.py`
 - **Ação:** Criar Enforce2FAMiddleware
 - **Responsável:** Backend Security
 - **Esforço:** 4h
 
 #### 7. MÉDIA: Reforçar Rate Limiting em Endpoints Públicos
+
 - **Arquivos:** `apps/feedbacks/views.py`, `apps/billing/views.py`
 - **Ação:** Criar throttles específicos por endpoint
 - **Responsável:** Backend Security
 - **Esforço:** 4h
 
 #### 8. MÉDIA: Melhorar Validação de CORS em Produção
+
 - **Arquivo:** `apps/backend/config/settings.py`
 - **Ação:** Validar HTTPS, IPs privados, URLs mal-formadas
 - **Responsável:** DevOps
 - **Esforço:** 1h
 
 #### 9. MÉDIA: Refatorar Endpoint `adicionar-interacao`
+
 - **Arquivo:** `apps/feedbacks/views.py:1016`
 - **Ação:** Separar em 2 endpoints (autenticado vs público)
 - **Responsável:** Backend Lead
@@ -1223,14 +1272,17 @@ def adicionar_interacao(self, request, pk=None):
 ### 📋 MELHORIAS CONTÍNUAS (Backlog)
 
 #### 10. BAIXA: Validar Conteúdo Real de Uploads
+
 - **Ação:** Implementar validate_file_content com python-magic
 - **Esforço:** 3h
 
 #### 11. BAIXA: Ofuscar URL do Django Admin
+
 - **Ação:** Gerar slug aleatório via DJANGO_ADMIN_PATH
 - **Esforço:** 15min
 
 #### 12. BAIXA: Rotação Automática de JWT Secret Key
+
 - **Ação:** Suportar múltiplas secrets (primary/secondary)
 - **Esforço:** 2h
 
@@ -1250,25 +1302,25 @@ SECURITY_METRICS = {
         'Total de tentativas de login falhadas',
         ['username', 'ip']
     ),
-    
+
     'rate_limit_exceeded': Counter(
         'ouvify_rate_limit_exceeded_total',
         'Total de rate limits excedidos',
         ['endpoint', 'ip', 'user']
     ),
-    
+
     '2fa_bypass_attempt': Counter(
         'ouvify_2fa_bypass_attempts_total',
         'Tentativas de bypass de 2FA',
         ['user', 'ip']
     ),
-    
+
     'tenant_isolation_violation': Counter(
         'ouvify_tenant_isolation_violations_total',
         'Tentativas de acesso cross-tenant',
         ['user', 'source_tenant', 'target_tenant']
     ),
-    
+
     'permission_denied': Counter(
         'ouvify_permission_denied_total',
         'Permissões negadas por role',
@@ -1281,7 +1333,7 @@ def log_security_event(event_type, **metadata):
     # Prometheus
     if event_type in SECURITY_METRICS:
         SECURITY_METRICS[event_type].labels(**metadata).inc()
-    
+
     # Auditlog
     from apps.auditlog.utils import log_action
     log_action(
@@ -1289,7 +1341,7 @@ def log_security_event(event_type, **metadata):
         metadata=metadata,
         severity='SECURITY'
     )
-    
+
     # Sentry (para eventos críticos)
     if event_type in ['tenant_isolation_violation', '2fa_bypass_attempt']:
         import sentry_sdk
@@ -1316,7 +1368,7 @@ groups:
         annotations:
           summary: "Alta taxa de logins falhados"
           description: "{{ $value }} logins falhados/seg nos últimos 5min"
-      
+
       - alert: TenantIsolationViolation
         expr: ouvify_tenant_isolation_violations_total > 0
         for: 1m
@@ -1325,7 +1377,7 @@ groups:
         annotations:
           summary: "⚠️ VIOLAÇÃO DE ISOLAMENTO MULTI-TENANT"
           description: "Detectada tentativa de acesso cross-tenant"
-      
+
       - alert: RateLimitExceededSpike
         expr: rate(ouvify_rate_limit_exceeded_total[1m]) > 50
         for: 3m
@@ -1372,17 +1424,20 @@ groups:
 ## 13. 📚 REFERÊNCIAS E RECURSOS
 
 ### Documentação Interna
+
 - [docs/SECURITY.md](/workspaces/Ouvify/docs/SECURITY.md) - Guia de segurança vigente
 - [docs/API.md](/workspaces/Ouvify/docs/API.md) - Documentação de endpoints
 - [docs/ARCHITECTURE.md](/workspaces/Ouvify/docs/ARCHITECTURE.md) - Arquitetura multi-tenant
 
 ### Frameworks e Bibliotecas
+
 - [Django REST Framework - Permissions](https://www.django-rest-framework.org/api-guide/permissions/)
 - [SimpleJWT - Token Blacklist](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/blacklist_app.html)
 - [PyOTP - TOTP 2FA](https://pyauth.github.io/pyotp/)
 - [Django CORS Headers](https://github.com/adamchainz/django-cors-headers)
 
 ### Security Best Practices
+
 - [OWASP Top 10 2021](https://owasp.org/www-project-top-ten/)
 - [OWASP API Security Top 10](https://owasp.org/www-project-api-security/)
 - [CWE Top 25 Most Dangerous Software Weaknesses](https://cwe.mitre.org/top25/)
@@ -1392,21 +1447,25 @@ groups:
 ## 14. 🔍 TESTES DE SEGURANÇA EXECUTADOS
 
 ### Análise Estática de Código
+
 - ✅ **Grep search:** Permissions, rate limiting, 2FA, multi-tenant filtering
 - ✅ **AST analysis:** JWT configuration, CORS setup, throttle classes
 - ✅ **Pattern matching:** AllowAny endpoints, get_queryset implementations
 
 ### Análise de Configuração
+
 - ✅ **settings.py:** JWT, CORS, rate limiting, security headers
 - ✅ **URLs:** Rotas públicas vs autenticadas
 - ✅ **Middleware:** Tenant isolation, CSRF, CORS
 
 ### Análise de Modelos
+
 - ✅ **TenantAwareModel:** Filtro automático por tenant
 - ✅ **TeamMember:** Hierarquia de roles (OWNER > ADMIN > MODERATOR > VIEWER)
 - ✅ **Client:** Feature gating por plano
 
 ### Testes Não Executados (Recomendados)
+
 - ⏳ **Penetration testing:** OWASP ZAP scan completo
 - ⏳ **Brute force testing:** Scripts de enumeração de protocolos
 - ⏳ **JWT token forgery:** Tentativas de falsificação
@@ -1417,11 +1476,11 @@ groups:
 ## 15. 🎓 RECOMENDAÇÕES DE TREINAMENTO
 
 ### Equipe de Desenvolvimento
+
 1. **OWASP Top 10 API Security** (4h)
    - Broken Object Level Authorization (BOLA)
    - Broken Authentication
    - Excessive Data Exposure
-   
 2. **Django Security Best Practices** (2h)
    - Permissions e authorization
    - Query optimization para evitar N+1
@@ -1433,10 +1492,10 @@ groups:
    - Cross-tenant attack vectors
 
 ### Equipe DevOps
+
 1. **Secret Management** (1h)
    - Rotação de credentials
    - Vault/Secret Manager setup
-   
 2. **Security Monitoring** (2h)
    - Prometheus metrics
    - Grafana alerting
@@ -1447,6 +1506,7 @@ groups:
 ## 📝 CONCLUSÃO
 
 O Ouvify apresenta uma **base de segurança sólida** com implementações corretas de:
+
 - ✅ JWT com blacklist e tokens rotativos
 - ✅ 2FA TOTP completo
 - ✅ Isolamento multi-tenant robusto (TenantAwareModel)
@@ -1454,6 +1514,7 @@ O Ouvify apresenta uma **base de segurança sólida** com implementações corre
 - ✅ CORS restritivo
 
 ### Prioridades CRÍTICAS:
+
 1. **🔥 Corrigir vazamento de dados em `/api/feedbacks/consultar-protocolo`** (URGENTE)
 2. **🔴 Implementar permissions customizadas para RBAC** (HIGH)
 3. **🔴 Reforçar rate limiting em autenticação** (HIGH)

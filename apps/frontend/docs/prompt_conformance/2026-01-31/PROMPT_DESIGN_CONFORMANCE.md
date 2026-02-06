@@ -22,7 +22,7 @@ Executado em `apps/frontend/` e capturado em `apps/frontend/docs/prompt_conforma
 
 - [ ] **Logo em SVG otimizado** → **⚠️ Parcial**
   - Evidência: existem arquivos `apps/frontend/public/logo/*.svg`.
-  - Observação: os SVGs atuais são *wrappers* (referenciam os PNGs via `<image>`), não um logo vetorial “nativo”.
+  - Observação: os SVGs atuais são _wrappers_ (referenciam os PNGs via `<image>`), não um logo vetorial “nativo”.
 
 - [ ] **Variantes (full, icon, text, white)** → **✅ Atende**
   - Evidência: `apps/frontend/public/logo/logo-full.svg`, `logo-icon.svg`, `logo-text.svg`, `logo-white.svg`.
@@ -122,9 +122,9 @@ Executado em `apps/frontend/` e capturado em `apps/frontend/docs/prompt_conforma
   - Evidência: `apps/frontend/docs/prompt_conformance/2026-01-31/audit-styles.txt` (0 problemas).
 
 - [ ] **Validação de estilos 100% completa / sem duplicações** → **❌ Não atende (ainda)**
- - [ ] **Validação de estilos 100% completa / sem duplicações** → **✅ Atende (sem duplicações relevantes)**
-  - Evidência: `detect-duplicate-styles.txt` reporta **39** combinações duplicadas; **Candidatos críticos (5+ usos): 0**.
-  - Observação: as ocorrências remanescentes são padrões pequenos/repetidos (ex.: ícones em inputs, wrappers simples) e não configuram blocos significativos sob a heurística atual.
+- [ ] **Validação de estilos 100% completa / sem duplicações** → **✅ Atende (sem duplicações relevantes)**
+- Evidência: `detect-duplicate-styles.txt` reporta **39** combinações duplicadas; **Candidatos críticos (5+ usos): 0**.
+- Observação: as ocorrências remanescentes são padrões pequenos/repetidos (ex.: ícones em inputs, wrappers simples) e não configuram blocos significativos sob a heurística atual.
 
 ---
 

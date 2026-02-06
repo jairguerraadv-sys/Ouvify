@@ -10,9 +10,10 @@
 ## 📊 Executive Summary
 
 ### Tempo de Desenvolvimento
+
 - **Tempo Total:** ~6 horas
 - **Análise Backend:** 1 hora
-- **Desenvolvimento Hook:** 1.5 horas  
+- **Desenvolvimento Hook:** 1.5 horas
 - **Desenvolvimento Componentes:** 2 horas
 - **Integração:** 1 hora
 - **Documentação:** 0.5 horas
@@ -20,14 +21,17 @@
 ### Arquivos Criados/Modificados
 
 #### ✨ Novos Arquivos (3)
+
 1. `apps/frontend/hooks/use-consent.ts` (200 linhas)
 2. `apps/frontend/components/consent/ConsentCheckbox.tsx` (150 linhas)
 3. `apps/frontend/app/dashboard/privacidade/page.tsx` (450 linhas)
 
 #### 📝 Arquivos Modificados (1)
+
 1. `apps/frontend/app/enviar/page.tsx` (361 → 385 linhas, +24 linhas)
 
 #### 📚 Documentação Atualizada (1)
+
 1. `docs/API_FUTURE_FEATURES.md` (seção LGPD marcada como ✅ IMPLEMENTADO)
 
 **Total:** ~800 linhas de código + documentação
@@ -87,6 +91,7 @@
 **Responsabilidade:** Camada de integração com API de consentimento.
 
 **Exports:**
+
 ```typescript
 // Hook principal com todas as operações
 useConsent(): {
@@ -111,12 +116,14 @@ useRequiredConsents(): {
 ```
 
 **Features:**
+
 - ✅ SWR para cache automático e revalidação
 - ✅ Toast notifications (sonner) para feedback visual
 - ✅ Error handling com mensagens amigáveis
 - ✅ Métodos async retornam `boolean` para validação
 
 **Endpoints Integrados:**
+
 1. `GET /api/consent/versions/` - Todas as versões
 2. `GET /api/consent/versions/required/` - Termos obrigatórios
 3. `GET /api/consent/user-consents/` - Consentimentos do usuário
@@ -132,6 +139,7 @@ useRequiredConsents(): {
 **Responsabilidade:** Checkbox reutilizável para aceite de termos LGPD.
 
 **Props:**
+
 ```typescript
 {
   checked: boolean;
@@ -142,6 +150,7 @@ useRequiredConsents(): {
 ```
 
 **Features:**
+
 - ✅ Busca automática de termos obrigatórios via `useRequiredConsents()`
 - ✅ Exibe termo LGPD com versão
 - ✅ Botão "Ver detalhes" para expandir seção com:
@@ -153,6 +162,7 @@ useRequiredConsents(): {
 - ✅ Design com Card destacado (border-primary)
 
 **Uso:**
+
 ```tsx
 <ConsentCheckbox
   checked={consentAccepted}
@@ -168,22 +178,27 @@ useRequiredConsents(): {
 **Modificações:**
 
 1. **Imports adicionados:**
+
 ```typescript
-import { ConsentCheckbox } from '@/components/consent/ConsentCheckbox';
-import { useConsent } from '@/hooks/use-consent';
+import { ConsentCheckbox } from "@/components/consent/ConsentCheckbox";
+import { useConsent } from "@/hooks/use-consent";
 ```
 
 2. **State adicionado:**
+
 ```typescript
 const [consentAccepted, setConsentAccepted] = useState(false);
 const { acceptConsentAnonymous } = useConsent();
 ```
 
 3. **Validação em handleSubmit:**
+
 ```typescript
 // Validar consentimento LGPD
 if (!consentAccepted) {
-  setErrors({ consent: 'Você deve aceitar os termos de consentimento para continuar' });
+  setErrors({
+    consent: "Você deve aceitar os termos de consentimento para continuar",
+  });
   setLoading(false);
   return;
 }
@@ -191,27 +206,31 @@ if (!consentAccepted) {
 // Aceitar consentimento antes de enviar feedback
 const consentEmail = sanitizedData.email_contato || undefined;
 const consentAccepted = await acceptConsentAnonymous(
-  [{ document_type: 'lgpd', version: '1.0' }],
-  consentEmail
+  [{ document_type: "lgpd", version: "1.0" }],
+  consentEmail,
 );
 ```
 
 4. **Renderização do checkbox:**
+
 ```tsx
 <ConsentCheckbox
   checked={consentAccepted}
   onChange={setConsentAccepted}
   email={formData.email_contato}
   className="mb-4"
-/>
-{errors.consent && (
-  <div className="p-3 bg-error/10 border border-error/30 rounded-lg">
-    <p className="text-error text-sm">{errors.consent}</p>
-  </div>
-)}
+/>;
+{
+  errors.consent && (
+    <div className="p-3 bg-error/10 border border-error/30 rounded-lg">
+      <p className="text-error text-sm">{errors.consent}</p>
+    </div>
+  );
+}
 ```
 
 **Fluxo:**
+
 1. Usuário preenche formulário de denúncia anônima
 2. Checkbox LGPD deve ser marcado (validação)
 3. Ao enviar: `acceptConsentAnonymous()` registra consentimento
@@ -227,15 +246,18 @@ const consentAccepted = await acceptConsentAnonymous(
 **Seções:**
 
 #### 1️⃣ Header
+
 - Ícone e título "Privacidade e Dados"
 - Descrição: "Gerencie seus consentimentos e dados pessoais"
 
 #### 2️⃣ Alerta de Termos Pendentes
+
 - Condicional: só exibe se `pending.has_pending === true`
 - Card amarelo com ícone de alerta
 - Botão "Revisar Termos" (stub)
 
 #### 3️⃣ Meus Consentimentos (Principal)
+
 - Lista de todos os `myConsents` do hook
 - Para cada consentimento:
   - **Card com cores:**
@@ -254,6 +276,7 @@ const consentAccepted = await acceptConsentAnonymous(
     - Botão "Revogar" (só se não revogado)
 
 #### 4️⃣ Seus Direitos (LGPD)
+
 - Card informativo com 4 direitos:
   - ✅ Acesso aos Dados
   - ✅ Correção de Dados
@@ -263,6 +286,7 @@ const consentAccepted = await acceptConsentAnonymous(
 - Descrição curta de cada direito
 
 #### 5️⃣ Ações sobre Dados
+
 - **Exportar Meus Dados:**
   - Botão primário grande
   - Ícone Download
@@ -276,6 +300,7 @@ const consentAccepted = await acceptConsentAnonymous(
   - (Stub - implementação futura)
 
 #### 6️⃣ Modal de Revogação
+
 - Componente `RevokeModal` interno
 - Props:
   ```typescript
@@ -301,9 +326,11 @@ const consentAccepted = await acceptConsentAnonymous(
   - Toast de sucesso
 
 **Loading States:**
+
 - Skeleton para 3 cards enquanto `isLoading === true`
 
 **Empty State:**
+
 - Ícone FileText em círculo cinza
 - Mensagem: "Nenhum consentimento registrado"
 - Descrição: "Você ainda não aceitou nenhum termo de consentimento"
@@ -431,6 +458,7 @@ interface RevokeModalProps {
 **Pré-condição:** Backend rodando, termos LGPD cadastrados no admin.
 
 **Passos:**
+
 1. Acessar `http://localhost:3000/enviar`
 2. Verificar se checkbox LGPD aparece
 3. Clicar "Ver detalhes" → Expandir deve mostrar direitos LGPD
@@ -450,6 +478,7 @@ interface RevokeModalProps {
 **Pré-condição:** Usuário logado com consentimentos já registrados.
 
 **Passos:**
+
 1. Acessar `http://localhost:3000/dashboard/privacidade`
 2. Verificar lista de consentimentos
 3. Cada card deve mostrar:
@@ -469,6 +498,7 @@ interface RevokeModalProps {
 **Pré-condição:** Usuário logado com pelo menos 1 consentimento ativo.
 
 **Passos:**
+
 1. Acessar `/dashboard/privacidade`
 2. Clicar "Revogar" em um consentimento ativo
 3. Modal aparece com:
@@ -482,7 +512,8 @@ interface RevokeModalProps {
 7. Modal fecha
 8. Lista atualiza: card muda para vermelho com badge "Revogado"
 
-**Resultado Esperado:** 
+**Resultado Esperado:**
+
 - Backend: `UserConsent.revoked = True`, `revoked_at` preenchido
 - Frontend: Card atualizado, botão "Revogar" desaparece
 
@@ -491,6 +522,7 @@ interface RevokeModalProps {
 ### ✅ Teste 4: Loading States
 
 **Passos:**
+
 1. Acessar `/dashboard/privacidade` com network throttling (Slow 3G)
 2. Verificar skeleton de 3 cards enquanto carrega
 3. Acessar `/enviar`
@@ -503,6 +535,7 @@ interface RevokeModalProps {
 ### ✅ Teste 5: Error States
 
 **Passos:**
+
 1. Desligar backend
 2. Acessar `/enviar`
 3. Marcar checkbox, preencher formulário, enviar
@@ -517,6 +550,7 @@ interface RevokeModalProps {
 **Pré-condição:** Backend com novo termo LGPD v2.0 (is_required=True), usuário só aceitou v1.0.
 
 **Passos:**
+
 1. Fazer request manual: `GET /api/consent/user-consents/pending/`
 2. Verificar response: `{"has_pending": true, "pending_consents": [...]}`
 3. Acessar `/dashboard/privacidade`
@@ -530,36 +564,38 @@ interface RevokeModalProps {
 
 ### Componentes shadcn/ui
 
-| Componente | Uso |
-|------------|-----|
-| Card | Wrappers principais (privacidade, checkbox, modal) |
-| Button | Ações (enviar, revogar, exportar, ver documento) |
-| Badge | Status (Ativo/Revogado), versões, tipos de consentimento |
-| Checkbox (native) | Aceite de termos |
+| Componente        | Uso                                                      |
+| ----------------- | -------------------------------------------------------- |
+| Card              | Wrappers principais (privacidade, checkbox, modal)       |
+| Button            | Ações (enviar, revogar, exportar, ver documento)         |
+| Badge             | Status (Ativo/Revogado), versões, tipos de consentimento |
+| Checkbox (native) | Aceite de termos                                         |
 
 ### Ícones Lucide
 
-| Ícone | Uso |
-|-------|-----|
-| Shield | Segurança, LGPD, privacidade |
-| FileText | Documentos, termos |
-| Download | Exportar dados |
-| Trash2 | Revogar, excluir |
-| AlertCircle | Alertas, avisos |
-| CheckCircle2 | Status ativo, direitos |
-| XCircle | Status revogado, cancelar |
-| ExternalLink | Links externos (documentos) |
-| Calendar | Datas |
-| Mail | Email, marketing |
+| Ícone        | Uso                          |
+| ------------ | ---------------------------- |
+| Shield       | Segurança, LGPD, privacidade |
+| FileText     | Documentos, termos           |
+| Download     | Exportar dados               |
+| Trash2       | Revogar, excluir             |
+| AlertCircle  | Alertas, avisos              |
+| CheckCircle2 | Status ativo, direitos       |
+| XCircle      | Status revogado, cancelar    |
+| ExternalLink | Links externos (documentos)  |
+| Calendar     | Datas                        |
+| Mail         | Email, marketing             |
 
 ### Classes Tailwind (Padrões)
 
 **Cards de Consentimento:**
+
 - Ativo: `border-success/20 bg-success/5`
 - Revogado: `border-error/20 bg-error/5`
 - Destaque (Checkbox): `border-primary/20 bg-primary/5`
 
 **Badges:**
+
 - Primary (LGPD): `variant="primary"`
 - Info (Terms): `variant="info"`
 - Success (Privacy): `variant="success"`
@@ -567,6 +603,7 @@ interface RevokeModalProps {
 - Destructive (Revogado): `variant="destructive"`
 
 **Alertas:**
+
 - Warning: `bg-warning/10 border-warning/30`
 - Error: `bg-error/10 border-error/30`
 - Info: `bg-info/10 border-info/30`
@@ -588,6 +625,7 @@ interface RevokeModalProps {
 ### Dados Registrados (Backend)
 
 Para cada consentimento aceito/revogado:
+
 - `user` (FK para User, null se anônimo)
 - `email` (preenchido se consentimento anônimo)
 - `consent_version` (versão do termo aceito)
@@ -605,6 +643,7 @@ Além disso, `ConsentLog` registra cada ação (accepted/revoked) para audit tra
 ## 📈 Métricas de Implementação
 
 ### Linhas de Código
+
 - **Hook:** 200 linhas
 - **Componente Checkbox:** 150 linhas
 - **Página Privacidade:** 450 linhas
@@ -612,11 +651,13 @@ Além disso, `ConsentLog` registra cada ação (accepted/revoked) para audit tra
 - **Total:** ~824 linhas
 
 ### Componentes
+
 - **Novos:** 3 arquivos principais + 1 modal interno
 - **Modificados:** 1 página existente
 - **Documentação:** 1 seção atualizada + 1 README
 
 ### Cobertura de APIs
+
 - **Endpoints Integrados:** 7 de 10 disponíveis (70%)
 - **Não utilizados:**
   - `POST /api/consent/user-consents/` (CRUD básico)
@@ -676,11 +717,11 @@ import { useConsent, useRequiredConsents } from '@/hooks/use-consent';
 
 // Hook completo (para páginas de gerenciamento)
 function PrivacyPage() {
-  const { 
-    myConsents, 
-    pending, 
-    revokeConsent, 
-    isLoading 
+  const {
+    myConsents,
+    pending,
+    revokeConsent,
+    isLoading
   } = useConsent();
 
   const handleRevoke = async (id: number) => {
@@ -722,7 +763,7 @@ function SignupForm() {
 ### Como Usar o Componente
 
 ```tsx
-import { ConsentCheckbox } from '@/components/consent/ConsentCheckbox';
+import { ConsentCheckbox } from "@/components/consent/ConsentCheckbox";
 
 function MyForm() {
   const [consentAccepted, setConsentAccepted] = useState(false);
@@ -731,14 +772,14 @@ function MyForm() {
   const handleSubmit = async () => {
     // Validar
     if (!consentAccepted) {
-      alert('Aceite os termos!');
+      alert("Aceite os termos!");
       return;
     }
 
     // Aceitar consentimento
     const success = await acceptConsentAnonymous(
-      [{ document_type: 'lgpd', version: '1.0' }],
-      'user@email.com' // opcional
+      [{ document_type: "lgpd", version: "1.0" }],
+      "user@email.com", // opcional
     );
 
     if (success) {
@@ -749,7 +790,7 @@ function MyForm() {
   return (
     <form>
       {/* Campos do formulário */}
-      
+
       <ConsentCheckbox
         checked={consentAccepted}
         onChange={setConsentAccepted}
@@ -769,6 +810,7 @@ function MyForm() {
 ## ✅ Checklist de Entrega
 
 ### Funcionalidades
+
 - [x] Hook use-consent.ts implementado
 - [x] Componente ConsentCheckbox implementado
 - [x] Integração em /enviar (denúncia anônima)
@@ -782,6 +824,7 @@ function MyForm() {
 - [x] Stubs de exportação/exclusão
 
 ### UX/UI
+
 - [x] Loading states (skeletons)
 - [x] Error states (mensagens amigáveis)
 - [x] Toast notifications (sucesso/erro)
@@ -791,12 +834,14 @@ function MyForm() {
 - [x] Cores semânticas (verde=ativo, vermelho=revogado)
 
 ### Documentação
+
 - [x] API_FUTURE_FEATURES.md atualizado
 - [x] LGPD_IMPLEMENTATION_REPORT.md criado
 - [x] Comentários no código
 - [x] Tipos TypeScript documentados
 
 ### Qualidade
+
 - [x] TypeScript sem erros
 - [x] Imports organizados
 - [x] Componentes reutilizáveis
@@ -847,7 +892,7 @@ O módulo LGPD/Consentimento foi **implementado com sucesso**, cobrindo os requi
 ✅ **Consentimento em Denúncias:** Checkbox obrigatório no formulário `/enviar` com aceite anônimo  
 ✅ **Gerenciamento de Privacidade:** Página completa `/dashboard/privacidade` com listagem, revogação e direitos LGPD  
 ✅ **Conformidade:** Audit trail, transparência, revogabilidade implementados  
-✅ **Experiência:** Design LGPD-compliant, loading/error states, mobile-friendly  
+✅ **Experiência:** Design LGPD-compliant, loading/error states, mobile-friendly
 
 **Status:** 🟢 **PRONTO PARA PRODUÇÃO**
 

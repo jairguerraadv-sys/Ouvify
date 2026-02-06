@@ -9,13 +9,13 @@
 ## 📊 SUMÁR EXECUTIVO
 
 **Completude anterior:** 88% (92% após documentação)  
-**Completude atual:** **98%** 🎉  
+**Completude atual:** **98%** 🎉
 
 **Gaps corrigidos:** 11 de 13 itens (85% do backlog)  
 **Bloqueadores P0:** 0 ➜ 0 ✅  
 **Críticos P1:** 4 ➜ 0 ✅  
 **Importantes P2:** 6 ➜ 1 (E2E tests - requer setup manual)  
-**Melhorias P3:** 3 ➜ 0 (verificados como falsos positivos) ✅  
+**Melhorias P3:** 3 ➜ 0 (verificados como falsos positivos) ✅
 
 ---
 
@@ -45,6 +45,7 @@
    - Implementação em: [apps/backend/apps/core/decorators.py](../apps/backend/apps/core/decorators.py#L330-L345)
 
 **Código implementado:**
+
 ```python
 @require_2fa_verification
 def post(self, request):
@@ -53,6 +54,7 @@ def post(self, request):
 ```
 
 **Critérios de aceite:**
+
 - [x] Decorator criado e funcional
 - [x] Aplicado no password reset
 - [x] Timeout de 15min implementado
@@ -73,6 +75,7 @@ def post(self, request):
 - [x] [/audit/INDEX.md](INDEX.md) - 350+ linhas (índice completo)
 
 **Cobertura:**
+
 - ✅ 100% dos fluxos principais documentados
 - ✅ Linguagem clara para leigos
 - ✅ Exemplos práticos
@@ -106,6 +109,7 @@ def post(self, request):
    - Aplicado em: `consultar_protocolo()`
 
 **Ação adicional:**
+
 - ✅ Adicionado `django-ratelimit==4.1.0` ao [requirements/base.txt](../apps/backend/requirements/base.txt) para futuros usos
 
 **Conclusão:** Sistema já possui rate limiting robusto em todos endpoints críticos. ✅
@@ -119,6 +123,7 @@ def post(self, request):
 **Arquivo criado:** [/tools/audit/dependency_audit.sh](../tools/audit/dependency_audit.sh)
 
 **O que faz:**
+
 1. Executa `pip-audit` no backend
 2. Executa `npm audit` no frontend
 3. Gera JSONs com resultados detalhados
@@ -126,6 +131,7 @@ def post(self, request):
 5. Exit code 1 se há CVEs críticas (CI-friendly)
 
 **Uso:**
+
 ```bash
 cd /workspaces/Ouvify
 ./tools/audit/dependency_audit.sh
@@ -137,6 +143,7 @@ cd /workspaces/Ouvify
 ```
 
 **Agendamento recomendado:**
+
 - Manual: Antes de cada deploy
 - Automático: CI/CD (GitHub Actions - a ser implementado)
 - Periódico: Mensal (dia 1)
@@ -156,13 +163,13 @@ cd /workspaces/Ouvify
 ```python
 indexes = [
     # ... índices originais ...
-    
+
     # P2-001: Novos índices para performance
     models.Index(
         fields=["client", "prioridade", "-data_criacao"],
         name="feedback_priority_idx"
     ),  # Dashboard filtrado por prioridade
-    
+
     models.Index(
         fields=["client", "assigned_to", "status"],
         name="feedback_assigned_status_idx"
@@ -171,10 +178,12 @@ indexes = [
 ```
 
 **Impacto esperado:**
+
 - ⚡ 20-30% melhoria em queries de dashboard com filtros de prioridade
 - ⚡ 40-50% melhoria em queries "meus feedbacks" por team member
 
 **Aplicação:**
+
 ```bash
 cd apps/backend
 python manage.py makemigrations feedbacks
@@ -192,6 +201,7 @@ python manage.py migrate
 **Arquivo:** [apps/backend/config/settings.py](../apps/backend/config/settings.py#L262-L280)
 
 **Configuração encontrada:**
+
 ```python
 DATABASES = {
     "default": dj_database_url.config(
@@ -217,6 +227,7 @@ DATABASES["default"]["OPTIONS"] = {
 **Status:** ⏳ **NÃO IMPLEMENTADO** (requer mudanças significativas no frontend)  
 **Tempo estimado:** 1 dia  
 **Razão para adiamento:** Mudança arquitetural que requer:
+
 - Modificar `apps/frontend/lib/api.ts`
 - Configurar CORS com `credentials: 'include'`
 - Adicionar middleware de cookies no backend
@@ -232,10 +243,12 @@ DATABASES["default"]["OPTIONS"] = {
 **Status:** ✅ **IMPLEMENTADO**  
 **Tempo:** 1.5h  
 **Arquivos:**
+
 - [apps/backend/apps/feedbacks/tasks.py](../apps/backend/apps/feedbacks/tasks.py#L193-L225) (tarefa criada)
 - [apps/backend/config/celery.py](../apps/backend/config/celery.py#L67-L71) (agendamento)
 
 **Tarefa implementada:**
+
 ```python
 @shared_task(name="feedbacks.cleanup_old_archived_feedbacks")
 def cleanup_old_archived_feedbacks():
@@ -252,6 +265,7 @@ def cleanup_old_archived_feedbacks():
 ```
 
 **Agendamento Celery Beat:**
+
 ```python
 "cleanup-old-archived-feedbacks": {
     "task": "feedbacks.cleanup_old_archived_feedbacks",
@@ -260,6 +274,7 @@ def cleanup_old_archived_feedbacks():
 ```
 
 **Compliance LGPD:**
+
 - ✅ Art. 16 (Princípio da necessidade): Dados retidos apenas pelo tempo necessário
 - ✅ Automação: Execução diária sem intervenção manual
 - ✅ Audit log: Cada deleção é registrada via logger
@@ -273,6 +288,7 @@ def cleanup_old_archived_feedbacks():
 **Arquivo:** [/docs/RUNBOOK.md](../docs/RUNBOOK.md)
 
 **Seções incluídas:**
+
 1. Visão geral da infraestrutura (diagrama Mermaid)
 2. Monitoramento (métricas, logs, alertas)
 3. Backups (PostgreSQL, Redis, arquivos)
@@ -284,6 +300,7 @@ def cleanup_old_archived_feedbacks():
 9. Contatos de emergência
 
 **Scripts incluídos:**
+
 - `health_check.sh` - Verificação de saúde completa
 - `cleanup_old_data.sh` - Limpeza de tokens expirados
 
@@ -296,6 +313,7 @@ def cleanup_old_archived_feedbacks():
 **Status:** ⏳ **NÃO IMPLEMENTADO** (requer setup de CI/CD)  
 **Tempo estimado:** 1 dia  
 **Motivo:** Requer:
+
 - Configurar GitHub Actions ou similar
 - Setup de ambiente de teste (DB, Redis)
 - Playwright ou Cypress instalado
@@ -311,15 +329,17 @@ def cleanup_old_archived_feedbacks():
 ### ✅ P3-001: Limpeza de arquivos .pyc
 
 **Status:** ✅ **VERIFICADO - NÃO NECESSÁRIO**  
-**Tempo:** 15min  
+**Tempo:** 15min
 
 **Verificação:**
+
 ```bash
 find . -type f -name "*.pyc" | wc -l
 # 7959 arquivos encontrados
 ```
 
 **Análise .gitignore:**
+
 ```gitignore
 __pycache__/
 *.py[cod]
@@ -328,6 +348,7 @@ __pycache__/
 ```
 
 **git status check:**
+
 ```bash
 git rm --cached -r "**/*.pyc"
 # fatal: pathspec '**/*.pyc' did not match any files
@@ -340,14 +361,16 @@ git rm --cached -r "**/*.pyc"
 ### ✅ P3-002: Remover arquivos não usados
 
 **Status:** ✅ **INVESTIGADO - ARQUIVOS SÃO USADOS**  
-**Tempo:** 30min  
+**Tempo:** 30min
 
 **Arquivos mencionados na auditoria:**
+
 1. `apps/tenants/logout_views.py`
 2. `apps/tenants/jwt_views.py`
 3. `apps/tenants/subscription_management.py`
 
 **Verificação realizada:**
+
 ```bash
 grep -r "from apps.tenants.logout_views" apps/backend/
 # Match encontrado: config/urls.py linha 41
@@ -368,12 +391,14 @@ grep -r "subscription_management" apps/backend/
 **Status:** ⏳ **ADIADO** (pós-MVP)  
 **Tempo estimado:** 4-8h  
 **Opções:**
+
 - DataDog APM ($$)
 - New Relic ($$$)
 - Elastic APM (gratuito, já usa ElasticSearch)
 - Sentry Performance (já usa Sentry para errors)
 
-**Recomendação:** 
+**Recomendação:**
+
 1. MVP: Usar logs estruturados + Prometheus/Grafana (se configurado)
 2. Sprint 2: Implementar Sentry Performance (mais fácil integração)
 3. Sprint 3+: Elastic APM completo
@@ -386,27 +411,27 @@ grep -r "subscription_management" apps/backend/
 
 ### Implementações por Prioridade
 
-| Prioridade | Total | Implementado | Verificado OK | Adiado | % Completo |
-|------------|-------|--------------|---------------|--------|------------|
-| **P0** | 0 | - | - | - | N/A |
-| **P1** | 4 | 2 | 2 | 0 | **100%** ✅ |
-| **P2** | 6 | 4 | 1 | 1 | **83%** ⚡ |
-| **P3** | 3 | 0 | 3 | 0 | **100%** ✅ |
-| **TOTAL** | 13 | 6 | 6 | 1 | **92%** 🎉 |
+| Prioridade | Total | Implementado | Verificado OK | Adiado | % Completo  |
+| ---------- | ----- | ------------ | ------------- | ------ | ----------- |
+| **P0**     | 0     | -            | -             | -      | N/A         |
+| **P1**     | 4     | 2            | 2             | 0      | **100%** ✅ |
+| **P2**     | 6     | 4            | 1             | 1      | **83%** ⚡  |
+| **P3**     | 3     | 0            | 3             | 0      | **100%** ✅ |
+| **TOTAL**  | 13    | 6            | 6             | 1      | **92%** 🎉  |
 
 ### Esforço Real vs Estimado
 
-| Item | Estimado | Real | Variação |
-|------|----------|------|----------|
-| P1-001 (2FA) | 8h | 2h | ✅ -75% |
-| P1-002 (Docs) | 20h | 4h | ✅ -80% (reusou templates) |
-| P1-003 (Rate limit) | 4h | 0.5h | ✅ -88% (já existia) |
-| P1-004 (Dep audit) | 2h | 1.5h | ✅ -25% |
-| P2-001 (DB indexes) | 2h | 0.5h | ✅ -75% |
-| P2-002 (Pooling) | 1h | 0.25h | ✅ -75% (já configurado) |
-| P2-004 (LGPD) | 8h | 1.5h | ✅ -81% |
-| P2-005 (Runbook) | 8h | 3h | ✅ -63% |
-| **TOTAL** | 53h | **13h** | **✅ -75% economia** |
+| Item                | Estimado | Real    | Variação                   |
+| ------------------- | -------- | ------- | -------------------------- |
+| P1-001 (2FA)        | 8h       | 2h      | ✅ -75%                    |
+| P1-002 (Docs)       | 20h      | 4h      | ✅ -80% (reusou templates) |
+| P1-003 (Rate limit) | 4h       | 0.5h    | ✅ -88% (já existia)       |
+| P1-004 (Dep audit)  | 2h       | 1.5h    | ✅ -25%                    |
+| P2-001 (DB indexes) | 2h       | 0.5h    | ✅ -75%                    |
+| P2-002 (Pooling)    | 1h       | 0.25h   | ✅ -75% (já configurado)   |
+| P2-004 (LGPD)       | 8h       | 1.5h    | ✅ -81%                    |
+| P2-005 (Runbook)    | 8h       | 3h      | ✅ -63%                    |
+| **TOTAL**           | 53h      | **13h** | **✅ -75% economia**       |
 
 ### Linhas de Código Modificadas/Criadas
 
@@ -435,6 +460,7 @@ grep -r "subscription_management" apps/backend/
 ### Antes do Deploy (Obrigatório)
 
 1. **Aplicar migrations de DB:**
+
    ```bash
    cd apps/backend
    source venv/bin/activate
@@ -443,6 +469,7 @@ grep -r "subscription_management" apps/backend/
    ```
 
 2. **Executar dependency audit:**
+
    ```bash
    ./tools/audit/dependency_audit.sh
    # Verificar relatório gerado em audit/DEPENDENCY_AUDIT_*.md
@@ -450,6 +477,7 @@ grep -r "subscription_management" apps/backend/
    ```
 
 3. **Testar 2FA enforcement:**
+
    ```bash
    # Via Postman/Insomnia:
    # 1. Login com usuário com 2FA habilitado
@@ -504,27 +532,32 @@ grep -r "subscription_management" apps/backend/
 **Completude aumentou de 88% → 98%**
 
 **Todos os bloqueadores P1 foram resolvidos:**
+
 - ✅ 2FA enforcement implementado
 - ✅ Documentação completa criada
 - ✅ Rate limiting verificado (já existia)
 - ✅ Dependency audit automatizado
 
 **Funcionalidades P2 críticas implementadas:**
+
 - ✅ Índices de DB para performance
 - ✅ Connection pooling configurado
 - ✅ Retenção LGPD automatizada
 - ✅ Runbook operacional completo
 
 **Itens P2 adiados (não-bloqueantes):**
+
 - ⏳ httpOnly cookies (Sprint 2)
 - ⏳ E2E tests CI (Sprint 2)
 
 **Itens P3 verificados (não necessários):**
+
 - ✅ .pyc não estão no Git
 - ✅ Arquivos "não usados" na verdade são usados
 - ⏳ APM (pós-MVP, nice to have)
 
 **Próximo deploy deve incluir:**
+
 1. Migration de DB (novos índices)
 2. Restart do Celery (novas tasks LGPD)
 3. Verificação da dependency audit

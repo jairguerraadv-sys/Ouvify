@@ -76,21 +76,25 @@ export default function ConsentGate({ children }: ConsentGateProps) {
   const loadConsentContent = async (contentUrl: string) => {
     setContentLoading(true);
     setContentText("");
-    
+
     try {
-      // Se for URL relativa, fazer fetch
-      if (contentUrl.startsWith("/") || contentUrl.startsWith("http")) {
-        const response = await fetch(contentUrl);
-        const text = await response.text();
-        setContentText(text);
-      } else {
-        // Se for apenas nome de arquivo, buscar do backend
-        const response = await apiClient.get(`/api/consent/content/${contentUrl}`);
-        setContentText(response.data.content);
+      // content_url deve ser sempre uma URL válida (relativa ou absoluta)
+      // Ex: /static/consent/terms-v1.0.html ou https://example.com/terms.html
+      const response = await fetch(contentUrl);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
+
+      const text = await response.text();
+      setContentText(text);
     } catch (error) {
-      console.error("Erro ao carregar conteúdo:", error);
-      setContentText("Não foi possível carregar o conteúdo. Por favor, entre em contato com o suporte.");
+      console.error("Erro ao carregar conteúdo do termo:", error);
+
+      // Se falhar, ainda permitir visualizar a URL do documento
+      setContentText("");
+
+      toast.error("Não foi possível carregar o documento automaticamente. Use o link abaixo.");
     } finally {
       setContentLoading(false);
     }

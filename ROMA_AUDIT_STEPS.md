@@ -82,11 +82,11 @@ class OuvifyAuditor:
             "issues": [],
             "metrics": {}
         }
-    
+
     def scan_structure(self):
         """Escanear estrutura de pastas"""
         print("[1/6] Analisando estrutura do projeto...")
-        
+
         structure = {
             "backend": False,
             "frontend": False,
@@ -94,7 +94,7 @@ class OuvifyAuditor:
             "docs": False,
             "config": False
         }
-        
+
         # Verificar pastas
         for folder in structure.keys():
             path = self.repo_path / folder
@@ -102,50 +102,50 @@ class OuvifyAuditor:
             if path.exists():
                 files = list(path.glob("**/*"))
                 print(f"  ✓ {folder}: {len([f for f in files if f.is_file()])} arquivos")
-        
+
         self.results["modules"]["structure"] = structure
         return structure
-    
+
     def scan_dependencies(self):
         """Escanear dependências (requirements.txt, package.json)"""
         print("[2/6] Analisando dependências...")
-        
+
         deps = {
             "python_packages": [],
             "npm_packages": [],
             "total": 0
         }
-        
+
         # Python
         req_file = self.repo_path / "requirements.txt"
         if req_file.exists():
             with open(req_file) as f:
                 deps["python_packages"] = [line.strip() for line in f if line.strip() and not line.startswith("#")]
-        
+
         # Node
         pkg_file = self.repo_path / "package.json"
         if pkg_file.exists():
             deps["npm_packages"] = ["package.json found"]
-        
+
         deps["total"] = len(deps["python_packages"]) + len(deps["npm_packages"])
         print(f"  ✓ {deps['total']} dependências encontradas")
-        
+
         self.results["modules"]["dependencies"] = deps
         return deps
-    
+
     def scan_security(self):
         """Escanear problemas de segurança básicos"""
         print("[3/6] Analisando segurança...")
-        
+
         security_issues = []
-        
+
         # Procurar por padrões perigosos
         dangerous_patterns = {
             "hardcoded_api_keys": ["OPENAI_API_KEY", "SECRET_KEY", "API_KEY"],
             "sql_patterns": ["SELECT *", "exec(", "eval("],
             "exposed_credentials": [".env", "config.py with passwords"]
         }
-        
+
         for py_file in self.repo_path.rglob("*.py"):
             try:
                 with open(py_file, 'r', encoding='utf-8', errors='ignore') as f:
@@ -159,53 +159,53 @@ class OuvifyAuditor:
                             })
             except:
                 pass
-        
+
         print(f"  ✓ {len(security_issues)} potenciais issues de segurança")
-        
+
         self.results["modules"]["security"] = security_issues
         return security_issues
-    
+
     def scan_tests(self):
         """Verificar cobertura de testes"""
         print("[4/6] Analisando testes...")
-        
+
         test_files = list(self.repo_path.rglob("test_*.py")) + list(self.repo_path.rglob("*_test.py"))
-        
+
         print(f"  ✓ {len(test_files)} arquivos de teste encontrados")
-        
+
         self.results["modules"]["tests"] = {
             "count": len(test_files),
             "files": [str(f) for f in test_files[:10]]  # Primeiros 10
         }
         return test_files
-    
+
     def scan_documentation(self):
         """Verificar documentação"""
         print("[5/6] Analisando documentação...")
-        
+
         doc_files = {
             "readme": (self.repo_path / "README.md").exists(),
             "contributing": (self.repo_path / "CONTRIBUTING.md").exists(),
             "api_docs": (self.repo_path / "docs").exists(),
             "architecture": (self.repo_path / "ARCHITECTURE.md").exists()
         }
-        
+
         doc_count = sum(1 for v in doc_files.values() if v)
         print(f"  ✓ {doc_count}/4 documentos encontrados")
-        
+
         self.results["modules"]["documentation"] = doc_files
         return doc_files
-    
+
     def generate_report(self):
         """Gerar relatório final"""
         print("[6/6] Gerando relatório...")
-        
+
         self.results["status"] = "completed"
-        
+
         # Calcular score
         total_checks = 5
         passed_checks = 0
-        
+
         if self.results["modules"]["structure"]["backend"]:
             passed_checks += 1
         if self.results["modules"]["dependencies"]["total"] > 0:
@@ -216,44 +216,44 @@ class OuvifyAuditor:
             passed_checks += 1
         if sum(1 for v in self.results["modules"]["documentation"].values() if v) > 2:
             passed_checks += 1
-        
+
         self.results["metrics"]["score"] = f"{(passed_checks/total_checks)*100:.0f}%"
         self.results["metrics"]["status"] = "✅ PRONTO" if passed_checks >= 3 else "⚠️ PRECISA MELHORIAS"
-        
+
         return self.results
-    
+
     def save_report(self, filename="audit_report.json"):
         """Salvar relatório em JSON"""
         os.makedirs("audit-reports", exist_ok=True)
-        
+
         filepath = Path("audit-reports") / filename
         with open(filepath, 'w') as f:
             json.dump(self.results, f, indent=2, ensure_ascii=False)
-        
+
         print(f"\n✅ Relatório salvo: {filepath}")
         return filepath
-    
+
     def run_audit(self):
         """Executar auditoria completa"""
         print("=" * 70)
         print("🔍 AUDITORIA OUVIFY - ROMA FRAMEWORK")
         print("=" * 70)
         print()
-        
+
         self.scan_structure()
         self.scan_dependencies()
         self.scan_security()
         self.scan_tests()
         self.scan_documentation()
         self.generate_report()
-        
+
         print()
         print("=" * 70)
         print(f"📊 RESULTADO: {self.results['metrics']['status']}")
         print(f"📈 SCORE: {self.results['metrics']['score']}")
         print("=" * 70)
         print()
-        
+
         return self.save_report()
 
 if __name__ == "__main__":
@@ -261,7 +261,7 @@ if __name__ == "__main__":
         repo_path = sys.argv[1]
     else:
         repo_path = "./ouvify-repo"
-    
+
     auditor = OuvifyAuditor(repo_path)
     auditor.run_audit()
 EOF
@@ -307,6 +307,7 @@ EOF
 ```
 
 **✅ Resultado esperado:** Relatório estruturado com:
+
 - ✓ Estrutura do projeto
 - ✓ Dependências
 - ✓ Issues de segurança
@@ -381,7 +382,7 @@ def dashboard():
                         <h2>Estrutura</h2>
                         <pre>${JSON.stringify(data.modules.structure, null, 2)}</pre>
                         <h2>Issues de Segurança</h2>
-                        ${data.modules.security.length > 0 ? 
+                        ${data.modules.security.length > 0 ?
                             data.modules.security.map(i => `<div class="issue">${i.issue} (${i.severity})</div>`).join('') :
                             '<p class="success">✅ Nenhuma issue encontrada</p>'
                         }
@@ -451,22 +452,26 @@ open http://127.0.0.1:5000
 ## 🚀 PRÓXIMAS FASES (Após completar estes 6 passos)
 
 ### Fase 7: Análise detalhada de Segurança
+
 - Scan de SQL Injection
 - Scan de XSS
 - Verificar autenticação
 - Verificar CORS
 
 ### Fase 8: Análise de Performance
+
 - N+1 Query problems
 - Indexação de banco de dados
 - Caching strategy
 
 ### Fase 9: Conformidade (LGPD/GDPR)
+
 - Política de privacidade
 - Direito ao esquecimento
 - Audit logs
 
 ### Fase 10: Documentação Automática
+
 - Gerar README.md
 - Gerar API docs
 - Gerar guides

@@ -56,7 +56,7 @@ styles/
 ### Uso dos Tokens
 
 ```tsx
-import { colors, typography, spacing, shadows } from '@/styles/design-tokens';
+import { colors, typography, spacing, shadows } from "@/styles/design-tokens";
 
 // Exemplo de uso
 const styles = {
@@ -70,11 +70,11 @@ const styles = {
 
 ### 1. Estrutura de Arquivo
 
-```tsx
-'use client'; // Se necessário
+````tsx
+"use client"; // Se necessário
 
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
 // ... outros imports
 
 // ============================================
@@ -92,7 +92,7 @@ interface ComponentProps {
 
 /**
  * Descrição do componente
- * 
+ *
  * @example
  * ```tsx
  * <Component prop="value" />
@@ -103,32 +103,29 @@ export function Component({ prop }: ComponentProps) {
 }
 
 export default Component;
-```
+````
 
 ### 2. Variantes com CVA
 
 ```tsx
-import { cva, type VariantProps } from 'class-variance-authority';
+import { cva, type VariantProps } from "class-variance-authority";
 
-const buttonVariants = cva(
-  'base-classes',
-  {
-    variants: {
-      variant: {
-        default: 'variant-classes',
-        outline: 'outline-classes',
-      },
-      size: {
-        sm: 'size-sm-classes',
-        md: 'size-md-classes',
-      },
+const buttonVariants = cva("base-classes", {
+  variants: {
+    variant: {
+      default: "variant-classes",
+      outline: "outline-classes",
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'md',
+    size: {
+      sm: "size-sm-classes",
+      md: "size-md-classes",
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "md",
+  },
+});
 
 interface ButtonProps extends VariantProps<typeof buttonVariants> {
   children: React.ReactNode;
@@ -136,9 +133,7 @@ interface ButtonProps extends VariantProps<typeof buttonVariants> {
 
 export function Button({ variant, size, children }: ButtonProps) {
   return (
-    <button className={buttonVariants({ variant, size })}>
-      {children}
-    </button>
+    <button className={buttonVariants({ variant, size })}>{children}</button>
   );
 }
 ```
@@ -148,7 +143,7 @@ export function Button({ variant, size, children }: ButtonProps) {
 ```tsx
 // Componente composto (Compound Component Pattern)
 function Card({ children, className }: CardProps) {
-  return <div className={cn('card-base', className)}>{children}</div>;
+  return <div className={cn("card-base", className)}>{children}</div>;
 }
 
 function CardHeader({ children }: { children: React.ReactNode }) {
@@ -168,62 +163,62 @@ export { Card, CardHeader, CardContent };
 ### Logo
 
 ```tsx
-import { 
-  LogoHeader,        // Header principal
-  LogoFooter,        // Rodapé
-  LogoAuth,          // Páginas de auth
-  LogoSidebar,       // Sidebar
-  PoweredByOuvify,   // Selo "Powered by"
-} from '@/components/brand';
+import {
+  LogoHeader, // Header principal
+  LogoFooter, // Rodapé
+  LogoAuth, // Páginas de auth
+  LogoSidebar, // Sidebar
+  PoweredByOuvify, // Selo "Powered by"
+} from "@/components/brand";
 ```
 
 ### Dashboard
 
 ```tsx
 import {
-  DashboardLayout,   // Wrapper com sidebar
-  DashboardHeader,   // Header da página
-  DashboardSection,  // Seção de conteúdo
-  DashboardGrid,     // Grid responsivo
-  DashboardCard,     // Card padrão
-  DashboardStat,     // Card de KPI
-  DashboardEmpty,    // Estado vazio
-} from '@/components/dashboard';
+  DashboardLayout, // Wrapper com sidebar
+  DashboardHeader, // Header da página
+  DashboardSection, // Seção de conteúdo
+  DashboardGrid, // Grid responsivo
+  DashboardCard, // Card padrão
+  DashboardStat, // Card de KPI
+  DashboardEmpty, // Estado vazio
+} from "@/components/dashboard";
 ```
 
 ### Forms
 
 ```tsx
 import {
-  FormField,         // Campo com label/error
-  FormSection,       // Seção de formulário
-  FormActions,       // Área de botões
-} from '@/components/ui';
+  FormField, // Campo com label/error
+  FormSection, // Seção de formulário
+  FormActions, // Área de botões
+} from "@/components/ui";
 ```
 
 ### Loading
 
 ```tsx
 import {
-  LoadingState,      // Loading completo
-  LoadingSpinner,    // Spinner simples
-  PageLoading,       // Loading de página
-  Skeleton,          // Placeholder de conteúdo
-} from '@/components/ui';
+  LoadingState, // Loading completo
+  LoadingSpinner, // Spinner simples
+  PageLoading, // Loading de página
+  Skeleton, // Placeholder de conteúdo
+} from "@/components/ui";
 ```
 
 ### Toast/Feedback
 
 ```tsx
 import {
-  ToastProvider,     // Provider (no layout)
-  useToast,          // Hook para toasts
-  ConfirmDialog,     // Dialog de confirmação
-} from '@/components/ui';
+  ToastProvider, // Provider (no layout)
+  useToast, // Hook para toasts
+  ConfirmDialog, // Dialog de confirmação
+} from "@/components/ui";
 
 // Uso
 const { success, error } = useToast();
-success('Salvo com sucesso!');
+success("Salvo com sucesso!");
 ```
 
 ## ♿ Acessibilidade
@@ -232,12 +227,12 @@ success('Salvo com sucesso!');
 
 ```tsx
 import {
-  SkipLink,          // Link para pular navegação
-  VisuallyHidden,    // Conteúdo só para screen readers
-  FocusTrap,         // Trap de foco para modais
-  LiveRegion,        // Região live para anúncios
-  useAnnounce,       // Hook para anunciar mensagens
-} from '@/components/ui';
+  SkipLink, // Link para pular navegação
+  VisuallyHidden, // Conteúdo só para screen readers
+  FocusTrap, // Trap de foco para modais
+  LiveRegion, // Região live para anúncios
+  useAnnounce, // Hook para anunciar mensagens
+} from "@/components/ui";
 ```
 
 ### Checklist de Acessibilidade
@@ -256,13 +251,13 @@ import {
 
 ```tsx
 // ✅ Correto
-import { Button, Card, Input } from '@/components/ui';
-import { Logo, LogoHeader } from '@/components/brand';
-import { DashboardLayout, DashboardHeader } from '@/components/dashboard';
+import { Button, Card, Input } from "@/components/ui";
+import { Logo, LogoHeader } from "@/components/brand";
+import { DashboardLayout, DashboardHeader } from "@/components/dashboard";
 
 // ❌ Evitar
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 ```
 
 ## 🔄 Atualizações
@@ -275,4 +270,4 @@ import { Card } from '@/components/ui/card';
 
 ---
 
-*Última atualização: Janeiro 2026*
+_Última atualização: Janeiro 2026_

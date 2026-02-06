@@ -3,6 +3,7 @@
 Data: 2026-01-31
 
 ## Escopo
+
 - Frontend: rotas do Next.js (App Router) + navegação interna (links/hrefs).
 - Backend: endpoints Django/DRF (URLs + routers + actions de ViewSets).
 - Cruzamento: (1) rotas/links do frontend que não existem; (2) endpoints consumidos pelo frontend que não existem no backend; (3) endpoints expostos no backend sem evidência de consumo no frontend.
@@ -10,6 +11,7 @@ Data: 2026-01-31
 ## Inventário — Frontend (Next.js)
 
 ### Páginas detectadas (alto nível)
+
 - Públicas/marketing: `/`, `/precos`, `/recursos/*`, `/privacidade`, `/termos`, `/lgpd`, `/cookies`
 - Autenticação/onboarding: `/login`, `/cadastro`, `/recuperar-senha`, `/recuperar-senha/confirmar`, `/convite/[token]`
 - Produto público: `/enviar`, `/acompanhar`, `/demo`
@@ -17,6 +19,7 @@ Data: 2026-01-31
 - Admin: `/admin`, `/admin/tenants/[id]`
 
 ### Links/rotas referenciadas que não possuem página no `app/`
+
 - `/notifications` (referência em `apps/frontend/components/notifications/NotificationCenter.tsx`)
 - `/contato` (referências em páginas de marketing de recursos)
 - `/docs/*` (ex.: `/docs/webhooks`, `/docs/api`, `/docs/sdk/...`, `/docs/videos/...`)
@@ -30,6 +33,7 @@ Observação: `/privacidade`, `/termos`, `/lgpd`, `/cookies` existem como rotas 
 Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
 
 ### Core (saúde, CSP, busca, 2FA, LGPD)
+
 - Health/readiness: `GET /health/`, `GET /ready/`
 - CSP reports: `POST /api/csp-report/`
 - Busca global (Elastic):
@@ -47,7 +51,8 @@ Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
   - `DELETE /api/account/`
   - `GET    /api/export-data/`
 
-### Tenants (tenant-info, branding, signup, billing/stripe “tenants/*”)
+### Tenants (tenant-info, branding, signup, billing/stripe “tenants/\*”)
+
 - `GET/PATCH /api/tenant-info/`
 - `POST      /api/upload-branding/`
 - `POST      /api/register-tenant/`
@@ -59,6 +64,7 @@ Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
   - `POST /api/tenants/subscription/reactivate/`
 
 ### Auth
+
 - JWT:
   - `POST /api/token/`
   - `POST /api/token/refresh/`
@@ -74,6 +80,7 @@ Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
   - `POST /api/password-reset/confirm/`
 
 ### Feedbacks / Tags / Templates (DRF router em `/api/`)
+
 - Feedbacks:
   - CRUD: `/api/feedbacks/`, `/api/feedbacks/<id>/`
   - Público:
@@ -96,6 +103,7 @@ Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
   - `GET  /api/response-templates/stats/`
 
 ### Team (DRF router em `/api/`)
+
 - Members:
   - `GET    /api/team/members/`
   - `GET    /api/team/members/<id>/`
@@ -111,7 +119,9 @@ Fonte principal: `apps/backend/config/urls.py` + `apps/backend/apps/*/urls.py`.
   - `POST     /api/team/invitations/<id>/resend/`
 
 ### Auditlog
+
 Base: `/api/auditlog/`
+
 - Logs:
   - `GET /api/auditlog/logs/`
   - `GET /api/auditlog/logs/<id>/`
@@ -128,7 +138,9 @@ Base: `/api/auditlog/`
   - `GET /api/auditlog/sessions/stats/`
 
 ### Push notifications
+
 Base: `/api/push/`
+
 - Subscriptions:
   - `GET    /api/push/subscriptions/`
   - `POST   /api/push/subscriptions/subscribe/`
@@ -145,7 +157,9 @@ Base: `/api/push/`
   - `POST /api/push/notifications/send/` (admin)
 
 ### Billing v1 (Stripe)
+
 Base: `/api/v1/billing/`
+
 - Plans:
   - `GET /api/v1/billing/plans/`
 - Subscription:
@@ -159,7 +173,9 @@ Base: `/api/v1/billing/`
   - `POST /api/v1/billing/webhook/`
 
 ### Webhooks v1
+
 Base: `/api/v1/webhooks/`
+
 - Endpoints: CRUD + actions
   - `POST /api/v1/webhooks/endpoints/<id>/regenerate_secret/`
   - `POST /api/v1/webhooks/endpoints/<id>/test/`
@@ -170,7 +186,9 @@ Base: `/api/v1/webhooks/`
 - Deliveries: `GET /api/v1/webhooks/deliveries/` + `POST /api/v1/webhooks/deliveries/<id>/retry/`
 
 ### Admin tenants (superuser)
+
 Base: `/api/admin/tenants/`
+
 - `GET/PATCH /api/admin/tenants/`
 - `GET       /api/admin/tenants/metrics/`
 - `POST      /api/admin/tenants/<id>/impersonate/`
@@ -178,35 +196,43 @@ Base: `/api/admin/tenants/`
 ## Cruzamento (Frontend ↔ Backend)
 
 ### Inconsistências confirmadas
-1) **CSP report-uri sem barra final**
+
+1. **CSP report-uri sem barra final**
+
 - Frontend (antes): `report-uri /api/csp-report`.
 - Backend: `POST /api/csp-report/`.
 - Impacto provável: reports podem falhar se houver redirect/APPEND_SLASH.
 - Correção aplicada: `apps/frontend/middleware.ts` agora usa `report-uri /api/csp-report/`.
 
-2) **Query param divergente no helper de “consultar protocolo”**
+2. **Query param divergente no helper de “consultar protocolo”**
+
 - Backend espera `?protocolo=...`.
 - Frontend tinha helper usando `?codigo=...`.
 - Correção aplicada: `apps/frontend/hooks/use-dashboard.ts` agora usa `?protocolo=...`.
 
-3) **Link quebrado para “Política de Privacidade” no perfil**
+3. **Link quebrado para “Política de Privacidade” no perfil**
+
 - Frontend referenciava `/politica-privacidade` (não existe).
 - Correção aplicada: `apps/frontend/app/dashboard/perfil/page.tsx` agora aponta para `/privacidade`.
 
 ### Gaps (precisam decisão de produto/UX)
+
 - Links para páginas ausentes (`/docs/*`, `/contato`, `/notifications`, `/lgpd/solicitacao`, `/settings/privacy`): ou criar rotas, ou redirecionar para rotas existentes, ou apontar para URL externa.
 
 ### Endpoint consumido no frontend sem evidência no backend
+
 - `GET /api/v1/analytics/dashboard/?period=...` (referência em `apps/frontend/hooks/use-dashboard.ts`).
   - Não foi encontrado handler correspondente no backend (`config/urls.py` só expõe `GET /api/analytics/`).
 
 ## Recomendações (prioridade)
-1) Definir estratégia para `/docs/*` e `/contato` (rotas internas vs links externos).
-2) Alinhar analytics: ou criar `/api/v1/analytics/dashboard/` no backend, ou ajustar frontend para consumir `/api/analytics/`.
-3) Se `/notifications` for um “Inbox” de notificações, decidir rota/página (ex.: `/dashboard/notificacoes`) ou remover o link.
+
+1. Definir estratégia para `/docs/*` e `/contato` (rotas internas vs links externos).
+2. Alinhar analytics: ou criar `/api/v1/analytics/dashboard/` no backend, ou ajustar frontend para consumir `/api/analytics/`.
+3. Se `/notifications` for um “Inbox” de notificações, decidir rota/página (ex.: `/dashboard/notificacoes`) ou remover o link.
 
 ---
 
 ### Notas de rastreabilidade
+
 - Backend routes: `apps/backend/config/urls.py`, `apps/backend/apps/{feedbacks,tenants,auditlog,notifications,consent,billing,webhooks,core}/**`.
 - Frontend routes: `apps/frontend/app/**/page.tsx`, `apps/frontend/middleware.ts`, `apps/frontend/hooks/**`, `apps/frontend/lib/**`.

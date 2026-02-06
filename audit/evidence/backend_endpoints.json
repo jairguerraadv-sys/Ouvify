@@ -1,5 +1,5 @@
 {
-  "total_routes": 180,
+  "total_routes": 179,
   "unique_endpoints": 174,
   "endpoints": [
     {
@@ -76,18 +76,6 @@
     },
     {
       "method": "ANY",
-      "path": "/api/tenants/webhook/",
-      "type": "urlpattern",
-      "files": [
-        {
-          "file": "apps/backend/config/urls.py",
-          "details": {}
-        }
-      ],
-      "count": 1
-    },
-    {
-      "method": "ANY",
       "path": "/api/analytics/",
       "type": "urlpattern",
       "files": [
@@ -117,18 +105,6 @@
         }
       ],
       "count": 3
-    },
-    {
-      "method": "ANY",
-      "path": "/api/auth/logout/",
-      "type": "urlpattern",
-      "files": [
-        {
-          "file": "apps/backend/config/urls.py",
-          "details": {}
-        }
-      ],
-      "count": 1
     },
     {
       "method": "ANY",
@@ -385,6 +361,18 @@
     {
       "method": "ANY",
       "path": "/webhook/",
+      "type": "urlpattern",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/urls.py",
+          "details": {}
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "ANY",
+      "path": "/usage/",
       "type": "urlpattern",
       "files": [
         {
@@ -813,26 +801,6 @@
         }
       ],
       "count": 1
-    },
-    {
-      "method": "POST",
-      "path": "/stripewebhook/",
-      "type": "apiview",
-      "files": [
-        {
-          "file": "apps/backend/apps/tenants/views.py",
-          "details": {
-            "view": "StripeWebhookView"
-          }
-        },
-        {
-          "file": "apps/backend/apps/billing/views.py",
-          "details": {
-            "view": "StripeWebhookView"
-          }
-        }
-      ],
-      "count": 2
     },
     {
       "method": "GET",
@@ -2206,6 +2174,34 @@
     },
     {
       "method": "POST",
+      "path": "/stripewebhook/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "view": "StripeWebhookView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/usagestats/",
+      "type": "apiview",
+      "files": [
+        {
+          "file": "apps/backend/apps/billing/views.py",
+          "details": {
+            "view": "UsageStatsView"
+          }
+        }
+      ],
+      "count": 1
+    },
+    {
+      "method": "POST",
       "path": "/tokenbase/",
       "type": "apiview",
       "files": [
@@ -2511,5 +2507,5 @@
       "count": 1
     }
   ],
-  "scan_date": "2026-02-05T21:24:25.266074"
+  "scan_date": "2026-02-06T19:23:13.412622"
 }

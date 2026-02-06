@@ -4,64 +4,64 @@
 
 global:
   # Configuração de SMTP para envio de emails
-  smtp_smarthost: '${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}'
-  smtp_from: '${SMTP_FROM:-alertas@ouvify.com.br}'
-  smtp_auth_username: '${SMTP_USER}'
-  smtp_auth_password: '${SMTP_PASSWORD}'
+  smtp_smarthost: "${SMTP_HOST:-smtp.gmail.com}:${SMTP_PORT:-587}"
+  smtp_from: "${SMTP_FROM:-alertas@ouvify.com.br}"
+  smtp_auth_username: "${SMTP_USER}"
+  smtp_auth_password: "${SMTP_PASSWORD}"
   smtp_require_tls: true
 
   # Configuração de Slack (opcional)
-  slack_api_url: '${SLACK_WEBHOOK_URL}'
+  slack_api_url: "${SLACK_WEBHOOK_URL}"
 
 # Templates personalizados
 templates:
-  - '/etc/alertmanager/templates/*.tmpl'
+  - "/etc/alertmanager/templates/*.tmpl"
 
 # Roteamento de alertas
 route:
   # Agrupa alertas com mesmas labels
-  group_by: ['alertname', 'service', 'severity']
-  
+  group_by: ["alertname", "service", "severity"]
+
   # Tempo de espera antes de enviar grupo
   group_wait: 30s
-  
+
   # Tempo entre notificações do mesmo grupo
   group_interval: 5m
-  
+
   # Tempo para reenviar alerta não resolvido
   repeat_interval: 4h
-  
+
   # Receptor padrão
-  receiver: 'default-receiver'
-  
+  receiver: "default-receiver"
+
   # Rotas específicas
   routes:
     # Alertas críticos vão para todos os canais
     - match:
         severity: critical
-      receiver: 'critical-alerts'
+      receiver: "critical-alerts"
       continue: true
 
     # Alertas de segurança
     - match:
         service: security
-      receiver: 'security-alerts'
+      receiver: "security-alerts"
       continue: true
 
     # Alertas de banco de dados
     - match:
         service: database
-      receiver: 'database-alerts'
+      receiver: "database-alerts"
 
 # Receptores de notificação
 receivers:
   # Receptor padrão (email)
-  - name: 'default-receiver'
+  - name: "default-receiver"
     email_configs:
-      - to: '${ALERT_EMAIL:-devops@ouvify.com.br}'
+      - to: "${ALERT_EMAIL:-devops@ouvify.com.br}"
         send_resolved: true
         headers:
-          Subject: '[OUVIFY] {{ .Status | toUpper }}: {{ .CommonLabels.alertname }}'
+          Subject: "[OUVIFY] {{ .Status | toUpper }}: {{ .CommonLabels.alertname }}"
         html: |
           <h2>{{ .Status | toUpper }}: {{ .CommonLabels.alertname }}</h2>
           <p><strong>Severidade:</strong> {{ .CommonLabels.severity }}</p>
@@ -76,12 +76,12 @@ receivers:
           {{ end }}
 
   # Alertas críticos (email + Slack)
-  - name: 'critical-alerts'
+  - name: "critical-alerts"
     email_configs:
-      - to: '${CRITICAL_ALERT_EMAIL:-oncall@ouvify.com.br}'
+      - to: "${CRITICAL_ALERT_EMAIL:-oncall@ouvify.com.br}"
         send_resolved: true
     slack_configs:
-      - channel: '#ouvify-alerts'
+      - channel: "#ouvify-alerts"
         send_resolved: true
         title: '{{ if eq .Status "firing" }}🚨{{ else }}✅{{ end }} {{ .CommonLabels.alertname }}'
         text: |
@@ -93,19 +93,19 @@ receivers:
           {{ end }}
         actions:
           - type: button
-            text: 'Ver no Grafana'
-            url: '${GRAFANA_URL:-http://localhost:3001}'
+            text: "Ver no Grafana"
+            url: "${GRAFANA_URL:-http://localhost:3001}"
 
   # Alertas de segurança
-  - name: 'security-alerts'
+  - name: "security-alerts"
     email_configs:
-      - to: '${SECURITY_EMAIL:-security@ouvify.com.br}'
+      - to: "${SECURITY_EMAIL:-security@ouvify.com.br}"
         send_resolved: true
     slack_configs:
-      - channel: '#ouvify-security'
+      - channel: "#ouvify-security"
         send_resolved: true
         color: '{{ if eq .Status "firing" }}danger{{ else }}good{{ end }}'
-        title: '🔐 {{ .CommonLabels.alertname }}'
+        title: "🔐 {{ .CommonLabels.alertname }}"
         text: |
           *Alerta de Segurança*
           {{ range .Alerts }}
@@ -113,23 +113,23 @@ receivers:
           {{ end }}
 
   # Alertas de banco de dados
-  - name: 'database-alerts'
+  - name: "database-alerts"
     email_configs:
-      - to: '${DBA_EMAIL:-dba@ouvify.com.br}'
+      - to: "${DBA_EMAIL:-dba@ouvify.com.br}"
         send_resolved: true
 
 # Inibição de alertas (evita flood)
 inhibit_rules:
   # Se API está down, não enviar alerta de latência
   - source_match:
-      alertname: 'APIDown'
+      alertname: "APIDown"
     target_match:
-      alertname: 'HighAPILatency'
-    equal: ['service']
+      alertname: "HighAPILatency"
+    equal: ["service"]
 
   # Se Redis está down, não enviar alerta de memória
   - source_match:
-      alertname: 'RedisDown'
+      alertname: "RedisDown"
     target_match:
-      alertname: 'RedisHighMemory'
-    equal: ['service']
+      alertname: "RedisHighMemory"
+    equal: ["service"]

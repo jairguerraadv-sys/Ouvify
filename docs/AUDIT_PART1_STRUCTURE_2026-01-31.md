@@ -31,10 +31,12 @@
 **Impacto:** risco de vazamento de segredos/credenciais (mesmo “placeholders” podem ser preenchidos acidentalmente) e histórico permanente no Git.
 
 **Evidências (linhas com variáveis sensíveis; valores redigidos):**
+
 - `.env.production`: `SECRET_KEY` (linha 9), `DATABASE_URL` (20), `STRIPE_*` (34–36), `EMAIL_HOST_PASSWORD` (47), `REDIS_URL` (54), `SENTRY_DSN` (57)
 - `.env.staging`: `SECRET_KEY` (7), `STRIPE_*` (31–33), `SENTRY_DSN` (42), `CLOUDINARY_API_SECRET` (48)
 
 **Correção aplicada nesta auditoria (hardening imediato):**
+
 - Atualizado `.gitignore` para ignorar `.env.*` e permitir apenas exemplos (linhas 52–59).
 - Removidos do Git (untracked) `.env.production`, `.env.staging` e `node_modules/.package-lock.json`.
 
@@ -45,6 +47,7 @@
 ## 1.1 Dependências e versões (inventário inicial)
 
 ### Node/JS
+
 - Monorepo: `package.json` (raiz) com `workspaces` (`apps/frontend`, `packages/*`) e `turbo`.
 - Engines (raiz): Node `>=18` e npm `>=9`.
 - Frontend: `apps/frontend/package.json`
@@ -52,12 +55,14 @@
 - Packages: `packages/types/package.json` (build `tsc`).
 
 ### Python
+
 - **Manifesto fonte de verdade (backend)**:
   - `apps/backend/requirements.txt` — self-contained (compatível com build contexts que apontam para `apps/backend`).
 - **Wrapper no root (monorepo tooling)**:
   - `requirements.txt` (raiz) — wrapper que inclui `apps/backend/requirements.txt` (evita drift).
 
 **Inconsistências relevantes (exemplos):**
+
 - Django: raiz `Django==6.0.1` vs backend `Django==5.1.5`.
 - Celery: raiz `5.4.0` vs backend `5.6.2`.
 - `django-redis`: raiz `6.0.0` vs backend `5.4.0`.

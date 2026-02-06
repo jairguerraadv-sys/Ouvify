@@ -1,0 +1,32 @@
+=== Minimização e Retenção de Dados ===
+
+## Minimização (LGPD Art. 6, III):
+
+Princípio: coletar apenas dados necessários
+
+### Análise Feedback:
+  - nome: OPCIONAL ✓ (permite anonimato)
+  - email: OPCIONAL ✓ (apenas se quiser retorno)
+  - telefone: OPCIONAL ✓
+  - descricao: NECESSÁRIO ✓
+  - protocolo: NECESSÁRIO ✓ (rastreamento)
+
+Status: ADEQUADO (campos não obrigatórios permitem minimização)
+
+## Retenção (LGPD Art. 15 e 16):
+
+Procurando políticas de retenção...
+/workspaces/Ouvify/apps/backend/apps/feedbacks/tasks.py:@shared_task(name="feedbacks.cleanup_old_archived_feedbacks")
+/workspaces/Ouvify/apps/backend/apps/feedbacks/tasks.py:def cleanup_old_archived_feedbacks():
+/workspaces/Ouvify/apps/backend/apps/core/tests/test_lgpd.py:    def test_data_retention_awareness(self, test_user, consent_version):
+/workspaces/Ouvify/apps/backend/apps/core/tasks.py:Inclui: emails, cache, analytics, cleanup, notificações
+/workspaces/Ouvify/apps/backend/apps/core/tasks.py:def cleanup_expired_tokens():
+/workspaces/Ouvify/apps/backend/apps/core/tasks.py:def cleanup_old_sessions():
+/workspaces/Ouvify/apps/backend/apps/core/tasks.py:def cleanup_old_feedbacks(days: int = 365):
+/workspaces/Ouvify/apps/backend/apps/notifications/tasks.py:def cleanup_old_notifications(days: int = 90) -> Dict[str, int]:
+/workspaces/Ouvify/apps/backend/apps/notifications/tasks.py:def cleanup_inactive_subscriptions(days: int = 30) -> Dict[str, int]:
+
+✓ Políticas ou código de retenção encontrados (verificar acima)
+
+### Soft Delete vs Hard Delete:
+⚠️  Verificar se usa soft delete ou hard delete

@@ -7,11 +7,13 @@ Sistema completo de autenticação de dois fatores (2FA) para a plataforma Ouvif
 ## 🏗️ Arquitetura
 
 ### Backend (Django)
+
 - **Endpoints:** `apps/backend/apps/core/two_factor_urls.py`
 - **Serviço:** `apps/backend/apps/core/two_factor_service.py`
 - **Views:** `apps/backend/apps/core/views/two_factor_views.py`
 
 ### Frontend (Next.js)
+
 - **Hook:** `hooks/use-2fa.ts`
 - **Componentes:** `components/2fa/`
 - **Páginas:**
@@ -53,6 +55,7 @@ Sistema completo de autenticação de dois fatores (2FA) para a plataforma Ouvif
 ## 📡 API Endpoints
 
 ### Setup - Iniciar Configuração
+
 ```http
 POST /api/auth/2fa/setup/
 Authorization: Bearer <token>
@@ -67,6 +70,7 @@ Response 200:
 ```
 
 ### Confirm - Confirmar Ativação
+
 ```http
 POST /api/auth/2fa/confirm/
 Authorization: Bearer <token>
@@ -84,6 +88,7 @@ Response 200:
 ```
 
 ### Verify - Verificar Código no Login
+
 ```http
 POST /api/auth/2fa/verify/
 Authorization: Bearer <token>
@@ -101,6 +106,7 @@ Response 200:
 ```
 
 ### Status - Consultar Status
+
 ```http
 GET /api/auth/2fa/status/
 Authorization: Bearer <token>
@@ -114,6 +120,7 @@ Response 200:
 ```
 
 ### Disable - Desabilitar 2FA
+
 ```http
 POST /api/auth/2fa/disable/
 Authorization: Bearer <token>
@@ -131,6 +138,7 @@ Response 200:
 ```
 
 ### Regenerate Backup Codes
+
 ```http
 POST /api/auth/2fa/backup-codes/regenerate/
 Authorization: Bearer <token>
@@ -144,54 +152,66 @@ Response 200:
 ## 🎨 Componentes
 
 ### TwoFactorQRCode
+
 Exibe QR Code para escanear no app autenticador.
 
 **Props:**
+
 - `qrCodeDataUrl: string` - Data URL do QR Code (base64)
 - `secret: string` - Secret TOTP para entrada manual
 - `className?: string` - Classes CSS adicionais
 
 **Features:**
+
 - Exibição de QR Code responsivo
 - Botão para copiar secret manualmente
 - Instruções passo-a-passo
 
 ### BackupCodesDisplay
+
 Exibe códigos de backup para impressão/download.
 
 **Props:**
+
 - `codes: string[]` - Array de códigos de backup
 - `className?: string` - Classes CSS adicionais
 
 **Features:**
+
 - Grid de códigos formatados
 - Botão para copiar todos os códigos
 - Botão para baixar .txt
 - Alertas de segurança
 
 ### TwoFactorSetupModal
+
 Wizard completo de configuração de 2FA.
 
 **Props:**
+
 - `open: boolean` - Controla visibilidade
 - `onOpenChange: (open: boolean) => void` - Callback ao mudar estado
 - `onComplete?: () => void` - Callback ao concluir
 
 **Features:**
+
 - Fluxo multi-etapas (loading → QR → verify → backup)
 - Validação de código em tempo real
 - Suporte a Enter key
 - Animações de transição
 
 ### TwoFactorDisableModal
+
 Modal para desabilitar 2FA com validação dupla.
 
 **Props:**
+
 - `open: boolean` - Controla visibilidade
 - `onOpenChange: (open: boolean) => void` - Callback ao mudar estado
 - `onComplete?: () => void` - Callback ao concluir
 
 **Features:**
+
 - Validação de senha + código 2FA
 - Aviso de segurança
 - Suporte a TOTP e backup codes
@@ -210,7 +230,7 @@ Hook React para gerenciar todas as operações de 2FA.
   error: any;
   setupData: TwoFactorSetupResponse | null;
   isEnabled: boolean;
-  
+
   // Ações
   setup2FA: () => Promise<TwoFactorSetupResponse | null>;
   confirm2FA: (code: string) => Promise<boolean>;
@@ -251,16 +271,19 @@ function SecuritySettings() {
 ## 🔐 Segurança
 
 ### Rate Limiting
+
 - **Máximo:** 5 tentativas de verificação
 - **Janela:** 5 minutos
 - **Cache:** Redis/Django Cache Framework
 
 ### Armazenamento
+
 - **Secret TOTP:** Criptografado no banco de dados
 - **Backup Codes:** Armazenados como SHA-256 hash
 - **JWT:** Tokens normais (2FA é verificação adicional)
 
 ### Algoritmos
+
 - **TOTP:** RFC 6238 (Time-based One-Time Password)
 - **Intervalo:** 30 segundos
 - **Dígitos:** 6
@@ -317,21 +340,25 @@ function SecuritySettings() {
 ## 🐛 Troubleshooting
 
 ### "Código inválido" repetidamente
+
 - Verificar se o relógio do servidor está sincronizado (NTP)
 - Verificar se o app autenticador tem a hora correta
 - Janela de tolerância: ±30 segundos
 
 ### QR Code não aparece
+
 - Verificar se QR Code está sendo gerado no backend
 - Verificar logs do Django: `python manage.py runserver`
 - Testar endpoint diretamente: `POST /api/auth/2fa/setup/`
 
 ### 2FA não está sendo exigido no login
+
 - Verificar se `two_factor_enabled=True` no banco de dados
 - Verificar resposta de `/api/auth/2fa/status/`
 - Verificar console do navegador para erros
 
 ### "Muitas tentativas"
+
 - Rate limit atingido (5 tentativas em 5 minutos)
 - Aguardar 5 minutos ou limpar cache do Django
 - Comando: `python manage.py shell` → `cache.clear()`

@@ -8,14 +8,14 @@ Este guia mostra como configurar o ambiente de desenvolvimento local do Ouvify.
 
 ### Software Necessário
 
-| Software | Versão Mínima | Verificar |
-|----------|---------------|-----------|
-| Node.js | 18.0.0 | `node --version` |
-| npm | 9.0.0 | `npm --version` |
-| Python | 3.11.0 | `python --version` |
-| PostgreSQL | 16.0 | `psql --version` |
-| Redis | 7.0 | `redis-cli --version` |
-| Git | 2.30 | `git --version` |
+| Software   | Versão Mínima | Verificar             |
+| ---------- | ------------- | --------------------- |
+| Node.js    | 18.0.0        | `node --version`      |
+| npm        | 9.0.0         | `npm --version`       |
+| Python     | 3.11.0        | `python --version`    |
+| PostgreSQL | 16.0          | `psql --version`      |
+| Redis      | 7.0           | `redis-cli --version` |
+| Git        | 2.30          | `git --version`       |
 
 ### macOS
 
@@ -528,4 +528,4 @@ python manage.py shell
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

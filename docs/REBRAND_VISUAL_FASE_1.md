@@ -2,13 +2,14 @@
 
 **Data:** 06 de Fevereiro, 2026  
 **Status:** ✅ **COMPLETO**  
-**Designer Responsável:** Lead UI/UX  
+**Designer Responsável:** Lead UI/UX
 
 ---
 
 ## 📋 RESUMO EXECUTIVO
 
 Redefinição completa da fundação visual do Ouvify para um estilo **Modern SaaS** profissional, com foco em:
+
 - ✅ Paleta de cores limpa e profissional (Slate/Blue)
 - ✅ Alto contraste para acessibilidade (WCAG AAA)
 - ✅ Tipografia moderna e consistente (Inter + Poppins)
@@ -19,35 +20,35 @@ Redefinição completa da fundação visual do Ouvify para um estilo **Modern Sa
 
 ### **Modo Claro (Light Mode)**
 
-| Token | HSL | Cor Visual | Uso |
-|-------|-----|------------|-----|
-| `--background` | `0 0% 100%` | ![#FFFFFF](https://via.placeholder.com/50x20/FFFFFF/FFFFFF) | Fundo principal (branco puro) |
-| `--foreground` | `222.2 84% 4.9%` | ![#020617](https://via.placeholder.com/50x20/020617/FFFFFF?text=+) | Texto principal (Slate 950) |
-| `--primary` | `221.2 83.2% 53.3%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Azul vibrante profissional |
-| `--primary-foreground` | `210 40% 98%` | ![#F8FAFC](https://via.placeholder.com/50x20/F8FAFC/000000) | Texto sobre azul |
-| `--secondary` | `210 40% 96.1%` | ![#F1F5F9](https://via.placeholder.com/50x20/F1F5F9/000000) | Cinza muito claro (Slate 50) |
+| Token                    | HSL                 | Cor Visual                                                         | Uso                           |
+| ------------------------ | ------------------- | ------------------------------------------------------------------ | ----------------------------- |
+| `--background`           | `0 0% 100%`         | ![#FFFFFF](https://via.placeholder.com/50x20/FFFFFF/FFFFFF)        | Fundo principal (branco puro) |
+| `--foreground`           | `222.2 84% 4.9%`    | ![#020617](https://via.placeholder.com/50x20/020617/FFFFFF?text=+) | Texto principal (Slate 950)   |
+| `--primary`              | `221.2 83.2% 53.3%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Azul vibrante profissional    |
+| `--primary-foreground`   | `210 40% 98%`       | ![#F8FAFC](https://via.placeholder.com/50x20/F8FAFC/000000)        | Texto sobre azul              |
+| `--secondary`            | `210 40% 96.1%`     | ![#F1F5F9](https://via.placeholder.com/50x20/F1F5F9/000000)        | Cinza muito claro (Slate 50)  |
 | `--secondary-foreground` | `222.2 47.4% 11.2%` | ![#0F172A](https://via.placeholder.com/50x20/0F172A/FFFFFF?text=+) | Texto sobre cinza (Slate 900) |
-| `--muted` | `210 40% 96.1%` | ![#F1F5F9](https://via.placeholder.com/50x20/F1F5F9/000000) | Fundos sutis |
-| `--muted-foreground` | `215.4 16.3% 46.9%` | ![#64748B](https://via.placeholder.com/50x20/64748B/FFFFFF?text=+) | Texto de apoio (Slate 600) |
-| `--border` | `214.3 31.8% 91.4%` | ![#E2E8F0](https://via.placeholder.com/50x20/E2E8F0/000000) | Bordas sutis (Slate 200) |
+| `--muted`                | `210 40% 96.1%`     | ![#F1F5F9](https://via.placeholder.com/50x20/F1F5F9/000000)        | Fundos sutis                  |
+| `--muted-foreground`     | `215.4 16.3% 46.9%` | ![#64748B](https://via.placeholder.com/50x20/64748B/FFFFFF?text=+) | Texto de apoio (Slate 600)    |
+| `--border`               | `214.3 31.8% 91.4%` | ![#E2E8F0](https://via.placeholder.com/50x20/E2E8F0/000000)        | Bordas sutis (Slate 200)      |
 
 ### **Cores Semânticas (Status)**
 
-| Token | HSL | Cor Visual | Uso |
-|-------|-----|------------|-----|
-| `--success` | `142 76% 36%` | ![#16A34A](https://via.placeholder.com/50x20/16A34A/FFFFFF?text=+) | Sucesso (Green 600) |
-| `--warning` | `38 92% 50%` | ![#F59E0B](https://via.placeholder.com/50x20/F59E0B/000000) | Alerta (Amber 500) |
-| `--error` | `0 84.2% 60.2%` | ![#EF4444](https://via.placeholder.com/50x20/EF4444/FFFFFF?text=+) | Erro (Red 500) |
-| `--info` | `217.2 91.2% 59.8%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Informação (Blue 500) |
+| Token       | HSL                 | Cor Visual                                                         | Uso                   |
+| ----------- | ------------------- | ------------------------------------------------------------------ | --------------------- |
+| `--success` | `142 76% 36%`       | ![#16A34A](https://via.placeholder.com/50x20/16A34A/FFFFFF?text=+) | Sucesso (Green 600)   |
+| `--warning` | `38 92% 50%`        | ![#F59E0B](https://via.placeholder.com/50x20/F59E0B/000000)        | Alerta (Amber 500)    |
+| `--error`   | `0 84.2% 60.2%`     | ![#EF4444](https://via.placeholder.com/50x20/EF4444/FFFFFF?text=+) | Erro (Red 500)        |
+| `--info`    | `217.2 91.2% 59.8%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Informação (Blue 500) |
 
 ### **Modo Escuro (Dark Mode)**
 
-| Token | HSL | Cor Visual | Uso |
-|-------|-----|------------|-----|
-| `--background` | `222.2 84% 4.9%` | ![#020617](https://via.placeholder.com/50x20/020617/FFFFFF?text=+) | Fundo escuro profundo (Slate 950) |
-| `--foreground` | `210 40% 98%` | ![#F8FAFC](https://via.placeholder.com/50x20/F8FAFC/000000) | Texto claro (Slate 50) |
-| `--primary` | `217.2 91.2% 59.8%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Azul mais claro para contraste |
-| `--border` | `217.2 32.6% 17.5%` | ![#1E293B](https://via.placeholder.com/50x20/1E293B/FFFFFF?text=+) | Bordas sutis (Slate 800) |
+| Token          | HSL                 | Cor Visual                                                         | Uso                               |
+| -------------- | ------------------- | ------------------------------------------------------------------ | --------------------------------- |
+| `--background` | `222.2 84% 4.9%`    | ![#020617](https://via.placeholder.com/50x20/020617/FFFFFF?text=+) | Fundo escuro profundo (Slate 950) |
+| `--foreground` | `210 40% 98%`       | ![#F8FAFC](https://via.placeholder.com/50x20/F8FAFC/000000)        | Texto claro (Slate 50)            |
+| `--primary`    | `217.2 91.2% 59.8%` | ![#3B82F6](https://via.placeholder.com/50x20/3B82F6/FFFFFF?text=+) | Azul mais claro para contraste    |
+| `--border`     | `217.2 32.6% 17.5%` | ![#1E293B](https://via.placeholder.com/50x20/1E293B/FFFFFF?text=+) | Bordas sutis (Slate 800)          |
 
 ---
 
@@ -62,14 +63,14 @@ import { Inter, Poppins } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],  // Normal, Medium, Semibold, Bold
+  weight: ["400", "500", "600", "700"], // Normal, Medium, Semibold, Bold
   display: "swap",
   variable: "--font-inter",
 });
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],  // Medium, Semibold, Bold, ExtraBold
+  weight: ["500", "600", "700", "800"], // Medium, Semibold, Bold, ExtraBold
   display: "swap",
   variable: "--font-poppins",
 });
@@ -77,13 +78,13 @@ const poppins = Poppins({
 
 ### **Hierarquia de Uso**
 
-| Elemento | Fonte | Peso | Uso |
-|----------|-------|------|-----|
-| **Body Text** | Inter | 400 (Normal) | Parágrafos, descrições, textos longos |
-| **UI Elements** | Inter | 500 (Medium) | Botões, labels, navegação |
-| **Headings (H1-H6)** | Poppins | 700 (Bold) | Títulos de seção, cabeçalhos |
-| **Emphasis** | Inter | 600 (Semibold) | Links, CTAs, destaques |
-| **Code/Monospace** | JetBrains Mono | 400 | Código, dados técnicos |
+| Elemento             | Fonte          | Peso           | Uso                                   |
+| -------------------- | -------------- | -------------- | ------------------------------------- |
+| **Body Text**        | Inter          | 400 (Normal)   | Parágrafos, descrições, textos longos |
+| **UI Elements**      | Inter          | 500 (Medium)   | Botões, labels, navegação             |
+| **Headings (H1-H6)** | Poppins        | 700 (Bold)     | Títulos de seção, cabeçalhos          |
+| **Emphasis**         | Inter          | 600 (Semibold) | Links, CTAs, destaques                |
+| **Code/Monospace**   | JetBrains Mono | 400            | Código, dados técnicos                |
 
 ---
 
@@ -91,13 +92,13 @@ const poppins = Poppins({
 
 ### **Garantias de Contraste**
 
-| Par de Cores | Contraste | WCAG Level | Status |
-|--------------|-----------|------------|--------|
-| `foreground` / `background` | **21:1** | AAA | ✅ Excelente |
-| `primary` / `primary-foreground` | **8.5:1** | AA | ✅ Aprovado |
-| `secondary-foreground` / `secondary` | **16.2:1** | AAA | ✅ Excelente |
-| `muted-foreground` / `background` | **4.8:1** | AA | ✅ Aprovado |
-| `error` / `background` | **4.5:1** | AA | ✅ Aprovado |
+| Par de Cores                         | Contraste  | WCAG Level | Status       |
+| ------------------------------------ | ---------- | ---------- | ------------ |
+| `foreground` / `background`          | **21:1**   | AAA        | ✅ Excelente |
+| `primary` / `primary-foreground`     | **8.5:1**  | AA         | ✅ Aprovado  |
+| `secondary-foreground` / `secondary` | **16.2:1** | AAA        | ✅ Excelente |
+| `muted-foreground` / `background`    | **4.8:1**  | AA         | ✅ Aprovado  |
+| `error` / `background`               | **4.5:1**  | AA         | ✅ Aprovado  |
 
 **Referência:** WCAG 2.1 Level AA requer **4.5:1** para texto normal, **3:1** para texto grande.
 
@@ -120,6 +121,7 @@ const poppins = Poppins({
 ```
 
 **Mudanças Detalhadas:**
+
 - ✅ Redefiniu `:root` (modo claro) com 15 variáveis CSS
 - ✅ Redefiniu `.dark` (modo escuro) com 15 variáveis CSS
 - ✅ Manteve estrutura HSL para compatibilidade com Shadcn UI
@@ -128,6 +130,7 @@ const poppins = Poppins({
 ### **2. `apps/frontend/app/layout.tsx`** (✅ **JÁ OTIMIZADO**)
 
 **Status:** Arquivo já estava configurado perfeitamente:
+
 - ✅ Importa `Inter` e `Poppins` do `next/font/google`
 - ✅ Aplica variáveis CSS no `<html>` com `className={inter.variable} ${poppins.variable}`
 - ✅ Body usa `font-sans antialiased` (mapeia para Inter via Tailwind)
@@ -137,6 +140,7 @@ const poppins = Poppins({
 ### **3. `apps/frontend/tailwind.config.ts`** (✅ **JÁ OTIMIZADO**)
 
 **Status:** Configuração já está perfeita:
+
 - ✅ Referencia variáveis CSS com `hsl(var(--primary))`, etc.
 - ✅ Mapeia fontes: `fontFamily.sans` → Inter, `fontFamily.heading` → Poppins
 - ✅ Usa design tokens de `styles/design-tokens.ts` (que se adaptam às novas variáveis)
@@ -146,9 +150,10 @@ const poppins = Poppins({
 ### **4. `apps/frontend/styles/design-tokens.ts`** (✅ **AUTO-ADAPTA**)
 
 **Status:** Tokens usam `color-mix()` dinâmico com variáveis CSS:
+
 ```typescript
 const createScale = (baseVar: string) => ({
-  500: `hsl(var(${baseVar}))`,  // Referencia --primary, --secondary, etc.
+  500: `hsl(var(${baseVar}))`, // Referencia --primary, --secondary, etc.
   // Escalas 50-900 geradas dinamicamente
 });
 ```
@@ -199,12 +204,12 @@ npm run dev
 
 ### **Métricas de Qualidade**
 
-| Métrica | Antes | Depois | Melhoria |
-|---------|-------|--------|----------|
-| **Contraste Foreground/Background** | 18.5:1 | 21:1 | +13% |
-| **Consistência de Cores** | ~15 tons diferentes | 4 cores base + escalas | **Unificado** |
-| **Tokens CSS Centralizados** | Parcial | 100% | **Total** |
-| **WCAG Compliance** | AA | AAA | **Upgrade** |
+| Métrica                             | Antes               | Depois                 | Melhoria      |
+| ----------------------------------- | ------------------- | ---------------------- | ------------- |
+| **Contraste Foreground/Background** | 18.5:1              | 21:1                   | +13%          |
+| **Consistência de Cores**           | ~15 tons diferentes | 4 cores base + escalas | **Unificado** |
+| **Tokens CSS Centralizados**        | Parcial             | 100%                   | **Total**     |
+| **WCAG Compliance**                 | AA                  | AAA                    | **Upgrade**   |
 
 ---
 
@@ -213,24 +218,28 @@ npm run dev
 > **Esta é a Fase 1 (Fundação).** Próximas fases do rebrand incluem:
 
 ### **Fase 2: Componentes UI (Estimado: 4h)**
+
 - [ ] Reestilar todos os botões (`Button.tsx`) com nova paleta
 - [ ] Atualizar Cards e Dialogs
 - [ ] Revisar estados de hover/active/disabled
 - [ ] Padronizar sombras (usar `shadow-soft` e `shadow-subtle`)
 
 ### **Fase 3: Páginas Principais (Estimado: 6h)**
+
 - [ ] Landing Page (`/`) - Hero + Features
 - [ ] Dashboard (`/dashboard`) - Sidebar, Header, Cards
 - [ ] Formulários de Feedback (`/feedback/new`)
 - [ ] Página de Perfil (`/dashboard/perfil`)
 
 ### **Fase 4: Animações & Interações (Estimado: 3h)**
+
 - [ ] Transições suaves (300ms) em botões e links
 - [ ] Loading states com nova paleta
 - [ ] Toast notifications (Sonner) com cores semânticas
 - [ ] Micro-interações (hover effects, focus rings)
 
 ### **Fase 5: Auditoria Final (Estimado: 2h)**
+
 - [ ] Screenshot de todas as páginas (antes/depois)
 - [ ] Validação WCAG com ferramentas automatizadas (axe, Lighthouse)
 - [ ] Review de cores em devices reais (mobile/tablet/desktop)
@@ -240,23 +249,25 @@ npm run dev
 
 ## 📦 ENTREGÁVEIS - FASE 1
 
-| Arquivo | Status | Descrição |
-|---------|--------|-----------|
-| `apps/frontend/app/globals.css` | ✅ **ATUALIZADO** | Nova paleta HSL (15 variáveis + modo escuro) |
-| `apps/frontend/app/layout.tsx` | ✅ **VERIFICADO** | Tipografia Inter/Poppins já otimizada |
-| `apps/frontend/tailwind.config.ts` | ✅ **VERIFICADO** | Configuração de fontes já perfeita |
-| `docs/REBRAND_VISUAL_FASE_1.md` | ✅ **CRIADO** | Este documento (guia de referência) |
+| Arquivo                            | Status            | Descrição                                    |
+| ---------------------------------- | ----------------- | -------------------------------------------- |
+| `apps/frontend/app/globals.css`    | ✅ **ATUALIZADO** | Nova paleta HSL (15 variáveis + modo escuro) |
+| `apps/frontend/app/layout.tsx`     | ✅ **VERIFICADO** | Tipografia Inter/Poppins já otimizada        |
+| `apps/frontend/tailwind.config.ts` | ✅ **VERIFICADO** | Configuração de fontes já perfeita           |
+| `docs/REBRAND_VISUAL_FASE_1.md`    | ✅ **CRIADO**     | Este documento (guia de referência)          |
 
 ---
 
 ## 🎨 REFERÊNCIAS DE DESIGN
 
 ### **Inspirações (Modern SaaS)**
+
 - [Vercel Design System](https://vercel.com/design) - Slate/Blue palette
 - [Linear App](https://linear.app) - Clean UI, high contrast
 - [Tailwind UI](https://tailwindui.com) - Professional components
 
 ### **Ferramentas Usadas**
+
 - **Paleta:** Tailwind Colors (Slate + Blue scales)
 - **Contraste:** [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/)
 - **Fontes:** Google Fonts (Inter, Poppins)
@@ -271,9 +282,10 @@ npm run dev
 **Aprovado por:** Lead UI/UX Designer  
 **Data:** 06 de Fevereiro, 2026  
 **Build Status:** ✅ TypeScript passa sem erros  
-**Visual Status:** ✅ Paleta aplicada com sucesso  
+**Visual Status:** ✅ Paleta aplicada com sucesso
 
 **Comando para verificar:**
+
 ```bash
 cd /workspaces/Ouvify/apps/frontend
 npm run build  # ✅ Deve passar sem erros

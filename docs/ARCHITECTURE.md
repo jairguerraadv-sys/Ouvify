@@ -45,16 +45,16 @@ O sistema implementa **multi-tenancy por banco de dados compartilhado** com isol
 # Modelo Base para Multi-Tenancy
 class TenantAwareModel(models.Model):
     """Modelo abstrato que automaticamente filtra por tenant."""
-    
+
     client = models.ForeignKey(
         'tenants.Client',
         on_delete=models.CASCADE,
         related_name='%(class)s_set'
     )
-    
+
     objects = TenantAwareManager()
     all_tenants = models.Manager()  # Para admin
-    
+
     class Meta:
         abstract = True
 ```
@@ -440,4 +440,4 @@ Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

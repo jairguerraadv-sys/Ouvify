@@ -24,14 +24,14 @@ Este é o **guia técnico** do Design System do Ouvify. Se você é designer, co
 
 ### **Stack Técnica**
 
-| Ferramenta | Versão | Uso |
-|------------|--------|-----|
-| **React** | 18.x | Framework UI |
-| **Next.js** | 14.x | Server-side rendering |
-| **Tailwind CSS** | 3.x | Utility CSS |
-| **Shadcn UI** | Latest | Componentes base |
-| **Lucide** | Latest | Ícones |
-| **TypeScript** | 5.x | Type safety |
+| Ferramenta       | Versão | Uso                   |
+| ---------------- | ------ | --------------------- |
+| **React**        | 18.x   | Framework UI          |
+| **Next.js**      | 14.x   | Server-side rendering |
+| **Tailwind CSS** | 3.x    | Utility CSS           |
+| **Shadcn UI**    | Latest | Componentes base      |
+| **Lucide**       | Latest | Ícones                |
+| **TypeScript**   | 5.x    | Type safety           |
 
 ### **Arquivos Importantes**
 
@@ -121,6 +121,7 @@ import { Button } from "@/components/ui/button";
 #### **Focus State (Acessibilidade):**
 
 O Button já tem focus state built-in:
+
 ```css
 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary
 ```
@@ -136,22 +137,31 @@ focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary
 #### **Estrutura Básica:**
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
 
 <Card>
   <CardHeader>
     <CardTitle>Título do Card</CardTitle>
-    <CardDescription>Descrição opcional (text-muted-foreground)</CardDescription>
+    <CardDescription>
+      Descrição opcional (text-muted-foreground)
+    </CardDescription>
   </CardHeader>
-  
+
   <CardContent>
     <p className="text-foreground">Conteúdo principal</p>
   </CardContent>
-  
+
   <CardFooter>
     <Button>Ação</Button>
   </CardFooter>
-</Card>
+</Card>;
 ```
 
 #### **Card de KPI (Dashboard):**
@@ -163,12 +173,10 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
     <p className="text-sm font-medium text-muted-foreground">
       Total de Feedbacks
     </p>
-    
+
     {/* Valor (WCAG AAA - 21:1 contraste) */}
-    <div className="text-3xl font-bold text-foreground mt-2 mb-1">
-      1,234
-    </div>
-    
+    <div className="text-3xl font-bold text-foreground mt-2 mb-1">1,234</div>
+
     {/* Variação */}
     <p className="text-xs text-success flex items-center gap-1">
       <TrendingUp className="h-3 w-3" />
@@ -203,13 +211,8 @@ import { Label } from "@/components/ui/label";
   <Label htmlFor="name" className="text-foreground">
     Nome Completo *
   </Label>
-  <Input
-    id="name"
-    type="text"
-    placeholder="João Silva"
-    className="mt-1"
-  />
-</div>
+  <Input id="name" type="text" placeholder="João Silva" className="mt-1" />
+</div>;
 ```
 
 #### **Com Validação:**
@@ -223,10 +226,7 @@ import { Label } from "@/components/ui/label";
     id="email"
     type="email"
     placeholder="joao@exemplo.com"
-    className={cn(
-      "mt-1",
-      errors.email && "border-error focus:ring-error"
-    )}
+    className={cn("mt-1", errors.email && "border-error focus:ring-error")}
     aria-invalid={!!errors.email}
     aria-describedby={errors.email ? "email-error" : undefined}
   />
@@ -287,13 +287,13 @@ import { Badge } from "@/components/ui/badge";
 ```tsx
 const getStatusBadge = (status: string) => {
   const variants = {
-    'novo': 'default',
-    'em_progresso': 'warning',
-    'concluido': 'success',
-    'arquivado': 'outline',
+    novo: "default",
+    em_progresso: "warning",
+    concluido: "success",
+    arquivado: "outline",
   } as const;
-  
-  return <Badge variant={variants[status] || 'default'}>{status}</Badge>;
+
+  return <Badge variant={variants[status] || "default"}>{status}</Badge>;
 };
 ```
 
@@ -357,12 +357,20 @@ import { FileText, Search, Users, Bell } from "lucide-react";
 
 ```tsx
 interface EmptyStateProps {
-  variant?: 'default' | 'no-data' | 'no-results' | 'no-feedbacks' | 'no-users' | 'no-notifications' | 'error' | 'custom';
+  variant?:
+    | "default"
+    | "no-data"
+    | "no-results"
+    | "no-feedbacks"
+    | "no-users"
+    | "no-notifications"
+    | "error"
+    | "custom";
   icon?: LucideIcon;
   title?: string;
   description?: string;
-  actionLabel?: string;      // Legacy (use 'action')
-  actionHref?: string;        // Legacy (use 'action')
+  actionLabel?: string; // Legacy (use 'action')
+  actionHref?: string; // Legacy (use 'action')
   action?: {
     label: string;
     href?: string;
@@ -374,7 +382,7 @@ interface EmptyStateProps {
     href?: string;
     onClick?: () => void;
   };
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 ```
 
@@ -388,18 +396,18 @@ interface EmptyStateProps {
 
 **Sempre use múltiplos de 4px** para espaçamento. Isso garante consistência visual e alinhamento perfeito.
 
-| Tailwind | Valor (px) | Quando Usar |
-|----------|------------|-------------|
-| `p-0` | 0 | Reset |
-| `p-1` | 4px | Mínimo (badges, tags) |
-| `p-2` | 8px | Compacto (buttons, inputs internos) |
-| `p-3` | 12px | - |
-| `p-4` | 16px | **Padrão** (cards, sections) |
-| `p-5` | 20px | - |
-| `p-6` | 24px | **Cards grandes** |
-| `p-8` | 32px | **Seções** |
-| `p-12` | 48px | **Blocos grandes** |
-| `p-16` | 64px | **Margens de página** |
+| Tailwind | Valor (px) | Quando Usar                         |
+| -------- | ---------- | ----------------------------------- |
+| `p-0`    | 0          | Reset                               |
+| `p-1`    | 4px        | Mínimo (badges, tags)               |
+| `p-2`    | 8px        | Compacto (buttons, inputs internos) |
+| `p-3`    | 12px       | -                                   |
+| `p-4`    | 16px       | **Padrão** (cards, sections)        |
+| `p-5`    | 20px       | -                                   |
+| `p-6`    | 24px       | **Cards grandes**                   |
+| `p-8`    | 32px       | **Seções**                          |
+| `p-12`   | 48px       | **Blocos grandes**                  |
+| `p-16`   | 64px       | **Margens de página**               |
 
 ### **Aplicação Prática**
 
@@ -477,11 +485,11 @@ interface EmptyStateProps {
 
 **A regra mais importante:** Use `text-foreground` para textos críticos.
 
-| Token | Contraste | Quando Usar |
-|-------|-----------|-------------|
-| `text-foreground` | **21:1** (WCAG AAA) | ✅ Valores de KPIs, títulos, dados importantes |
-| `text-muted-foreground` | **7:1** (WCAG AA) | ✅ Labels secundários, descrições |
-| `text-text-tertiary` | **5:1** (WCAG AA) | ✅ Placeholders, hints |
+| Token                   | Contraste           | Quando Usar                                    |
+| ----------------------- | ------------------- | ---------------------------------------------- |
+| `text-foreground`       | **21:1** (WCAG AAA) | ✅ Valores de KPIs, títulos, dados importantes |
+| `text-muted-foreground` | **7:1** (WCAG AA)   | ✅ Labels secundários, descrições              |
+| `text-text-tertiary`    | **5:1** (WCAG AA)   | ✅ Placeholders, hints                         |
 
 #### **Exemplos:**
 
@@ -553,9 +561,9 @@ Garanta que todos os elementos interativos sejam acessíveis via teclado.
   <DialogContent>
     <DialogTitle>Título</DialogTitle>
     <DialogDescription>Descrição</DialogDescription>
-    
+
     {/* Conteúdo */}
-    
+
     <DialogFooter>
       <Button variant="outline" onClick={() => setIsOpen(false)}>
         Cancelar
@@ -645,10 +653,7 @@ import { Button } from "@/components/ui/button";
 export default function MinhaPage() {
   return (
     <PageLayout>
-      <PageHeader
-        title="Título da Página"
-        description="Descrição opcional"
-      >
+      <PageHeader title="Título da Página" description="Descrição opcional">
         <Button>Nova Ação</Button>
       </PageHeader>
 
@@ -754,7 +759,7 @@ export function MeuFormulario() {
             Salvando...
           </>
         ) : (
-          'Salvar'
+          "Salvar"
         )}
       </Button>
     </form>
@@ -801,7 +806,8 @@ export function ListaFeedbacks() {
         title="Nenhum feedback encontrado"
         description="Compartilhe o link público para começar."
         actionLabel="Ver Link Público"
-        action Href="/dashboard/settings"
+        action
+        Href="/dashboard/settings"
       />
     );
   }
@@ -812,7 +818,9 @@ export function ListaFeedbacks() {
         <Card key={feedback.id}>
           <CardContent>
             <h3 className="font-semibold text-foreground">{feedback.titulo}</h3>
-            <p className="text-sm text-muted-foreground">{feedback.descricao}</p>
+            <p className="text-sm text-muted-foreground">
+              {feedback.descricao}
+            </p>
           </CardContent>
         </Card>
       ))}
@@ -832,6 +840,7 @@ export function ListaFeedbacks() {
 **Causa:** Usando `text-secondary-600` ou `text-gray-400` em textos principais.
 
 **Solução:**
+
 ```tsx
 // ❌ Antes
 <p className="text-secondary-600">Importante</p>
@@ -849,6 +858,7 @@ export function ListaFeedbacks() {
 **Causa:** Usando valores fixos como `gap-8` sem responsividade.
 
 **Solução:**
+
 ```tsx
 // ❌ Antes
 <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
@@ -866,13 +876,14 @@ export function ListaFeedbacks() {
 **Causa:** Usando caminho incorreto ou `<img src="/logo.png">` diretamente.
 
 **Solução:**
+
 ```tsx
 // ❌ Antes
-<img src="/logo.png" alt="Logo" />
+<img src="/logo.png" alt="Logo" />;
 
 // ✅ Depois
 import { Logo } from "@/components/brand/Logo";
-<Logo size="md" />
+<Logo size="md" />;
 ```
 
 ---
@@ -884,6 +895,7 @@ import { Logo } from "@/components/brand/Logo";
 **Causa:** Usando `outline: none` ou `:focus` ao invés de `:focus-visible`.
 
 **Solução:**
+
 ```tsx
 // ❌ Antes
 <button className="outline-none">Clique</button>
@@ -901,6 +913,7 @@ import { Logo } from "@/components/brand/Logo";
 **Causa:** Caminho de import incorreto.
 
 **Solução:**
+
 ```tsx
 // ❌ Antes
 import { EmptyState } from "@/components/EmptyState";
@@ -918,6 +931,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 **Causa:** Tipagem incorreta ou props não definidas.
 
 **Solução:**
+
 ```tsx
 // ✅ Use as props corretas do componente
 <Button variant="default" size="lg">
@@ -935,6 +949,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 Antes de commitar mudanças, verifique:
 
 ### **Código**
+
 - [ ] Nenhuma cor hardcoded (`#333`, `rgb()`, etc.)
 - [ ] Todos os texts críticos usam `text-foreground`
 - [ ] Spacing usa múltiplos de 4 (`p-4`, `gap-6`, `mt-8`)
@@ -942,17 +957,20 @@ Antes de commitar mudanças, verifique:
 - [ ] Logo usa `<Logo />` component
 
 ### **Acessibilidade**
+
 - [ ] Focus rings visíveis em elementos interativos
 - [ ] Alt text em imagens
 - [ ] Labels em formulários (não usar placeholder como label)
 - [ ] ARIA labels em botões com só ícone
 
 ### **Performance**
+
 - [ ] Não há imports não-utilizados
 - [ ] Componentes usam lazy loading quando apropriado
 - [ ] Imagens usam `next/image` (não `<img>`)
 
 ### **Testing**
+
 - [ ] Testado em mobile (375px)
 - [ ] Testado navegação via teclado (Tab, Enter, Esc)
 - [ ] Estados de loading/error implementados
@@ -962,6 +980,7 @@ Antes de commitar mudanças, verifique:
 ## 📚 REFERÊNCIAS RÁPIDAS
 
 ### **Documentação Oficial**
+
 - [Brand Guidelines](./BRAND_GUIDELINES.md) - Manual de marca (designers)
 - [Rebrand Fase 1](./REBRAND_VISUAL_FASE_1.md) - Cores & Tipografia
 - [Rebrand Fase 2](./REBRAND_VISUAL_FASE_2.md) - Logo & Layouts
@@ -969,12 +988,14 @@ Antes de commitar mudanças, verifique:
 - [Resumo Executivo](./REBRAND_RESUMO_EXECUTIVO.md) - Visão geral
 
 ### **Arquivos de Código**
+
 - [globals.css](../apps/frontend/app/globals.css) - Variáveis CSS
 - [Logo Component](../apps/frontend/components/brand/Logo.tsx) - Implementação
 - [Button Component](../apps/frontend/components/ui/button.tsx) - Exemplo
 - [Design System Showcase](http://localhost:3000/design-system) - Preview interativo
 
 ### **Ferramentas Externas**
+
 - [Tailwind CSS Docs](https://tailwindcss.com/docs)
 - [Shadcn UI Docs](https://ui.shadcn.com/)
 - [Lucide Icons](https://lucide.dev/icons)

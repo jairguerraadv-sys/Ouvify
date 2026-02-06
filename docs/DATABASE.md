@@ -5,6 +5,7 @@
 O Ouvify utiliza **PostgreSQL 16** como banco de dados principal, hospedado no Railway.
 
 **Características:**
+
 - Multi-tenancy por banco compartilhado (shared database)
 - Isolamento lógico via `client_id`
 - Soft deletes em modelos críticos
@@ -142,7 +143,7 @@ CREATE TABLE tenants_teammember (
     status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     joined_at TIMESTAMP DEFAULT NOW(),
     email_notifications BOOLEAN DEFAULT TRUE,
-    
+
     UNIQUE(user_id, client_id)
 );
 
@@ -194,7 +195,7 @@ CREATE TABLE feedbacks_feedback (
     assigned_to_id INTEGER REFERENCES tenants_teammember(id),
     assigned_by_id INTEGER REFERENCES auth_user(id),
     assigned_at TIMESTAMP,
-    
+
     -- SLA Tracking
     tempo_primeira_resposta INTERVAL,
     tempo_resolucao INTERVAL,
@@ -202,7 +203,7 @@ CREATE TABLE feedbacks_feedback (
     data_resolucao TIMESTAMP,
     sla_primeira_resposta BOOLEAN,
     sla_resolucao BOOLEAN,
-    
+
     data_criacao TIMESTAMP DEFAULT NOW(),
     data_atualizacao TIMESTAMP DEFAULT NOW()
 );
@@ -219,7 +220,7 @@ CREATE INDEX idx_feedback_prioridade ON feedbacks_feedback(prioridade);
 CREATE INDEX idx_feedback_data_criacao ON feedbacks_feedback(data_criacao DESC);
 
 -- Índice composto para queries frequentes
-CREATE INDEX idx_feedback_client_status_data 
+CREATE INDEX idx_feedback_client_status_data
     ON feedbacks_feedback(client_id, status, data_criacao DESC);
 ```
 
@@ -251,7 +252,7 @@ CREATE TABLE feedbacks_tag (
     nome VARCHAR(50) NOT NULL,
     cor VARCHAR(7) DEFAULT '#6B7280',
     descricao TEXT,
-    
+
     UNIQUE(client_id, nome)
 );
 
@@ -259,7 +260,7 @@ CREATE TABLE feedbacks_feedback_tags (
     id SERIAL PRIMARY KEY,
     feedback_id INTEGER NOT NULL REFERENCES feedbacks_feedback(id),
     tag_id INTEGER NOT NULL REFERENCES feedbacks_tag(id),
-    
+
     UNIQUE(feedback_id, tag_id)
 );
 ```
@@ -427,7 +428,7 @@ CREATE TABLE notifications_pushsubscription (
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT NOW(),
     last_used_at TIMESTAMP,
-    
+
     UNIQUE(user_id, endpoint)
 );
 ```
@@ -444,7 +445,7 @@ CREATE TABLE consent_consentversion (
     is_required BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT NOW(),
     effective_date TIMESTAMP DEFAULT NOW(),
-    
+
     UNIQUE(document_type, version)
 );
 
@@ -501,33 +502,33 @@ CREATE INDEX idx_auditlog_created ON auditlog_auditlog(created_at DESC);
 
 ### Migrações Aplicadas
 
-| App | Migration | Descrição |
-|-----|-----------|-----------|
-| tenants | 0001_initial | Criar Client |
-| tenants | 0002_alter_client_logo | URL para logo |
-| tenants | 0003_client_owner | Adicionar owner FK |
-| tenants | 0004_client_plano | Campos de assinatura |
-| tenants | 0005_client_branding | Cores e fonte |
-| tenants | 0006_team_member | TeamMember e TeamInvitation |
-| tenants | 0007_populate_team_members | Popular membros existentes |
-| tenants | 0008_email_notifications | Preferência de notificações |
-| feedbacks | 0001_initial | Criar Feedback |
-| feedbacks | 0002_protocolo | Adicionar protocolo |
-| feedbacks | 0003_interacao | FeedbackInteracao |
-| feedbacks | 0004_indexes | Índices de performance |
-| feedbacks | 0005_autor | Campo autor |
-| feedbacks | 0006_protocolo_unique | Protocolo único |
-| feedbacks | 0007_performance_indexes | Mais índices |
-| feedbacks | 0008_assignment | Campos de atribuição |
-| feedbacks | 0009_tags | Tag model |
-| feedbacks | 0010_prioridade | Campo prioridade |
-| feedbacks | 0011_sla_tracking | Campos de SLA |
-| feedbacks | 0012_response_template | ResponseTemplate |
-| billing | 0001_create_billing_models | Plan, Subscription, Invoice |
-| consent | 0001_initial | ConsentVersion, UserConsent |
-| notifications | 0001_initial | Notification, PushSubscription |
-| webhooks | 0001_initial | WebhookEndpoint, WebhookDelivery |
-| auditlog | 0001_initial | AuditLog |
+| App           | Migration                  | Descrição                        |
+| ------------- | -------------------------- | -------------------------------- |
+| tenants       | 0001_initial               | Criar Client                     |
+| tenants       | 0002_alter_client_logo     | URL para logo                    |
+| tenants       | 0003_client_owner          | Adicionar owner FK               |
+| tenants       | 0004_client_plano          | Campos de assinatura             |
+| tenants       | 0005_client_branding       | Cores e fonte                    |
+| tenants       | 0006_team_member           | TeamMember e TeamInvitation      |
+| tenants       | 0007_populate_team_members | Popular membros existentes       |
+| tenants       | 0008_email_notifications   | Preferência de notificações      |
+| feedbacks     | 0001_initial               | Criar Feedback                   |
+| feedbacks     | 0002_protocolo             | Adicionar protocolo              |
+| feedbacks     | 0003_interacao             | FeedbackInteracao                |
+| feedbacks     | 0004_indexes               | Índices de performance           |
+| feedbacks     | 0005_autor                 | Campo autor                      |
+| feedbacks     | 0006_protocolo_unique      | Protocolo único                  |
+| feedbacks     | 0007_performance_indexes   | Mais índices                     |
+| feedbacks     | 0008_assignment            | Campos de atribuição             |
+| feedbacks     | 0009_tags                  | Tag model                        |
+| feedbacks     | 0010_prioridade            | Campo prioridade                 |
+| feedbacks     | 0011_sla_tracking          | Campos de SLA                    |
+| feedbacks     | 0012_response_template     | ResponseTemplate                 |
+| billing       | 0001_create_billing_models | Plan, Subscription, Invoice      |
+| consent       | 0001_initial               | ConsentVersion, UserConsent      |
+| notifications | 0001_initial               | Notification, PushSubscription   |
+| webhooks      | 0001_initial               | WebhookEndpoint, WebhookDelivery |
+| auditlog      | 0001_initial               | AuditLog                         |
 
 ### Comandos de Migração
 
@@ -553,19 +554,19 @@ python manage.py migrate <app_name> <migration_name>
 
 ```sql
 -- Queries mais frequentes no dashboard
-CREATE INDEX idx_feedback_dashboard 
+CREATE INDEX idx_feedback_dashboard
     ON feedbacks_feedback(client_id, status, data_criacao DESC);
 
 -- Busca por protocolo
-CREATE INDEX idx_feedback_protocolo 
+CREATE INDEX idx_feedback_protocolo
     ON feedbacks_feedback(protocolo);
 
 -- Listagem de feedbacks com filtros
-CREATE INDEX idx_feedback_filters 
+CREATE INDEX idx_feedback_filters
     ON feedbacks_feedback(client_id, tipo, status, prioridade);
 
 -- Analytics por período
-CREATE INDEX idx_feedback_analytics 
+CREATE INDEX idx_feedback_analytics
     ON feedbacks_feedback(client_id, data_criacao);
 ```
 
@@ -600,7 +601,7 @@ psql $DATABASE_URL < backup_20260131.sql
 ### Feedbacks por Tenant
 
 ```sql
-SELECT 
+SELECT
     c.nome as empresa,
     COUNT(*) as total,
     COUNT(*) FILTER (WHERE f.status = 'pendente') as pendentes,
@@ -614,7 +615,7 @@ ORDER BY total DESC;
 ### Tempo Médio de Resposta
 
 ```sql
-SELECT 
+SELECT
     c.nome as empresa,
     AVG(f.tempo_primeira_resposta) as tempo_medio_resposta,
     AVG(f.tempo_resolucao) as tempo_medio_resolucao
@@ -632,4 +633,4 @@ GROUP BY c.id, c.nome;
 
 ---
 
-*Última atualização: 31/01/2026*
+_Última atualização: 31/01/2026_

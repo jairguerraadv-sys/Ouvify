@@ -25,7 +25,7 @@ datasources:
       password: ${POSTGRES_PASSWORD}
     jsonData:
       database: ${POSTGRES_DB:-ouvify_db}
-      sslmode: 'disable'
+      sslmode: "disable"
       maxOpenConns: 5
       maxIdleConns: 2
       connMaxLifetime: 14400

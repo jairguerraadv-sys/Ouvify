@@ -1,6 +1,6 @@
 {
-  "total_calls": 522,
-  "unique_endpoints": 94,
+  "total_calls": 600,
+  "unique_endpoints": 111,
   "endpoints": [
     {
       "method": "GET",
@@ -28,7 +28,7 @@
         },
         {
           "file": "apps/frontend/public/sw.js",
-          "line": 32,
+          "line": 31,
           "raw_url": "/"
         }
       ],
@@ -45,7 +45,7 @@
         },
         {
           "file": "apps/frontend/app/layout.tsx",
-          "line": 59,
+          "line": 65,
           "raw_url": "https://ouvify.com"
         },
         {
@@ -76,7 +76,7 @@
           "raw_url": "/api/tenant-info/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/e38f27f9767c0085.js",
+          "file": "apps/frontend/.next/static/chunks/5425d7a729efd8cc.js",
           "line": 1,
           "raw_url": "/api/tenant-info/"
         },
@@ -98,82 +98,22 @@
           "raw_url": "/api/logout/all/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
           "line": 1,
           "raw_url": "/api/logout/all/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/static/chunks/b77782717669c77f.js",
           "line": 1,
           "raw_url": "/api/logout/all/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/9a35e2fdd99d1c36.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/80e9234378491e4e.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/407a893790d939c4.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/0796c064c4364007.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/e38f27f9767c0085.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/294b671af6697878.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/7cc56a5c5389466f.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/6960606f714218c8.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/1b1c182164b29378.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
-          "line": 1,
-          "raw_url": "/api/logout/all/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
           "line": 1,
           "raw_url": "/api/logout/all/"
         }
       ],
-      "count": 16
+      "count": 4
     },
     {
       "method": "POST",
@@ -185,82 +125,22 @@
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
           "line": 1,
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/static/chunks/b77782717669c77f.js",
           "line": 1,
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/9a35e2fdd99d1c36.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/80e9234378491e4e.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/407a893790d939c4.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/0796c064c4364007.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/e38f27f9767c0085.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/294b671af6697878.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/7cc56a5c5389466f.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/6960606f714218c8.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/1b1c182164b29378.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
-          "line": 1,
-          "raw_url": "/api/logout/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
           "line": 1,
           "raw_url": "/api/logout/"
         }
       ],
-      "count": 16
+      "count": 4
     },
     {
       "method": "GET",
@@ -297,7 +177,7 @@
       "files": [
         {
           "file": "apps/frontend/public/sw.js",
-          "line": 161,
+          "line": 166,
           "raw_url": "/api/push/subscriptions/subscribe/"
         },
         {
@@ -307,6 +187,110 @@
         }
       ],
       "count": 2
+    },
+    {
+      "method": "GET",
+      "path": "/api/consent/user-consents/accept/",
+      "files": [
+        {
+          "file": "apps/frontend/hooks/use-consent.ts",
+          "line": 105,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/components/consent/ConsentGate.tsx",
+          "line": 113,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_3f488fb9._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_a15d77d3._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/525f6d43948967ff.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/b77782717669c77f.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/70a142df46b80b48.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_3f488fb9._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a15d77d3._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept/"
+        }
+      ],
+      "count": 11
+    },
+    {
+      "method": "GET",
+      "path": "/api/consent/user-consents/accept_anonymous/",
+      "files": [
+        {
+          "file": "apps/frontend/hooks/use-consent.ts",
+          "line": 133,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_3f488fb9._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_a15d77d3._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/525f6d43948967ff.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/70a142df46b80b48.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_3f488fb9._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a15d77d3._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/accept_anonymous/"
+        }
+      ],
+      "count": 7
     },
     {
       "method": "GET",
@@ -330,17 +314,17 @@
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/f650c53b344bb294.js",
+          "file": "apps/frontend/.next/static/chunks/d35cb14b2062fe82.js",
           "line": 1,
           "raw_url": "/api/logout/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/logout/"
         }
@@ -357,17 +341,17 @@
           "raw_url": "/api/auth/me/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/auth/me/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/f650c53b344bb294.js",
+          "file": "apps/frontend/.next/static/chunks/d35cb14b2062fe82.js",
           "line": 1,
           "raw_url": "/api/auth/me/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/auth/me/"
         }
@@ -380,7 +364,7 @@
       "files": [
         {
           "file": "apps/frontend/app/layout.tsx",
-          "line": 87,
+          "line": 95,
           "raw_url": "x-nonce"
         },
         {
@@ -402,7 +386,7 @@
       "files": [
         {
           "file": "apps/frontend/app/layout.tsx",
-          "line": 45,
+          "line": 51,
           "raw_url": "/favicon.ico"
         },
         {
@@ -445,7 +429,7 @@
           "raw_url": "https://ouvify.com.br"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/2305bde490ced38d.js",
+          "file": "apps/frontend/.next/static/chunks/069d8c6ac1389ab3.js",
           "line": 1,
           "raw_url": "https://ouvify.com.br"
         },
@@ -491,32 +475,22 @@
           "raw_url": "${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_f44cd052._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_enviar_page_tsx_a78d87b4._.js",
           "line": 1,
           "raw_url": "/api/feedbacks/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_page_tsx_23d8eaf2._.js",
-          "line": 1,
-          "raw_url": "${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/cd4d5747fce47ad0.js",
+          "file": "apps/frontend/.next/static/chunks/525f6d43948967ff.js",
           "line": 1,
           "raw_url": "/api/feedbacks/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f44cd052._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_enviar_page_tsx_a78d87b4._.js",
           "line": 1,
           "raw_url": "/api/feedbacks/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_page_tsx_23d8eaf2._.js",
-          "line": 1,
-          "raw_url": "${process.env.NEXT_PUBLIC_API_URL}/api/feedbacks/"
         }
       ],
-      "count": 6
+      "count": 4
     },
     {
       "method": "GET",
@@ -793,12 +767,12 @@
           "raw_url": "cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "cookie"
         },
@@ -818,12 +792,12 @@
           "raw_url": "cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "cookie"
         },
@@ -855,27 +829,27 @@
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
@@ -910,27 +884,27 @@
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__792f6c97._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__258ce745._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__46ccf099._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__66a6c334._.js",
           "line": 1,
           "raw_url": "set-cookie"
         },
@@ -979,7 +953,7 @@
           "raw_url": "authorization"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "authorization"
         },
@@ -994,7 +968,7 @@
           "raw_url": "authorization"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "authorization"
         }
@@ -1066,6 +1040,16 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_a1d99804._.js",
           "line": 1,
           "raw_url": "next.span_type"
@@ -1116,6 +1100,16 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_827f7819._.js",
           "line": 1,
           "raw_url": "next.span_type"
@@ -1152,6 +1146,16 @@
         },
         {
           "file": "apps/frontend/.next/server/chunks/ssr/_df3ac5bc._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
@@ -1306,12 +1310,32 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
         {
           "file": "apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
@@ -1416,6 +1440,16 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a1d99804._.js",
           "line": 1,
           "raw_url": "next.span_type"
@@ -1466,6 +1500,16 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_827f7819._.js",
           "line": 1,
           "raw_url": "next.span_type"
@@ -1502,6 +1546,16 @@
         },
         {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_df3ac5bc._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
@@ -1656,12 +1710,32 @@
           "raw_url": "next.span_type"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
         {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
+          "line": 1,
+          "raw_url": "next.span_type"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
           "line": 1,
           "raw_url": "next.span_type"
         },
@@ -1706,7 +1780,7 @@
           "raw_url": "next.span_type"
         }
       ],
-      "count": 140
+      "count": 160
     },
     {
       "method": "GET",
@@ -1743,6 +1817,11 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_a1d99804._.js",
           "line": 1,
           "raw_url": "next.route"
@@ -1768,6 +1847,11 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_827f7819._.js",
           "line": 1,
           "raw_url": "next.route"
@@ -1784,6 +1868,11 @@
         },
         {
           "file": "apps/frontend/.next/server/chunks/ssr/_df3ac5bc._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
           "line": 1,
           "raw_url": "next.route"
         },
@@ -1863,7 +1952,17 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
           "line": 1,
           "raw_url": "next.route"
         },
@@ -1918,6 +2017,11 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_083d980d._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a1d99804._.js",
           "line": 1,
           "raw_url": "next.route"
@@ -1943,6 +2047,11 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a99d79b3._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_827f7819._.js",
           "line": 1,
           "raw_url": "next.route"
@@ -1959,6 +2068,11 @@
         },
         {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_df3ac5bc._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_02e379c2._.js",
           "line": 1,
           "raw_url": "next.route"
         },
@@ -2038,7 +2152,17 @@
           "raw_url": "next.route"
         },
         {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f0d98036._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
           "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_f697da9f._.js",
+          "line": 1,
+          "raw_url": "next.route"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_2c04ef90._.js",
           "line": 1,
           "raw_url": "next.route"
         },
@@ -2063,7 +2187,7 @@
           "raw_url": "next.route"
         }
       ],
-      "count": 70
+      "count": 80
     },
     {
       "method": "DELETE",
@@ -2083,6 +2207,23 @@
       "count": 2
     },
     {
+      "method": "GET",
+      "path": "/CreditCard",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_7e67c8a5._.js",
+          "line": 1,
+          "raw_url": "CreditCard"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_7e67c8a5._.js",
+          "line": 1,
+          "raw_url": "CreditCard"
+        }
+      ],
+      "count": 2
+    },
+    {
       "method": "POST",
       "path": "/content-type",
       "files": [
@@ -2092,7 +2233,7 @@
           "raw_url": "content-type"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "content-type"
         },
@@ -2107,7 +2248,7 @@
           "raw_url": "content-type"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "content-type"
         }
@@ -2124,7 +2265,7 @@
           "raw_url": "content-length"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "content-length"
         },
@@ -2139,7 +2280,7 @@
           "raw_url": "content-length"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_74bed9df._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
           "line": 3,
           "raw_url": "content-length"
         }
@@ -2178,7 +2319,7 @@
           "raw_url": "/api/v1/billing/subscription/checkout/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/8cc8b44bae084799.js",
+          "file": "apps/frontend/.next/static/chunks/25ae651dbbe07373.js",
           "line": 1,
           "raw_url": "/api/v1/billing/subscription/checkout/"
         },
@@ -2192,111 +2333,209 @@
     },
     {
       "method": "GET",
-      "path": "/api/tenants/subscription/",
+      "path": "/api/analytics/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_5cc505e8._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_a1622319._.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/"
+          "raw_url": "/api/analytics/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/7cc56a5c5389466f.js",
+          "file": "apps/frontend/.next/static/chunks/4aeeeb0017714680.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/"
+          "raw_url": "/api/analytics/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_5cc505e8._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a1622319._.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/"
-        },
-        {
-          "file": "apps/frontend/app/dashboard/assinatura/page.tsx",
-          "line": 75,
-          "raw_url": "/api/tenants/subscription/"
+          "raw_url": "/api/analytics/"
         }
       ],
-      "count": 4
+      "count": 3
     },
     {
       "method": "GET",
-      "path": "/api/tenants/subscription/reactivate/",
+      "path": "/Checkbox",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_5cc505e8._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_49bb395a._.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/reactivate/"
+          "raw_url": "Checkbox"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/7cc56a5c5389466f.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_7a84ea27._.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/reactivate/"
+          "raw_url": "Checkbox"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_5cc505e8._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_a9483623._.js",
           "line": 1,
-          "raw_url": "/api/tenants/subscription/reactivate/"
+          "raw_url": "Checkbox"
         },
         {
-          "file": "apps/frontend/app/dashboard/assinatura/page.tsx",
-          "line": 90,
-          "raw_url": "/api/tenants/subscription/reactivate/"
+          "file": "apps/frontend/.next/static/chunks/25a36df923d9afcc.js",
+          "line": 1,
+          "raw_url": "Checkbox"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_49bb395a._.js",
+          "line": 1,
+          "raw_url": "Checkbox"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_7a84ea27._.js",
+          "line": 1,
+          "raw_url": "Checkbox"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_a9483623._.js",
+          "line": 1,
+          "raw_url": "Checkbox"
         }
       ],
-      "count": 4
+      "count": 7
     },
     {
       "method": "GET",
-      "path": "/api/team/invitations/accept/",
+      "path": "/MoreHorizontal",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_40b902ce._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_6a8350ce._.js",
           "line": 1,
-          "raw_url": "/api/team/invitations/accept/"
+          "raw_url": "MoreHorizontal"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/675237c45679de05.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_6a8350ce._.js",
           "line": 1,
-          "raw_url": "/api/team/invitations/accept/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_40b902ce._.js",
-          "line": 1,
-          "raw_url": "/api/team/invitations/accept/"
-        },
-        {
-          "file": "apps/frontend/app/convite/[token]/page.tsx",
-          "line": 81,
-          "raw_url": "/api/team/invitations/accept/"
+          "raw_url": "MoreHorizontal"
         }
       ],
-      "count": 4
+      "count": 2
     },
     {
       "method": "GET",
-      "path": "/DashboardLayout",
+      "path": "/api/2fa/status/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
           "line": 1,
-          "raw_url": "DashboardLayout"
+          "raw_url": "/api/2fa/status/"
         },
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_82f48d9c._.js",
           "line": 1,
-          "raw_url": "DashboardLayout"
+          "raw_url": "/api/2fa/status/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_cac60839._.js",
+          "file": "apps/frontend/.next/static/chunks/54e58228624370de.js",
           "line": 1,
-          "raw_url": "DashboardLayout"
+          "raw_url": "/api/2fa/status/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_fe0c1256._.js",
+          "file": "apps/frontend/.next/static/chunks/6237fdf1a39b3e1a.js",
           "line": 1,
-          "raw_url": "DashboardLayout"
+          "raw_url": "/api/2fa/status/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/status/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_82f48d9c._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/status/"
         }
       ],
-      "count": 4
+      "count": 6
+    },
+    {
+      "method": "GET",
+      "path": "/api/2fa/setup/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/setup/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/6237fdf1a39b3e1a.js",
+          "line": 1,
+          "raw_url": "/api/2fa/setup/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/setup/"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/2fa/confirm/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/confirm/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/6237fdf1a39b3e1a.js",
+          "line": 1,
+          "raw_url": "/api/2fa/confirm/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/confirm/"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/2fa/disable/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/disable/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/6237fdf1a39b3e1a.js",
+          "line": 1,
+          "raw_url": "/api/2fa/disable/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/disable/"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/2fa/backup-codes/regenerate/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/backup-codes/regenerate/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/6237fdf1a39b3e1a.js",
+          "line": 1,
+          "raw_url": "/api/2fa/backup-codes/regenerate/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_perfil_seguranca_page_tsx_04cb1fe9._.js",
+          "line": 1,
+          "raw_url": "/api/2fa/backup-codes/regenerate/"
+        }
+      ],
+      "count": 3
     },
     {
       "method": "GET",
@@ -2313,12 +2552,12 @@
           "raw_url": "/api/feedbacks/consultar-protocolo/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/6960606f714218c8.js",
+          "file": "apps/frontend/.next/static/chunks/4505a9ea31c8d3a3.js",
           "line": 1,
           "raw_url": "/api/feedbacks/consultar-protocolo/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/da697766cde6ef91.js",
+          "file": "apps/frontend/.next/static/chunks/b28fd5c49b881546.js",
           "line": 1,
           "raw_url": "/api/feedbacks/consultar-protocolo/"
         },
@@ -2345,7 +2584,7 @@
           "raw_url": "/api/users/me/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
+          "file": "apps/frontend/.next/static/chunks/644bdb929a9756ab.js",
           "line": 1,
           "raw_url": "/api/users/me/"
         },
@@ -2367,7 +2606,7 @@
           "raw_url": "/api/export-data/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
+          "file": "apps/frontend/.next/static/chunks/644bdb929a9756ab.js",
           "line": 1,
           "raw_url": "/api/export-data/"
         },
@@ -2378,7 +2617,7 @@
         },
         {
           "file": "apps/frontend/app/dashboard/perfil/page.tsx",
-          "line": 101,
+          "line": 112,
           "raw_url": "/api/export-data/"
         }
       ],
@@ -2394,7 +2633,7 @@
           "raw_url": "/api/account/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
+          "file": "apps/frontend/.next/static/chunks/644bdb929a9756ab.js",
           "line": 1,
           "raw_url": "/api/account/"
         },
@@ -2405,7 +2644,7 @@
         },
         {
           "file": "apps/frontend/app/dashboard/perfil/page.tsx",
-          "line": 154,
+          "line": 169,
           "raw_url": "/api/account/"
         }
       ],
@@ -2426,12 +2665,12 @@
           "raw_url": "/api/v1/webhooks/endpoints/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
+          "file": "apps/frontend/.next/static/chunks/535ac2f4beeb3965.js",
           "line": 1,
           "raw_url": "/api/v1/webhooks/endpoints/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
+          "file": "apps/frontend/.next/static/chunks/535ac2f4beeb3965.js",
           "line": 1,
           "raw_url": "/api/v1/webhooks/endpoints/"
         },
@@ -2468,7 +2707,7 @@
           "raw_url": "/api/v1/webhooks/endpoints/stats/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
+          "file": "apps/frontend/.next/static/chunks/535ac2f4beeb3965.js",
           "line": 1,
           "raw_url": "/api/v1/webhooks/endpoints/stats/"
         },
@@ -2495,7 +2734,7 @@
           "raw_url": "/api/v1/webhooks/endpoints/available_events/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
+          "file": "apps/frontend/.next/static/chunks/535ac2f4beeb3965.js",
           "line": 1,
           "raw_url": "/api/v1/webhooks/endpoints/available_events/"
         },
@@ -2514,59 +2753,20 @@
     },
     {
       "method": "GET",
-      "path": "/invalidateVerificationCache",
-      "files": [
-        {
-          "file": "apps/frontend/.next/server/chunks/ssr/_42ac1365._.js",
-          "line": 1,
-          "raw_url": "invalidateVerificationCache"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_42ac1365._.js",
-          "line": 1,
-          "raw_url": "invalidateVerificationCache"
-        }
-      ],
-      "count": 2
-    },
-    {
-      "method": "GET",
-      "path": "/api/analytics/",
-      "files": [
-        {
-          "file": "apps/frontend/.next/server/chunks/ssr/_703e8929._.js",
-          "line": 1,
-          "raw_url": "/api/analytics/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/407a893790d939c4.js",
-          "line": 1,
-          "raw_url": "/api/analytics/"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_703e8929._.js",
-          "line": 1,
-          "raw_url": "/api/analytics/"
-        }
-      ],
-      "count": 3
-    },
-    {
-      "method": "GET",
       "path": "/api/token/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/token/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/f650c53b344bb294.js",
+          "file": "apps/frontend/.next/static/chunks/d35cb14b2062fe82.js",
           "line": 1,
           "raw_url": "/api/token/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/token/"
         }
@@ -2578,7 +2778,7 @@
       "path": "/api/register-tenant/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/register-tenant/"
         },
@@ -2588,17 +2788,17 @@
           "raw_url": "/api/register-tenant/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/4860d255f179982c.js",
+          "file": "apps/frontend/.next/static/chunks/817ae46826d8169e.js",
           "line": 1,
           "raw_url": "/api/register-tenant/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/f650c53b344bb294.js",
+          "file": "apps/frontend/.next/static/chunks/d35cb14b2062fe82.js",
           "line": 1,
           "raw_url": "/api/register-tenant/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__2bf926ba._.js",
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/[root-of-the-server]__ea165cb2._.js",
           "line": 1,
           "raw_url": "/api/register-tenant/"
         },
@@ -2612,6 +2812,131 @@
     },
     {
       "method": "GET",
+      "path": "/uid",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "uid"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/a354edeb4646499b.js",
+          "line": 1,
+          "raw_url": "uid"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "uid"
+        },
+        {
+          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
+          "line": 23,
+          "raw_url": "uid"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/token",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "token"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/a354edeb4646499b.js",
+          "line": 1,
+          "raw_url": "token"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "token"
+        },
+        {
+          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
+          "line": 24,
+          "raw_url": "token"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/api/password-reset/confirm/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "/api/password-reset/confirm/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/a354edeb4646499b.js",
+          "line": 1,
+          "raw_url": "/api/password-reset/confirm/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9b7ece4b._.js",
+          "line": 1,
+          "raw_url": "/api/password-reset/confirm/"
+        },
+        {
+          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
+          "line": 51,
+          "raw_url": "/api/password-reset/confirm/"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/api/consent/user-consents/pending/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/pending/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/b77782717669c77f.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/pending/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/consent/user-consents/pending/"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "GET",
+      "path": "/api/search/autocomplete/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/search/autocomplete/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/b77782717669c77f.js",
+          "line": 1,
+          "raw_url": "/api/search/autocomplete/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_components_dashboard_DashboardLayout_tsx_81e8d28d._.js",
+          "line": 1,
+          "raw_url": "/api/search/autocomplete/"
+        }
+      ],
+      "count": 3
+    },
+    {
+      "method": "GET",
       "path": "/api/upload-branding/",
       "files": [
         {
@@ -2620,7 +2945,7 @@
           "raw_url": "/api/upload-branding/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/e38f27f9767c0085.js",
+          "file": "apps/frontend/.next/static/chunks/5425d7a729efd8cc.js",
           "line": 1,
           "raw_url": "/api/upload-branding/"
         },
@@ -2637,23 +2962,23 @@
       "path": "/api/team/members/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
-          "raw_url": "/api/team/members/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/ef57f59cb10a4f2e.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
           "line": 1,
           "raw_url": "/api/team/members/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
+          "file": "apps/frontend/.next/static/chunks/49355445ed6d756a.js",
+          "line": 1,
+          "raw_url": "/api/team/members/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
+          "line": 1,
           "raw_url": "/api/team/members/"
         },
         {
           "file": "apps/frontend/app/dashboard/equipe/page.tsx",
-          "line": 114,
+          "line": 116,
           "raw_url": "/api/team/members/"
         }
       ],
@@ -2664,43 +2989,43 @@
       "path": "/api/team/invitations/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
-          "raw_url": "/api/team/invitations/"
-        },
-        {
-          "file": "apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
-          "raw_url": "/api/team/invitations/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/ef57f59cb10a4f2e.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
           "line": 1,
           "raw_url": "/api/team/invitations/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/ef57f59cb10a4f2e.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
           "line": 1,
           "raw_url": "/api/team/invitations/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
+          "file": "apps/frontend/.next/static/chunks/49355445ed6d756a.js",
+          "line": 1,
           "raw_url": "/api/team/invitations/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
+          "file": "apps/frontend/.next/static/chunks/49355445ed6d756a.js",
+          "line": 1,
+          "raw_url": "/api/team/invitations/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
+          "line": 1,
+          "raw_url": "/api/team/invitations/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
+          "line": 1,
           "raw_url": "/api/team/invitations/"
         },
         {
           "file": "apps/frontend/app/dashboard/equipe/page.tsx",
-          "line": 115,
+          "line": 117,
           "raw_url": "/api/team/invitations/"
         },
         {
           "file": "apps/frontend/app/dashboard/equipe/page.tsx",
-          "line": 135,
+          "line": 137,
           "raw_url": "/api/team/invitations/"
         }
       ],
@@ -2711,23 +3036,23 @@
       "path": "/api/team/members/stats/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
-          "raw_url": "/api/team/members/stats/"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/ef57f59cb10a4f2e.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
           "line": 1,
           "raw_url": "/api/team/members/stats/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_9670547f._.js",
-          "line": 5,
+          "file": "apps/frontend/.next/static/chunks/49355445ed6d756a.js",
+          "line": 1,
+          "raw_url": "/api/team/members/stats/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_79c55a95._.js",
+          "line": 1,
           "raw_url": "/api/team/members/stats/"
         },
         {
           "file": "apps/frontend/app/dashboard/equipe/page.tsx",
-          "line": 116,
+          "line": 118,
           "raw_url": "/api/team/members/stats/"
         }
       ],
@@ -2743,7 +3068,7 @@
           "raw_url": "/api/check-subdominio/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/4860d255f179982c.js",
+          "file": "apps/frontend/.next/static/chunks/817ae46826d8169e.js",
           "line": 1,
           "raw_url": "/api/check-subdominio/"
         },
@@ -2757,6 +3082,77 @@
     },
     {
       "method": "GET",
+      "path": "/api/tenants/subscription/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_b5701289._.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/142f868dd5c6925b.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_b5701289._.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/"
+        },
+        {
+          "file": "apps/frontend/app/dashboard/assinatura/page.tsx",
+          "line": 75,
+          "raw_url": "/api/tenants/subscription/"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/api/tenants/subscription/reactivate/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_b5701289._.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/reactivate/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/142f868dd5c6925b.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/reactivate/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_b5701289._.js",
+          "line": 1,
+          "raw_url": "/api/tenants/subscription/reactivate/"
+        },
+        {
+          "file": "apps/frontend/app/dashboard/assinatura/page.tsx",
+          "line": 90,
+          "raw_url": "/api/tenants/subscription/reactivate/"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/Button",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
+          "line": 3,
+          "raw_url": "Button"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_75a90f44._.js",
+          "line": 3,
+          "raw_url": "Button"
+        }
+      ],
+      "count": 2
+    },
+    {
+      "method": "GET",
       "path": "/api/feedbacks/responder-protocolo/",
       "files": [
         {
@@ -2765,7 +3161,7 @@
           "raw_url": "/api/feedbacks/responder-protocolo/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/da697766cde6ef91.js",
+          "file": "apps/frontend/.next/static/chunks/4505a9ea31c8d3a3.js",
           "line": 1,
           "raw_url": "/api/feedbacks/responder-protocolo/"
         },
@@ -2806,73 +3202,6 @@
     },
     {
       "method": "GET",
-      "path": "/default",
-      "files": [
-        {
-          "file": "apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_page_tsx_23d8eaf2._.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/0c1a330cbf80ae2f.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/9a35e2fdd99d1c36.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/a887a2389a97ccf6.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/e8084b2625be5df3.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/80e9234378491e4e.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/9d8c1d1a2e9fac8a.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/e38f27f9767c0085.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/7cc56a5c5389466f.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/6960606f714218c8.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/static/chunks/1b1c182164b29378.js",
-          "line": 1,
-          "raw_url": "default"
-        },
-        {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/apps_frontend_app_dashboard_page_tsx_23d8eaf2._.js",
-          "line": 1,
-          "raw_url": "default"
-        }
-      ],
-      "count": 12
-    },
-    {
-      "method": "GET",
       "path": "/content-type",
       "files": [
         {
@@ -2910,81 +3239,219 @@
     },
     {
       "method": "GET",
-      "path": "/uid",
+      "path": "/redirect",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
           "line": 1,
-          "raw_url": "uid"
+          "raw_url": "redirect"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/d6df4dc7ef7a25ef.js",
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
           "line": 1,
-          "raw_url": "uid"
+          "raw_url": "redirect"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/static/chunks/54e58228624370de.js",
           "line": 1,
-          "raw_url": "uid"
+          "raw_url": "redirect"
         },
         {
-          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
-          "line": 23,
-          "raw_url": "uid"
+          "file": "apps/frontend/.next/static/chunks/54e58228624370de.js",
+          "line": 1,
+          "raw_url": "redirect"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "redirect"
+        },
+        {
+          "file": "apps/frontend/app/login/page.tsx",
+          "line": 80,
+          "raw_url": "redirect"
+        },
+        {
+          "file": "apps/frontend/app/login/page.tsx",
+          "line": 93,
+          "raw_url": "redirect"
+        },
+        {
+          "file": "apps/frontend/app/login/2fa/page.tsx",
+          "line": 55,
+          "raw_url": "redirect"
+        }
+      ],
+      "count": 8
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/2fa/setup/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/setup/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/setup/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/938a2f158b45ed62.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/setup/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/setup/"
         }
       ],
       "count": 4
     },
     {
       "method": "GET",
-      "path": "/token",
+      "path": "/api/auth/2fa/confirm/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
           "line": 1,
-          "raw_url": "token"
+          "raw_url": "/api/auth/2fa/confirm/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/d6df4dc7ef7a25ef.js",
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
           "line": 1,
-          "raw_url": "token"
+          "raw_url": "/api/auth/2fa/confirm/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/static/chunks/938a2f158b45ed62.js",
           "line": 1,
-          "raw_url": "token"
+          "raw_url": "/api/auth/2fa/confirm/"
         },
         {
-          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
-          "line": 24,
-          "raw_url": "token"
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/confirm/"
+        },
+        {
+          "file": "apps/frontend/app/dashboard/perfil/seguranca/page.tsx",
+          "line": 98,
+          "raw_url": "/api/auth/2fa/confirm/"
+        }
+      ],
+      "count": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/2fa/verify/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/verify/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/verify/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/938a2f158b45ed62.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/verify/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/verify/"
         }
       ],
       "count": 4
     },
     {
       "method": "GET",
-      "path": "/api/password-reset/confirm/",
+      "path": "/api/auth/2fa/disable/",
       "files": [
         {
-          "file": "apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
           "line": 1,
-          "raw_url": "/api/password-reset/confirm/"
+          "raw_url": "/api/auth/2fa/disable/"
         },
         {
-          "file": "apps/frontend/.next/static/chunks/d6df4dc7ef7a25ef.js",
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
           "line": 1,
-          "raw_url": "/api/password-reset/confirm/"
+          "raw_url": "/api/auth/2fa/disable/"
         },
         {
-          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_26cef6ca._.js",
+          "file": "apps/frontend/.next/static/chunks/938a2f158b45ed62.js",
           "line": 1,
-          "raw_url": "/api/password-reset/confirm/"
+          "raw_url": "/api/auth/2fa/disable/"
         },
         {
-          "file": "apps/frontend/app/recuperar-senha/confirmar/page.tsx",
-          "line": 51,
-          "raw_url": "/api/password-reset/confirm/"
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/disable/"
+        },
+        {
+          "file": "apps/frontend/app/dashboard/perfil/seguranca/page.tsx",
+          "line": 135,
+          "raw_url": "/api/auth/2fa/disable/"
+        }
+      ],
+      "count": 5
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/2fa/backup-codes/regenerate/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/backup-codes/regenerate/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/348f0c5af96b6a3a.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/backup-codes/regenerate/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/938a2f158b45ed62.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/backup-codes/regenerate/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_ad37a53e._.js",
+          "line": 1,
+          "raw_url": "/api/auth/2fa/backup-codes/regenerate/"
+        }
+      ],
+      "count": 4
+    },
+    {
+      "method": "GET",
+      "path": "/api/team/invitations/accept/",
+      "files": [
+        {
+          "file": "apps/frontend/.next/server/chunks/ssr/_93d0d4a3._.js",
+          "line": 1,
+          "raw_url": "/api/team/invitations/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/86a675aebd217bd7.js",
+          "line": 1,
+          "raw_url": "/api/team/invitations/accept/"
+        },
+        {
+          "file": "apps/frontend/.next/standalone/apps/frontend/.next/server/chunks/ssr/_93d0d4a3._.js",
+          "line": 1,
+          "raw_url": "/api/team/invitations/accept/"
+        },
+        {
+          "file": "apps/frontend/app/convite/[token]/page.tsx",
+          "line": 81,
+          "raw_url": "/api/team/invitations/accept/"
         }
       ],
       "count": 4
@@ -3103,6 +3570,53 @@
     },
     {
       "method": "GET",
+      "path": "/default",
+      "files": [
+        {
+          "file": "apps/frontend/.next/static/chunks/b22cb9a29012cff8.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/d516bae38ce7b623.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/f9e12d6cf6819143.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/5425d7a729efd8cc.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/535ac2f4beeb3965.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/906e7bc8a8198659.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/644bdb929a9756ab.js",
+          "line": 1,
+          "raw_url": "default"
+        },
+        {
+          "file": "apps/frontend/.next/static/chunks/142f868dd5c6925b.js",
+          "line": 1,
+          "raw_url": "default"
+        }
+      ],
+      "count": 8
+    },
+    {
+      "method": "GET",
       "path": "/a",
       "files": [
         {
@@ -3190,12 +3704,12 @@
     },
     {
       "method": "GET",
-      "path": "/${s.default.env.NEXT_PUBLIC_API_URL}/api/feedbacks/",
+      "path": "/Home",
       "files": [
         {
-          "file": "apps/frontend/.next/static/chunks/e8084b2625be5df3.js",
+          "file": "apps/frontend/.next/static/chunks/3ea8b4e7e1cb89c7.js",
           "line": 1,
-          "raw_url": "${s.default.env.NEXT_PUBLIC_API_URL}/api/feedbacks/"
+          "raw_url": "Home"
         }
       ],
       "count": 1
@@ -3243,33 +3757,28 @@
     },
     {
       "method": "GET",
-      "path": "/redirect",
-      "files": [
-        {
-          "file": "apps/frontend/.next/static/chunks/5879f6f1a40be18c.js",
-          "line": 1,
-          "raw_url": "redirect"
-        },
-        {
-          "file": "apps/frontend/app/login/page.tsx",
-          "line": 68,
-          "raw_url": "redirect"
-        }
-      ],
-      "count": 2
-    },
-    {
-      "method": "GET",
       "path": "/Star",
       "files": [
         {
-          "file": "apps/frontend/.next/static/chunks/294b671af6697878.js",
+          "file": "apps/frontend/.next/static/chunks/dbfc3dee467016ac.js",
           "line": 1,
           "raw_url": "Star"
         }
       ],
       "count": 1
+    },
+    {
+      "method": "GET",
+      "path": "/api/auth/2fa/status/",
+      "files": [
+        {
+          "file": "apps/frontend/app/login/page.tsx",
+          "line": 74,
+          "raw_url": "/api/auth/2fa/status/"
+        }
+      ],
+      "count": 1
     }
   ],
-  "scan_date": "2026-02-05T21:24:14.847782"
+  "scan_date": "2026-02-06T19:23:18.366538"
 }

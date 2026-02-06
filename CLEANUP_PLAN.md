@@ -7,13 +7,13 @@
 
 ## 📋 Sumário Executivo
 
-| Categoria | Ação | Arquivos | Tamanho | Risco |
-|-----------|------|----------|---------|-------|
-| **Playwright Reports (GIT)** | `git rm --cached` | 27 | ~150KB | 🟢 Baixo |
-| **Audit Docs (raiz)** | Mover para docs/archive/ | 3 MD | ~50KB | 🟡 Médio |
-| **Audit local (não-git)** | Remover | audit/, tmp/, etc | ~1.2MB | 🟢 Baixo |
-| **Build artifacts** | Limpar | venv, node_modules | ~1.7GB | 🟢 Baixo |
-| **Archive tgz** | Remover | audit-evidence.tgz | 36KB | 🟢 Baixo |
+| Categoria                    | Ação                     | Arquivos           | Tamanho | Risco    |
+| ---------------------------- | ------------------------ | ------------------ | ------- | -------- |
+| **Playwright Reports (GIT)** | `git rm --cached`        | 27                 | ~150KB  | 🟢 Baixo |
+| **Audit Docs (raiz)**        | Mover para docs/archive/ | 3 MD               | ~50KB   | 🟡 Médio |
+| **Audit local (não-git)**    | Remover                  | audit/, tmp/, etc  | ~1.2MB  | 🟢 Baixo |
+| **Build artifacts**          | Limpar                   | venv, node_modules | ~1.7GB  | 🟢 Baixo |
+| **Archive tgz**              | Remover                  | audit-evidence.tgz | 36KB    | 🟢 Baixo |
 
 **Total a remover:** ~1.7GB  
 **Total de commits do git:** ~200KB de reports
@@ -32,6 +32,7 @@ git commit -m "chore: remove playwright reports from git tracking"
 ```
 
 **Como regenerar:**
+
 ```bash
 cd apps/frontend
 npm run test:e2e
@@ -45,6 +46,7 @@ npm run test:e2e
 ### A. Auditorias na Raiz (VERSIONADOS)
 
 **Arquivos:**
+
 - ACTION_PLAN.md
 - AUDIT_REPORT.md
 - DEPLOY_AUDIT.md
@@ -60,6 +62,7 @@ git commit -m "docs: archive root-level audit docs to docs/archive/"
 ```
 
 **Alternativa:** Se nunca mais serão necessários, deletar:
+
 ```bash
 git rm ACTION_PLAN.md AUDIT_REPORT.md DEPLOY_AUDIT.md
 git commit -m "docs: remove obsolete audit docs from root"
@@ -68,6 +71,7 @@ git commit -m "docs: remove obsolete audit docs from root"
 ### B. Auditorias Locais (NÃO-VERSIONADOS)
 
 **Arquivos na raiz:**
+
 - AUDITORIA_SEGURANCA_2026-02-05.md
 - auditoria-ouvify.md
 
@@ -84,6 +88,7 @@ rm -f AUDITORIA_SEGURANCA_2026-02-05.md auditoria-ouvify.md
 ### A. Diretório `audit/` (472KB)
 
 **Conteúdo:**
+
 - 7 arquivos markdown (planos, reports, backlogs)
 - evidence/ (subdir)
 
@@ -98,6 +103,7 @@ rm -rf audit/
 ### B. Diretório `tmp/` (348KB)
 
 **Conteúdo:**
+
 - repo_audit/ (API integration reports)
 - roma_audit/ (ROMA agent outputs)
 - roma_outdir_test/ (ROMA test outputs)
@@ -111,6 +117,7 @@ rm -rf tmp/
 ```
 
 **Como regenerar:**
+
 ```bash
 # ROMA outputs são gerados pelos scripts de auditoria
 python scripts/roma_server.py
@@ -135,6 +142,7 @@ rm -rf audit-reports/backend/
 ```
 
 **Como regenerar:**
+
 ```bash
 make audit-backend
 # Ou: bash scripts/audit_backend.sh
@@ -171,6 +179,7 @@ rm -rf apps/frontend/playwright-report/
 ```
 
 **Como regenerar:**
+
 ```bash
 cd apps/frontend
 npm run build      # Regenera .next/
@@ -190,6 +199,7 @@ npm run test:e2e   # Regenera playwright-report/
 ```
 
 **Como regenerar:**
+
 ```bash
 # Root
 python3.12 -m venv .venv
@@ -336,6 +346,7 @@ git status
 ## 📊 Antes e Depois
 
 ### Antes
+
 ```
 /workspaces/Ouvify/
 ├── .venv/                  (427MB)
@@ -350,6 +361,7 @@ git status
 ```
 
 ### Depois
+
 ```
 /workspaces/Ouvify/
 ├── .venv/                  (427MB - mantido)
@@ -370,10 +382,12 @@ git status
 ### 1. Arquivar ou Deletar?
 
 **Opção A:** Arquivar docs de auditoria em `docs/archive/`
+
 - ✅ Preserva histórico
 - ❌ Mantém arquivos no git
 
 **Opção B:** Deletar completamente
+
 - ✅ Limpa repositório
 - ❌ Perde histórico (mas está no git history)
 
@@ -382,9 +396,11 @@ git status
 ### 2. Diretórios `audit-reports/` e `roma/`
 
 **audit-reports/:** Contém `audit_report.json` (parece ser resultado de script)
+
 - Manter ou regenerar?
 
 **roma/:** Contém `profiles/` (configurações ROMA)
+
 - Manter (são configurações, não outputs)
 
 ---
@@ -413,15 +429,15 @@ git push origin main
 
 ## 📚 Regeneração - Referência Rápida
 
-| Artefato | Comando de Regeneração |
-|----------|------------------------|
-| playwright-report/ | `cd apps/frontend && npm run test:e2e` |
-| audit-reports/backend/ | `make audit-backend` |
-| tmp/roma_* | `python scripts/roma_server.py` |
-| __pycache__/ | Automático ao executar Python |
-| .next/ | `cd apps/frontend && npm run build` |
-| .pytest_cache/ | `cd apps/backend && pytest` |
-| .venv/ | `python3.12 -m venv .venv && pip install -r requirements.txt` |
+| Artefato               | Comando de Regeneração                                        |
+| ---------------------- | ------------------------------------------------------------- |
+| playwright-report/     | `cd apps/frontend && npm run test:e2e`                        |
+| audit-reports/backend/ | `make audit-backend`                                          |
+| tmp/roma\_\*           | `python scripts/roma_server.py`                               |
+| **pycache**/           | Automático ao executar Python                                 |
+| .next/                 | `cd apps/frontend && npm run build`                           |
+| .pytest_cache/         | `cd apps/backend && pytest`                                   |
+| .venv/                 | `python3.12 -m venv .venv && pip install -r requirements.txt` |
 
 ---
 

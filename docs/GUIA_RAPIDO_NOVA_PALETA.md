@@ -18,22 +18,22 @@ A paleta do Ouvify foi atualizada para um estilo **"Modern SaaS"** profissional,
 
 ```css
 /* ===== COPIAR ESTAS VARIÁVEIS ===== */
---background: 0 0% 100%;              /* Branco puro */
---foreground: 222.2 84% 4.9%;         /* Slate 950 (texto principal) */
---primary: 221.2 83.2% 53.3%;         /* Blue 600 (botões, links) */
---primary-foreground: 210 40% 98%;    /* Texto sobre azul */
---secondary: 210 40% 96.1%;           /* Slate 50 (fundos secundários) */
---border: 214.3 31.8% 91.4%;          /* Slate 200 (bordas) */
+--background: 0 0% 100%; /* Branco puro */
+--foreground: 222.2 84% 4.9%; /* Slate 950 (texto principal) */
+--primary: 221.2 83.2% 53.3%; /* Blue 600 (botões, links) */
+--primary-foreground: 210 40% 98%; /* Texto sobre azul */
+--secondary: 210 40% 96.1%; /* Slate 50 (fundos secundários) */
+--border: 214.3 31.8% 91.4%; /* Slate 200 (bordas) */
 --muted-foreground: 215.4 16.3% 46.9%; /* Slate 600 (texto de apoio) */
 ```
 
 ### **Cores Semânticas (Status)**
 
 ```css
---success: 142 76% 36%;         /* Green 600 (verde profissional) */
---warning: 38 92% 50%;          /* Amber 500 (amarelo alerta) */
---error: 0 84.2% 60.2%;         /* Red 500 (vermelho erro) */
---info: 217.2 91.2% 59.8%;      /* Blue 500 (azul informação) */
+--success: 142 76% 36%; /* Green 600 (verde profissional) */
+--warning: 38 92% 50%; /* Amber 500 (amarelo alerta) */
+--error: 0 84.2% 60.2%; /* Red 500 (vermelho erro) */
+--info: 217.2 91.2% 59.8%; /* Blue 500 (azul informação) */
 ```
 
 ---
@@ -42,28 +42,36 @@ A paleta do Ouvify foi atualizada para um estilo **"Modern SaaS"** profissional,
 
 ### **Fontes**
 
-| Uso | Fonte | Pesos Disponíveis |
-|-----|-------|-------------------|
-| **Body Text** (parágrafos, UI) | Inter | 400, 500, 600, 700 |
-| **Headings** (H1-H6) | Poppins | 500, 600, 700, 800 |
-| **Code** (monospace) | JetBrains Mono | 400 |
+| Uso                            | Fonte          | Pesos Disponíveis  |
+| ------------------------------ | -------------- | ------------------ |
+| **Body Text** (parágrafos, UI) | Inter          | 400, 500, 600, 700 |
+| **Headings** (H1-H6)           | Poppins        | 500, 600, 700, 800 |
+| **Code** (monospace)           | JetBrains Mono | 400                |
 
 ### **Classes Tailwind**
 
 ```tsx
-{/* Heading (Poppins Bold) */}
-<h1 className="text-5xl font-bold">Título Principal</h1>
+{
+  /* Heading (Poppins Bold) */
+}
+<h1 className="text-5xl font-bold">Título Principal</h1>;
 
-{/* Body Text (Inter Regular) */}
-<p className="text-base text-foreground">Parágrafo normal</p>
+{
+  /* Body Text (Inter Regular) */
+}
+<p className="text-base text-foreground">Parágrafo normal</p>;
 
-{/* Texto de Apoio (Inter + Muted) */}
-<p className="text-sm text-muted-foreground">Texto secundário</p>
+{
+  /* Texto de Apoio (Inter + Muted) */
+}
+<p className="text-sm text-muted-foreground">Texto secundário</p>;
 
-{/* Link (Inter Semibold + Primary) */}
+{
+  /* Link (Inter Semibold + Primary) */
+}
 <a href="/docs" className="text-primary font-semibold hover:underline">
   Leia a documentação
-</a>
+</a>;
 ```
 
 ---
@@ -85,7 +93,13 @@ import { Button } from "@/components/ui/button";
 ### **Cards (Card)**
 
 ```tsx
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 
 <Card>
   <CardHeader>
@@ -95,7 +109,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
   <CardContent>
     <p className="text-foreground">Conteúdo principal aqui</p>
   </CardContent>
-</Card>
+</Card>;
 ```
 
 ### **Alertas (Alert)**
@@ -104,32 +118,36 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CheckCircle2, AlertTriangle, XCircle, Info } from "lucide-react";
 
-{/* Success (Verde) */}
+{
+  /* Success (Verde) */
+}
 <Alert className="border-green-200 bg-green-50">
   <CheckCircle2 className="h-5 w-5 text-green-600" />
   <AlertTitle className="text-green-900">Sucesso!</AlertTitle>
   <AlertDescription className="text-green-700">
     Operação concluída.
   </AlertDescription>
-</Alert>
+</Alert>;
 
-{/* Warning (Amarelo) */}
+{
+  /* Warning (Amarelo) */
+}
 <Alert className="border-amber-200 bg-amber-50">
   <AlertTriangle className="h-5 w-5 text-amber-600" />
   <AlertTitle className="text-amber-900">Atenção!</AlertTitle>
   <AlertDescription className="text-amber-700">
     Esta ação é irreversível.
   </AlertDescription>
-</Alert>
+</Alert>;
 
-{/* Error (Vermelho) */}
+{
+  /* Error (Vermelho) */
+}
 <Alert className="border-red-200 bg-red-50">
   <XCircle className="h-5 w-5 text-red-600" />
   <AlertTitle className="text-red-900">Erro!</AlertTitle>
-  <AlertDescription className="text-red-700">
-    Algo deu errado.
-  </AlertDescription>
-</Alert>
+  <AlertDescription className="text-red-700">Algo deu errado.</AlertDescription>
+</Alert>;
 ```
 
 ### **Badges (Badge)**
@@ -155,46 +173,68 @@ import { Badge } from "@/components/ui/badge";
 ### **Backgrounds**
 
 ```tsx
-{/* Fundo Principal (Branco) */}
-<div className="bg-background">...</div>
+{
+  /* Fundo Principal (Branco) */
+}
+<div className="bg-background">...</div>;
 
-{/* Fundo Secundário (Slate 50 - sutil) */}
-<div className="bg-secondary">...</div>
+{
+  /* Fundo Secundário (Slate 50 - sutil) */
+}
+<div className="bg-secondary">...</div>;
 
-{/* Fundo Alternado (para alternar seções) */}
-<div className="bg-muted">...</div>
+{
+  /* Fundo Alternado (para alternar seções) */
+}
+<div className="bg-muted">...</div>;
 
-{/* Card com Sombra */}
-<div className="bg-card shadow-soft rounded-lg border border-border">...</div>
+{
+  /* Card com Sombra */
+}
+<div className="bg-card shadow-soft rounded-lg border border-border">...</div>;
 ```
 
 ### **Texto**
 
 ```tsx
-{/* Texto Principal (Slate 950) */}
-<p className="text-foreground">Texto principal</p>
+{
+  /* Texto Principal (Slate 950) */
+}
+<p className="text-foreground">Texto principal</p>;
 
-{/* Texto Secundário (Slate 600) */}
-<p className="text-muted-foreground">Texto de apoio</p>
+{
+  /* Texto Secundário (Slate 600) */
+}
+<p className="text-muted-foreground">Texto de apoio</p>;
 
-{/* Texto sobre Fundo Escuro */}
-<p className="text-background">Texto invertido</p>
+{
+  /* Texto sobre Fundo Escuro */
+}
+<p className="text-background">Texto invertido</p>;
 
-{/* Link */}
-<a className="text-primary hover:underline">Link</a>
+{
+  /* Link */
+}
+<a className="text-primary hover:underline">Link</a>;
 ```
 
 ### **Bordas e Divisórias**
 
 ```tsx
-{/* Borda Padrão (Slate 200) */}
-<div className="border border-border rounded-lg">...</div>
+{
+  /* Borda Padrão (Slate 200) */
+}
+<div className="border border-border rounded-lg">...</div>;
 
-{/* Divisória Horizontal */}
-<hr className="border-t border-border my-6" />
+{
+  /* Divisória Horizontal */
+}
+<hr className="border-t border-border my-6" />;
 
-{/* Card com Borda Destacada */}
-<div className="border-2 border-primary rounded-lg p-4">...</div>
+{
+  /* Card com Borda Destacada */
+}
+<div className="border-2 border-primary rounded-lg p-4">...</div>;
 ```
 
 ---
@@ -203,11 +243,11 @@ import { Badge } from "@/components/ui/badge";
 
 ### **Contraste Garantido (WCAG)**
 
-| Par de Cores | Contraste | WCAG Level | Status |
-|--------------|-----------|------------|--------|
-| Foreground / Background | 21:1 | AAA | ✅ |
-| Primary / Primary-Foreground | 8.5:1 | AA | ✅ |
-| Muted-Foreground / Background | 4.8:1 | AA | ✅ |
+| Par de Cores                  | Contraste | WCAG Level | Status |
+| ----------------------------- | --------- | ---------- | ------ |
+| Foreground / Background       | 21:1      | AAA        | ✅     |
+| Primary / Primary-Foreground  | 8.5:1     | AA         | ✅     |
+| Muted-Foreground / Background | 4.8:1     | AA         | ✅     |
 
 ### **Focus States**
 
@@ -276,10 +316,13 @@ Fase 1 (Fundação) está completa! Próximas fases:
 ## ❓ PERGUNTAS FREQUENTES
 
 ### **Q: Posso usar cores customizadas fora da paleta?**
+
 A: Sim, mas prefira as cores semânticas (`success`, `warning`, `error`) quando possível para consistência.
 
 ### **Q: E se eu precisar de um tom específico de azul?**
+
 A: Use as escalas geradas automaticamente:
+
 ```tsx
 <div className="bg-primary-100">Azul muito claro</div>
 <div className="bg-primary-600">Azul padrão</div>
@@ -287,7 +330,9 @@ A: Use as escalas geradas automaticamente:
 ```
 
 ### **Q: Como garantir acessibilidade nos meus componentes?**
+
 A: Sempre use pares de cores testados:
+
 - `text-foreground` sobre `bg-background` ✅
 - `text-primary-foreground` sobre `bg-primary` ✅
 - Evite `text-muted-foreground` sobre `bg-secondary` ⚠️ (contraste baixo)

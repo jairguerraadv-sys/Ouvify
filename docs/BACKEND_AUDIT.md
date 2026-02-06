@@ -31,29 +31,34 @@ bash scripts/audit_backend.sh
 O script `audit_backend.sh` executa as seguintes etapas automaticamente:
 
 ### 1. **Configuração do Ambiente**
-   - Cria ou reutiliza um virtualenv em `apps/backend/.venv`
-   - Atualiza o pip para a versão mais recente
-   - Instala todas as dependências de `requirements/test.txt` (inclui base + ferramentas de teste)
+
+- Cria ou reutiliza um virtualenv em `apps/backend/.venv`
+- Atualiza o pip para a versão mais recente
+- Instala todas as dependências de `requirements/test.txt` (inclui base + ferramentas de teste)
 
 ### 2. **Django System Check**
-   - Executa `python manage.py check --deploy`
-   - Valida configurações básicas do Django sem precisar de banco de dados completo
-   - Usa SQLite em memória para testes rápidos
+
+- Executa `python manage.py check --deploy`
+- Valida configurações básicas do Django sem precisar de banco de dados completo
+- Usa SQLite em memória para testes rápidos
 
 ### 3. **Verificação de Migrations**
-   - Executa `python manage.py makemigrations --check --dry-run`
-   - Identifica se há migrations pendentes que precisam ser criadas
-   - **Nota:** Pode falhar em SQLite devido a limitações do driver, mas passa em PostgreSQL
+
+- Executa `python manage.py makemigrations --check --dry-run`
+- Identifica se há migrations pendentes que precisam ser criadas
+- **Nota:** Pode falhar em SQLite devido a limitações do driver, mas passa em PostgreSQL
 
 ### 4. **Coleta de Testes**
-   - Executa `pytest --collect-only`
-   - Lista todos os testes disponíveis sem executá-los
-   - Verifica se os imports dos testes estão corretos
+
+- Executa `pytest --collect-only`
+- Lista todos os testes disponíveis sem executá-los
+- Verifica se os imports dos testes estão corretos
 
 ### 5. **Verificação de Imports**
-   - Parseia todos os arquivos Python com AST
-   - Detecta erros de sintaxe ou imports quebrados
-   - Não executa código, apenas valida a estrutura
+
+- Parseia todos os arquivos Python com AST
+- Detecta erros de sintaxe ou imports quebrados
+- Não executa código, apenas valida a estrutura
 
 ## Saídas Geradas
 
@@ -71,6 +76,7 @@ audit-reports/backend/
 ## Interpretando os Resultados
 
 ### ✅ Sucesso Completo
+
 ```
 [✓] Venv ativado
 [✓] Dependências instaladas
@@ -83,11 +89,13 @@ audit-reports/backend/
 ### ⚠️ Avisos Esperados
 
 #### Django Check
+
 - **drf_spectacular warnings**: warnings sobre schemas OpenAPI são comuns e não críticos
 - **security.W003, W004, W008**: avisos de segurança para deployment (normais em dev/test)
 - **security.W009**: SECRET_KEY temporária (esperado em auditoria)
 
 #### Migrations Check
+
 - **SQLite connect_timeout**: erro conhecido do SQLite, não afeta funcionalidade
 - Para validar migrations corretamente, use PostgreSQL:
   ```bash
@@ -98,7 +106,9 @@ audit-reports/backend/
 ### ❌ Erros Críticos
 
 #### Import Errors
+
 Se houver erros no `imports_check.txt`:
+
 ```
 ❌ 3 arquivos com erros:
   - apps/core/views.py: SyntaxError: invalid syntax
@@ -108,7 +118,9 @@ Se houver erros no `imports_check.txt`:
 **Ação:** Corrigir os imports/typos nos arquivos listados.
 
 #### Pytest Collection Failures
+
 Se pytest não conseguir coletar os testes:
+
 ```
 ERROR: import errors... ModuleNotFoundError
 ```
@@ -143,6 +155,7 @@ pylint apps/ --disable=C,R
 ## Integração com CI/CD
 
 ### GitHub Actions Example
+
 ```yaml
 name: Backend Audit
 on: [push, pull_request]
@@ -152,15 +165,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      
+          python-version: "3.12"
+
       - name: Run Backend Audit
         run: bash scripts/audit_backend.sh
-      
+
       - name: Upload Audit Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -170,6 +183,7 @@ jobs:
 ```
 
 ### GitLab CI Example
+
 ```yaml
 backend-audit:
   image: python:3.12
@@ -189,6 +203,7 @@ backend-audit:
 **Causa:** Script executado sem instalar dependências.
 
 **Solução:** O script `audit_backend.sh` já cuida disso. Se o erro persistir:
+
 ```bash
 cd apps/backend
 python -m venv .venv
@@ -201,6 +216,7 @@ pip install -r requirements/test.txt
 **Causa:** Variável de ambiente ausente em produção.
 
 **Solução:** O script já configura uma SECRET_KEY temporária. Para produção real:
+
 ```bash
 export SECRET_KEY="seu-secret-key-aqui"
 bash scripts/audit_backend.sh
@@ -211,6 +227,7 @@ bash scripts/audit_backend.sh
 **Causa:** Nome incorreto do pacote (correto é `rest_framework`).
 
 **Solução:** O script detectará isso no `imports_check.txt`. Corrigir manualmente:
+
 ```python
 # ❌ Errado
 from restframework import viewsets
@@ -224,6 +241,7 @@ from rest_framework import viewsets
 **Causa:** Venv não foi ativado ou dependências não instaladas.
 
 **Solução:** O script já ativa o venv automaticamente. Se executar manualmente:
+
 ```bash
 cd apps/backend
 source .venv/bin/activate

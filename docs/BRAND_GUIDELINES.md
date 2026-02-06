@@ -26,6 +26,7 @@ O Ouvify adota o estilo **Modern SaaS** - uma abordagem visual profissional, lim
 ### **Os 3 Pilares da Nossa Identidade**
 
 #### 1. **🛡️ CONFIANÇA**
+
 - Cores sóbrias e profissionais (Azul + Cinza)
 - Contraste WCAG AAA (21:1) em textos críticos
 - Mensagens de segurança visíveis (Lock icons, criptografia)
@@ -35,6 +36,7 @@ O Ouvify adota o estilo **Modern SaaS** - uma abordagem visual profissional, lim
 ---
 
 #### 2. **🔍 CLAREZA**
+
 - Hierarquia visual forte (headings grandes, spacing generoso)
 - Textos diretos e objetivos
 - Empty states com instruções claras
@@ -44,6 +46,7 @@ O Ouvify adota o estilo **Modern SaaS** - uma abordagem visual profissional, lim
 ---
 
 #### 3. **♿ ACESSIBILIDADE**
+
 - WCAG AAA em textos importantes
 - Focus states visíveis (ring-2)
 - Cores nunca são a única forma de comunicação (usamos ícones também)
@@ -60,13 +63,14 @@ Nossa paleta usa **tokens semânticos** - nomes que descrevem a função, não a
 
 #### **Cores de Ação**
 
-| Token | Cor (Modo Claro) | Hex | Quando Usar |
-|-------|------------------|-----|-------------|
-| `--primary` | Blue 600 | ![#3B82F6](https://via.placeholder.com/40x20/3B82F6/FFFFFF?text=+) `#3B82F6` | Botões principais, links, CTAs |
-| `--primary-hover` | Blue 700 | ![#2563EB](https://via.placeholder.com/40x20/2563EB/FFFFFF?text=+) `#2563EB` | Hover state do primary |
-| `--primary-foreground` | White | ![#FFFFFF](https://via.placeholder.com/40x20/FFFFFF/000000?text=+) `#FFFFFF` | Texto em botões primary |
+| Token                  | Cor (Modo Claro) | Hex                                                                          | Quando Usar                    |
+| ---------------------- | ---------------- | ---------------------------------------------------------------------------- | ------------------------------ |
+| `--primary`            | Blue 600         | ![#3B82F6](https://via.placeholder.com/40x20/3B82F6/FFFFFF?text=+) `#3B82F6` | Botões principais, links, CTAs |
+| `--primary-hover`      | Blue 700         | ![#2563EB](https://via.placeholder.com/40x20/2563EB/FFFFFF?text=+) `#2563EB` | Hover state do primary         |
+| `--primary-foreground` | White            | ![#FFFFFF](https://via.placeholder.com/40x20/FFFFFF/000000?text=+) `#FFFFFF` | Texto em botões primary        |
 
 **Exemplo:**
+
 ```tsx
 <Button variant="default">Enviar Feedback</Button>
 // Renderiza: bg-primary hover:bg-primary-hover text-primary-foreground
@@ -76,14 +80,15 @@ Nossa paleta usa **tokens semânticos** - nomes que descrevem a função, não a
 
 #### **Cores de Feedback**
 
-| Token | Cor | Hex | Quando Usar |
-|-------|-----|-----|-------------|
+| Token       | Cor       | Hex                                                                          | Quando Usar                             |
+| ----------- | --------- | ---------------------------------------------------------------------------- | --------------------------------------- |
 | `--success` | Green 600 | ![#16A34A](https://via.placeholder.com/40x20/16A34A/FFFFFF?text=+) `#16A34A` | Sucesso, confirmações, badges positivos |
-| `--warning` | Amber 500 | ![#F59E0B](https://via.placeholder.com/40x20/F59E0B/000000?text=+) `#F59E0B` | Alertas, atenção, estados pendentes |
-| `--error` | Red 500 | ![#EF4444](https://via.placeholder.com/40x20/EF4444/FFFFFF?text=+) `#EF4444` | Erros, exclusões, validações falhas |
-| `--info` | Blue 500 | ![#3B82F6](https://via.placeholder.com/40x20/3B82F6/FFFFFF?text=+) `#3B82F6` | Informações, dicas, tooltips |
+| `--warning` | Amber 500 | ![#F59E0B](https://via.placeholder.com/40x20/F59E0B/000000?text=+) `#F59E0B` | Alertas, atenção, estados pendentes     |
+| `--error`   | Red 500   | ![#EF4444](https://via.placeholder.com/40x20/EF4444/FFFFFF?text=+) `#EF4444` | Erros, exclusões, validações falhas     |
+| `--info`    | Blue 500  | ![#3B82F6](https://via.placeholder.com/40x20/3B82F6/FFFFFF?text=+) `#3B82F6` | Informações, dicas, tooltips            |
 
 **Exemplo:**
+
 ```tsx
 <Badge variant="success">Ativo</Badge>
 <Alert variant="error">Erro ao salvar</Alert>
@@ -93,17 +98,19 @@ Nossa paleta usa **tokens semânticos** - nomes que descrevem a função, não a
 
 #### **Cores de Texto**
 
-| Token | Contraste | Quando Usar |
-|-------|-----------|-------------|
-| `text-foreground` | **21:1** (WCAG AAA) | ✅ Valores de KPIs, títulos principais, dados críticos |
-| `text-muted-foreground` | **7:1** (WCAG AA) | ✅ Labels secundários, descrições, meta info |
-| `text-text-tertiary` | **5:1** (WCAG AA) | ✅ Placeholders, hints, timestamps |
+| Token                   | Contraste           | Quando Usar                                            |
+| ----------------------- | ------------------- | ------------------------------------------------------ |
+| `text-foreground`       | **21:1** (WCAG AAA) | ✅ Valores de KPIs, títulos principais, dados críticos |
+| `text-muted-foreground` | **7:1** (WCAG AA)   | ✅ Labels secundários, descrições, meta info           |
+| `text-text-tertiary`    | **5:1** (WCAG AA)   | ✅ Placeholders, hints, timestamps                     |
 
 **⚠️ NUNCA USE:**
+
 - ❌ `text-gray-600` ou `text-slate-500` (hardcoded)
 - ❌ `text-secondary-600` para textos críticos (contraste insuficiente)
 
 **✅ USE SEMPRE:**
+
 - ✅ `text-foreground` para conteúdo importante (21:1)
 - ✅ `text-muted-foreground` para labels (7:1)
 
@@ -111,12 +118,12 @@ Nossa paleta usa **tokens semânticos** - nomes que descrevem a função, não a
 
 #### **Cores de Fundo**
 
-| Token | Quando Usar |
-|-------|-------------|
-| `bg-background` | Fundo principal de páginas |
-| `bg-muted` | Cards, seções diferenciadas |
-| `bg-card` | Cards, modais, dropdowns |
-| `bg-accent` | Hover em itens de lista |
+| Token           | Quando Usar                 |
+| --------------- | --------------------------- |
+| `bg-background` | Fundo principal de páginas  |
+| `bg-muted`      | Cards, seções diferenciadas |
+| `bg-card`       | Cards, modais, dropdowns    |
+| `bg-accent`     | Hover em itens de lista     |
 
 ---
 
@@ -125,15 +132,16 @@ Nossa paleta usa **tokens semânticos** - nomes que descrevem a função, não a
 O Ouvify suporta **Dark Mode** nativo. Todos os tokens semânticos se adaptam automaticamente.
 
 **Como funciona:**
+
 ```css
 :root {
-  --background: 0 0% 100%;        /* Branco */
-  --foreground: 222.2 84% 4.9%;   /* Slate 950 */
+  --background: 0 0% 100%; /* Branco */
+  --foreground: 222.2 84% 4.9%; /* Slate 950 */
 }
 
 .dark {
-  --background: 222.2 84% 4.9%;   /* Slate 950 */
-  --foreground: 210 40% 98%;      /* Slate 50 */
+  --background: 222.2 84% 4.9%; /* Slate 950 */
+  --foreground: 210 40% 98%; /* Slate 50 */
 }
 ```
 
@@ -148,11 +156,13 @@ O Ouvify suporta **Dark Mode** nativo. Todos os tokens semânticos se adaptam au
 O Ouvify usa **2 fontes** carregadas do Google Fonts:
 
 #### **1. Inter** (Body Text & UI)
+
 - **Uso:** Parágrafos, labels, botões, navegação
 - **Pesos:** 400 (Normal), 500 (Medium), 600 (Semibold), 700 (Bold)
 - **Características:** Legível, profissional, otimizada para telas
 
 #### **2. Poppins** (Headings)
+
 - **Uso:** Títulos (H1-H6), destaques, hero sections
 - **Pesos:** 500 (Medium), 600 (Semibold), 700 (Bold), 800 (ExtraBold)
 - **Características:** Moderna, geométrica, impacto visual
@@ -161,24 +171,25 @@ O Ouvify usa **2 fontes** carregadas do Google Fonts:
 
 ### **Hierarquia Tipográfica**
 
-| Elemento | Fonte | Peso | Tamanho | Quando Usar |
-|----------|-------|------|---------|-------------|
-| **H1** | Poppins | 700 | `text-5xl md:text-6xl` | Hero sections, landing pages |
-| **H2** | Poppins | 700 | `text-4xl md:text-5xl` | Títulos de página |
-| **H3** | Poppins | 700 | `text-3xl md:text-4xl` | Seções principais |
-| **H4** | Poppins | 700 | `text-2xl md:text-3xl` | Subtítulos, cards grandes |
-| **H5** | Poppins | 700 | `text-xl md:text-2xl` | Labels de seção |
-| **H6** | Poppins | 700 | `text-lg md:text-xl` | Pequenos títulos |
-| **Body** | Inter | 400 | `text-base` | Parágrafos, descrições |
-| **Button** | Inter | 500 | `text-sm` | Botões, links |
-| **Label** | Inter | 500 | `text-sm` | Labels de formulário |
-| **Caption** | Inter | 400 | `text-xs` | Meta info, timestamps |
+| Elemento    | Fonte   | Peso | Tamanho                | Quando Usar                  |
+| ----------- | ------- | ---- | ---------------------- | ---------------------------- |
+| **H1**      | Poppins | 700  | `text-5xl md:text-6xl` | Hero sections, landing pages |
+| **H2**      | Poppins | 700  | `text-4xl md:text-5xl` | Títulos de página            |
+| **H3**      | Poppins | 700  | `text-3xl md:text-4xl` | Seções principais            |
+| **H4**      | Poppins | 700  | `text-2xl md:text-3xl` | Subtítulos, cards grandes    |
+| **H5**      | Poppins | 700  | `text-xl md:text-2xl`  | Labels de seção              |
+| **H6**      | Poppins | 700  | `text-lg md:text-xl`   | Pequenos títulos             |
+| **Body**    | Inter   | 400  | `text-base`            | Parágrafos, descrições       |
+| **Button**  | Inter   | 500  | `text-sm`              | Botões, links                |
+| **Label**   | Inter   | 500  | `text-sm`              | Labels de formulário         |
+| **Caption** | Inter   | 400  | `text-xs`              | Meta info, timestamps        |
 
 ---
 
 ### **Regras de Uso**
 
 #### ✅ **FAÇA:**
+
 ```tsx
 // H1 com Poppins (automático via globals.css)
 <h1 className="text-5xl font-bold text-foreground">
@@ -192,6 +203,7 @@ O Ouvify usa **2 fontes** carregadas do Google Fonts:
 ```
 
 #### ❌ **NÃO FAÇA:**
+
 ```tsx
 // ❌ Usar font-mono em headings
 <h1 className="font-mono">Título</h1>
@@ -207,13 +219,14 @@ O Ouvify usa **2 fontes** carregadas do Google Fonts:
 
 ### **Letter Spacing**
 
-| Elemento | Classe Tailwind | Valor |
-|----------|-----------------|-------|
+| Elemento         | Classe Tailwind  | Valor   |
+| ---------------- | ---------------- | ------- |
 | Headings (H1-H6) | `tracking-tight` | -0.02em |
-| Body Text | (default) | 0 |
-| Uppercase Text | `tracking-wide` | 0.05em |
+| Body Text        | (default)        | 0       |
+| Uppercase Text   | `tracking-wide`  | 0.05em  |
 
 **Exemplo:**
+
 ```tsx
 <h2 className="tracking-tight">Título com Espaçamento Apertado</h2>
 ```
@@ -280,11 +293,13 @@ import { LogoHeader, LogoAuth, LogoSidebar } from "@/components/brand/Logo";
 ### **Regras de Uso**
 
 #### ✅ **PERMITIDO:**
+
 - ✅ Usar em headers, footers, auth pages
 - ✅ Colocar em fundo branco ou escuro (PNG tem transparência)
 - ✅ Redimensionar proporcionalmente com `<Logo size="..." />`
 
 #### ❌ **NÃO PERMITIDO:**
+
 - ❌ Esticar ou distorcer (sempre manter aspect ratio)
 - ❌ Alterar cores (use o PNG original)
 - ❌ Adicionar sombras ou efeitos (componente já cuida disso)
@@ -380,9 +395,9 @@ Mantenha **24px de margem** ao redor da logo em todos os lados:
 ```tsx
 // ✅ Estados completos
 <Button className="
-  bg-primary hover:bg-primary-hover 
-  focus-visible:ring-2 focus-visible:ring-primary 
-  active:scale-95 
+  bg-primary hover:bg-primary-hover
+  focus-visible:ring-2 focus-visible:ring-primary
+  active:scale-95
   transition-all
 ">
   Clique Aqui
@@ -424,10 +439,7 @@ import { Button } from "@/components/ui/button";
 export default function MinhaPage() {
   return (
     <PageLayout>
-      <PageHeader
-        title="Título da Página"
-        description="Descrição opcional"
-      >
+      <PageHeader title="Título da Página" description="Descrição opcional">
         <Button>Nova Ação</Button>
       </PageHeader>
 
@@ -462,18 +474,13 @@ import { Button } from "@/components/ui/button";
     <Label htmlFor="name" className="text-foreground">
       Nome Completo *
     </Label>
-    <Input
-      id="name"
-      type="text"
-      placeholder="João Silva"
-      className="mt-1"
-    />
+    <Input id="name" type="text" placeholder="João Silva" className="mt-1" />
   </div>
 
   <Button type="submit" className="w-full">
     Salvar
   </Button>
-</form>
+</form>;
 ```
 
 ---
@@ -486,9 +493,7 @@ import { Button } from "@/components/ui/button";
     <p className="text-sm font-medium text-muted-foreground">
       Total de Feedbacks
     </p>
-    <div className="text-3xl font-bold text-foreground mt-2 mb-1">
-      1,234
-    </div>
+    <div className="text-3xl font-bold text-foreground mt-2 mb-1">1,234</div>
     <p className="text-xs text-success flex items-center gap-1">
       <TrendingUp className="h-3 w-3" />
       +12% este mês
@@ -511,7 +516,7 @@ import { FileText } from "lucide-react";
   description="Compartilhe o link público para começar a receber feedbacks."
   actionLabel="Ver Link Público"
   actionHref="/dashboard/settings/public-page"
-/>
+/>;
 ```
 
 ---
@@ -521,26 +526,31 @@ import { FileText } from "lucide-react";
 Antes de finalizar qualquer design, verifique:
 
 ### **Cores**
+
 - [ ] Nenhuma cor hardcoded (gray-600, blue-500, etc.)
 - [ ] Textos críticos usam `text-foreground` (21:1)
 - [ ] Labels secundários usam `text-muted-foreground`
 
 ### **Tipografia**
+
 - [ ] Headings usam Poppins (automático com `<h1>-<h6>`)
 - [ ] Body text usa Inter (default)
 - [ ] Tamanhos respondem a breakpoints (`text-5xl md:text-6xl`)
 
 ### **Espaçamento**
+
 - [ ] Usa escala Tailwind (múltiplos de 4: `p-4`, `m-8`, `gap-6`)
 - [ ] Grids são responsivos (`gap-4 md:gap-6`)
 - [ ] Padding de containers é consistente (`px-4 sm:px-6 lg:px-8`)
 
 ### **Acessibilidade**
+
 - [ ] Contraste WCAG AA em todos os textos (mínimo 4.5:1)
 - [ ] Focus rings visíveis (`focus-visible:ring-2`)
 - [ ] Alt text em todas as imagens
 
 ### **Logo**
+
 - [ ] Usa `<Logo />` component (nunca `<img src="/logo.png">`)
 - [ ] Mantém spacing mínimo de 24px
 - [ ] Não está distorcida
@@ -550,6 +560,7 @@ Antes de finalizar qualquer design, verifique:
 ## 📚 REFERÊNCIAS
 
 ### **Documentação Técnica**
+
 - [Design System (Developers)](./DESIGN_SYSTEM.md) - Guia técnico de implementação
 - [Rebrand Fase 1](./REBRAND_VISUAL_FASE_1.md) - Fundação (Cores & Tipografia)
 - [Rebrand Fase 2](./REBRAND_VISUAL_FASE_2.md) - Logo & Layouts
@@ -557,11 +568,13 @@ Antes de finalizar qualquer design, verifique:
 - [Resumo Executivo](./REBRAND_RESUMO_EXECUTIVO.md) - Visão geral
 
 ### **Arquivos de Referência**
+
 - [globals.css](../apps/frontend/app/globals.css) - Variáveis CSS e estilos base
 - [Logo Component](../apps/frontend/components/brand/Logo.tsx) - Implementação oficial
 - [Design System Showcase](http://localhost:3000/design-system) - Preview interativo
 
 ### **Ferramentas Úteis**
+
 - [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/) - Validar contraste
 - [Coolors](https://coolors.co/) - Explorar paletas
 - [Google Fonts](https://fonts.google.com/) - Inter & Poppins

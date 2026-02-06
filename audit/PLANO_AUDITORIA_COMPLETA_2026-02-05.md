@@ -1,4 +1,5 @@
 # 🎯 PLANO DE AUDITORIA COMPLETA - OUVIFY
+
 **Data:** 05 de Fevereiro de 2026 (Continuação)  
 **Framework:** ROMA (Reasoning On Multiple Abstractions)  
 **Executor:** GitHub Copilot Agent (Claude Sonnet 4.5)  
@@ -9,11 +10,13 @@
 ## 📋 VISÃO GERAL
 
 ### Contexto
+
 - **Auditorias anteriores:** 31/01/2026 e 05/02/2026 (completude ~85%)
 - **Vulnerabilidades conhecidas:** 0 críticas, 3 altas, 4 médias, 5 baixas
 - **Gap principal:** Finalização MVP, documentação de usuário, validação de correções
 
 ### Restrições Obrigatórias
+
 - ❌ Sem APIs externas (OpenAI, Gemini, Anthropic)
 - ✅ Apenas recursos locais: Docker, Python, Node, curl, Copilot VS Code
 - ❌ Sem exfiltração de dados sensíveis
@@ -25,17 +28,17 @@
 
 ### Macrotarefas MECE (Mutuamente Exclusivas, Coletivamente Exaustivas)
 
-| ID | Macrotarefa | Esforço | Output |
-|---|---|---|---|
-| **M0** | Baseline & Validação | 30min | `/audit/BASELINE_STATUS.md` |
-| **M1** | Integridade & Duplicações | 45min | `/audit/DUPLICATION_REDUNDANCY.md` |
-| **M2** | Segurança Crítica | 90min | `/audit/SECURITY_REVIEW.md` |
-| **M3** | Testes & Qualidade | 60min | `/audit/TEST_COVERAGE.md` |
-| **M4** | Performance | 45min | `/audit/PERFORMANCE_REVIEW.md` |
-| **M5** | Conformidade LGPD | 45min | `/audit/COMPLIANCE_LGPD.md` |
-| **M6** | Deploy & Config | 30min | `/audit/DEPLOY_STATUS.md` |
-| **M7** | Documentação | 60min | `/docs/` (vários) |
-| **M8** | Backlog MVP | 30min | `/audit/MVP_BACKLOG.md` |
+| ID     | Macrotarefa               | Esforço | Output                             |
+| ------ | ------------------------- | ------- | ---------------------------------- |
+| **M0** | Baseline & Validação      | 30min   | `/audit/BASELINE_STATUS.md`        |
+| **M1** | Integridade & Duplicações | 45min   | `/audit/DUPLICATION_REDUNDANCY.md` |
+| **M2** | Segurança Crítica         | 90min   | `/audit/SECURITY_REVIEW.md`        |
+| **M3** | Testes & Qualidade        | 60min   | `/audit/TEST_COVERAGE.md`          |
+| **M4** | Performance               | 45min   | `/audit/PERFORMANCE_REVIEW.md`     |
+| **M5** | Conformidade LGPD         | 45min   | `/audit/COMPLIANCE_LGPD.md`        |
+| **M6** | Deploy & Config           | 30min   | `/audit/DEPLOY_STATUS.md`          |
+| **M7** | Documentação              | 60min   | `/docs/` (vários)                  |
+| **M8** | Backlog MVP               | 30min   | `/audit/MVP_BACKLOG.md`            |
 
 **Total Estimado:** 6-7 horas
 
@@ -48,13 +51,14 @@
 **Objetivo:** Estabelecer linha de base atual e validar status de correções anteriores.
 
 #### Checklist
+
 - [ ] **M0.1** Coletar versões de dependências (backend + frontend)
   - [ ] Rodar `pip list > /audit/evidence/backend_dependencies.txt`
   - [ ] Rodar `npm list --json > /audit/evidence/frontend_dependencies.json`
   - [ ] Verificar CVEs conhecidos via `pip-audit` e `npm audit`
 
 - [ ] **M0.2** Mapear estrutura do monorepo
-  - [ ] Gerar árvore de diretórios filtrada (excluir node_modules, __pycache__)
+  - [ ] Gerar árvore de diretórios filtrada (excluir node_modules, **pycache**)
   - [ ] Identificar apps Django: listar `/apps/backend/apps/*`
   - [ ] Identificar páginas Next.js: listar `/apps/frontend/app/*`
   - [ ] Gerar diagrama Mermaid em `/audit/INVENTORY.md`
@@ -73,6 +77,7 @@
   - [ ] Tamanho do repositório: `du -sh /workspaces/Ouvify > /audit/evidence/repo_size.txt`
 
 **Definition of Done:**
+
 - Arquivo `/audit/BASELINE_STATUS.md` criado com status de correções anteriores
 - Evidências coletadas em `/audit/evidence/`
 - Inventário completo do monorepo em `/audit/INVENTORY.md`
@@ -84,6 +89,7 @@
 **Objetivo:** Encontrar código duplicado, dead code, imports quebrados, rotas faltantes.
 
 #### Checklist
+
 - [ ] **M1.1** Detectar dependências duplicadas
   - [ ] Backend: `pip list | sort | uniq -d` (não deve haver duplicatas)
   - [ ] Frontend: verificar `package.json` vs `package-lock.json`
@@ -119,6 +125,7 @@
   - [ ] Extrair top 20 issues e priorizar
 
 **Definition of Done:**
+
 - Arquivo `/audit/DUPLICATION_REDUNDANCY.md` com lista de duplicações e dead code
 - Top 10 imports quebrados corrigidos
 - Decisão sobre pastas legacy (manter/remover) documentada
@@ -130,6 +137,7 @@
 **Objetivo:** Validar correções anteriores + encontrar novas vulnerabilidades + aplicar fixes críticos.
 
 #### Checklist
+
 - [ ] **M2.1** Validar correções de vulnerabilidades ALTAS (auditoria 05/02)
   - [ ] **ALTA-1:** Verificação 2FA em rotas sensíveis (change password, delete account)
     - [ ] Verificar: `apps/backend/apps/core/views.py` (PasswordResetConfirmView)
@@ -217,6 +225,7 @@
   - [ ] Documentar cada fix em `/audit/SECURITY_REVIEW.md`
 
 **Definition of Done:**
+
 - Arquivo `/audit/SECURITY_REVIEW.md` com findings + correções aplicadas
 - Vulnerabilidades CRÍTICAS = 0
 - Vulnerabilidades ALTAS ≤ 1 (e com plano de mitigação)
@@ -229,6 +238,7 @@
 **Objetivo:** Rodar suites existentes + criar testes críticos faltantes.
 
 #### Checklist
+
 - [ ] **M3.1** Rodar testes backend existentes
   - [ ] `cd apps/backend && pytest --cov --cov-report=html --cov-report=json > /audit/evidence/pytest_output.txt`
   - [ ] Verificar cobertura: objetivo mínimo 70%
@@ -278,6 +288,7 @@
     - [ ] Gerar relatório consolidado
 
 **Definition of Done:**
+
 - Cobertura de testes: Backend ≥ 70%, Frontend ≥ 60%
 - Testes críticos implementados (auth, multi-tenancy, CRUD)
 - Script CI local funcionando: `/tools/audit/run_tests.sh`
@@ -290,6 +301,7 @@
 **Objetivo:** Identificar gargalos e implementar quick wins.
 
 #### Checklist
+
 - [ ] **M4.1** Performance Backend
   - [ ] **Queries N+1:**
     - [ ] Instalar `django-debug-toolbar` (se não instalado)
@@ -334,6 +346,7 @@
   - [ ] Métricas: latência, queries, bundle size
 
 **Definition of Done:**
+
 - Endpoints críticos: latência < 500ms (p95)
 - N+1 queries eliminados (top 3)
 - Quick wins implementados (2-3)
@@ -346,6 +359,7 @@
 **Objetivo:** Mapear dados, políticas, retenção, direitos do titular.
 
 #### Checklist
+
 - [ ] **M5.1** Mapear dados pessoais coletados
   - [ ] **Feedbacks:**
     - [ ] `nome` (opcional)
@@ -395,6 +409,7 @@
   - [ ] Criar (se não existir): DPO/Encarregado de Dados (template)
 
 **Definition of Done:**
+
 - Mapa completo de dados pessoais em `/audit/COMPLIANCE_LGPD.md`
 - Direitos do titular implementados e testados
 - Política de retenção definida
@@ -407,6 +422,7 @@
 **Objetivo:** Validar env vars, health checks, pipelines de deploy.
 
 #### Checklist
+
 - [ ] **M6.1** Variáveis de ambiente (Backend - Render)
   - [ ] Listar vars obrigatórias: `SECRET_KEY`, `DATABASE_URL`, `REDIS_URL`, etc.
   - [ ] Verificar: arquivo `.env.example` está completo
@@ -444,6 +460,7 @@
   - [ ] Verificar: métricas de infraestrutura (Render dashboard)
 
 **Definition of Done:**
+
 - Arquivo `/docs/DEPLOYMENT.md` atualizado com checklist completo
 - Health checks funcionando
 - Variáveis de ambiente documentadas
@@ -456,6 +473,7 @@
 **Objetivo:** Gerar/atualizar documentação técnica e manuais de usuário.
 
 #### Checklist
+
 - [ ] **M7.1** Documentação Técnica
   - [ ] **`/docs/README.md`**: Overview do produto (features, stack, links)
   - [ ] **`/docs/ARCHITECTURE.md`**: Diagrama de arquitetura (Mermaid), decisões, fluxos
@@ -505,6 +523,7 @@
   - [ ] Garantir: badges, links, setup rápido, documentação
 
 **Definition of Done:**
+
 - Todos os arquivos `/docs/*.md` criados/atualizados
 - Manuais de usuário completos com instruções passo a passo
 - ADRs documentados (mínimo 3)
@@ -517,6 +536,7 @@
 **Objetivo:** Gerar lista priorizada do que falta para MVP.
 
 #### Checklist
+
 - [ ] **M8.1** Consolidar findings de M0-M7
   - [ ] Bugs encontrados
   - [ ] Funcionalidades faltantes
@@ -553,6 +573,7 @@
     - [ ] Estimativa total de esforço para MVP
 
 **Definition of Done:**
+
 - Arquivo `/audit/MVP_BACKLOG.md` com backlog priorizado e acionável
 - Estimativa de esforço para MVP completo
 - Itens P0 claramente identificados
@@ -568,6 +589,7 @@ A fase de execução seguirá o plano acima, executando cada checklist item por 
 ## 🔍 FASE D: AGGREGATOR
 
 Ao final de cada macrotarefa (M0-M8), consolidar:
+
 - Findings em relatórios estruturados
 - Evidências em `/audit/evidence/`
 - Decisões e recomendações
@@ -577,6 +599,7 @@ Ao final de cada macrotarefa (M0-M8), consolidar:
 ## ✅ FASE E: VERIFIER
 
 Ao final da auditoria, validar:
+
 - Todos os itens críticos foram resolvidos ou têm plano de mitigação
 - Documentação está completa e consistente
 - Scripts de auditoria são repetíveis
@@ -587,6 +610,7 @@ Ao final da auditoria, validar:
 ## 📝 DEFINITION OF DONE GERAL
 
 Não finalizar antes de cumprir:
+
 - [ ] Relatórios em `/audit/` completos e consistentes
 - [ ] Sem vulnerabilidades críticas sem mitigação
 - [ ] Scripts de auditoria repetíveis em `/tools/audit/`

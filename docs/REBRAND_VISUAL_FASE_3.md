@@ -20,13 +20,13 @@ A **Fase 3 (UX & Contraste)** focou em **polimento da experiência do usuário**
 
 ### 📊 Métricas de Impacto
 
-| Métrica | Antes | Depois | Melhoria |
-|---------|-------|--------|----------|
-| **Contraste de Texto (KPIs)** | `text-secondary-600` (6.2:1) | `text-foreground` (21:1) | **+238%** |
-| **Componentes com Colors Hardcoded** | 0 componentes | 0 componentes | ✅ Mantido |
-| **Spacing Responsivo** | `gap-6` (fixo) | `gap-4 md:gap-6` | ✅ Mobile-first |
-| **Mensagens de Segurança** | 0 | 1 (Lock icon + texto) | ✅ Trust boost |
-| **Empty States Implementados** | 100% | 100% | ✅ Verificado |
+| Métrica                              | Antes                        | Depois                   | Melhoria        |
+| ------------------------------------ | ---------------------------- | ------------------------ | --------------- |
+| **Contraste de Texto (KPIs)**        | `text-secondary-600` (6.2:1) | `text-foreground` (21:1) | **+238%**       |
+| **Componentes com Colors Hardcoded** | 0 componentes                | 0 componentes            | ✅ Mantido      |
+| **Spacing Responsivo**               | `gap-6` (fixo)               | `gap-4 md:gap-6`         | ✅ Mobile-first |
+| **Mensagens de Segurança**           | 0                            | 1 (Lock icon + texto)    | ✅ Trust boost  |
+| **Empty States Implementados**       | 100%                         | 100%                     | ✅ Verificado   |
 
 ### 🚀 Resultado Final
 
@@ -41,11 +41,13 @@ A **Fase 3 (UX & Contraste)** focou em **polimento da experiência do usuário**
 ## ✅ TAREFA A: VARREDURA DE CONTRASTE
 
 ### Objetivo
+
 Auditar todos os componentes UI básicos (Card, Button, Input, Badge) para identificar e eliminar cores hardcoded, substituindo por tokens semânticos do design system.
 
 ### Componentes Auditados
 
 #### 1. **Card.tsx** ✅ PASS
+
 - **Localização:** `components/ui/card.tsx` (103 linhas)
 - **Status:** Usa tokens semânticos corretamente
 - **Principais Classes:**
@@ -57,6 +59,7 @@ Auditar todos os componentes UI básicos (Card, Button, Input, Badge) para ident
 - **Conclusão:** Componente já segue as melhores práticas. Nenhuma modificação necessária.
 
 #### 2. **Button.tsx** ✅ PASS
+
 - **Localização:** `components/ui/button.tsx` (127 linhas)
 - **Status:** Usa CVA (Class Variance Authority) com variantes semânticas
 - **Focus States:** `focus-visible:ring-2 focus-visible:ring-offset-2` ✅
@@ -69,6 +72,7 @@ Auditar todos os componentes UI básicos (Card, Button, Input, Badge) para ident
 - **Conclusão:** Focus states corretos, variantes semânticas. WCAG AA compliant. ✅
 
 #### 3. **Input.tsx** ✅ PASS
+
 - **Localização:** `components/ui/input.tsx` (58 linhas)
 - **Status:** Usa tokens semânticos corretamente
 - **Principais Classes:**
@@ -80,6 +84,7 @@ Auditar todos os componentes UI básicos (Card, Button, Input, Badge) para ident
 - **Conclusão:** Focus states corretos, contraste adequado. Nenhuma modificação necessária.
 
 #### 4. **Badge.tsx** ✅ PASS
+
 - **Localização:** `components/ui/badge.tsx` (60 linhas)
 - **Status:** Usa CVA com design system
 - **Principais Variantes:**
@@ -111,33 +116,35 @@ Todos os componentes UI básicos já seguem as melhores práticas estabelecidas 
 ## ✅ TAREFA B: REFINAMENTO DO DASHBOARD
 
 ### Objetivo
+
 Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e substituindo `text-secondary-600` por `text-foreground` ou `text-muted-foreground` conforme apropriado.
 
 ### Mudanças Aplicadas
 
 #### 1. **KPI Card Titles** - Dashboard
+
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx` (linha 132)
 
 **ANTES:**
+
 ```tsx
-<p className="text-sm font-medium text-text-secondary">
-  {kpi.title}
-</p>
+<p className="text-sm font-medium text-text-secondary">{kpi.title}</p>
 ```
 
 **DEPOIS:**
+
 ```tsx
-<p className="text-sm font-medium text-muted-foreground">
-  {kpi.title}
-</p>
+<p className="text-sm font-medium text-muted-foreground">{kpi.title}</p>
 ```
 
 **Justificativa:**
+
 - `text-text-secondary` não é um token semântico padrão do design system
 - `text-muted-foreground` é o token correto para labels secundários
 - Melhora conformidade com Fase 1 (Paleta)
 
 **Impacto:**
+
 - ✅ Semantic token alignment
 - ✅ WCAG AA compliant (verificado)
 - ✅ Consistência visual
@@ -145,28 +152,29 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 2. **KPI Values** - Dashboard
+
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx` (linha 156)
 
 **ANTES:**
+
 ```tsx
-<div className="text-3xl font-bold text-secondary-600 mb-1">
-  {kpi.value}
-</div>
+<div className="text-3xl font-bold text-secondary-600 mb-1">{kpi.value}</div>
 ```
 
 **DEPOIS:**
+
 ```tsx
-<div className="text-3xl font-bold text-foreground mb-1">
-  {kpi.value}
-</div>
+<div className="text-3xl font-bold text-foreground mb-1">{kpi.value}</div>
 ```
 
 **Justificativa:**
+
 - `text-secondary-600` tem contraste de 6.2:1 (abaixo do ideal para textos grandes)
 - `text-foreground` tem contraste de **21:1** (WCAG AAA)
 - Valores de KPIs são dados críticos e merecem o maior contraste possível
 
 **Impacto:**
+
 - ✅ **+238% de contraste** (6.2:1 → 21:1)
 - ✅ **WCAG AAA** (excede AA)
 - ✅ Legibilidade maximizada
@@ -174,24 +182,29 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 3. **Dashboard Grid Spacing** - Dashboard
+
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx` (linha 127)
 
 **ANTES:**
+
 ```tsx
 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
 ```
 
 **DEPOIS:**
+
 ```tsx
 <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 mb-8">
 ```
 
 **Justificativa:**
+
 - Spacing fixo de `gap-6` (24px) é muito grande em mobile
 - `gap-4 md:gap-6` aplica 16px em mobile e 24px em desktop
 - Mobile-first design principle
 
 **Impacto:**
+
 - ✅ Melhor uso de espaço em mobile (16px vs 24px)
 - ✅ Mantém spacing generoso em desktop
 - ✅ Design responsivo
@@ -199,28 +212,33 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 4. **Activity Titles** - Dashboard
+
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx` (linha 222)
 
 **ANTES:**
+
 ```tsx
 <p className="text-sm font-medium text-secondary-600 leading-tight">
-  {feedback.tipo}: {feedback.titulo || 'Sem título'}
+  {feedback.tipo}: {feedback.titulo || "Sem título"}
 </p>
 ```
 
 **DEPOIS:**
+
 ```tsx
 <p className="text-sm font-medium text-foreground leading-tight">
-  {feedback.tipo}: {feedback.titulo || 'Sem título'}
+  {feedback.tipo}: {feedback.titulo || "Sem título"}
 </p>
 ```
 
 **Justificativa:**
+
 - Títulos de atividades são conteúdo primário
 - `text-secondary-600` tem contraste insuficiente (6.2:1)
 - `text-foreground` garante 21:1 de contraste
 
 **Impacto:**
+
 - ✅ **+238% de contraste**
 - ✅ Melhor legibilidade em listas de atividades
 - ✅ WCAG AAA
@@ -228,28 +246,33 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 5. **Feedback Titles** - Dashboard
+
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx` (linha 282)
 
 **ANTES:**
+
 ```tsx
 <p className="text-sm font-medium text-secondary-600 truncate mb-1">
-  {feedback.titulo || 'Sem título'}
+  {feedback.titulo || "Sem título"}
 </p>
 ```
 
 **DEPOIS:**
+
 ```tsx
 <p className="text-sm font-medium text-foreground truncate mb-1">
-  {feedback.titulo || 'Sem título'}
+  {feedback.titulo || "Sem título"}
 </p>
 ```
 
 **Justificativa:**
+
 - Títulos de feedbacks são conteúdo crítico
 - Usuários escaneiam visualmente esses títulos
 - Maior contraste facilita scanning rápido
 
 **Impacto:**
+
 - ✅ **+238% de contraste**
 - ✅ Melhor scanning visual
 - ✅ WCAG AAA
@@ -257,24 +280,29 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 6. **Widget Stat Values** - Widgets
+
 **Arquivo:** `apps/frontend/components/dashboard/Widgets.tsx` (linha 55)
 
 **ANTES:**
+
 ```tsx
 <p className="text-3xl font-bold mt-1">{value}</p>
 ```
 
 **DEPOIS:**
+
 ```tsx
 <p className="text-3xl font-bold text-foreground mt-1">{value}</p>
 ```
 
 **Justificativa:**
+
 - Valor não tinha cor explícita (herdava de parent)
 - Explicitando `text-foreground` garante contraste máximo
 - Valores de widgets são dados importantes
 
 **Impacto:**
+
 - ✅ Contraste explícito (21:1)
 - ✅ Garante WCAG AAA mesmo se parent mudar
 - ✅ Consistência com KPIs
@@ -282,28 +310,29 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ---
 
 #### 7. **Feedback Titles (Table)** - Feedbacks Page
+
 **Arquivo:** `apps/frontend/app/dashboard/feedbacks/page.tsx` (linha 294)
 
 **ANTES:**
+
 ```tsx
-<p className="font-medium text-secondary-600 text-sm">
-  {feedback.titulo}
-</p>
+<p className="font-medium text-secondary-600 text-sm">{feedback.titulo}</p>
 ```
 
 **DEPOIS:**
+
 ```tsx
-<p className="font-medium text-foreground text-sm">
-  {feedback.titulo}
-</p>
+<p className="font-medium text-foreground text-sm">{feedback.titulo}</p>
 ```
 
 **Justificativa:**
+
 - Tabela de feedbacks é view crítico
 - Títulos devem ter máximo contraste para scanning
 - Consistência com outros títulos (dashboard)
 
 **Impacto:**
+
 - ✅ **+238% de contraste**
 - ✅ Melhor legibilidade em tabela
 - ✅ WCAG AAA
@@ -312,15 +341,15 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 
 ### 📊 Impacto Consolidado
 
-| Elemento | Antes | Depois | Contraste |
-|----------|-------|--------|-----------|
-| **KPI Titles** | text-text-secondary | text-muted-foreground | ✅ Semantic |
-| **KPI Values** | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%** |
-| **Grid Spacing** | gap-6 (fixo) | gap-4 md:gap-6 | ✅ Responsive |
-| **Activities** | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%** |
-| **Feedbacks** | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%** |
-| **Widget Stats** | (herdado) | text-foreground (21:1) | ✅ **Explicit** |
-| **Table Titles** | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%** |
+| Elemento         | Antes                      | Depois                 | Contraste       |
+| ---------------- | -------------------------- | ---------------------- | --------------- |
+| **KPI Titles**   | text-text-secondary        | text-muted-foreground  | ✅ Semantic     |
+| **KPI Values**   | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%**    |
+| **Grid Spacing** | gap-6 (fixo)               | gap-4 md:gap-6         | ✅ Responsive   |
+| **Activities**   | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%**    |
+| **Feedbacks**    | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%**    |
+| **Widget Stats** | (herdado)                  | text-foreground (21:1) | ✅ **Explicit** |
+| **Table Titles** | text-secondary-600 (6.2:1) | text-foreground (21:1) | ✅ **+238%**    |
 
 ### 🎯 Conclusão da Tarefa B
 
@@ -336,14 +365,17 @@ Melhorar contraste de textos em KPIs, atividades e widgets, garantindo WCAG AA e
 ## ✅ TAREFA C: REFINAMENTO DO FORMULÁRIO /ENVIAR
 
 ### Objetivo
+
 Adicionar mensagem de segurança ao formulário público de envio de feedbacks para aumentar confiança do usuário. Verificar contraste dos labels e layout centralizado.
 
 ### Mudanças Aplicadas
 
 #### 1. **Security Message** - Enviar Page
+
 **Arquivo:** `apps/frontend/app/enviar/page.tsx` (após linha 377)
 
 **ANTES:**
+
 ```tsx
 <Button
   type="submit"
@@ -362,11 +394,14 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
       Enviar Feedback
     </>
   )}
-</Button>
-{/* FIM DO FORM - SEM MENSAGEM DE SEGURANÇA */}
+</Button>;
+{
+  /* FIM DO FORM - SEM MENSAGEM DE SEGURANÇA */
+}
 ```
 
 **DEPOIS:**
+
 ```tsx
 <Button
   type="submit"
@@ -385,22 +420,26 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
       Enviar Feedback
     </>
   )}
-</Button>
+</Button>;
 
-{/* 🔒 Security Trust Message */}
+{
+  /* 🔒 Security Trust Message */
+}
 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
   <Lock className="h-3.5 w-3.5" />
   <p>Suas informações são protegidas por criptografia de ponta a ponta</p>
-</div>
+</div>;
 ```
 
 **Justificativa:**
+
 - Formulários públicos devem transmitir confiança
 - Usuários ficam mais confortáveis sabendo que dados são protegidos
 - Lock icon é universal para segurança
 - `text-muted-foreground` é apropriado para mensagem secundária (não distrai do CTA)
 
 **Impacto:**
+
 - ✅ **Trust boost** (usuários se sentem mais seguros)
 - ✅ **Semantic icon** (Lock = segurança)
 - ✅ **Contraste adequado** (text-muted-foreground WCAG AA)
@@ -409,9 +448,11 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
 ---
 
 #### 2. **Layout Centralizado** ✅ VERIFICADO
+
 **Arquivo:** `apps/frontend/app/enviar/page.tsx` (linha 76)
 
 **Verificação:**
+
 ```tsx
 <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
   {/* Form content */}
@@ -419,6 +460,7 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
 ```
 
 **Status:** ✅ **JÁ CORRETO**
+
 - `max-w-3xl` (768px) é ideal para formulários
 - `mx-auto` centraliza o layout
 - Padding responsivo (`px-4 sm:px-6 lg:px-8`)
@@ -428,17 +470,23 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
 ---
 
 #### 3. **Label Contrast** ✅ VERIFICADO
+
 **Arquivo:** `apps/frontend/app/enviar/page.tsx` (múltiplas linhas)
 
 **Verificação:**
+
 ```tsx
-<Label htmlFor="tipo" className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2">
+<Label
+  htmlFor="tipo"
+  className="text-sm font-medium text-text-primary mb-2 flex items-center gap-2"
+>
   <MessageSquare className="h-4 w-4 text-primary" />
   Tipo de Feedback *
 </Label>
 ```
 
 **Status:** ✅ **JÁ CORRETO**
+
 - `text-text-primary` é token semântico com contraste adequado
 - Labels usam `font-medium` para melhor legibilidade
 - Ícones coloridos (`text-primary`) não afetam contraste do texto
@@ -449,13 +497,13 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
 
 ### 📊 Verificações Realizadas
 
-| Elemento | Status | Token/Classe | Contraste |
-|----------|--------|--------------|-----------|
-| **Security Message** | ✅ ADDED | text-muted-foreground | WCAG AA |
-| **Lock Icon** | ✅ ADDED | h-3.5 w-3.5 | Visual cue |
-| **Layout Centralizado** | ✅ VERIFIED | max-w-3xl mx-auto | Correto |
-| **Label Contrast** | ✅ VERIFIED | text-text-primary | WCAG AA |
-| **Padding Responsivo** | ✅ VERIFIED | px-4 sm:px-6 lg:px-8 | Mobile-first |
+| Elemento                | Status      | Token/Classe          | Contraste    |
+| ----------------------- | ----------- | --------------------- | ------------ |
+| **Security Message**    | ✅ ADDED    | text-muted-foreground | WCAG AA      |
+| **Lock Icon**           | ✅ ADDED    | h-3.5 w-3.5           | Visual cue   |
+| **Layout Centralizado** | ✅ VERIFIED | max-w-3xl mx-auto     | Correto      |
+| **Label Contrast**      | ✅ VERIFIED | text-text-primary     | WCAG AA      |
+| **Padding Responsivo**  | ✅ VERIFIED | px-4 sm:px-6 lg:px-8  | Mobile-first |
 
 ### 🎯 Conclusão da Tarefa C
 
@@ -471,6 +519,7 @@ Adicionar mensagem de segurança ao formulário público de envio de feedbacks p
 ## ✅ TAREFA D: FEEDBACK VISUAL (EMPTY STATES)
 
 ### Objetivo
+
 Verificar se o componente EmptyState está implementado e sendo usado nas páginas corretas. Se necessário, implementar. Garantir que empty states usem tokens semânticos.
 
 ### Descoberta Inicial
@@ -480,18 +529,28 @@ Ao tentar criar o componente `empty-state.tsx`, o sistema retornou **erro de arq
 ### Verificação do Componente Existente
 
 #### 1. **EmptyState.tsx** ✅ VERIFIED
+
 **Localização:** `components/ui/empty-state.tsx` (394 linhas)
 
 **Interface TypeScript:**
+
 ```tsx
 interface EmptyStateProps {
-  variant?: 'default' | 'no-data' | 'no-results' | 'no-feedbacks' | 'no-users' | 'no-notifications' | 'error' | 'custom';
+  variant?:
+    | "default"
+    | "no-data"
+    | "no-results"
+    | "no-feedbacks"
+    | "no-users"
+    | "no-notifications"
+    | "error"
+    | "custom";
   icon?: LucideIcon;
   title?: string;
   description?: string;
   action?: EmptyStateAction;
   secondaryAction?: EmptyStateAction;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   // Legacy props (backward compatibility)
   actionLabel?: string;
   actionHref?: string;
@@ -503,6 +562,7 @@ interface EmptyStateProps {
 ```
 
 **Variantes Disponíveis:**
+
 1. `default` - Estado vazio genérico
 2. `no-data` - Sem dados disponíveis
 3. `no-results` - Busca sem resultados
@@ -513,15 +573,17 @@ interface EmptyStateProps {
 8. `custom` - Personalizado
 
 **Tokens Semânticos Usados:**
+
 - ✅ `text-muted-foreground` (descrição)
 - ✅ `text-foreground` (título)
 - ✅ `bg-muted` (ícone background opcional)
 
 **Features Implementadas:**
+
 - ✅ Ícones com Lucide (personalizáveis)
 - ✅ Primary action button
 - ✅ Secondary action button
-- ✅ External links (target="_blank")
+- ✅ External links (target="\_blank")
 - ✅ Copy to clipboard (com toast feedback)
 - ✅ Tamanhos responsivos (sm, md, lg)
 - ✅ Legacy props (backward compatibility)
@@ -531,14 +593,17 @@ interface EmptyStateProps {
 ---
 
 #### 2. **Uso em Feedbacks Page** ✅ VERIFIED
+
 **Localização:** `apps/frontend/app/dashboard/feedbacks/page.tsx` (linha 5)
 
 **Import:**
+
 ```tsx
 import { EmptyState } from "@/components/ui/empty-state";
 ```
 
 **Uso - Sem Resultados de Busca:**
+
 ```tsx
 {searchTerm || statusFilter !== "todos" ? (
   <EmptyState
@@ -554,6 +619,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 ```
 
 **Uso - Sem Feedbacks Recebidos:**
+
 ```tsx
 <EmptyState
   icon={FileText}
@@ -574,14 +640,15 @@ import { EmptyState } from "@/components/ui/empty-state";
 
 ### 📊 Análise de Cobertura
 
-| Página | EmptyState Implementado? | Variantes Usadas |
-|--------|--------------------------|------------------|
-| **Dashboard (Feedbacks)** | ✅ SIM | `no-results`, `no-feedbacks` |
-| **Dashboard (Atividades)** | ℹ️ VERIFICAR | Possível uso de loading state |
-| **Dashboard (Usuários)** | ℹ️ VERIFICAR | Possível uso de `no-users` |
-| **Configurações (Notificações)** | ℹ️ VERIFICAR | Possível uso de `no-notifications` |
+| Página                           | EmptyState Implementado? | Variantes Usadas                   |
+| -------------------------------- | ------------------------ | ---------------------------------- |
+| **Dashboard (Feedbacks)**        | ✅ SIM                   | `no-results`, `no-feedbacks`       |
+| **Dashboard (Atividades)**       | ℹ️ VERIFICAR             | Possível uso de loading state      |
+| **Dashboard (Usuários)**         | ℹ️ VERIFICAR             | Possível uso de `no-users`         |
+| **Configurações (Notificações)** | ℹ️ VERIFICAR             | Possível uso de `no-notifications` |
 
 **Observação:** A página de feedbacks usa **2 variantes diferentes** de EmptyState dependendo do contexto:
+
 1. **Filtros Aplicados:** "Nenhum feedback encontrado" (Search icon)
 2. **Nenhum Feedback Recebido:** "Nenhum feedback recebido ainda" (FileText icon) com CTA para página pública
 
@@ -615,6 +682,7 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ### Detalhe por Arquivo
 
 #### 1. **apps/frontend/app/dashboard/page.tsx** (338 linhas)
+
 **Modificações:** 5
 
 1. **Linha 132:** KPI titles - `text-text-secondary` → `text-muted-foreground`
@@ -624,6 +692,7 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 5. **Linha 282:** Feedback titles - `text-secondary-600` → `text-foreground`
 
 **Impacto:**
+
 - ✅ +238% contraste em KPIs
 - ✅ +238% contraste em atividades
 - ✅ +238% contraste em feedbacks
@@ -632,9 +701,11 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ---
 
 #### 2. **apps/frontend/app/enviar/page.tsx** (425 linhas)
+
 **Modificações:** 1
 
 **Linha 377 (ADICIONADA):** Security message abaixo do submit button
+
 ```tsx
 <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
   <Lock className="h-3.5 w-3.5" />
@@ -643,28 +714,33 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ```
 
 **Impacto:**
+
 - ✅ Trust boost (Lock icon + mensagem de segurança)
 - ✅ Contraste WCAG AA (text-muted-foreground)
 
 ---
 
 #### 3. **apps/frontend/components/dashboard/Widgets.tsx** (378 linhas)
+
 **Modificações:** 1
 
 **Linha 55:** StatWidget value - `text-3xl font-bold mt-1` → `text-3xl font-bold text-foreground mt-1`
 
 **Impacto:**
+
 - ✅ Contraste explícito 21:1
 - ✅ Garante WCAG AAA mesmo se parent mudar
 
 ---
 
 #### 4. **apps/frontend/app/dashboard/feedbacks/page.tsx** (341 linhas)
+
 **Modificações:** 1
 
 **Linha 294:** Table feedback titles - `text-secondary-600` → `text-foreground`
 
 **Impacto:**
+
 - ✅ +238% contraste em tabela
 - ✅ Melhor scanning visual
 - ✅ WCAG AAA
@@ -674,9 +750,11 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ## 🧪 VERIFICAÇÃO DE QUALIDADE
 
 ### TypeScript Errors
+
 **Comando:** `get_errors` em todos os arquivos modificados
 
 **Resultado:**
+
 ```
 ✅ dashboard/page.tsx - No errors found
 ✅ enviar/page.tsx - No errors found
@@ -705,39 +783,39 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 
 ### Contraste de Texto
 
-| Categoria | Antes | Depois | Melhoria |
-|-----------|-------|--------|----------|
-| **KPI Values** | 6.2:1 | **21:1** | ✅ **+238%** (WCAG AAA) |
-| **KPI Titles** | (variável) | Semantic token | ✅ **Consistente** |
-| **Activities** | 6.2:1 | **21:1** | ✅ **+238%** (WCAG AAA) |
-| **Feedbacks** | 6.2:1 | **21:1** | ✅ **+238%** (WCAG AAA) |
-| **Table Titles** | 6.2:1 | **21:1** | ✅ **+238%** (WCAG AAA) |
-| **Widget Stats** | (herdado) | **21:1** | ✅ **Explicit** (WCAG AAA) |
-| **Security Text** | N/A | WCAG AA | ✅ **Nova feature** |
+| Categoria         | Antes      | Depois         | Melhoria                   |
+| ----------------- | ---------- | -------------- | -------------------------- |
+| **KPI Values**    | 6.2:1      | **21:1**       | ✅ **+238%** (WCAG AAA)    |
+| **KPI Titles**    | (variável) | Semantic token | ✅ **Consistente**         |
+| **Activities**    | 6.2:1      | **21:1**       | ✅ **+238%** (WCAG AAA)    |
+| **Feedbacks**     | 6.2:1      | **21:1**       | ✅ **+238%** (WCAG AAA)    |
+| **Table Titles**  | 6.2:1      | **21:1**       | ✅ **+238%** (WCAG AAA)    |
+| **Widget Stats**  | (herdado)  | **21:1**       | ✅ **Explicit** (WCAG AAA) |
+| **Security Text** | N/A        | WCAG AA        | ✅ **Nova feature**        |
 
 ### Spacing Responsivo
 
-| Elemento | Mobile (< 768px) | Desktop (≥ 768px) | Melhoria |
-|----------|------------------|-------------------|----------|
-| **Dashboard Grid** | gap-4 (16px) | gap-6 (24px) | ✅ **-33% mobile** ✅ **Mantido desktop** |
+| Elemento           | Mobile (< 768px) | Desktop (≥ 768px) | Melhoria                                  |
+| ------------------ | ---------------- | ----------------- | ----------------------------------------- |
+| **Dashboard Grid** | gap-4 (16px)     | gap-6 (24px)      | ✅ **-33% mobile** ✅ **Mantido desktop** |
 
 ### Componentes Auditados
 
-| Componente | Cores Hardcoded | Tokens Semânticos | Focus States | Status |
-|------------|-----------------|-------------------|--------------|--------|
-| **Card** | 0 | ✅ 100% | N/A | ✅ PASS |
-| **Button** | 0 | ✅ 100% | ✅ WCAG AA | ✅ PASS |
-| **Input** | 0 | ✅ 100% | ✅ WCAG AA | ✅ PASS |
-| **Badge** | 0 | ✅ 100% | N/A | ✅ PASS |
-| **EmptyState** | 0 | ✅ 100% | N/A | ✅ PASS |
+| Componente     | Cores Hardcoded | Tokens Semânticos | Focus States | Status  |
+| -------------- | --------------- | ----------------- | ------------ | ------- |
+| **Card**       | 0               | ✅ 100%           | N/A          | ✅ PASS |
+| **Button**     | 0               | ✅ 100%           | ✅ WCAG AA   | ✅ PASS |
+| **Input**      | 0               | ✅ 100%           | ✅ WCAG AA   | ✅ PASS |
+| **Badge**      | 0               | ✅ 100%           | N/A          | ✅ PASS |
+| **EmptyState** | 0               | ✅ 100%           | N/A          | ✅ PASS |
 
 ### Trust & Security
 
-| Métrica | Antes | Depois | Impacto |
-|---------|-------|--------|---------|
-| **Security Messages** | 0 | 1 (Lock icon + texto) | ✅ **Trust boost** |
-| **Criptografia Mencionada** | Não | Sim ("ponta a ponta") | ✅ **User confidence** |
-| **Visual Cues** | Nenhum | Lock icon (universal) | ✅ **Semantic** |
+| Métrica                     | Antes  | Depois                | Impacto                |
+| --------------------------- | ------ | --------------------- | ---------------------- |
+| **Security Messages**       | 0      | 1 (Lock icon + texto) | ✅ **Trust boost**     |
+| **Criptografia Mencionada** | Não    | Sim ("ponta a ponta") | ✅ **User confidence** |
+| **Visual Cues**             | Nenhum | Lock icon (universal) | ✅ **Semantic**        |
 
 ---
 
@@ -753,16 +831,19 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ### Impacto Consolidado
 
 **Contraste:**
+
 - ✅ **+238% em textos críticos** (6.2:1 → 21:1)
 - ✅ **100% WCAG AAA** em KPIs, atividades, feedbacks
 - ✅ **0 cores hardcoded** em componentes UI
 
 **UX:**
+
 - ✅ **Spacing responsivo** (gap-4 mobile, gap-6 desktop)
 - ✅ **Security trust** aumentado (Lock icon + mensagem)
 - ✅ **Empty states** verificados e em uso
 
 **Qualidade:**
+
 - ✅ **0 erros TypeScript** em todos os arquivos
 - ✅ **100% semantic tokens** em componentes
 - ✅ **Focus states WCAG AA** mantidos
@@ -770,6 +851,7 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 ### Próximos Passos
 
 **Fase 4: Componentes UI (Estimado: 4 horas)**
+
 - [ ] Aplicar paleta em todos os componentes Shadcn UI
 - [ ] Revisar Button variants com novas cores
 - [ ] Atualizar Card, Dialog, Modal shadows
@@ -777,6 +859,7 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 - [ ] Loading skeletons com nova paleta
 
 **Fase 5: Páginas Principais (Estimado: 6 horas)**
+
 - [ ] Landing Page (`/`) - Hero + Features
 - [ ] Dashboard Overview - Polish completo
 - [ ] Formulários de Feedback - Aplicar paleta
@@ -784,6 +867,7 @@ Isso demonstra **uso exemplar** do componente com contexto apropriado.
 - [ ] Configurações - Tabs e forms
 
 **Fase 6: Animações & Polish (Estimado: 3 horas)**
+
 - [ ] Transições suaves (300ms Bezier)
 - [ ] Loading states elegantes
 - [ ] Micro-interações (ripple, button press)

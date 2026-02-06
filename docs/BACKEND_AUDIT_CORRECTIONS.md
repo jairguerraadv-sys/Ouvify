@@ -18,11 +18,13 @@ Implementada infraestrutura completa de auditoria determinística do backend Dja
 ### 1. Reprodução da Falha ✅
 
 **Problema Identificado:**
+
 - Comandos Django (`manage.py check`, migrations, pytest) eram executados sem instalar dependências
 - Ausência de virtualenv configurado causava `ModuleNotFoundError: No module named 'django'`
 - Scripts de auditoria (repo_audit, ROMA) apenas liam arquivos, não executavam comandos
 
 **Evidências:**
+
 ```bash
 # Antes da correção
 $ python manage.py check
@@ -39,6 +41,7 @@ bash: pytest: command not found
 **Funcionalidades:**
 
 1. **Gestão de Virtualenv**
+
    ```bash
    # Cria ou reutiliza venv em apps/backend/.venv
    python3 -m venv "${BACKEND_DIR}/.venv"
@@ -46,26 +49,29 @@ bash: pytest: command not found
    ```
 
 2. **Instalação de Dependências**
+
    ```bash
    # Atualiza pip
    python -m pip install --upgrade pip
-   
+
    # Instala requirements/test.txt (inclui base.txt + ferramentas de teste)
    pip install -r requirements/test.txt
    ```
 
 3. **Django System Check**
+
    ```bash
    # Configura variáveis mínimas
    export DJANGO_SETTINGS_MODULE=config.settings
    export DATABASE_URL="sqlite:///:memory:"
    export SECRET_KEY="audit-temporary-secret-key-$(date +%s)"
-   
+
    # Executa check
    python manage.py check --deploy
    ```
 
 4. **Coleta de Testes**
+
    ```bash
    # Lista testes sem executar
    pytest --collect-only -q
@@ -78,6 +84,7 @@ bash: pytest: command not found
    ```
 
 **Saídas Geradas:**
+
 ```
 audit-reports/backend/
 ├── django_check.txt       # System check results
@@ -90,6 +97,7 @@ audit-reports/backend/
 ### 3. Correção de Imports com Typos ✅
 
 **Verificação Realizada:**
+
 ```bash
 grep -r "from restframework" apps/backend/  # Typo comum
 grep -r "from djangofilter" apps/backend/   # Typo comum
@@ -98,11 +106,13 @@ grep -r "from djangofilter" apps/backend/   # Typo comum
 **Resultado:** ✅ **Nenhum typo encontrado!**
 
 Todos os imports estão corretos:
+
 - ✅ `rest_framework` (não `restframework`)
 - ✅ `rest_framework_simplejwt` (não `rest_framework.simplejwt`)
 - ✅ `django_filters` (não `djangofilter`)
 
 **Validação:**
+
 ```python
 # Imports verificados via AST parsing
 ✅ Todos os 374 arquivos parsearam com sucesso
@@ -111,6 +121,7 @@ Todos os imports estão corretos:
 ### 4. Ajustes para Lint e Testes ✅
 
 **Pytest Configuration:** [`pytest.ini`](/workspaces/Ouvify/pytest.ini)
+
 ```ini
 [pytest]
 DJANGO_SETTINGS_MODULE = config.settings
@@ -120,6 +131,7 @@ addopts = --reuse-db --nomigrations
 ```
 
 **Environment Setup:**
+
 ```bash
 # PYTHONPATH configurado automaticamente pelo script
 cd "${BACKEND_DIR}"  # apps/backend/
@@ -127,6 +139,7 @@ source .venv/bin/activate
 ```
 
 **Test Collection Results:**
+
 ```
 ========================= 374 tests collected in 0.47s =========================
 ✅ 374 testes encontrados
@@ -154,29 +167,32 @@ source .venv/bin/activate
    ```
 
 **Comando Único para Auditoria:**
+
 ```bash
 make audit-backend
 ```
 
 ## 📊 Critérios de Aceite (DoD) - Status
 
-| Critério | Status | Evidência |
-|----------|--------|-----------|
+| Critério                           | Status    | Evidência                                         |
+| ---------------------------------- | --------- | ------------------------------------------------- |
 | Não falhar por falta de Django/DRF | ✅ Passou | Dependências instaladas via requirements/test.txt |
-| Passar `python manage.py check` | ✅ Passou | django_check.txt gerado (24 warnings esperados) |
-| Coletar testes sem erro de import | ✅ Passou | 374 testes coletados com sucesso |
-| Rodar pylint sem erros de import | ✅ Passou | imports_check.txt: todos os arquivos OK |
-| Documentação de comando único | ✅ Passou | `make audit-backend` documentado |
+| Passar `python manage.py check`    | ✅ Passou | django_check.txt gerado (24 warnings esperados)   |
+| Coletar testes sem erro de import  | ✅ Passou | 374 testes coletados com sucesso                  |
+| Rodar pylint sem erros de import   | ✅ Passou | imports_check.txt: todos os arquivos OK           |
+| Documentação de comando único      | ✅ Passou | `make audit-backend` documentado                  |
 
 ## 🔧 Uso em CI/CD
 
 ### GitHub Actions
+
 ```yaml
 - name: Backend Audit
   run: bash scripts/audit_backend.sh
 ```
 
 ### GitLab CI
+
 ```yaml
 backend-audit:
   script:
@@ -184,6 +200,7 @@ backend-audit:
 ```
 
 ### Execução Local
+
 ```bash
 # Método 1: Via Makefile
 make audit-backend
@@ -203,6 +220,7 @@ pytest --collect-only
 ## 📈 Melhorias Implementadas
 
 ### Antes
+
 ```bash
 # ❌ Processo manual e não determinístico
 $ cd apps/backend
@@ -212,6 +230,7 @@ ModuleNotFoundError: No module named 'django'
 ```
 
 ### Depois
+
 ```bash
 # ✅ Processo automatizado e determinístico
 $ make audit-backend
@@ -268,6 +287,7 @@ Ouvify/
 **Objetivo Alcançado:** ✅ Auditoria do backend agora é completamente reproduzível em ambiente limpo (CI).
 
 **Principais Conquistas:**
+
 - ✅ Zero dependência de venv manual
 - ✅ Instalação automática de dependências
 - ✅ Verificações determinísticas
@@ -275,6 +295,7 @@ Ouvify/
 - ✅ Integração simples com CI/CD
 
 **Comando Final:**
+
 ```bash
 make audit-backend
 ```

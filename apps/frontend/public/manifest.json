@@ -1,7 +1,8 @@
 {
   "name": "Ouvify",
   "short_name": "Ouvify",
-  "description": "Plataforma de gestão de ouvidoria e feedback",  "start_url": "/",
+  "description": "Plataforma de gestão de ouvidoria e feedback",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0066ff",

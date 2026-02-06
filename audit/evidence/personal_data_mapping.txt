@@ -1,0 +1,116 @@
+=== Mapeamento de Dados Pessoais - Ouvify ===
+Data: Fri Feb  6 19:04:54 UTC 2026
+
+## 1. FEEDBACKS (Canal de Denúncia/Reclamação/Sugestão)
+
+### Campos identificados em feedbacks/models.py:
+from .constants import InteracaoTipo
+    def get_tipo_display(self) -> str: ...
+    # Aliases de tipo para compatibilidade com testes
+    tipo = models.CharField(
+        verbose_name="Tipo",
+        help_text="Tipo de feedback",
+    email_contato = models.EmailField(
+            models.Index(fields=["client", "tipo"]),
+        return f"{self.protocolo} - {self.get_tipo_display()} - {self.titulo[:50]}"
+        - Geração criptograficamente segura (CSPRNG - Cryptographically Secure Pseudo-Random Number Generator)
+        - Geração criptograficamente aleatória impede predição de sequências
+            str: Código de protocolo único criptograficamente seguro
+                # Fonte de entropia criptograficamente segura
+                # Isso previne race conditions entre múltiplos requests simultâneos
+    TIPO_INTERACAO_CHOICES = InteracaoTipo.choices()
+    tipo = models.CharField(
+        max_length=25, choices=TIPO_INTERACAO_CHOICES, verbose_name="Tipo de Interação"
+            models.Index(fields=["tipo"]),
+        autor_nome = self.autor.get_username() if self.autor else "Anónimo"
+        tipo_display = dict(self.TIPO_INTERACAO_CHOICES).get(self.tipo, self.tipo)
+        return f"[{tipo_display}] {autor_nome}: {self.mensagem[:50]}"
+    - Validação de tipo e tamanho
+    nome_original = models.CharField(
+    tipo_mime = models.CharField(
+        verbose_name="Tipo MIME",
+        help_text="Tipo do arquivo (ex: image/png, application/pdf)",
+        tipo = "Interno" if self.interno else "Público"
+        return f"[{tipo}] {self.nome_original} | Enviado por: {enviado}"
+    nome = models.CharField(
+        unique_together = [("client", "nome")]  # Nome único por tenant
+        ordering = ["nome"]
+            models.Index(fields=["client", "nome"]),
+        return f"{self.nome} ({self.client.nome})"
+    nome = models.CharField(
+        help_text="Assunto padrão para emails (opcional)",
+        help_text="Texto do template. Use {{protocolo}}, {{nome}}, {{tipo}}, {{status}} como variáveis.",
+    tipos_aplicaveis = models.JSONField(
+        verbose_name="Tipos Aplicáveis",
+        help_text="Lista de tipos de feedback onde este template pode ser usado (vazio = todos)",
+        unique_together = [("client", "nome")]
+        ordering = ["categoria", "nome"]
+        return f"{self.nome} ({self.get_categoria_display()})"
+        - {{nome}}: Nome do remetente
+        - {{tipo}}: Tipo do feedback
+            "{{nome}}": feedback.nome or "Prezado(a)",
+            "{{tipo}}": (
+                feedback.get_tipo_display()
+                if hasattr(feedback, "get_tipo_display")
+                else feedback.tipo
+            "{{email}}": feedback.email or "",
+
+### Dados típicos esperados em Feedback:
+  - nome (opcional - pode ser anônimo)
+  - email_contato (opcional)
+  - telefone (opcional)
+  - descricao (texto livre - pode conter dados sensíveis)
+  - arquivos anexados (podem conter dados pessoais)
+  - protocolo (código de rastreio - não é dado pessoal direto)
+
+## 2. USUÁRIOS (Staff/Equipe da Empresa)
+
+### Campos em core/models.py (User):
+  (modelo não encontrado)
+
+### Dados esperados:
+  - email (obrigatório - login)
+  - nome (obrigatório)
+  - telefone (opcional)
+  - cargo (opcional)
+
+## 3. TENANTS (Empresas Clientes)
+
+### Campos em tenants/models.py:
+        """Retorna o nível de suporte: 'community', 'email', 'priority', '24/7'."""
+    email_notifications = models.BooleanField(
+        verbose_name="Receber notificações por email",
+        help_text="Se desabilitado, não receberá emails de atribuição/novos feedbacks",
+    email = models.EmailField(
+        help_text="Mensagem opcional incluída no email de convite",
+            models.Index(fields=["email", "status"]),
+        return f"Convite para {self.email} - {self.client.nome} ({self.get_status_display()})"
+
+### Dados esperados:
+  - razao_social
+  - cnpj
+  - email_contato
+  - telefone
+
+## 4. LOGS E AUDITORIA
+
+### Campos em auditlog:
+        ip_address: str = None,
+        user_agent: str = None,
+            ip_address: Endereço IP do usuário
+            user_agent: User-Agent do navegador
+            ip_address=ip_address,
+            user_agent=user_agent,
+    ip_address = models.GenericIPAddressField(
+    user_agent = models.TextField("User Agent", blank=True, null=True, default="")
+        user_str = self.user.email if self.user else "Sistema"
+    ip_address = models.GenericIPAddressField("Endereço IP", null=True, blank=True)
+    user_agent = models.TextField("User Agent", blank=True)
+        return f"{self.user.email} - {self.started_at:%Y-%m-%d %H:%M}"
+
+### Dados típicos em logs:
+  - user_id (FK)
+  - ip_address (possível)
+  - user_agent (possível)
+  - ação realizada
+

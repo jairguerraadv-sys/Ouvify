@@ -1,6 +1,3 @@
-
-
-
 estou desenvolvendo um projeto que será uma White label como SaaS, de canal de Feedback de usuários, como um canal de denuncia, reclamações, sugestões, elogios, com código de rastreio da interação para acompanhamento pelo usuário. o cliente-empresa paga mensalidade pra usar. a plataforma se chama Ouvify. Preciso que crie um plano de auditoria geral a fim de você entender o status atual do projeto, verificar a integridade, duplicações e redundâncias entre versões antigas e atuais, paginas faltantes, erros de caminho, segurança, performance e conformidade do sistema Ouvify, bem como o que falta para finalizarmos o projeto dentro das funcionalidades necessárias para o produto, garantindo que todas as funcionalidades estejam operacionais e livres de vulnerabilidades críticas. considerando que o projeto é monorepo, esta em repositório github, e foi feito deploy do backend (python) no render e do frontend (java script) no vercel .escreva um prompt para o copilot, IA do VS Studio Code, fazer essa auditoria completa, bem como para elaborar toda a documentação necessária e tutorias de uso, use o framework Sentient‑AGI/ROMA que já está configurado e habilitado, mas sem nenhuma chave de API externa (sem OpenAI, Gemini, etc.). Use apenas recursos locais (Docker, Python, HTTP) e o próprio Copilot no VS Code
 auditoria-ouvify.md
 Arquivo gerado
@@ -42,181 +39,182 @@ Frontend: JavaScript (Deploy: Vercel)
 Framework de Auditoria: Sentient-AGI/ROMA (Local)
 
 📊 ESCOPO DA AUDITORIA
+
 1. ANÁLISE ESTRUTURAL DO CÓDIGO
- Verificar duplicações de código entre versões
+   Verificar duplicações de código entre versões
 
- Identificar redundâncias de funcionalidades
+Identificar redundâncias de funcionalidades
 
- Mapear dependências circulares
+Mapear dependências circulares
 
- Analisar organização de pastas
+Analisar organização de pastas
 
- Validar convenções de nomenclatura
+Validar convenções de nomenclatura
 
 2. INTEGRIDADE DO SISTEMA
- Verificar routing correto (erros de caminho)
+   Verificar routing correto (erros de caminho)
 
- Validar endpoints de API
+Validar endpoints de API
 
- Testar fluxos de dados
+Testar fluxos de dados
 
- Verificar ligação entre componentes
+Verificar ligação entre componentes
 
- Confirmar variables de ambiente
+Confirmar variables de ambiente
 
 3. FUNCIONALIDADES CRÍTICAS
- Sistema de Feedback (criar, ler, atualizar, deletar)
+   Sistema de Feedback (criar, ler, atualizar, deletar)
 
- Código de Rastreio/Tracking
+Código de Rastreio/Tracking
 
- Autenticação e Autorização
+Autenticação e Autorização
 
- Multi-tenancy (isolamento de dados por empresa)
+Multi-tenancy (isolamento de dados por empresa)
 
- Notificações e Alertas
+Notificações e Alertas
 
- Relatórios e Análises
+Relatórios e Análises
 
- Gestão de Usuários
+Gestão de Usuários
 
- Gestão de Permissões
+Gestão de Permissões
 
 4. SEGURANÇA
- Validação de entrada (OWASP Top 10)
+   Validação de entrada (OWASP Top 10)
 
- Proteção contra SQL Injection
+Proteção contra SQL Injection
 
- CSRF Token Validation
+CSRF Token Validation
 
- Autenticação (JWT, Sessions)
+Autenticação (JWT, Sessions)
 
- Autorização (RBAC)
+Autorização (RBAC)
 
- Criptografia de dados sensíveis
+Criptografia de dados sensíveis
 
- Rate Limiting
+Rate Limiting
 
- Logs de segurança
+Logs de segurança
 
- Variáveis de ambiente sensíveis (não expostas)
+Variáveis de ambiente sensíveis (não expostas)
 
- Versionamento de API com segurança
+Versionamento de API com segurança
 
 5. PERFORMANCE
- Otimização de queries do banco de dados
+   Otimização de queries do banco de dados
 
- Cache (Redis/Memcached)
+Cache (Redis/Memcached)
 
- Lazy loading de componentes
+Lazy loading de componentes
 
- Compressão de assets
+Compressão de assets
 
- CDN para arquivos estáticos
+CDN para arquivos estáticos
 
- Paginação em listagens
+Paginação em listagens
 
- Time-outs apropriados
+Time-outs apropriados
 
- Monitoramento de performance
+Monitoramento de performance
 
 6. CONFORMIDADE E REGULAMENTAÇÃO
- LGPD (Lei Geral de Proteção de Dados)
+   LGPD (Lei Geral de Proteção de Dados)
 
- GDPR (Regulamento Geral sobre Proteção de Dados)
+GDPR (Regulamento Geral sobre Proteção de Dados)
 
- Política de Privacidade implementada
+Política de Privacidade implementada
 
- Direito ao esquecimento (right to be forgotten)
+Direito ao esquecimento (right to be forgotten)
 
- Consentimento de dados
+Consentimento de dados
 
- Auditoria de acessos
+Auditoria de acessos
 
- Backup e Disaster Recovery
+Backup e Disaster Recovery
 
 7. FUNCIONALIDADES FALTANTES
- Features críticas vs. MVP
+   Features críticas vs. MVP
 
- Features nice-to-have não implementadas
+Features nice-to-have não implementadas
 
- Integrações externas necessárias
+Integrações externas necessárias
 
- Webhooks (se aplicável)
+Webhooks (se aplicável)
 
- API Pública para clientes (se aplicável)
+API Pública para clientes (se aplicável)
 
 8. TESTES E QUALIDADE
- Testes unitários cobertura
+   Testes unitários cobertura
 
- Testes de integração
+Testes de integração
 
- Testes de API
+Testes de API
 
- Testes de performance/carga
+Testes de performance/carga
 
- Testes de segurança
+Testes de segurança
 
- Documentação de testes
+Documentação de testes
 
 9. DOCUMENTAÇÃO
- README.md completo
+   README.md completo
 
- Arquitetura do sistema
+Arquitetura do sistema
 
- Guia de Setup (Frontend + Backend)
+Guia de Setup (Frontend + Backend)
 
- Documentação de API (Swagger/OpenAPI)
+Documentação de API (Swagger/OpenAPI)
 
- Guia do usuário final
+Guia do usuário final
 
- Guia do administrador
+Guia do administrador
 
- Troubleshooting
+Troubleshooting
 
 10. DEPLOY E DEVOPS
- Variáveis de ambiente (prod vs. dev)
+    Variáveis de ambiente (prod vs. dev)
 
- CI/CD Pipeline
+CI/CD Pipeline
 
- Versionamento de releases
+Versionamento de releases
 
- Logs centralizados
+Logs centralizados
 
- Monitoramento de saúde (health checks)
+Monitoramento de saúde (health checks)
 
- Rollback strategy
+Rollback strategy
 
 🤖 PROMPT PARA COPILOT (VS Code)
 Instruções Gerais
 Copie este prompt e execute no painel Copilot Chat do VS Code:
 
 text
-Tu és um auditor especializado em projetos SaaS com foco em segurança, 
-performance e conformidade. Vou te fornecer o repositório completo do projeto 
+Tu és um auditor especializado em projetos SaaS com foco em segurança,
+performance e conformidade. Vou te fornecer o repositório completo do projeto
 Ouvify (monorepo) para que realizes uma auditoria técnica exhaustiva.
 
-IMPORTANTE: Use APENAS recursos locais disponíveis (Docker, Python, HTTP) 
-e o framework Sentient-AGI/ROMA que já está configurado. NÃO utilize chaves 
+IMPORTANTE: Use APENAS recursos locais disponíveis (Docker, Python, HTTP)
+e o framework Sentient-AGI/ROMA que já está configurado. NÃO utilize chaves
 de API externas (OpenAI, Gemini, etc.).
 
-TAREFA 1: ANÁLISE ESTRUTURAL
-========================
+# TAREFA 1: ANÁLISE ESTRUTURAL
+
 1. Mapeie a estrutura completa do monorepo
 2. Identifique pastas duplicadas e código redundante
 3. Liste todas as dependências (requirements.txt, package.json)
 4. Verifique conformidade com padrões de projeto (MVC, componentes, etc.)
 5. Gere um diagrama da arquitetura em Mermaid
 
-TAREFA 2: VALIDAÇÃO DE INTEGRIDADE
-========================
+# TAREFA 2: VALIDAÇÃO DE INTEGRIDADE
+
 1. Verifique se todas as rotas/endpoints existem e funcionam
 2. Confirme que não há erros de import/require
 3. Valide se as variáveis de ambiente estão sendo usadas corretamente
 4. Teste fluxos críticos (criar feedback → registrar tracking → enviar notificação)
 5. Crie um relatório de "broken links" ou endpoints mortos
 
-TAREFA 3: ANÁLISE DE SEGURANÇA
-========================
+# TAREFA 3: ANÁLISE DE SEGURANÇA
+
 1. Verifique validação de entrada em todas as rotas
 2. Busque por SQL Injection, XSS ou CSRF vulnerabilities
 3. Valide autenticação JWT/Sessions
@@ -225,8 +223,8 @@ TAREFA 3: ANÁLISE DE SEGURANÇA
 6. Analise proteção de rotas (autenticação/autorização)
 7. Gere relatório de vulnerabilidades críticas
 
-TAREFA 4: PERFORMANCE
-========================
+# TAREFA 4: PERFORMANCE
+
 1. Analise queries de banco de dados (procure por N+1 problems)
 2. Identifique pontos de gargalo no backend
 3. Verifique se há caching implementado
@@ -234,8 +232,8 @@ TAREFA 4: PERFORMANCE
 5. Procure por memória leaks potenciais
 6. Gere relatório de otimizações recomendadas
 
-TAREFA 5: CONFORMIDADE (LGPD/GDPR)
-========================
+# TAREFA 5: CONFORMIDADE (LGPD/GDPR)
+
 1. Verifique se há policy de privacidade implementada
 2. Valide consentimento de dados (cookies, termos)
 3. Procure por implementação de "direito ao esquecimento"
@@ -243,8 +241,8 @@ TAREFA 5: CONFORMIDADE (LGPD/GDPR)
 5. Verifique backup e disaster recovery
 6. Gere checklist de conformidade
 
-TAREFA 6: FUNCIONALIDADES CRÍTICAS
-========================
+# TAREFA 6: FUNCIONALIDADES CRÍTICAS
+
 1. Liste todas as funcionalidades implementadas
 2. Identifique quais estão operacionais vs. em desenvolvimento
 3. Mapeie funcionalidades faltantes (do MVP/roadmap)
@@ -252,16 +250,16 @@ TAREFA 6: FUNCIONALIDADES CRÍTICAS
 5. Valide geração de código de tracking único
 6. Gere relatório de features completeness
 
-TAREFA 7: TESTES
-========================
+# TAREFA 7: TESTES
+
 1. Localize testes existentes (unitários, integração, API)
 2. Calcule cobertura de testes
 3. Identifique áreas críticas sem testes
 4. Procure por testes de segurança
 5. Recomende testes que faltam
 
-TAREFA 8: GERAÇÃO DE DOCUMENTAÇÃO
-========================
+# TAREFA 8: GERAÇÃO DE DOCUMENTAÇÃO
+
 1. Crie README.md completo com:
    - Descrição do projeto
    - Setup local (Backend + Frontend)
@@ -306,9 +304,10 @@ TAREFA 8: GERAÇÃO DE DOCUMENTAÇÃO
    - Boas práticas para desenvolvedores
    - Checklist de segurança
 
-TAREFA 9: RELATÓRIO FINAL
-========================
+# TAREFA 9: RELATÓRIO FINAL
+
 Gere um relatório executivo contendo:
+
 1. Status geral do projeto (% completo)
 2. Vulnerabilidades críticas encontradas
 3. Performance issues
@@ -318,6 +317,7 @@ Gere um relatório executivo contendo:
 7. Próximos passos para finalização
 
 ENTREGA ESPERADA:
+
 - Arquivo JSON estruturado com todos os resultados
 - Documentação em Markdown
 - Diagramas em Mermaid (embarcados em MD)
@@ -328,12 +328,17 @@ RECURSOS: Apenas Docker, Python, HTTP - SEM APIs externas
 🔧 EXECUÇÃO PASSO-A-PASSO
 Passo 1: Preparar o Copilot (VS Code)
 bash
+
 # Abra VS Code na pasta raiz do monorepo
+
 cd /caminho/para/ouvify
 
 # Pressione: Ctrl+Shift+P (ou Cmd+Shift+P no Mac)
+
 # Busque: "Copilot: Open Chat"
+
 # Ou clique no ícone do Copilot na barra lateral
+
 Passo 2: Executar Análise em Etapas
 Dividir em múltiplos prompts para melhor processamento:
 
@@ -342,6 +347,7 @@ text
 AUDITORIA OUVIFY - ETAPA 1: ESTRUTURA
 
 Analisar o repositório e fornecer:
+
 1. Árvore de pastas estruturada
 2. Arquivos duplicados ou redundantes
 3. Dependências não utilizadas (dead code)
@@ -354,6 +360,7 @@ text
 AUDITORIA OUVIFY - ETAPA 2: SEGURANÇA
 
 Fazer scan de segurança:
+
 1. Validação de entrada (todas as rotas)
 2. Vulnerabilidades OWASP Top 10
 3. Credenciais ou tokens expostos
@@ -368,6 +375,7 @@ text
 AUDITORIA OUVIFY - ETAPA 3: PERFORMANCE
 
 Analisar performance:
+
 1. N+1 Query Problems
 2. Índices de banco de dados
 3. Caching strategy
@@ -381,6 +389,7 @@ text
 AUDITORIA OUVIFY - ETAPA 4: FUNCIONALIDADES
 
 Mapear features:
+
 1. CRUD de Feedback (Status: ✓/✗)
 2. Sistema de Rastreamento (Status: ✓/✗)
 3. Autenticação (Status: ✓/✗)
@@ -407,20 +416,23 @@ Gerar documentação baseado no código:
 Use Markdown + Mermaid para diagramas
 Passo 3: Integração com ROMA Framework
 bash
+
 # Crie uma pasta para reports
+
 mkdir -p ./audit-reports
 
 # Dentro da pasta, crie um script Python para processar resultados
+
 cat > ./audit-reports/process_audit.py << 'EOF'
 import json
 import os
 from datetime import datetime
 
 class AuditProcessor:
-    def __init__(self, audit_data):
-        self.audit_data = audit_data
-        self.timestamp = datetime.now().isoformat()
-    
+def **init**(self, audit_data):
+self.audit_data = audit_data
+self.timestamp = datetime.now().isoformat()
+
     def generate_report(self):
         report = {
             "timestamp": self.timestamp,
@@ -429,75 +441,79 @@ class AuditProcessor:
             "recommendations": self.prioritize_issues()
         }
         return report
-    
+
     def prioritize_issues(self):
         # Priorizar vulnerabilidades críticas
-        critical = [issue for issue in self.audit_data 
+        critical = [issue for issue in self.audit_data
                    if issue.get("severity") == "CRITICAL"]
         return sorted(critical, key=lambda x: x.get("impact", 0), reverse=True)
-    
+
     def export_json(self, filename="audit_report.json"):
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(self.generate_report(), f, indent=2, ensure_ascii=False)
         print(f"✓ Relatório exportado: {filename}")
 
 # Uso:
+
 # data = json.load(open("audit_data.json"))
+
 # processor = AuditProcessor(data)
+
 # processor.export_json()
+
 EOF
 
 python ./audit-reports/process_audit.py
 📋 CHECKLIST DE EXECUÇÃO
 Fase 1: Preparação
- Repository clonado localmente
+Repository clonado localmente
 
- VS Code aberto na pasta raiz
+VS Code aberto na pasta raiz
 
- Copilot ativado e funcionando
+Copilot ativado e funcionando
 
- ROMA Framework verificado
+ROMA Framework verificado
 
 Fase 2: Análise (Executar em ordem)
- Etapa 1: Estrutura e Integridade
+Etapa 1: Estrutura e Integridade
 
- Etapa 2: Segurança
+Etapa 2: Segurança
 
- Etapa 3: Performance
+Etapa 3: Performance
 
- Etapa 4: Funcionalidades
+Etapa 4: Funcionalidades
 
- Etapa 5: Conformidade
+Etapa 5: Conformidade
 
 Fase 3: Documentação
- README.md gerado
+README.md gerado
 
- ARCHITECTURE.md gerado
+ARCHITECTURE.md gerado
 
- API_DOCUMENTATION.md gerado
+API_DOCUMENTATION.md gerado
 
- USER_GUIDE.md gerado
+USER_GUIDE.md gerado
 
- ADMIN_GUIDE.md gerado
+ADMIN_GUIDE.md gerado
 
- TROUBLESHOOTING.md gerado
+TROUBLESHOOTING.md gerado
 
- SECURITY.md gerado
+SECURITY.md gerado
 
 Fase 4: Relatórios
- JSON de resultados gerado
+JSON de resultados gerado
 
- Issues priorizadas
+Issues priorizadas
 
- Recomendações documentadas
+Recomendações documentadas
 
- Checklist de remediação criado
+Checklist de remediação criado
 
 🎯 RESULTADOS ESPERADOS
 Após executar a auditoria completa, você terá:
 
 1. Diagnóstico Técnico
-Status de cada componente (funcional/não-funcional)
+   Status de cada componente (funcional/não-funcional)
 
 Vulnerabilidades críticas identificadas
 
@@ -506,7 +522,7 @@ Problemas de performance com impacto
 Funcionalidades faltantes mapeadas
 
 2. Documentação Completa
-7 documentos Markdown estruturados
+   7 documentos Markdown estruturados
 
 Diagramas de arquitetura (Mermaid)
 
@@ -515,7 +531,7 @@ Exemplos de uso
 Guias passo-a-passo
 
 3. Plano de Ação
-Priorização de tarefas
+   Priorização de tarefas
 
 Estimativa de esforço
 
@@ -524,7 +540,7 @@ Roadmap para finalização
 KPIs de qualidade
 
 4. Relatório Executivo
-% de completude do projeto
+   % de completude do projeto
 
 Risco técnico (baixo/médio/alto)
 
@@ -557,4 +573,3 @@ Analise ARCHITECTURE.md para decisões técnicas
 Gerado em: Fevereiro 2026
 Projeto: Ouvify White Label SaaS
 Status: Plano de Auditoria Completa
-

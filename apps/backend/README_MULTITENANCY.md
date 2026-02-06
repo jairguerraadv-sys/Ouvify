@@ -114,17 +114,17 @@ def criar_feedback(request):
     # O tenant já está definido pelo middleware
     tenant_atual = get_current_tenant()
     print(f"Tenant atual: {tenant_atual.nome}")
-    
+
     # Criar feedback - tenant é definido automaticamente
     feedback = Feedback.objects.create(
         tipo='sugestao',
         titulo='Minha sugestão',
         descricao='Detalhes da sugestão'
     )
-    
+
     # Listar feedbacks - apenas do tenant atual
     feedbacks = Feedback.objects.all()  # Filtra automaticamente!
-    
+
     return {"success": True}
 ```
 

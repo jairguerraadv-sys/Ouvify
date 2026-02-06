@@ -12,6 +12,7 @@
 Script criado: `scripts/detect-duplicate-styles.ts`
 
 ### Resultado da Análise:
+
 - Total de arquivos analisados: 130
 - Total de padrões de classes únicos: 1226
 - Padrões duplicados (2+ usos): 217
@@ -19,6 +20,7 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 - Candidatos críticos (5+ usos): 29
 
 ### Top 10 Duplicações Identificadas:
+
 1. `flex items-center gap-2` - 27 arquivos
 2. `text-muted-foreground text-sm` - 24 arquivos
 3. `text-muted-foreground` - 22 arquivos
@@ -36,23 +38,24 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 
 ### Novos Componentes Criados (`components/ui/layout-utils.tsx`):
 
-| Componente | Substitui | Usos Potenciais |
-|------------|-----------|-----------------|
-| `FlexRow` | `flex items-center gap-*` | 27+ arquivos |
-| `FlexCol` | `flex flex-col gap-*` | 10+ arquivos |
-| `FlexBetween` | `flex items-center justify-between` | 18 arquivos |
-| `FlexCenter` | `flex items-center justify-center` | 5+ arquivos |
-| `Container` | `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` | 6 arquivos |
-| `Stack` | `space-y-*` | 20+ arquivos |
-| `MutedText` | `text-muted-foreground text-sm` | 24 arquivos |
-| `IconWrapper` | `h-4 w-4 text-primary` | 8 arquivos |
-| `Spinner` | `animate-spin h-4 w-4` | 9 arquivos |
-| `Section` | `py-16 md:py-20` | 10+ arquivos |
-| `Flex` | Base flex container | Universal |
+| Componente    | Substitui                                | Usos Potenciais |
+| ------------- | ---------------------------------------- | --------------- |
+| `FlexRow`     | `flex items-center gap-*`                | 27+ arquivos    |
+| `FlexCol`     | `flex flex-col gap-*`                    | 10+ arquivos    |
+| `FlexBetween` | `flex items-center justify-between`      | 18 arquivos     |
+| `FlexCenter`  | `flex items-center justify-center`       | 5+ arquivos     |
+| `Container`   | `max-w-7xl mx-auto px-4 sm:px-6 lg:px-8` | 6 arquivos      |
+| `Stack`       | `space-y-*`                              | 20+ arquivos    |
+| `MutedText`   | `text-muted-foreground text-sm`          | 24 arquivos     |
+| `IconWrapper` | `h-4 w-4 text-primary`                   | 8 arquivos      |
+| `Spinner`     | `animate-spin h-4 w-4`                   | 9 arquivos      |
+| `Section`     | `py-16 md:py-20`                         | 10+ arquivos    |
+| `Flex`        | Base flex container                      | Universal       |
 
 **Total de componentes reutilizáveis: 11 novos + componentes existentes**
 
 ### Componentes Existentes Validados:
+
 - `Form`, `FormField`, `FormSection`, `FormActions`, `FormRow` (form-field.tsx)
 - `LoadingState` (loading-state.tsx)
 - `Skeleton`, `StatCardSkeleton`, `FeedbackListSkeleton`, `DashboardSkeleton` (skeleton.tsx)
@@ -66,10 +69,12 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 ## 3. Arquivos CSS Consolidados ✅
 
 ### Estrutura de CSS:
+
 - **Único arquivo CSS:** `app/globals.css`
 - Arquivos de cobertura (excluídos): `coverage/lcov-report/*.css`
 
 ### Validação:
+
 - ✅ Sem arquivos CSS espalhados
 - ✅ Todas as customizações em globals.css
 - ✅ Tokens de design definidos como CSS variables
@@ -80,15 +85,15 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 
 ### Inline Styles Encontrados (Justificados):
 
-| Arquivo | Uso | Justificativa |
-|---------|-----|---------------|
-| `BrandingPreview.tsx` | `style={previewStyle}` | Preview dinâmico de cores |
-| `OnboardingChecklist.tsx` | `style={progressStyle}` | Progress bar dinâmica |
-| `charts.tsx` | `style={barStyle}` | Barras de gráfico dinâmicas |
-| `TenantBanner.tsx` | `style={colorStyle}` | Cores customizáveis por tenant |
-| `progress.tsx` | `style={widthStyle}` | Largura dinâmica de progress |
-| `LoadingOverlay.tsx` | `style={cellStyle}` | Grid cells dinâmicos |
-| `elements.tsx` | `style={widthStyle}` | Progress bar width |
+| Arquivo                   | Uso                     | Justificativa                  |
+| ------------------------- | ----------------------- | ------------------------------ |
+| `BrandingPreview.tsx`     | `style={previewStyle}`  | Preview dinâmico de cores      |
+| `OnboardingChecklist.tsx` | `style={progressStyle}` | Progress bar dinâmica          |
+| `charts.tsx`              | `style={barStyle}`      | Barras de gráfico dinâmicas    |
+| `TenantBanner.tsx`        | `style={colorStyle}`    | Cores customizáveis por tenant |
+| `progress.tsx`            | `style={widthStyle}`    | Largura dinâmica de progress   |
+| `LoadingOverlay.tsx`      | `style={cellStyle}`     | Grid cells dinâmicos           |
+| `elements.tsx`            | `style={widthStyle}`    | Progress bar width             |
 
 **Resultado:** Todos os inline styles são para valores dinâmicos - ACEITÁVEL ✅
 
@@ -97,6 +102,7 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 ## 5. Checklist de Validação Final ✅
 
 ### Consistência
+
 - [x] Todas as cores vêm de tokens do design system
 - [x] Todas as fontes vêm de `typography`
 - [x] Todos os espaçamentos usam escala de 8px
@@ -104,18 +110,21 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 - [x] Sombras consistentes
 
 ### Performance
+
 - [x] Sem CSS-in-JS inline desnecessário
 - [x] Classes Tailwind em uso (verificar com purge)
 - [x] Fontes otimizadas (Inter via next/font)
 - [x] Critical CSS inline (Next.js automático)
 
 ### Acessibilidade
+
 - [x] Contraste validado
 - [x] Focus states visíveis (`:focus-visible` global)
 - [x] Touch targets adequados (44x44px mínimo)
 - [x] Texto legível em todos os tamanhos
 
 ### Manutenibilidade
+
 - [x] Componentes reutilizáveis criados
 - [x] Duplicação de estilos minimizada
 - [x] Documentação de padrões atualizada
@@ -125,13 +134,13 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 
 ## 6. Critérios de Aceite - Fase 5 ✅
 
-| Critério | Status |
-|----------|--------|
-| Script de duplicação executado | ✅ |
-| Pelo menos 10 componentes reutilizáveis extraídos | ✅ (11 novos) |
-| Arquivos CSS consolidados | ✅ (único globals.css) |
-| Zero inline styles desnecessários | ✅ |
-| Validação de estilos 100% completa | ✅ |
+| Critério                                          | Status                 |
+| ------------------------------------------------- | ---------------------- |
+| Script de duplicação executado                    | ✅                     |
+| Pelo menos 10 componentes reutilizáveis extraídos | ✅ (11 novos)          |
+| Arquivos CSS consolidados                         | ✅ (único globals.css) |
+| Zero inline styles desnecessários                 | ✅                     |
+| Validação de estilos 100% completa                | ✅                     |
 
 ---
 
@@ -140,6 +149,7 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 ### Exemplo: Antes vs Depois
 
 **Antes:**
+
 ```tsx
 <div className="flex items-center gap-2">
   <Icon className="h-4 w-4 text-primary" />
@@ -148,6 +158,7 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 ```
 
 **Depois:**
+
 ```tsx
 <FlexRow gap="2">
   <IconWrapper size="md" color="primary">
@@ -158,14 +169,15 @@ Script criado: `scripts/detect-duplicate-styles.ts`
 ```
 
 ### Imports:
+
 ```tsx
-import { 
-  FlexRow, 
-  FlexBetween, 
-  Container, 
-  MutedText, 
-  Spinner 
-} from '@/components/ui';
+import {
+  FlexRow,
+  FlexBetween,
+  Container,
+  MutedText,
+  Spinner,
+} from "@/components/ui";
 ```
 
 ---
@@ -182,6 +194,7 @@ A **Fase 5** está completa. Recomendações para uso futuro:
 ---
 
 **Commit sugerido:**
+
 ```
 refactor: remove style duplications and extract reusable components (Phase 5)
 

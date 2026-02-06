@@ -163,7 +163,7 @@ urlpatterns = [
     # Busca Global (ElasticSearch)
     path("api/", include("apps.core.search_urls")),
     # Two-Factor Authentication (2FA)
-    path("api/auth/", include("apps.core.two_factor_urls")),
+    path("api/auth/2fa/", include("apps.core.two_factor_urls")),
     # Push Notifications
     path("api/push/", include("apps.notifications.urls")),
     # Audit Log & Analytics

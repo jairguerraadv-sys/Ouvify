@@ -24,7 +24,7 @@
 ✅ **Submit reports** anonymously or with identification  
 ✅ **Track status** using a unique protocol number  
 ✅ **Receive responses** from the organization  
-✅ **Stay safe** - your data is encrypted and protected  
+✅ **Stay safe** - your data is encrypted and protected
 
 **Is it really anonymous?**  
 Yes! If you don't provide your name/email, the organization has **no way** to identify you. Not even the IP address is shared.
@@ -36,10 +36,12 @@ Yes! If you don't provide your name/email, the organization has **no way** to id
 ### Step 1: Access the Organization's Feedback Page
 
 Each organization has a unique link, such as:
+
 - `company.ouvify.com`
 - `feedback.company.com`
 
 **Where to find the link:**
+
 - Organization's website (usually in footer)
 - Welcome emails
 - Social media
@@ -51,12 +53,12 @@ Each organization has a unique link, such as:
 
 You'll see 4 options:
 
-| Icon | Type | When to Use | Examples |
-|------|------|-------------|----------|
-| 🚨 | **Whistleblowing** | Report something irregular, unethical, or illegal | Harassment, fraud, discrimination, safety violations |
-| 💢 | **Complaint** | Report problems with products, services, or treatment | Defective product, poor service, billing errors |
-| 💡 | **Suggestion** | Share ideas for improvement | New features, process improvements, better experiences |
-| ⭐ | **Testimonial** | Recognize good work | Excellent service, helpful staff, positive experience |
+| Icon | Type               | When to Use                                           | Examples                                               |
+| ---- | ------------------ | ----------------------------------------------------- | ------------------------------------------------------ |
+| 🚨   | **Whistleblowing** | Report something irregular, unethical, or illegal     | Harassment, fraud, discrimination, safety violations   |
+| 💢   | **Complaint**      | Report problems with products, services, or treatment | Defective product, poor service, billing errors        |
+| 💡   | **Suggestion**     | Share ideas for improvement                           | New features, process improvements, better experiences |
+| ⭐   | **Testimonial**    | Recognize good work                                   | Excellent service, helpful staff, positive experience  |
 
 **Tip:** Choose the type that best matches your situation. It helps the organization prioritize responses.
 
@@ -67,17 +69,21 @@ You'll see 4 options:
 **📝 Required Fields:**
 
 **Description** (Required)
+
 - Explain what happened clearly and in detail
 - Include relevant facts: dates, times, locations, people involved
 - Be objective and factual
 
 **❌ Bad Example:**
+
 > "Product is bad"
 
 **✅ Good Example:**
+
 > "I purchased Product X (Model ABC-123) on February 1st at the Downtown store. On February 3rd, it stopped working. When I turn it on, the screen shows 'Error 404' and shuts down. I tried resetting it per the manual, but the issue persists."
 
 **Why the good example works:**
+
 - Specific product model
 - Exact dates
 - Detailed symptoms
@@ -88,28 +94,31 @@ You'll see 4 options:
 **📎 Optional Fields:**
 
 **Attachments** (up to 5 files, 5MB each)
+
 - Photos of defects
 - Screenshots of errors
 - Receipts/invoices
 - Supporting documents
 
 **Location/Department**
+
 - Where did it happen?
 - Which store/branch?
 - Which department (HR, Finance, IT)?
 
 **When did it happen?**
+
 - Approximate date and time
 
 ---
 
 **👤 Contact Information (Optional - Only if you want responses):**
 
-| Field | Purpose | Anonymous Impact |
-|-------|---------|------------------|
-| **Name** | For personalized responses | ⚠️ Reveals identity |
-| **Email** | To receive status updates | ⚠️ Reveals identity |
-| **Phone** | For urgent follow-up | ⚠️ Reveals identity |
+| Field     | Purpose                    | Anonymous Impact    |
+| --------- | -------------------------- | ------------------- |
+| **Name**  | For personalized responses | ⚠️ Reveals identity |
+| **Email** | To receive status updates  | ⚠️ Reveals identity |
+| **Phone** | For urgent follow-up       | ⚠️ Reveals identity |
 
 **⚠️ IMPORTANT:**  
 If you leave name/email/phone **blank**, your submission is **100% anonymous**. The organization cannot identify you by any means.
@@ -121,12 +130,14 @@ If you leave name/email/phone **blank**, your submission is **100% anonymous**. 
 Before submitting, you must accept the **Privacy Policy**.
 
 **What you're agreeing to:**
+
 - ✅ Your feedback will be stored and processed
 - ✅ If you provided contact info, it may be used to respond
 - ✅ Your data is protected by encryption
 - ✅ You can request deletion later (see **Your Rights** section)
 
 **ConsentGate (Required):**
+
 ```
 ┌─────────────────────────────────────────────────────┐
 │ 🔒 Privacy & Data Protection                        │
@@ -171,6 +182,7 @@ Click **"Submit Feedback"**. You'll see:
 ```
 
 **📌 SAVE THIS NUMBER!**
+
 - Take a screenshot
 - Write it down
 - Copy to notes app
@@ -220,18 +232,19 @@ Click **"Submit Feedback"**. You'll see:
 
 ### Status Meanings
 
-| Status | Icon | Meaning | What's Next |
-|--------|------|---------|-------------|
-| **NEW** | 🆕 | Just received, not yet reviewed | Organization will review within 24-48h |
-| **IN REVIEW** | 🔍 | Team is investigating | You'll be updated when resolved |
-| **RESOLVED** | ✅ | Issue fixed or question answered | Check the response message |
-| **ARCHIVED** | 📦 | Closed and filed | No further action expected |
+| Status        | Icon | Meaning                          | What's Next                            |
+| ------------- | ---- | -------------------------------- | -------------------------------------- |
+| **NEW**       | 🆕   | Just received, not yet reviewed  | Organization will review within 24-48h |
+| **IN REVIEW** | 🔍   | Team is investigating            | You'll be updated when resolved        |
+| **RESOLVED**  | ✅   | Issue fixed or question answered | Check the response message             |
+| **ARCHIVED**  | 📦   | Closed and filed                 | No further action expected             |
 
 ---
 
 ### Email Notifications (If You Provided Email)
 
 You'll receive updates:
+
 - 📧 **Submission confirmation**
 - 📧 **Status changes**
 - 📧 **Responses from organization**
@@ -246,11 +259,13 @@ You'll receive updates:
 ### 100% Anonymous Submission
 
 **When you DON'T provide:**
+
 - ❌ Name
 - ❌ Email
 - ❌ Phone
 
 **Organization sees:**
+
 - ✅ Your feedback description
 - ✅ Attachments (if any)
 - ✅ Timestamp
@@ -260,11 +275,13 @@ You'll receive updates:
 - ❌ **NOT your location**
 
 **Pros:**
+
 - 🛡️ **Complete privacy** - they can't identify you
 - 🔒 **Safe for whistleblowers** - report without fear
 - 🎭 **No repercussions** - total protection
 
 **Cons:**
+
 - ❌ No email updates (must check tracking page)
 - ❌ Organization can't ask clarifying questions directly
 - ❌ Harder to provide evidence later if needed
@@ -274,23 +291,27 @@ You'll receive updates:
 ### Identified Submission
 
 **When you provide:**
+
 - ✅ Name
 - ✅ Email
 - ✅ Phone (optional)
 
 **Organization sees:**
+
 - ✅ Everything above, PLUS
 - ✅ Your name
 - ✅ Your email
 - ✅ Your phone (if provided)
 
 **Pros:**
+
 - 📧 Automatic email updates
 - 💬 Direct communication with organization
 - 🤝 Faster resolution (they can ask questions)
 - 🎁 Possible compensation (refunds, credits)
 
 **Cons:**
+
 - ⚠️ Your identity is revealed
 - ⚠️ Not suitable for sensitive whistleblowing
 
@@ -298,13 +319,13 @@ You'll receive updates:
 
 ### Which Should I Choose?
 
-| Use Anonymous If... | Use Identified If... |
-|---------------------|---------------------|
-| Reporting harassment/discrimination | Simple service complaint |
-| Whistleblowing on illegal activity | Product defect report |
-| Fear of retaliation | Want status updates by email |
-| Internal employee reporting | Looking for refund/compensation |
-| Sensitive personal matter | Suggestion for improvement |
+| Use Anonymous If...                 | Use Identified If...            |
+| ----------------------------------- | ------------------------------- |
+| Reporting harassment/discrimination | Simple service complaint        |
+| Whistleblowing on illegal activity  | Product defect report           |
+| Fear of retaliation                 | Want status updates by email    |
+| Internal employee reporting         | Looking for refund/compensation |
+| Sensitive personal matter           | Suggestion for improvement      |
 
 ---
 
@@ -314,29 +335,32 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 
 ### Your Data Rights
 
-| Right | What It Means | How to Exercise |
-|-------|---------------|-----------------|
-| 📄 **Access** | Get a copy of your data | Email: privacy@company.com |
-| ✏️ **Correction** | Fix incorrect information | Update via tracking page |
-| 🗑️ **Deletion** | Delete your feedback | Email: privacy@company.com with protocol |
-| 🚫 **Object** | Opt-out of processing | Contact support |
-| 📦 **Portability** | Export data in JSON/CSV | Email: privacy@company.com |
+| Right              | What It Means             | How to Exercise                          |
+| ------------------ | ------------------------- | ---------------------------------------- |
+| 📄 **Access**      | Get a copy of your data   | Email: privacy@company.com               |
+| ✏️ **Correction**  | Fix incorrect information | Update via tracking page                 |
+| 🗑️ **Deletion**    | Delete your feedback      | Email: privacy@company.com with protocol |
+| 🚫 **Object**      | Opt-out of processing     | Contact support                          |
+| 📦 **Portability** | Export data in JSON/CSV   | Email: privacy@company.com               |
 
 ---
 
 ### Request Data Deletion
 
 **Anonymous submissions:**
+
 - Already anonymous - no personal data to delete
 - Feedback content remains (without identifying info)
 
 **Identified submissions:**
+
 1. Email privacy@company.com
 2. Include your protocol number
 3. Verify your identity (security measure)
 4. Data deleted within 30 days
 
 **What gets deleted:**
+
 - ✅ Name
 - ✅ Email
 - ✅ Phone
@@ -366,6 +390,7 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 **No.** Once submitted, feedback cannot be edited to maintain audit integrity.
 
 **If you need to add information:**
+
 - Use the tracking page (if available)
 - Submit a new feedback referencing the original protocol
 - Contact support with your protocol number
@@ -375,6 +400,7 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 ### ❓ Can I delete my feedback?
 
 **Yes**, but:
+
 - **Immediate deletion:** Only within 1 hour of submission
 - **After 1 hour:** Request via email (takes 30 days for compliance)
 
@@ -384,7 +410,8 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 
 ### ❓ Is my data encrypted?
 
-**Yes!** 
+**Yes!**
+
 - 🔒 **In transit**: HTTPS/TLS 1.3
 - 🔒 **At rest**: AES-256 encryption
 - 🔒 **Passwords**: Bcrypt hashing
@@ -394,10 +421,12 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 ### ❓ What if I lose my protocol number?
 
 **If you provided email:**
+
 - Check your inbox for confirmation email
 - Search for "OUVY-" in your email
 
 **If anonymous (no email):**
+
 - ⚠️ Unfortunately, we cannot recover it
 - You'll need to submit a new feedback
 
@@ -408,6 +437,7 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 ### ❓ Will I get a response?
 
 **Depends on feedback type:**
+
 - 🚨 **Whistleblowing**: Yes (unless anonymous without email)
 - 💢 **Complaint**: Yes, usually within 48-72h
 - 💡 **Suggestion**: May be acknowledged, may not
@@ -420,6 +450,7 @@ Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
 ### ❓ Can the organization see my IP address?
 
 **No.** IP addresses are:
+
 - Captured for security (prevent spam/abuse)
 - **NOT** shared with organizations
 - **NOT** visible in the dashboard
@@ -465,6 +496,7 @@ Version 1.0 | Release Candidate
 
 ⚠️ GUARDE ESTE CÓDIGO!
 É a única forma de acompanhar seu feedback.
+
 ```
 
 **Como salvar:**
@@ -505,13 +537,15 @@ Você verá:
 
 **Linha do tempo:**
 ```
+
 05/02/2026 14:30 - Feedback enviado
 05/02/2026 15:00 - Em análise
 05/02/2026 16:45 - Empresa respondeu:
-  "Olá! Recebemos seu feedback. Estamos investigando o problema."
+"Olá! Recebemos seu feedback. Estamos investigando o problema."
 06/02/2026 10:00 - Resolvido
 06/02/2026 10:00 - Empresa respondeu:
-  "O produto foi trocado. Você deve receber em 3 dias úteis."
+"O produto foi trocado. Você deve receber em 3 dias úteis."
+
 ```
 
 **Anexos:**
@@ -556,17 +590,20 @@ Você verá:
 
 **Exemplo bom:**
 ```
-Comprei um notebook modelo XYZ (nota fiscal #123) em 01/02/2026 
-na loja do Shopping ABC. No dia 03/02, a tela começou a piscar. 
-Levei na assistência (protocolo #456) e disseram que não é coberto 
+
+Comprei um notebook modelo XYZ (nota fiscal #123) em 01/02/2026
+na loja do Shopping ABC. No dia 03/02, a tela começou a piscar.
+Levei na assistência (protocolo #456) e disseram que não é coberto
 pela garantia. Mas o defeito é de fábrica!
 
 Gostaria que vocês:
+
 1. Analisassem o caso
 2. Consertassem ou trocassem o produto
 3. Me dessem um retorno em 5 dias úteis
 
 Anexos: foto do defeito, nota fiscal, protocolo da assistência
+
 ```
 
 ### 💡 Sugestão
@@ -580,12 +617,14 @@ Anexos: foto do defeito, nota fiscal, protocolo da assistência
 
 **Exemplo:**
 ```
+
 Sugestão: oferecer entrega aos sábados
 
-Por quê: Eu trabalho de segunda a sexta e não consigo ficar em 
+Por quê: Eu trabalho de segunda a sexta e não consigo ficar em
 casa esperando entrega. Fim de semana seria muito mais prático!
 
 Imagino que outras pessoas tenham esse problema também.
+
 ```
 
 ### ⭐ Elogio
@@ -602,12 +641,14 @@ Imagino que outras pessoas tenham esse problema também.
 
 **Exemplo:**
 ```
+
 Quero elogiar a atendente Maria da loja do Centro.
 
-Eu estava com um problema complexo e ela foi super paciente, 
+Eu estava com um problema complexo e ela foi super paciente,
 me explicou tudo com clareza e resolveu em 15 minutos.
 
 Atendimento nota 10! Parabéns!
+
 ```
 
 ---
@@ -852,3 +893,4 @@ Se sofrer retaliação após denúncia:
 ---
 
 *Última atualização: 05/02/2026*
+```

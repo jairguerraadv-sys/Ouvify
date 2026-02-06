@@ -13,14 +13,14 @@ A **Fase 5 (Componentes UI)** representa a **aplicação completa da nova paleta
 
 ### 🎯 Objetivos Alcançados
 
-| # | Objetivo | Status | Resultado |
-|---|----------|--------|-----------|
-| **1** | Auditar componentes Shadcn UI | ✅ | 47 componentes identificados, 8 críticos auditados |
-| **2** | Revisar Button variants | ✅ | 10 variants corrigidos |
-| **3** | Atualizar shadows e borders | ✅ | Card, Dialog, Alert Dialog |
-| **4** | Padronizar estados hover/active | ✅ | Todos os componentes consistentes |
-| **5** | Atualizar Skeleton loaders | ✅ | 3 skeleton variants |
-| **6** | Validar TypeScript | ✅ | 0 erros em 8 arquivos |
+| #     | Objetivo                        | Status | Resultado                                          |
+| ----- | ------------------------------- | ------ | -------------------------------------------------- |
+| **1** | Auditar componentes Shadcn UI   | ✅     | 47 componentes identificados, 8 críticos auditados |
+| **2** | Revisar Button variants         | ✅     | 10 variants corrigidos                             |
+| **3** | Atualizar shadows e borders     | ✅     | Card, Dialog, Alert Dialog                         |
+| **4** | Padronizar estados hover/active | ✅     | Todos os componentes consistentes                  |
+| **5** | Atualizar Skeleton loaders      | ✅     | 3 skeleton variants                                |
+| **6** | Validar TypeScript              | ✅     | 0 erros em 8 arquivos                              |
 
 **Total:** 8 componentes corrigidos, 100+ classes substituídas, 0 erros TypeScript.
 
@@ -32,16 +32,16 @@ A **Fase 5 (Componentes UI)** representa a **aplicação completa da nova paleta
 
 #### 🔴 **CRÍTICO: Classes Inexistentes da Paleta Antiga**
 
-| Componente | Classes Incorretas | Impacto |
-|------------|-------------------|---------|
-| **Button** | `primary-700/800`, `secondary-600/700`, `error-600/700`, `success-800/900`, `warning-500/600` | Botões não renderizavam cores corretas |
-| **Badge** | `primary-100/700`, `secondary-100/700`, `success-100/700`, `warning-100/700`, `error-100/700` | Badges invisíveis ou cores erradas |
-| **Input** | `text-text-secondary`, `text-text-primary`, `border-border-light`, `error-500` | Contraste baixo, bordas incorretas |
-| **Toast** | `border-error-200`, `bg-error-50`, `text-error-900` (e outras variantes) | Toasts não visíveis, sem feedback |
-| **Card** | `border-primary-200`, `text-text-primary`, `border-border-light` | Bordas invisíveis |
-| **Dialog** | `border` genérico (sem especificação) | Bordas inconsistentes |
-| **Alert Dialog** | `border` genérico | Bordas inconsistentes |
-| **Skeleton** | `border-border-light` | Pequeno problema de consistência |
+| Componente       | Classes Incorretas                                                                            | Impacto                                |
+| ---------------- | --------------------------------------------------------------------------------------------- | -------------------------------------- |
+| **Button**       | `primary-700/800`, `secondary-600/700`, `error-600/700`, `success-800/900`, `warning-500/600` | Botões não renderizavam cores corretas |
+| **Badge**        | `primary-100/700`, `secondary-100/700`, `success-100/700`, `warning-100/700`, `error-100/700` | Badges invisíveis ou cores erradas     |
+| **Input**        | `text-text-secondary`, `text-text-primary`, `border-border-light`, `error-500`                | Contraste baixo, bordas incorretas     |
+| **Toast**        | `border-error-200`, `bg-error-50`, `text-error-900` (e outras variantes)                      | Toasts não visíveis, sem feedback      |
+| **Card**         | `border-primary-200`, `text-text-primary`, `border-border-light`                              | Bordas invisíveis                      |
+| **Dialog**       | `border` genérico (sem especificação)                                                         | Bordas inconsistentes                  |
+| **Alert Dialog** | `border` genérico                                                                             | Bordas inconsistentes                  |
+| **Skeleton**     | `border-border-light`                                                                         | Pequeno problema de consistência       |
 
 **Total:** 100+ classes incorretas em 8 componentes críticos.
 
@@ -54,6 +54,7 @@ A **Fase 5 (Componentes UI)** representa a **aplicação completa da nova paleta
 **Arquivo:** `apps/frontend/components/ui/button.tsx`
 
 **Problema:**
+
 - Usando classes da paleta antiga: `bg-primary-700`, `hover:bg-primary-800`, `focus-visible:ring-primary-700`
 - 10 variants afetados: default, secondary, outline, outline-secondary, ghost, ghost-primary, destructive, danger, success, warning
 
@@ -89,6 +90,7 @@ default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover fo
 | `bg-background-secondary` | `bg-muted` |
 
 **Impacto:**
+
 - ✅ **10 variants** corrigidos (default, secondary, outline, outline-secondary, ghost, ghost-primary, destructive, danger, success, warning)
 - ✅ **30+ classes** substituídas
 - ✅ Estados hover/focus/active consistentes
@@ -101,17 +103,19 @@ default: "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover fo
 **Arquivo:** `apps/frontend/components/ui/card.tsx`
 
 **Problema:**
+
 - `border-primary-200` não existe na paleta
 - `text-text-primary`, `text-text-secondary` (nomenclatura antiga)
 - `border-border-light` inconsistente (deve ser `border-border`)
 
 **Solução:**
+
 ```tsx
 // ❌ ANTES:
-outlined: 'rounded-xl border-2 border-primary-200 bg-background text-text-primary'
+outlined: "rounded-xl border-2 border-primary-200 bg-background text-text-primary";
 
 // ✅ DEPOIS:
-outlined: 'rounded-xl border-2 border-primary/20 bg-background text-foreground'
+outlined: "rounded-xl border-2 border-primary/20 bg-background text-foreground";
 ```
 
 **Classes Substituídas:**
@@ -123,6 +127,7 @@ outlined: 'rounded-xl border-2 border-primary/20 bg-background text-foreground'
 | `border-primary-200` | `border-primary/20` |
 
 **Impacto:**
+
 - ✅ **4 variants** corrigidos (default, elevated, outlined, ghost)
 - ✅ **CardTitle**, **CardDescription**, **CardFooter** atualizados
 - ✅ Bordas visíveis e consistentes
@@ -134,16 +139,18 @@ outlined: 'rounded-xl border-2 border-primary/20 bg-background text-foreground'
 **Arquivo:** `apps/frontend/components/ui/dialog.tsx`
 
 **Problema:**
+
 - `border` genérico sem especificação de cor
 - `focus:ring-ring` genérico (deve usar `focus:ring-primary`)
 
 **Solução:**
+
 ```tsx
 // ❌ ANTES:
-className="... border bg-background p-6 shadow-lg ..."
+className = "... border bg-background p-6 shadow-lg ...";
 
 // ✅ DEPOIS:
-className="... border border-border bg-background p-6 shadow-lg ..."
+className = "... border border-border bg-background p-6 shadow-lg ...";
 ```
 
 **Classes Adicionadas/Corrigidas:**
@@ -153,6 +160,7 @@ className="... border border-border bg-background p-6 shadow-lg ..."
 | `focus:ring-ring` → `focus:ring-primary` | Focus ring semântico (primário azul) |
 
 **Impacto:**
+
 - ✅ Bordas consistentes com Card
 - ✅ Focus ring azul profissional
 - ✅ Shadow mantido (`shadow-lg` OK)
@@ -164,12 +172,14 @@ className="... border border-border bg-background p-6 shadow-lg ..."
 **Arquivo:** `apps/frontend/components/ui/alert-dialog.tsx`
 
 **Problema:**
+
 - Mesmo problema do Dialog: `border` genérico
 
 **Solução:**
 Idêntica ao Dialog (especificar `border-border`).
 
 **Impacto:**
+
 - ✅ Consistência com Dialog
 - ✅ Modais críticos (confirmação de ações destrutivas) visualmente corretos
 
@@ -180,6 +190,7 @@ Idêntica ao Dialog (especificar `border-border`).
 **Arquivo:** `apps/frontend/components/ui/badge.tsx`
 
 **Problema:**
+
 - **10+ classes** da paleta antiga: `bg-primary-100 text-primary-700`, `bg-secondary-100 text-secondary-700`, etc.
 - `bg-background-secondary text-text-secondary` (nomenclatura antiga)
 - `border-border-light` inconsistente
@@ -189,10 +200,10 @@ Substituir por tokens com **opacity** (10%):
 
 ```tsx
 // ❌ ANTES:
-primary: "bg-primary-100 text-primary-700"
+primary: "bg-primary-100 text-primary-700";
 
 // ✅ DEPOIS:
-primary: "bg-primary/10 text-primary"
+primary: "bg-primary/10 text-primary";
 ```
 
 **Classes Substituídas:**
@@ -208,6 +219,7 @@ primary: "bg-primary/10 text-primary"
 | `border-border-light text-text-secondary` | `border-border text-muted-foreground` |
 
 **Impacto:**
+
 - ✅ **10 variants** corrigidos (default, primary, secondary, success, warning, error, destructive, info, gray, outline)
 - ✅ Badges visíveis com **contraste adequado** (background 10% opacity + texto 100%)
 - ✅ Consistência com feedback colors (success, error, warning, info)
@@ -219,18 +231,20 @@ primary: "bg-primary/10 text-primary"
 **Arquivo:** `apps/frontend/components/ui/input.tsx`
 
 **Problema:**
+
 - `text-text-secondary`, `text-text-primary`, `text-text-tertiary` (nomenclatura antiga)
 - `text-error-500`, `border-error-500`, `focus:ring-error-500` (números inexistentes)
 - `border-border-light`, `border-border-focus` inconsistentes
 - `bg-background-secondary` (deve ser `bg-muted`)
 
 **Solução:**
+
 ```tsx
 // ❌ ANTES:
-"text-text-primary placeholder:text-text-tertiary border-error-500 focus:ring-error-500"
+"text-text-primary placeholder:text-text-tertiary border-error-500 focus:ring-error-500";
 
 // ✅ DEPOIS:
-"text-foreground placeholder:text-muted-foreground border-error focus:ring-error"
+"text-foreground placeholder:text-muted-foreground border-error focus:ring-error";
 ```
 
 **Classes Substituídas:**
@@ -249,6 +263,7 @@ primary: "bg-primary/10 text-primary"
 | `bg-background-secondary` | `bg-muted` |
 
 **Impacto:**
+
 - ✅ Labels, placeholders, textos principais com contraste correto
 - ✅ Estados de erro visíveis (borda vermelha + ring vermelho)
 - ✅ Estados de focus consistentes (ring azul profissional)
@@ -261,6 +276,7 @@ primary: "bg-primary/10 text-primary"
 **Arquivo:** `apps/frontend/components/ui/toast.tsx`
 
 **Problema:**
+
 - **Variants com 20+ classes da paleta antiga:** `border-error-200 bg-error-50 text-error-900`, etc.
 - `text-text-primary` (nomenclatura antiga)
 - `border-border-light` inconsistente
@@ -271,10 +287,10 @@ Usar cores base com **opacity** (10% background, 20% border):
 
 ```tsx
 // ❌ ANTES:
-destructive: "border-error-200 bg-error-50 text-error-900"
+destructive: "border-error-200 bg-error-50 text-error-900";
 
 // ✅ DEPOIS:
-destructive: "border-error/20 bg-error/10 text-error"
+destructive: "border-error/20 bg-error/10 text-error";
 ```
 
 **Classes Substituídas (toastVariants):**
@@ -295,6 +311,7 @@ destructive: "border-error/20 bg-error/10 text-error"
 | `focus:ring-offset-red-600` | (removido - não necessário) |
 
 **Impacto:**
+
 - ✅ **5 variants** corrigidos (default, destructive, success, warning, info)
 - ✅ Toasts visíveis com **feedback semântico** (vermelho=erro, verde=sucesso)
 - ✅ Close button com **contraste adequado** (70% opacity texto, 100% no hover)
@@ -307,9 +324,11 @@ destructive: "border-error/20 bg-error/10 text-error"
 **Arquivo:** `apps/frontend/components/ui/skeleton.tsx`
 
 **Problema:**
+
 - `border-border-light` em **StatCardSkeleton**, **FeedbackListSkeleton**, **DashboardSkeleton**
 
 **Solução:**
+
 ```tsx
 // ❌ ANTES:
 <div className="... border border-border-light">
@@ -324,6 +343,7 @@ destructive: "border-error/20 bg-error/10 text-error"
 | `border-border-light` (3 ocorrências) | `border-border` |
 
 **Impacto:**
+
 - ✅ **3 skeleton variants** corrigidos (StatCard, FeedbackList, Dashboard)
 - ✅ Consistência com Card, Dialog, Alert Dialog
 - ✅ Skeleton loaders production-ready
@@ -334,42 +354,42 @@ destructive: "border-error/20 bg-error/10 text-error"
 
 ### **Arquivos Modificados**
 
-| Arquivo | Linhas | Classes Substituídas | Variants Corrigidos |
-|---------|--------|---------------------|-------------------|
-| **Button.tsx** | 127 | 30+ | 10 |
-| **Badge.tsx** | 58 | 16+ | 10 |
-| **Input.tsx** | 56 | 11 | 1 (validation) |
-| **Toast.tsx** | 119 | 13+ | 5 + close button |
-| **Card.tsx** | 103 | 7 | 4 + subcomponents |
-| **Dialog.tsx** | 123 | 2 | 1 (content) |
-| **Alert Dialog.tsx** | 142 | 1 | 1 (content) |
-| **Skeleton.tsx** | 108 | 3 | 3 |
-| **TOTAL** | 836 | **100+** | **35+** |
+| Arquivo              | Linhas | Classes Substituídas | Variants Corrigidos |
+| -------------------- | ------ | -------------------- | ------------------- |
+| **Button.tsx**       | 127    | 30+                  | 10                  |
+| **Badge.tsx**        | 58     | 16+                  | 10                  |
+| **Input.tsx**        | 56     | 11                   | 1 (validation)      |
+| **Toast.tsx**        | 119    | 13+                  | 5 + close button    |
+| **Card.tsx**         | 103    | 7                    | 4 + subcomponents   |
+| **Dialog.tsx**       | 123    | 2                    | 1 (content)         |
+| **Alert Dialog.tsx** | 142    | 1                    | 1 (content)         |
+| **Skeleton.tsx**     | 108    | 3                    | 3                   |
+| **TOTAL**            | 836    | **100+**             | **35+**             |
 
 ### **Cobertura de Componentes**
 
-| Categoria | Componentes Auditados | Componentes Corrigidos | % Cobertura |
-|-----------|----------------------|----------------------|-------------|
-| **Críticos** (Button, Input, Badge) | 3 | 3 | 100% |
-| **Feedback** (Toast, Dialog, Alert) | 3 | 3 | 100% |
-| **Layout** (Card) | 1 | 1 | 100% |
-| **Loading** (Skeleton) | 1 | 1 | 100% |
-| **Total** | 8 | 8 | **100%** |
+| Categoria                           | Componentes Auditados | Componentes Corrigidos | % Cobertura |
+| ----------------------------------- | --------------------- | ---------------------- | ----------- |
+| **Críticos** (Button, Input, Badge) | 3                     | 3                      | 100%        |
+| **Feedback** (Toast, Dialog, Alert) | 3                     | 3                      | 100%        |
+| **Layout** (Card)                   | 1                     | 1                      | 100%        |
+| **Loading** (Skeleton)              | 1                     | 1                      | 100%        |
+| **Total**                           | 8                     | 8                      | **100%**    |
 
 ### **Tokens Semânticos Aplicados**
 
-| Token | Uso | Antes | Depois |
-|-------|-----|-------|--------|
-| `bg-primary` | Botão default | `bg-primary-700` ❌ | `bg-primary` ✅ |
-| `hover:bg-primary-hover` | Hover primário | `hover:bg-primary-800` ❌ | `hover:bg-primary-hover` ✅ |
-| `text-foreground` | Texto principal | `text-text-primary` ❌ | `text-foreground` ✅ |
-| `text-muted-foreground` | Texto secundário | `text-text-secondary` ❌ | `text-muted-foreground` ✅ |
-| `border-border` | Bordas padrão | `border-border-light` ❌ | `border-border` ✅ |
-| `bg-error` | Background erro | `bg-error-600` ❌ | `bg-error` ✅ |
-| `bg-success` | Background sucesso | `bg-success-800` ❌ | `bg-success` ✅ |
-| `bg-warning` | Background aviso | `bg-warning-500` ❌ | `bg-warning` ✅ |
-| `focus:ring-primary` | Focus ring | `focus:ring-primary-700` ❌ | `focus:ring-primary` ✅ |
-| `bg-muted` | Background disabled | `bg-background-secondary` ❌ | `bg-muted` ✅ |
+| Token                    | Uso                 | Antes                        | Depois                      |
+| ------------------------ | ------------------- | ---------------------------- | --------------------------- |
+| `bg-primary`             | Botão default       | `bg-primary-700` ❌          | `bg-primary` ✅             |
+| `hover:bg-primary-hover` | Hover primário      | `hover:bg-primary-800` ❌    | `hover:bg-primary-hover` ✅ |
+| `text-foreground`        | Texto principal     | `text-text-primary` ❌       | `text-foreground` ✅        |
+| `text-muted-foreground`  | Texto secundário    | `text-text-secondary` ❌     | `text-muted-foreground` ✅  |
+| `border-border`          | Bordas padrão       | `border-border-light` ❌     | `border-border` ✅          |
+| `bg-error`               | Background erro     | `bg-error-600` ❌            | `bg-error` ✅               |
+| `bg-success`             | Background sucesso  | `bg-success-800` ❌          | `bg-success` ✅             |
+| `bg-warning`             | Background aviso    | `bg-warning-500` ❌          | `bg-warning` ✅             |
+| `focus:ring-primary`     | Focus ring          | `focus:ring-primary-700` ❌  | `focus:ring-primary` ✅     |
+| `bg-muted`               | Background disabled | `bg-background-secondary` ❌ | `bg-muted` ✅               |
 
 **Total:** 10 tokens principais aplicados em 100+ classes.
 
@@ -455,6 +475,7 @@ destructive: "border-error/20 bg-error/10 text-error"
 - [ ] Configurações - Tabs e forms
 
 **Estratégia:**
+
 - Substituir componentes antigos por novos (Button, Badge, Card, Input)
 - Validar responsividade (mobile-first da Fase 3)
 - Verificar contraste em todas as seções
@@ -470,6 +491,7 @@ destructive: "border-error/20 bg-error/10 text-error"
 - [ ] Skeleton loaders ✅ (já feito!)
 
 **Estratégia:**
+
 - Adicionar `transition-all duration-300 ease-in-out` em componentes interativos
 - Implementar `active:scale-[0.98]` em todos os botões ✅ (já feito!)
 - Criar Storybook showcase (opcional)
@@ -544,6 +566,7 @@ destructive: "border-error/20 bg-error/10 text-error"
 **REBRAND VISUAL OUVIFY: FASE 5 (COMPONENTES UI) ✅ COMPLETA**
 
 Com a conclusão da Fase 5, o Ouvify agora possui:
+
 - ✅ **8 componentes críticos** com tokens semânticos
 - ✅ **100+ classes** antigas substituídas
 - ✅ **35+ variants** consistentes (Button, Badge, Toast, Card)

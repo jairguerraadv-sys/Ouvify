@@ -11,8 +11,9 @@ Componentes React/TypeScript para gerenciamento de consentimentos LGPD e privaci
 Checkbox expandível para aceite de termos LGPD em formulários.
 
 **Uso:**
+
 ```tsx
-import { ConsentCheckbox } from '@/components/consent/ConsentCheckbox';
+import { ConsentCheckbox } from "@/components/consent/ConsentCheckbox";
 
 function MyForm() {
   const [consentAccepted, setConsentAccepted] = useState(false);
@@ -30,16 +31,18 @@ function MyForm() {
 ```
 
 **Props:**
+
 ```typescript
 interface ConsentCheckboxProps {
-  checked: boolean;           // Estado do checkbox
-  onChange: (checked: boolean) => void;  // Callback quando muda
-  email?: string;             // Email do usuário (opcional)
-  className?: string;         // Classes Tailwind adicionais
+  checked: boolean; // Estado do checkbox
+  onChange: (checked: boolean) => void; // Callback quando muda
+  email?: string; // Email do usuário (opcional)
+  className?: string; // Classes Tailwind adicionais
 }
 ```
 
 **Features:**
+
 - ✅ Busca automática de termos obrigatórios (`GET /api/consent/versions/required/`)
 - ✅ Exibe termo LGPD com versão
 - ✅ Botão "Ver detalhes" para expandir direitos LGPD
@@ -50,6 +53,7 @@ interface ConsentCheckboxProps {
 **Estados:**
 
 **Loading:**
+
 ```tsx
 <div className="animate-pulse">
   <div className="h-4 bg-muted rounded w-3/4 mb-2" />
@@ -58,15 +62,15 @@ interface ConsentCheckboxProps {
 ```
 
 **Expandido:**
+
 - Lista de direitos LGPD (acessar, corrigir, excluir dados)
 - Link para privacy policy (`content_url`)
 - Badge com data de vigência
 
 **Error:**
+
 ```tsx
-<p className="text-error text-sm">
-  Erro ao carregar termos de consentimento
-</p>
+<p className="text-error text-sm">Erro ao carregar termos de consentimento</p>
 ```
 
 ---
@@ -78,31 +82,33 @@ Hook centralizado para todas as operações de consentimento.
 ### Exports
 
 #### `useConsent()`
+
 Hook principal com acesso completo à API de consentimento.
 
 ```typescript
 const {
-  versions,              // Todas as versões de termos
-  required,              // Somente termos obrigatórios
-  myConsents,            // Consentimentos do usuário
-  pending,               // Termos pendentes de aceite
-  isLoading,             // Loading state
-  acceptConsent,         // Aceitar (usuário autenticado)
+  versions, // Todas as versões de termos
+  required, // Somente termos obrigatórios
+  myConsents, // Consentimentos do usuário
+  pending, // Termos pendentes de aceite
+  isLoading, // Loading state
+  acceptConsent, // Aceitar (usuário autenticado)
   acceptConsentAnonymous, // Aceitar (anônimo com email)
-  revokeConsent,         // Revogar consentimento
-  refetchVersions,       // Recarregar versões
-  refetchMyConsents      // Recarregar meus consentimentos
+  revokeConsent, // Revogar consentimento
+  refetchVersions, // Recarregar versões
+  refetchMyConsents, // Recarregar meus consentimentos
 } = useConsent();
 ```
 
 #### `useRequiredConsents()`
+
 Hook simplificado para formulários (só retorna termos obrigatórios).
 
 ```typescript
 const {
-  required,   // ConsentVersion[] | undefined
-  isLoading,  // boolean
-  error       // any
+  required, // ConsentVersion[] | undefined
+  isLoading, // boolean
+  error, // any
 } = useRequiredConsents();
 ```
 
@@ -113,39 +119,42 @@ const {
 ### Tipos TypeScript
 
 #### `ConsentVersion`
+
 Representa uma versão de termo (LGPD, Privacy, Terms, Marketing).
 
 ```typescript
 interface ConsentVersion {
   id: number;
-  document_type: string;           // 'lgpd' | 'privacy' | 'terms' | 'marketing'
-  document_type_display: string;   // 'Termos LGPD' | 'Política de Privacidade'
-  version: string;                 // '1.0', '2.0'
-  content_url: string;             // Link para documento completo
-  effective_date: string;          // ISO timestamp
+  document_type: string; // 'lgpd' | 'privacy' | 'terms' | 'marketing'
+  document_type_display: string; // 'Termos LGPD' | 'Política de Privacidade'
+  version: string; // '1.0', '2.0'
+  content_url: string; // Link para documento completo
+  effective_date: string; // ISO timestamp
   is_current: boolean;
   is_required: boolean;
 }
 ```
 
 #### `UserConsent`
+
 Representa o aceite/revogação de um usuário.
 
 ```typescript
 interface UserConsent {
   id: number;
-  user: number | null;             // null se consentimento anônimo
-  email: string | null;            // preenchido se anônimo
-  consent_version: number;         // FK para ConsentVersion
-  consent_version_details: ConsentVersion;  // Nested object
-  accepted_at: string;             // ISO timestamp
+  user: number | null; // null se consentimento anônimo
+  email: string | null; // preenchido se anônimo
+  consent_version: number; // FK para ConsentVersion
+  consent_version_details: ConsentVersion; // Nested object
+  accepted_at: string; // ISO timestamp
   revoked: boolean;
   revoked_at: string | null;
-  context: string;                 // 'feedback' | 'signup' | 'manual'
+  context: string; // 'feedback' | 'signup' | 'manual'
 }
 ```
 
 #### `PendingResponse`
+
 Indica se há termos pendentes de aceite.
 
 ```typescript
@@ -156,12 +165,13 @@ interface PendingResponse {
 ```
 
 #### `AcceptConsentData`
+
 Payload para aceitar consentimento.
 
 ```typescript
 interface AcceptConsentData {
-  document_type: string;   // 'lgpd' | 'privacy' | 'terms' | 'marketing'
-  version?: string;        // Opcional (backend usa versão mais recente)
+  document_type: string; // 'lgpd' | 'privacy' | 'terms' | 'marketing'
+  version?: string; // Opcional (backend usa versão mais recente)
 }
 ```
 
@@ -171,20 +181,20 @@ interface AcceptConsentData {
 
 ### Versões de Consentimento
 
-| Método | Endpoint | Descrição | Usado em |
-|--------|----------|-----------|----------|
-| GET | `/api/consent/versions/` | Lista todas as versões | `useConsent()` |
-| GET | `/api/consent/versions/required/` | Somente obrigatórios | `useRequiredConsents()` |
+| Método | Endpoint                          | Descrição              | Usado em                |
+| ------ | --------------------------------- | ---------------------- | ----------------------- |
+| GET    | `/api/consent/versions/`          | Lista todas as versões | `useConsent()`          |
+| GET    | `/api/consent/versions/required/` | Somente obrigatórios   | `useRequiredConsents()` |
 
 ### Consentimentos do Usuário
 
-| Método | Endpoint | Descrição | Usado em |
-|--------|----------|-----------|----------|
-| GET | `/api/consent/user-consents/` | Lista consentimentos do user | `useConsent()` |
-| POST | `/api/consent/user-consents/accept/` | Aceitar (autenticado) | `acceptConsent()` |
-| POST | `/api/consent/user-consents/accept_anonymous/` | Aceitar (anônimo) | `acceptConsentAnonymous()` |
-| POST | `/api/consent/user-consents/{id}/revoke/` | Revogar | `revokeConsent()` |
-| GET | `/api/consent/user-consents/pending/` | Termos pendentes | `useConsent()` |
+| Método | Endpoint                                       | Descrição                    | Usado em                   |
+| ------ | ---------------------------------------------- | ---------------------------- | -------------------------- |
+| GET    | `/api/consent/user-consents/`                  | Lista consentimentos do user | `useConsent()`             |
+| POST   | `/api/consent/user-consents/accept/`           | Aceitar (autenticado)        | `acceptConsent()`          |
+| POST   | `/api/consent/user-consents/accept_anonymous/` | Aceitar (anônimo)            | `acceptConsentAnonymous()` |
+| POST   | `/api/consent/user-consents/{id}/revoke/`      | Revogar                      | `revokeConsent()`          |
+| GET    | `/api/consent/user-consents/pending/`          | Termos pendentes             | `useConsent()`             |
 
 ---
 
@@ -193,18 +203,18 @@ interface AcceptConsentData {
 ### Exemplo 1: Formulário de Denúncia Anônima
 
 ```tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { ConsentCheckbox } from '@/components/consent/ConsentCheckbox';
-import { useConsent } from '@/hooks/use-consent';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { ConsentCheckbox } from "@/components/consent/ConsentCheckbox";
+import { useConsent } from "@/hooks/use-consent";
+import { Button } from "@/components/ui/button";
 
 export default function FeedbackForm() {
   const [formData, setFormData] = useState({
-    titulo: '',
-    descricao: '',
-    email: ''
+    titulo: "",
+    descricao: "",
+    email: "",
   });
   const [consentAccepted, setConsentAccepted] = useState(false);
   const { acceptConsentAnonymous } = useConsent();
@@ -214,18 +224,18 @@ export default function FeedbackForm() {
 
     // Validar consentimento
     if (!consentAccepted) {
-      alert('Você deve aceitar os termos LGPD');
+      alert("Você deve aceitar os termos LGPD");
       return;
     }
 
     // Aceitar consentimento LGPD
     const consent = await acceptConsentAnonymous(
-      [{ document_type: 'lgpd' }],
-      formData.email || undefined
+      [{ document_type: "lgpd" }],
+      formData.email || undefined,
     );
 
     if (!consent) {
-      alert('Erro ao registrar consentimento');
+      alert("Erro ao registrar consentimento");
       return;
     }
 
@@ -241,10 +251,12 @@ export default function FeedbackForm() {
         onChange={(e) => setFormData({ ...formData, titulo: e.target.value })}
         placeholder="Título"
       />
-      
+
       <textarea
         value={formData.descricao}
-        onChange={(e) => setFormData({ ...formData, descricao: e.target.value })}
+        onChange={(e) =>
+          setFormData({ ...formData, descricao: e.target.value })
+        }
         placeholder="Descrição"
       />
 
@@ -275,18 +287,20 @@ export default function FeedbackForm() {
 ### Exemplo 2: Página de Privacidade
 
 ```tsx
-'use client';
+"use client";
 
-import { useConsent } from '@/hooks/use-consent';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { useConsent } from "@/hooks/use-consent";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function PrivacyPage() {
   const { myConsents, pending, revokeConsent, isLoading } = useConsent();
 
   const handleRevoke = async (consentId: number) => {
-    const confirmed = confirm('Tem certeza que deseja revogar este consentimento?');
+    const confirmed = confirm(
+      "Tem certeza que deseja revogar este consentimento?",
+    );
     if (!confirmed) return;
 
     const success = await revokeConsent(consentId);
@@ -313,25 +327,29 @@ export default function PrivacyPage() {
       {/* Lista de Consentimentos */}
       <div className="space-y-4">
         {myConsents?.map((consent) => (
-          <Card key={consent.id} className={
-            consent.revoked ? 'border-error/20 bg-error/5' : 'border-success/20 bg-success/5'
-          }>
+          <Card
+            key={consent.id}
+            className={
+              consent.revoked
+                ? "border-error/20 bg-error/5"
+                : "border-success/20 bg-success/5"
+            }
+          >
             <h3>{consent.consent_version_details.document_type_display}</h3>
             <p>Versão {consent.consent_version_details.version}</p>
-            
-            <Badge variant={consent.revoked ? 'destructive' : 'success'}>
-              {consent.revoked ? 'Revogado' : 'Ativo'}
+
+            <Badge variant={consent.revoked ? "destructive" : "success"}>
+              {consent.revoked ? "Revogado" : "Ativo"}
             </Badge>
 
             <p className="text-sm text-muted-foreground">
-              {consent.revoked 
+              {consent.revoked
                 ? `Revogado em ${new Date(consent.revoked_at!).toLocaleDateString()}`
-                : `Aceito em ${new Date(consent.accepted_at).toLocaleDateString()}`
-              }
+                : `Aceito em ${new Date(consent.accepted_at).toLocaleDateString()}`}
             </p>
 
             {consent.consent_version_details.content_url && (
-              <a 
+              <a
                 href={consent.consent_version_details.content_url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -341,8 +359,8 @@ export default function PrivacyPage() {
             )}
 
             {!consent.revoked && (
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => handleRevoke(consent.id)}
                 className="text-error"
               >
@@ -362,28 +380,30 @@ export default function PrivacyPage() {
 ### Exemplo 3: Modal de Cadastro
 
 ```tsx
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRequiredConsents } from '@/hooks/use-consent';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useRequiredConsents } from "@/hooks/use-consent";
+import { Button } from "@/components/ui/button";
 
 export default function SignupModal() {
   const { required, isLoading } = useRequiredConsents();
-  const [acceptedTerms, setAcceptedTerms] = useState<Record<number, boolean>>({});
+  const [acceptedTerms, setAcceptedTerms] = useState<Record<number, boolean>>(
+    {},
+  );
 
-  const allAccepted = required?.every(term => acceptedTerms[term.id]);
+  const allAccepted = required?.every((term) => acceptedTerms[term.id]);
 
   const handleSubmit = async () => {
     if (!allAccepted) {
-      alert('Você deve aceitar todos os termos obrigatórios');
+      alert("Você deve aceitar todos os termos obrigatórios");
       return;
     }
 
     // Aceitar todos os consents
-    const consentsData = required?.map(term => ({
+    const consentsData = required?.map((term) => ({
       document_type: term.document_type,
-      version: term.version
+      version: term.version,
     }));
 
     // ... lógica de cadastro
@@ -403,16 +423,18 @@ export default function SignupModal() {
           <input
             type="checkbox"
             checked={acceptedTerms[term.id] || false}
-            onChange={(e) => setAcceptedTerms({
-              ...acceptedTerms,
-              [term.id]: e.target.checked
-            })}
+            onChange={(e) =>
+              setAcceptedTerms({
+                ...acceptedTerms,
+                [term.id]: e.target.checked,
+              })
+            }
           />
           <div>
             <p className="font-semibold">
               {term.document_type_display} - v{term.version}
             </p>
-            <a 
+            <a
               href={term.content_url}
               target="_blank"
               className="text-primary text-sm"
@@ -437,12 +459,12 @@ export default function SignupModal() {
 
 ### Cores Semânticas
 
-| Classe Tailwind | Uso | Exemplo |
-|-----------------|-----|---------|
-| `border-success/20 bg-success/5` | Consentimento ativo | Card verde |
-| `border-error/20 bg-error/5` | Consentimento revogado | Card vermelho |
-| `border-primary/20 bg-primary/5` | Checkbox de destaque | ConsentCheckbox |
-| `border-warning/30 bg-warning/10` | Alertas de pendentes | Pending alert |
+| Classe Tailwind                   | Uso                    | Exemplo         |
+| --------------------------------- | ---------------------- | --------------- |
+| `border-success/20 bg-success/5`  | Consentimento ativo    | Card verde      |
+| `border-error/20 bg-error/5`      | Consentimento revogado | Card vermelho   |
+| `border-primary/20 bg-primary/5`  | Checkbox de destaque   | ConsentCheckbox |
+| `border-warning/30 bg-warning/10` | Alertas de pendentes   | Pending alert   |
 
 ### Badges
 
@@ -475,18 +497,18 @@ export default function SignupModal() {
 ### Ícones
 
 ```tsx
-import { 
-  Shield,       // LGPD, Privacidade
-  FileText,     // Termos, Documentos
+import {
+  Shield, // LGPD, Privacidade
+  FileText, // Termos, Documentos
   CheckCircle2, // Ativo
-  XCircle,      // Revogado
-  AlertCircle,  // Alertas
-  Download,     // Exportar dados
-  Trash2,       // Revogar, Excluir
+  XCircle, // Revogado
+  AlertCircle, // Alertas
+  Download, // Exportar dados
+  Trash2, // Revogar, Excluir
   ExternalLink, // Links externos
-  Calendar,     // Datas
-  Mail          // Email, Marketing
-} from 'lucide-react';
+  Calendar, // Datas
+  Mail, // Email, Marketing
+} from "lucide-react";
 ```
 
 ---
@@ -533,6 +555,7 @@ import {
 **Causa:** Backend não está respondendo ou não há termos cadastrados.
 
 **Solução:**
+
 1. Verificar se backend está rodando: `cd apps/backend && python manage.py runserver`
 2. Acessar admin: `http://localhost:8000/admin/consent/consentversion/`
 3. Criar pelo menos 1 termo com `is_required=True` e `document_type='lgpd'`
@@ -544,6 +567,7 @@ import {
 **Causa:** SWR não revalidou a query.
 
 **Solução:**
+
 ```typescript
 const { myConsents, refetchMyConsents } = useConsent();
 
@@ -559,6 +583,7 @@ await refetchMyConsents(); // Força revalidação
 **Causa:** Estado `isRevoking` não está sendo resetado.
 
 **Solução:**
+
 ```typescript
 const handleRevokeConfirm = async () => {
   setIsRevoking(true);

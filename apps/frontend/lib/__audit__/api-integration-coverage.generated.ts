@@ -10,7 +10,7 @@
 //
 // repo_root=/workspaces/Ouvify
 
-import api from "@/lib/api";
+import api from '@/lib/api';
 
 export async function apiIntegrationCoverageGenerated(): Promise<void> {
   const id = 1;

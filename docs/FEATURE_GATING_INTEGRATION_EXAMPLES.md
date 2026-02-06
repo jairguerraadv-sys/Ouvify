@@ -11,8 +11,8 @@ Este arquivo demonstra como integrar os componentes de Feature Gating em página
 **Arquivo:** `apps/frontend/app/dashboard/page.tsx`
 
 ```tsx
-import { UpgradeAlert } from '@/components/billing/UpgradeAlert';
-import { Suspense } from 'react';
+import { UpgradeAlert } from "@/components/billing/UpgradeAlert";
+import { Suspense } from "react";
 
 export default function DashboardPage() {
   return (
@@ -21,7 +21,7 @@ export default function DashboardPage() {
       <Suspense fallback={null}>
         <UpgradeAlert className="mb-6" />
       </Suspense>
-      
+
       <div className="grid gap-6">
         <WelcomeCard />
         <StatsCards />
@@ -39,9 +39,9 @@ export default function DashboardPage() {
 **Arquivo:** `apps/frontend/app/dashboard/feedbacks/page.tsx`
 
 ```tsx
-import { CreateFeedbackButton } from '@/components/billing/UpgradeAlert';
-import { UsageBadge } from '@/components/billing/UpgradeAlert';
-import { Suspense } from 'react';
+import { CreateFeedbackButton } from "@/components/billing/UpgradeAlert";
+import { UsageBadge } from "@/components/billing/UpgradeAlert";
+import { Suspense } from "react";
 
 export default function FeedbacksPage() {
   return (
@@ -50,19 +50,19 @@ export default function FeedbacksPage() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <h1 className="text-3xl font-bold">Feedbacks</h1>
-          
+
           {/* Badge compacto mostrando uso */}
           <Suspense fallback={null}>
             <UsageBadge />
           </Suspense>
         </div>
-        
+
         {/* Botão que desabilita automaticamente no limite */}
         <CreateFeedbackButton href="/dashboard/feedbacks/novo">
           + Novo Feedback
         </CreateFeedbackButton>
       </div>
-      
+
       {/* Filtros e Lista */}
       <FeedbackFilters />
       <FeedbackList />
@@ -78,17 +78,17 @@ export default function FeedbacksPage() {
 **Arquivo:** `apps/frontend/app/dashboard/feedbacks/novo/page.tsx`
 
 ```tsx
-'use client';
+"use client";
 
-import { useUsageLimits } from '@/hooks/use-usage-limits';
-import { UpgradeAlert } from '@/components/billing/UpgradeAlert';
-import { FeedbackForm } from '@/components/feedbacks/FeedbackForm';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
+import { useUsageLimits } from "@/hooks/use-usage-limits";
+import { UpgradeAlert } from "@/components/billing/UpgradeAlert";
+import { FeedbackForm } from "@/components/feedbacks/FeedbackForm";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
 
 export default function NewFeedbackPage() {
   const { isAtLimit, isLoading, usage } = useUsageLimits();
-  
+
   // Loading state
   if (isLoading) {
     return (
@@ -97,7 +97,7 @@ export default function NewFeedbackPage() {
       </div>
     );
   }
-  
+
   // Bloqueio por limite
   if (isAtLimit) {
     return (
@@ -108,22 +108,23 @@ export default function NewFeedbackPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <UpgradeAlert forceShow />
-            
+
             <p className="text-sm text-muted-foreground">
-              Você atingiu o limite de {usage?.feedbacks_limit} feedbacks/mês do plano {usage?.plan_name}.
-              Faça upgrade para o plano Pro para criar feedbacks ilimitados.
+              Você atingiu o limite de {usage?.feedbacks_limit} feedbacks/mês do
+              plano {usage?.plan_name}. Faça upgrade para o plano Pro para criar
+              feedbacks ilimitados.
             </p>
           </CardContent>
         </Card>
       </div>
     );
   }
-  
+
   // Formulário normal (com alerta se próximo do limite)
   return (
     <div className="container max-w-2xl py-8">
       <UpgradeAlert className="mb-6" />
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Novo Feedback</CardTitle>
@@ -144,34 +145,35 @@ export default function NewFeedbackPage() {
 **Arquivo:** `apps/frontend/app/dashboard/configuracoes/plano/page.tsx`
 
 ```tsx
-'use client';
+"use client";
 
-import { useUsageLimits } from '@/hooks/use-usage-limits';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Check, Zap } from 'lucide-react';
+import { useUsageLimits } from "@/hooks/use-usage-limits";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Check, Zap } from "lucide-react";
 
 export default function PlanPage() {
-  const { 
-    usage, 
-    usagePercent, 
-    feedbacksRemaining, 
-    isFreePlan 
-  } = useUsageLimits();
-  
+  const { usage, usagePercent, feedbacksRemaining, isFreePlan } =
+    useUsageLimits();
+
   return (
     <div className="container py-8">
       <h1 className="text-3xl font-bold mb-6">Planos e Assinaturas</h1>
-      
+
       {/* Card de Uso Atual */}
       {usage && (
         <Card className="mb-6">
           <CardHeader>
             <CardTitle>Plano Atual: {usage.plan_name}</CardTitle>
-            <CardDescription>
-              Uso de feedbacks este mês
-            </CardDescription>
+            <CardDescription>Uso de feedbacks este mês</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div>
@@ -185,23 +187,22 @@ export default function PlanPage() {
               </div>
               <Progress value={usagePercent} />
             </div>
-            
+
             {isFreePlan && (
               <p className="text-sm text-muted-foreground">
-                {feedbacksRemaining > 0 
+                {feedbacksRemaining > 0
                   ? `Você ainda pode criar ${feedbacksRemaining} feedbacks este mês.`
-                  : 'Você atingiu o limite mensal. Faça upgrade para continuar.'
-                }
+                  : "Você atingiu o limite mensal. Faça upgrade para continuar."}
               </p>
             )}
           </CardContent>
         </Card>
       )}
-      
+
       {/* Cards de Planos */}
       <div className="grid md:grid-cols-3 gap-6">
         {/* Plano Free */}
-        <Card className={isFreePlan ? 'border-primary' : ''}>
+        <Card className={isFreePlan ? "border-primary" : ""}>
           <CardHeader>
             <CardTitle>Free</CardTitle>
             <CardDescription>Para começar</CardDescription>
@@ -238,9 +239,13 @@ export default function PlanPage() {
             )}
           </CardFooter>
         </Card>
-        
+
         {/* Plano Pro */}
-        <Card className={!isFreePlan ? 'border-primary' : 'border-2 border-yellow-500'}>
+        <Card
+          className={
+            !isFreePlan ? "border-primary" : "border-2 border-yellow-500"
+          }
+        >
           <div className="absolute -top-3 left-1/2 -translate-x-1/2">
             <span className="bg-yellow-500 text-white text-xs font-bold px-3 py-1 rounded-full">
               POPULAR
@@ -283,13 +288,11 @@ export default function PlanPage() {
                 Plano Atual
               </Button>
             ) : (
-              <Button className="w-full">
-                Fazer Upgrade
-              </Button>
+              <Button className="w-full">Fazer Upgrade</Button>
             )}
           </CardFooter>
         </Card>
-        
+
         {/* Plano Enterprise */}
         <Card>
           <CardHeader>
@@ -338,12 +341,12 @@ export default function PlanPage() {
 **Arquivo:** `apps/frontend/components/layout/Header.tsx`
 
 ```tsx
-'use client';
+"use client";
 
-import { UsageBadge } from '@/components/billing/UpgradeAlert';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { Suspense } from 'react';
+import { UsageBadge } from "@/components/billing/UpgradeAlert";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Suspense } from "react";
 
 export function Header() {
   return (
@@ -352,21 +355,21 @@ export function Header() {
         <Link href="/dashboard" className="font-bold text-xl">
           Ouvify
         </Link>
-        
+
         <nav className="flex items-center gap-4">
           {/* Badge de uso no header global */}
           <Suspense fallback={null}>
             <UsageBadge />
           </Suspense>
-          
+
           <Link href="/dashboard/feedbacks">
             <Button variant="ghost">Feedbacks</Button>
           </Link>
-          
+
           <Link href="/dashboard/configuracoes">
             <Button variant="ghost">Configurações</Button>
           </Link>
-          
+
           <UserMenu />
         </nav>
       </div>
@@ -382,49 +385,50 @@ export function Header() {
 **Arquivo:** `apps/frontend/components/feedbacks/FeedbackForm.tsx`
 
 ```tsx
-'use client';
+"use client";
 
-import { useUsageLimits } from '@/hooks/use-usage-limits';
-import { useToast } from '@/hooks/use-toast';
-import { useEffect } from 'react';
+import { useUsageLimits } from "@/hooks/use-usage-limits";
+import { useToast } from "@/hooks/use-toast";
+import { useEffect } from "react";
 
 export function FeedbackForm() {
   const { isNearLimit, isAtLimit, feedbacksRemaining } = useUsageLimits();
   const { toast } = useToast();
-  
+
   // Notifica quando próximo do limite
   useEffect(() => {
     if (isNearLimit && !isAtLimit && feedbacksRemaining <= 10) {
       toast({
-        title: '⚠️ Próximo do Limite',
+        title: "⚠️ Próximo do Limite",
         description: `Você tem apenas ${feedbacksRemaining} feedbacks restantes este mês.`,
-        variant: 'warning',
+        variant: "warning",
       });
     }
   }, [isNearLimit, isAtLimit, feedbacksRemaining, toast]);
-  
+
   const handleSubmit = async (data: FeedbackData) => {
     try {
       await createFeedback(data);
-      
+
       toast({
-        title: '✅ Feedback Criado',
-        description: 'Seu feedback foi criado com sucesso.',
+        title: "✅ Feedback Criado",
+        description: "Seu feedback foi criado com sucesso.",
       });
-      
+
       // Atualiza contador
       refetch();
     } catch (error) {
       if (error.status === 403) {
         toast({
-          title: '🚫 Limite Atingido',
-          description: 'Você atingiu o limite de feedbacks. Faça upgrade para continuar.',
-          variant: 'destructive',
+          title: "🚫 Limite Atingido",
+          description:
+            "Você atingiu o limite de feedbacks. Faça upgrade para continuar.",
+          variant: "destructive",
         });
       }
     }
   };
-  
+
   // ... resto do form
 }
 ```
@@ -436,27 +440,33 @@ export function FeedbackForm() {
 **Arquivo:** `apps/frontend/components/dashboard/UsageWidget.tsx`
 
 ```tsx
-'use client';
+"use client";
 
-import { useUsageLimits } from '@/hooks/use-usage-limits';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-import { TrendingUp } from 'lucide-react';
+import { useUsageLimits } from "@/hooks/use-usage-limits";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { TrendingUp } from "lucide-react";
 
 export function UsageWidget() {
-  const { 
-    usage, 
-    usagePercent, 
-    isNearLimit, 
+  const {
+    usage,
+    usagePercent,
+    isNearLimit,
     isAtLimit,
     feedbacksRemaining,
     isFreePlan,
   } = useUsageLimits();
-  
+
   if (!usage || !isFreePlan) return null;
-  
+
   return (
     <Card>
       <CardHeader>
@@ -468,19 +478,19 @@ export function UsageWidget() {
       <CardContent className="space-y-4">
         <div>
           <div className="flex items-center justify-between mb-2">
-            <span className="text-2xl font-bold">
-              {usage.feedbacks_used}
-            </span>
+            <span className="text-2xl font-bold">{usage.feedbacks_used}</span>
             <span className="text-sm text-muted-foreground">
               de {usage.feedbacks_limit}
             </span>
           </div>
-          <Progress 
-            value={usagePercent} 
-            className={isAtLimit ? 'bg-red-100' : isNearLimit ? 'bg-yellow-100' : ''}
+          <Progress
+            value={usagePercent}
+            className={
+              isAtLimit ? "bg-red-100" : isNearLimit ? "bg-yellow-100" : ""
+            }
           />
         </div>
-        
+
         <div className="text-sm text-muted-foreground">
           {isAtLimit ? (
             <p className="text-red-600 font-medium">
@@ -496,7 +506,7 @@ export function UsageWidget() {
             </p>
           )}
         </div>
-        
+
         {(isNearLimit || isAtLimit) && (
           <Button asChild variant="outline" size="sm" className="w-full">
             <Link href="/dashboard/configuracoes/plano">
@@ -518,10 +528,14 @@ export function UsageWidget() {
 **Arquivo:** `apps/frontend/app/dashboard/layout.tsx`
 
 ```tsx
-import { SWRConfig } from 'swr';
-import { Header } from '@/components/layout/Header';
+import { SWRConfig } from "swr";
+import { Header } from "@/components/layout/Header";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <SWRConfig
       value={{
@@ -532,9 +546,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     >
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-1">
-          {children}
-        </main>
+        <main className="flex-1">{children}</main>
       </div>
     </SWRConfig>
   );
@@ -548,78 +560,78 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 **Arquivo:** `cypress/e2e/feature-gating.cy.ts`
 
 ```typescript
-describe('Feature Gating - Limites de Plano', () => {
+describe("Feature Gating - Limites de Plano", () => {
   beforeEach(() => {
-    cy.login('free-user@example.com');
+    cy.login("free-user@example.com");
   });
-  
-  it('Exibe alerta quando próximo do limite (>80%)', () => {
+
+  it("Exibe alerta quando próximo do limite (>80%)", () => {
     // Mock API com 45/50 feedbacks
-    cy.intercept('GET', '/api/v1/billing/usage/', {
-      plan: 'free',
-      plan_name: 'Free',
+    cy.intercept("GET", "/api/v1/billing/usage/", {
+      plan: "free",
+      plan_name: "Free",
       feedbacks_used: 45,
       feedbacks_limit: 50,
       usage_percent: 90,
       is_blocked: false,
       is_near_limit: true,
     });
-    
-    cy.visit('/dashboard');
-    
+
+    cy.visit("/dashboard");
+
     // Alerta deve aparecer
-    cy.contains('Próximo ao Limite').should('be.visible');
-    cy.contains('45 de 50 feedbacks').should('be.visible');
-    
+    cy.contains("Próximo ao Limite").should("be.visible");
+    cy.contains("45 de 50 feedbacks").should("be.visible");
+
     // Botão ainda habilitado
-    cy.get('[data-testid="create-feedback-btn"]').should('not.be.disabled');
+    cy.get('[data-testid="create-feedback-btn"]').should("not.be.disabled");
   });
-  
-  it('Bloqueia criação quando limite atingido (100%)', () => {
+
+  it("Bloqueia criação quando limite atingido (100%)", () => {
     // Mock API com 50/50 feedbacks
-    cy.intercept('GET', '/api/v1/billing/usage/', {
-      plan: 'free',
-      plan_name: 'Free',
+    cy.intercept("GET", "/api/v1/billing/usage/", {
+      plan: "free",
+      plan_name: "Free",
       feedbacks_used: 50,
       feedbacks_limit: 50,
       usage_percent: 100,
       is_blocked: true,
       is_near_limit: true,
     });
-    
-    cy.visit('/dashboard/feedbacks');
-    
+
+    cy.visit("/dashboard/feedbacks");
+
     // Alerta vermelho
-    cy.contains('Limite de Feedbacks Atingido').should('be.visible');
-    
+    cy.contains("Limite de Feedbacks Atingido").should("be.visible");
+
     // Botão desabilitado
-    cy.get('[data-testid="create-feedback-btn"]').should('be.disabled');
-    
+    cy.get('[data-testid="create-feedback-btn"]').should("be.disabled");
+
     // Tentativa de criar via URL
-    cy.visit('/dashboard/feedbacks/novo');
-    cy.contains('Limite de Feedbacks Atingido').should('be.visible');
-    cy.get('form').should('not.exist');
+    cy.visit("/dashboard/feedbacks/novo");
+    cy.contains("Limite de Feedbacks Atingido").should("be.visible");
+    cy.get("form").should("not.exist");
   });
-  
-  it('Permite criação ilimitada no plano Pro', () => {
+
+  it("Permite criação ilimitada no plano Pro", () => {
     // Mock API Pro
-    cy.intercept('GET', '/api/v1/billing/usage/', {
-      plan: 'pro',
-      plan_name: 'Pro',
+    cy.intercept("GET", "/api/v1/billing/usage/", {
+      plan: "pro",
+      plan_name: "Pro",
       feedbacks_used: 1000,
       feedbacks_limit: -1,
       usage_percent: 0,
       is_blocked: false,
       is_near_limit: false,
     });
-    
-    cy.visit('/dashboard');
-    
+
+    cy.visit("/dashboard");
+
     // Não deve exibir alerta
-    cy.contains('Limite de Feedbacks').should('not.exist');
-    
+    cy.contains("Limite de Feedbacks").should("not.exist");
+
     // Botão habilitado
-    cy.get('[data-testid="create-feedback-btn"]').should('not.be.disabled');
+    cy.get('[data-testid="create-feedback-btn"]').should("not.be.disabled");
   });
 });
 ```

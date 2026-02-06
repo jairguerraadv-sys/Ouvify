@@ -10,18 +10,18 @@
 
 ```tsx
 // Opção 1: Componente principal
-import { Logo } from '@/components/brand/Logo';
+import { Logo } from "@/components/brand/Logo";
 
 // Opção 2: Através de ui/logo (re-export)
-import { Logo } from '@/components/ui/logo';
+import { Logo } from "@/components/ui/logo";
 
 // Opção 3: Componentes pré-configurados
-import { 
+import {
   LogoHeader,
   LogoAuth,
   LogoSidebar,
-  PoweredByOuvify 
-} from '@/components/ui/logo';
+  PoweredByOuvify,
+} from "@/components/ui/logo";
 ```
 
 ---
@@ -63,11 +63,11 @@ import {
 ```tsx
 interface LogoProps {
   // Variante do logo
-  variant?: 'full' | 'icon' | 'text';
+  variant?: "full" | "icon" | "text";
   // Esquema de cores
-  color?: 'default' | 'white' | 'dark';
+  color?: "default" | "white" | "dark";
   // Tamanho
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
+  size?: "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
   // URL de destino (null para não clicável)
   href?: string | null;
   // Classes CSS adicionais
@@ -83,14 +83,14 @@ interface LogoProps {
 
 ## 📏 TAMANHOS DISPONÍVEIS
 
-| Size | Dimensões | Uso Recomendado |
-|------|-----------|-----------------|
-| `xs` | 24×80px | Badges, mini-widgets |
-| `sm` | 32×100px | Footer, sidebar colapsada |
-| `md` | 40×130px | **Header, sidebar** (padrão) |
-| `lg` | 56×180px | **Auth, modais** |
-| `xl` | 80×260px | **Hero, envio feedback** |
-| `2xl` | 96×320px | Landing pages, destaque |
+| Size  | Dimensões | Uso Recomendado              |
+| ----- | --------- | ---------------------------- |
+| `xs`  | 24×80px   | Badges, mini-widgets         |
+| `sm`  | 32×100px  | Footer, sidebar colapsada    |
+| `md`  | 40×130px  | **Header, sidebar** (padrão) |
+| `lg`  | 56×180px  | **Auth, modais**             |
+| `xl`  | 80×260px  | **Hero, envio feedback**     |
+| `2xl` | 96×320px  | Landing pages, destaque      |
 
 ### **Exemplos**
 
@@ -133,11 +133,11 @@ Para usar variantes diferentes, adicione `/logo-icon.png` e `/logo-text.png` ao 
 ### **LogoHeader** - Header Público
 
 ```tsx
-import { LogoHeader } from '@/components/ui/logo';
+import { LogoHeader } from "@/components/ui/logo";
 
 <header>
   <LogoHeader />
-</header>
+</header>;
 ```
 
 **Config:** `variant="full"`, `size="md"`, `priority={true}`
@@ -145,12 +145,12 @@ import { LogoHeader } from '@/components/ui/logo';
 ### **LogoAuth** - Páginas de Autenticação
 
 ```tsx
-import { LogoAuth } from '@/components/ui/logo';
+import { LogoAuth } from "@/components/ui/logo";
 
 <div className="text-center">
   <LogoAuth />
   <h1>Bem-vindo ao Ouvify</h1>
-</div>
+</div>;
 ```
 
 **Config:** `variant="full"`, `size="lg"`, `href={null}` (não clicável)
@@ -158,11 +158,11 @@ import { LogoAuth } from '@/components/ui/logo';
 ### **LogoSidebar** - Sidebar Expandida
 
 ```tsx
-import { LogoSidebar } from '@/components/ui/logo';
+import { LogoSidebar } from "@/components/ui/logo";
 
 <aside className="sidebar">
   <LogoSidebar />
-</aside>
+</aside>;
 ```
 
 **Config:** `variant="full"`, `size="sm"`, `priority={true}`
@@ -170,11 +170,11 @@ import { LogoSidebar } from '@/components/ui/logo';
 ### **LogoSidebarCollapsed** - Sidebar Colapsada
 
 ```tsx
-import { LogoSidebarCollapsed } from '@/components/ui/logo';
+import { LogoSidebarCollapsed } from "@/components/ui/logo";
 
 <aside className="sidebar-collapsed">
   <LogoSidebarCollapsed />
-</aside>
+</aside>;
 ```
 
 **Config:** `variant="icon"`, `size="md"`, `priority={true}`
@@ -182,11 +182,11 @@ import { LogoSidebarCollapsed } from '@/components/ui/logo';
 ### **PoweredByOuvify** - Badge White-Label
 
 ```tsx
-import { PoweredByOuvify } from '@/components/ui/logo';
+import { PoweredByOuvify } from "@/components/ui/logo";
 
 <footer>
   <PoweredByOuvify size="sm" />
-</footer>
+</footer>;
 ```
 
 **Resultado:** "Powered by Ouvify" com logo pequeno
@@ -234,16 +234,16 @@ import { PoweredByOuvify } from '@/components/ui/logo';
 ### **4. Página de Envio (White-Label)**
 
 ```tsx
-{/* Se tenant tem logo customizada, usa ela. Senão, usa logo Ouvify */}
-{theme?.logo ? (
-  <img 
-    src={theme.logo} 
-    alt={theme.nome}
-    className="h-16 w-auto mx-auto"
-  />
-) : (
-  <Logo size="xl" />
-)}
+{
+  /* Se tenant tem logo customizada, usa ela. Senão, usa logo Ouvify */
+}
+{
+  theme?.logo ? (
+    <img src={theme.logo} alt={theme.nome} className="h-16 w-auto mx-auto" />
+  ) : (
+    <Logo size="xl" />
+  );
+}
 ```
 
 ### **5. Footer com Badge**
@@ -275,16 +275,13 @@ import { PoweredByOuvify } from '@/components/ui/logo';
 ### **Logo com Classes Tailwind**
 
 ```tsx
-<Logo 
-  size="md"
-  className="opacity-80 hover:opacity-100 transition-opacity"
-/>
+<Logo size="md" className="opacity-80 hover:opacity-100 transition-opacity" />
 ```
 
 ### **Logo com Animação Customizada**
 
 ```tsx
-<Logo 
+<Logo
   size="lg"
   animated={true}
   className="hover:rotate-6 transition-transform duration-300"
@@ -302,11 +299,7 @@ import { PoweredByOuvify } from '@/components/ui/logo';
 ### **Logo com Link Customizado**
 
 ```tsx
-<Logo 
-  href="/dashboard"
-  size="md"
-  className="ring-2 ring-primary"
-/>
+<Logo href="/dashboard" size="md" className="ring-2 ring-primary" />
 ```
 
 ---
@@ -339,6 +332,7 @@ Logos clicáveis têm `aria-label="Ouvify - Ir para página inicial"`.
 **Problema:** Componente renderiza mas imagem não carrega
 
 **Soluções:**
+
 1. Verificar se `/public/logo.png` existe:
    ```bash
    ls -lah apps/frontend/public/logo.png
@@ -358,6 +352,7 @@ Logos clicáveis têm `aria-label="Ouvify - Ir para página inicial"`.
 **Problema:** Tamanho não adequado ao contexto
 
 **Solução:** Use os tamanhos padrão recomendados:
+
 ```tsx
 // Headers
 <Logo size="md" />  // 40×130px
@@ -374,11 +369,13 @@ Logos clicáveis têm `aria-label="Ouvify - Ir para página inicial"`.
 **Problema:** Logo não redireciona ao clicar
 
 **Solução 1:** Verificar se `href` está definido (padrão é `"/"`)
+
 ```tsx
-<Logo />  // Clicável para "/"
+<Logo /> // Clicável para "/"
 ```
 
 **Solução 2:** Se quiser não clicável, use `href={null}`
+
 ```tsx
 <Logo href={null} />
 ```
@@ -388,6 +385,7 @@ Logos clicáveis têm `aria-label="Ouvify - Ir para página inicial"`.
 **Problema:** Logo esticada ou distorcida
 
 **Solução:** Componente usa `object-contain` automaticamente:
+
 ```tsx
 // ✅ Correto (mantém proporção)
 <Logo size="md" />
@@ -419,6 +417,7 @@ Next.js faz lazy loading automático de logos não-priority.
 ### **Image Optimization**
 
 Logo é otimizada automaticamente:
+
 - **Formato:** WebP (quando suportado)
 - **Quality:** 90 (configurado)
 - **Responsive:** Next.js gera múltiplos tamanhos
@@ -444,11 +443,11 @@ Ao adicionar logo em uma nova página:
 ### **Header Completo**
 
 ```tsx
-'use client';
+"use client";
 
-import { LogoHeader } from '@/components/ui/logo';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { LogoHeader } from "@/components/ui/logo";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -456,12 +455,12 @@ export default function Header() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <LogoHeader />
-          
+
           <nav className="hidden md:flex gap-6">
             <Link href="/recursos">Recursos</Link>
             <Link href="/precos">Preços</Link>
           </nav>
-          
+
           <div className="flex gap-3">
             <Link href="/login">
               <Button variant="ghost">Entrar</Button>
@@ -480,12 +479,12 @@ export default function Header() {
 ### **Página de Login Completa**
 
 ```tsx
-'use client';
+"use client";
 
-import { LogoAuth } from '@/components/ui/logo';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { LogoAuth } from "@/components/ui/logo";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export default function LoginPage() {
   return (
@@ -494,11 +493,11 @@ export default function LoginPage() {
         <div className="flex justify-center mb-8">
           <LogoAuth />
         </div>
-        
+
         <h1 className="text-3xl font-bold text-center mb-6">
           Bem-vindo de volta
         </h1>
-        
+
         <form className="space-y-4">
           <Input type="email" placeholder="Email" />
           <Input type="password" placeholder="Senha" />

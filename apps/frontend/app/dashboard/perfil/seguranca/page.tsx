@@ -63,7 +63,7 @@ export default function SegurancaPage() {
 
   const fetchStatus = async () => {
     try {
-      const response = await apiClient.get<TwoFactorStatus>("/api/2fa/status/");
+      const response = await apiClient.get<TwoFactorStatus>("/api/auth/2fa/status/");
       setStatus(response.data);
     } catch (error) {
       console.error("Erro ao buscar status 2FA:", error);
@@ -77,7 +77,7 @@ export default function SegurancaPage() {
   const handleStartActivation = async () => {
     setIsActivating(true);
     try {
-      const response = await apiClient.post<SetupResult>("/api/2fa/setup/");
+      const response = await apiClient.post<SetupResult>("/api/auth/2fa/setup/");
       setSetupData(response.data);
       toast.success("QR Code gerado! Escaneie com seu app autenticador.");
     } catch (error: any) {
@@ -95,7 +95,7 @@ export default function SegurancaPage() {
 
     setVerifying(true);
     try {
-      await apiClient.post("/api/2fa/confirm/", { code: verificationCode });
+      await apiClient.post("/api/auth/2fa/confirm/", { code: verificationCode });
       toast.success("✅ 2FA ativado com sucesso!");
       
       // Resetar estados
@@ -132,7 +132,7 @@ export default function SegurancaPage() {
 
     setDeactivating(true);
     try {
-      await apiClient.post("/api/2fa/disable/", {
+      await apiClient.post("/api/auth/2fa/disable/", {
         password: deactivationPassword,
         code: deactivationCode,
       });
@@ -174,7 +174,7 @@ export default function SegurancaPage() {
     setRegenerating(true);
     try {
       const response = await apiClient.post<{ backup_codes: string[]; message: string }>(
-        "/api/2fa/backup-codes/regenerate/",
+        "/api/auth/2fa/backup-codes/regenerate/",
         { code: regenerationCode }
       );
       

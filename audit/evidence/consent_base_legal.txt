@@ -1,0 +1,25 @@
+=== Consentimento e Base Legal ===
+
+✓ App 'consent' existe
+
+### Modelos de consentimento:
+class ConsentVersion(models.Model):
+class UserConsent(models.Model):
+    """Registro de consentimentos dos usuários"""
+    # Contexto do consentimento
+        """Aceitar consentimento"""
+        """Revogar consentimento"""
+class ConsentLog(models.Model):
+    """Log de auditoria de consentimentos (para LGPD)"""
+
+## Bases Legais Aplicáveis (LGPD Art. 7):
+
+Para CANAL DE DENÚNCIA/FEEDBACK:
+  I. CONSENTIMENTO (Art. 7, I) - se feedback identificado
+  VI. LEGÍTIMO INTERESSE (Art. 7, IX) - compliance, investigações
+  VII. OBRIGAÇÃO LEGAL (Art. 7, II) - canal de denúncia obrigatório para algumas empresas
+
+Para feedback ANÔNIMO:
+  - LGPD Art. 4, §1: dados anonimizados não são considerados dados pessoais
+  - Garantir que não há identificação possível
+
