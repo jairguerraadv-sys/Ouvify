@@ -1,11 +1,15 @@
-'use client';
+"use client";
 
-import React, { ReactNode } from 'react';
-import { Sidebar } from '@/components/dashboard/sidebar';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import ConsentGate from '@/components/consent/ConsentGate';
-import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
+import React, { ReactNode } from "react";
+import { Sidebar } from "@/components/dashboard/sidebar";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
+import ConsentGate from "@/components/consent/ConsentGate";
+import { useAuth } from "@/contexts/AuthContext";
+import { cn } from "@/lib/utils";
+import {
+  GlobalSearch,
+  useGlobalSearch,
+} from "@/components/dashboard/GlobalSearch";
 
 // ============================================
 // DASHBOARD PAGE HEADER
@@ -30,7 +34,7 @@ export function DashboardHeader({
   className,
 }: DashboardHeaderProps) {
   return (
-    <header className={cn('mb-6', className)}>
+    <header className={cn("mb-6", className)}>
       {/* Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className="mb-2">
@@ -39,37 +43,29 @@ export function DashboardHeader({
               <li key={index} className="flex items-center gap-2">
                 {index > 0 && <span aria-hidden="true">/</span>}
                 {crumb.href ? (
-                  <a 
-                    href={crumb.href} 
+                  <a
+                    href={crumb.href}
                     className="hover:text-primary-600 transition-colors"
                   >
                     {crumb.label}
                   </a>
                 ) : (
-                  <span className="text-text-primary font-medium">{crumb.label}</span>
+                  <span className="text-text-primary font-medium">
+                    {crumb.label}
+                  </span>
                 )}
               </li>
             ))}
           </ol>
         </nav>
       )}
-      
+
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">
-            {title}
-          </h1>
-          {subtitle && (
-            <p className="mt-1 text-text-secondary">
-              {subtitle}
-            </p>
-          )}
+          <h1 className="text-2xl font-bold text-text-primary">{title}</h1>
+          {subtitle && <p className="mt-1 text-text-secondary">{subtitle}</p>}
         </div>
-        {actions && (
-          <div className="flex items-center gap-3">
-            {actions}
-          </div>
-        )}
+        {actions && <div className="flex items-center gap-3">{actions}</div>}
       </div>
     </header>
   );
@@ -98,7 +94,7 @@ export function DashboardSection({
   className,
 }: DashboardSectionProps) {
   return (
-    <section className={cn('mb-8', className)}>
+    <section className={cn("mb-8", className)}>
       {(title || actions) && (
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -113,11 +109,7 @@ export function DashboardSection({
               </p>
             )}
           </div>
-          {actions && (
-            <div className="flex items-center gap-2">
-              {actions}
-            </div>
-          )}
+          {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
       )}
       {children}
@@ -144,18 +136,14 @@ export function DashboardGrid({
   className,
 }: DashboardGridProps) {
   const gridCols = {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4',
+    1: "grid-cols-1",
+    2: "grid-cols-1 md:grid-cols-2",
+    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
   };
-  
+
   return (
-    <div className={cn(
-      'grid gap-4',
-      gridCols[columns],
-      className
-    )}>
+    <div className={cn("grid gap-4", gridCols[columns], className)}>
       {children}
     </div>
   );
@@ -188,10 +176,12 @@ export function DashboardCard({
   noPadding = false,
 }: DashboardCardProps) {
   return (
-    <div className={cn(
-      'bg-background border border-border-light rounded-xl shadow-sm',
-      className
-    )}>
+    <div
+      className={cn(
+        "bg-background border border-border-light rounded-xl shadow-sm",
+        className,
+      )}
+    >
       {(title || icon || actions) && (
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-light">
           <div className="flex items-center gap-3">
@@ -202,27 +192,17 @@ export function DashboardCard({
             )}
             <div>
               {title && (
-                <h3 className="font-semibold text-text-primary">
-                  {title}
-                </h3>
+                <h3 className="font-semibold text-text-primary">{title}</h3>
               )}
               {description && (
-                <p className="text-sm text-text-secondary">
-                  {description}
-                </p>
+                <p className="text-sm text-text-secondary">{description}</p>
               )}
             </div>
           </div>
-          {actions && (
-            <div className="flex items-center gap-2">
-              {actions}
-            </div>
-          )}
+          {actions && <div className="flex items-center gap-2">{actions}</div>}
         </div>
       )}
-      <div className={cn(!noPadding && 'p-5')}>
-        {children}
-      </div>
+      <div className={cn(!noPadding && "p-5")}>{children}</div>
     </div>
   );
 }
@@ -235,7 +215,7 @@ interface DashboardStatProps {
   label: string;
   value: string | number;
   change?: string;
-  trend?: 'up' | 'down' | 'neutral';
+  trend?: "up" | "down" | "neutral";
   icon?: ReactNode;
   className?: string;
 }
@@ -247,29 +227,27 @@ export function DashboardStat({
   label,
   value,
   change,
-  trend = 'neutral',
+  trend = "neutral",
   icon,
   className,
 }: DashboardStatProps) {
   const trendColors = {
-    up: 'text-success-600 bg-success-50',
-    down: 'text-error-600 bg-error-50',
-    neutral: 'text-text-secondary bg-background-secondary',
+    up: "text-success-600 bg-success-50",
+    down: "text-error-600 bg-error-50",
+    neutral: "text-text-secondary bg-background-secondary",
   };
-  
+
   return (
-    <div className={cn(
-      'bg-background border border-border-light rounded-xl p-5 shadow-sm',
-      className
-    )}>
+    <div
+      className={cn(
+        "bg-background border border-border-light rounded-xl p-5 shadow-sm",
+        className,
+      )}
+    >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-sm font-medium text-text-tertiary">
-            {label}
-          </p>
-          <p className="mt-1 text-2xl font-bold text-text-primary">
-            {value}
-          </p>
+          <p className="text-sm font-medium text-text-tertiary">{label}</p>
+          <p className="mt-1 text-2xl font-bold text-text-primary">{value}</p>
         </div>
         {icon && (
           <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-primary-50 text-primary-600">
@@ -279,12 +257,14 @@ export function DashboardStat({
       </div>
       {change && (
         <div className="mt-3 flex items-center gap-1.5">
-          <span className={cn(
-            'text-xs font-medium px-2 py-0.5 rounded-full',
-            trendColors[trend]
-          )}>
-            {trend === 'up' && '↑'}
-            {trend === 'down' && '↓'}
+          <span
+            className={cn(
+              "text-xs font-medium px-2 py-0.5 rounded-full",
+              trendColors[trend],
+            )}
+          >
+            {trend === "up" && "↑"}
+            {trend === "down" && "↓"}
             {change}
           </span>
         </div>
@@ -316,22 +296,20 @@ export function DashboardEmpty({
   className,
 }: DashboardEmptyProps) {
   return (
-    <div className={cn(
-      'flex flex-col items-center justify-center py-12 text-center',
-      className
-    )}>
+    <div
+      className={cn(
+        "flex flex-col items-center justify-center py-12 text-center",
+        className,
+      )}
+    >
       {icon && (
         <div className="w-16 h-16 flex items-center justify-center rounded-full bg-background-secondary text-text-tertiary mb-4">
           {icon}
         </div>
       )}
-      <h3 className="text-lg font-semibold text-text-primary mb-1">
-        {title}
-      </h3>
+      <h3 className="text-lg font-semibold text-text-primary mb-1">{title}</h3>
       {description && (
-        <p className="text-text-secondary max-w-sm mb-4">
-          {description}
-        </p>
+        <p className="text-text-secondary max-w-sm mb-4">{description}</p>
       )}
       {action}
     </div>
@@ -353,21 +331,18 @@ interface DashboardLayoutProps {
  */
 export function DashboardLayout({ children, className }: DashboardLayoutProps) {
   const { user } = useAuth();
+  const { open, setOpen } = useGlobalSearch();
 
   return (
     <ProtectedRoute>
       <ConsentGate>
         <div className="flex min-h-screen bg-background-secondary">
           <Sidebar user={user || undefined} />
-          <main className={cn(
-            'flex-1 overflow-auto',
-            'px-6 py-8',
-            className
-          )}>
-            <div className="max-w-7xl mx-auto">
-              {children}
-            </div>
+          <main className={cn("flex-1 overflow-auto", "px-6 py-8", className)}>
+            <div className="max-w-7xl mx-auto">{children}</div>
           </main>
+          {/* Global Search Command Palette - Ativado com Cmd+K / Ctrl+K */}
+          <GlobalSearch open={open} onOpenChange={setOpen} />
         </div>
       </ConsentGate>
     </ProtectedRoute>

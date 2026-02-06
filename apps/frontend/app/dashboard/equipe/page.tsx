@@ -37,6 +37,8 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
+  UserX,
+  UserCheck,
 } from "lucide-react";
 import api from "@/lib/api";
 import { AxiosResponse } from "axios";
@@ -161,6 +163,34 @@ export default function TeamManagementPage() {
       loadData();
     } catch (error: any) {
       alert(error.response?.data?.detail || "Erro ao remover membro");
+    }
+  };
+
+  const handleSuspend = async (memberId: number) => {
+    if (
+      !confirm("Deseja suspender este membro? Ele perderá acesso ao sistema.")
+    )
+      return;
+
+    try {
+      await api.post(`/api/team/members/${memberId}/suspend/`);
+      alert("Membro suspenso com sucesso!");
+      loadData();
+    } catch (error: any) {
+      alert(error.response?.data?.detail || "Erro ao suspender membro");
+    }
+  };
+
+  const handleActivate = async (memberId: number) => {
+    if (!confirm("Deseja reativar este membro? Ele terá acesso restaurado."))
+      return;
+
+    try {
+      await api.post(`/api/team/members/${memberId}/activate/`);
+      alert("Membro reativado com sucesso!");
+      loadData();
+    } catch (error: any) {
+      alert(error.response?.data?.detail || "Erro ao ativar membro");
     }
   };
 
@@ -357,14 +387,52 @@ export default function TeamManagementPage() {
                   <span className="ml-1">{member.role_display}</span>
                 </Badge>
 
+                {/* Status Badge */}
+                <Badge
+                  variant={member.status === "ACTIVE" ? "default" : "secondary"}
+                  className={
+                    member.status === "SUSPENDED"
+                      ? "bg-error/10 text-error"
+                      : ""
+                  }
+                >
+                  {member.status_display}
+                </Badge>
+
+                {/* Action Buttons */}
                 {member.can_be_managed && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleRemove(member.id)}
-                  >
-                    <Trash2 className="w-4 h-4 text-error-600" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    {/* Suspend/Activate */}
+                    {member.status === "ACTIVE" ? (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleSuspend(member.id)}
+                        title="Suspender membro"
+                      >
+                        <UserX className="w-4 h-4 text-warning-600" />
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleActivate(member.id)}
+                        title="Reativar membro"
+                      >
+                        <UserCheck className="w-4 h-4 text-success" />
+                      </Button>
+                    )}
+
+                    {/* Remove */}
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleRemove(member.id)}
+                      title="Remover membro"
+                    >
+                      <Trash2 className="w-4 h-4 text-error-600" />
+                    </Button>
+                  </div>
                 )}
               </div>
             </FlexBetween>
