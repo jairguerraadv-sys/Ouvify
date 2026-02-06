@@ -7,6 +7,7 @@ export interface CalendarProps {
   selected?: Date | undefined;
   onSelect?: (date: Date | undefined) => void;
   disabled?: (date: Date) => boolean;
+  initialFocus?: boolean;
   className?: string;
 }
 
@@ -19,6 +20,7 @@ export function Calendar({
   selected,
   onSelect,
   disabled,
+  initialFocus = false,
   className = "",
 }: CalendarProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +43,7 @@ export function Calendar({
         onChange={handleChange}
         className="w-full px-3 py-2 border rounded-md"
         disabled={disabled ? disabled(new Date()) : false}
+        autoFocus={initialFocus}
       />
     </div>
   );
