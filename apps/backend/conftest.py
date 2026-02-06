@@ -98,7 +98,36 @@ def user_factory(db):
 
 
 @pytest.fixture
-def tenant_factory(db):
+def plan_factory(db):
+    """Factory para criar planos de teste."""
+    from apps.billing.models import Plan
+
+    def create_plan(
+        name="Professional",
+        slug="professional",
+        price_cents=9900,  # R$ 99.00
+        is_active=True,
+        **kwargs,
+    ):
+        # Se o plano já existe, retorna
+        try:
+            return Plan.objects.get(slug=slug)
+        except Plan.DoesNotExist:
+            return Plan.objects.create(
+                name=name,
+                slug=slug,
+                price_cents=price_cents,
+                is_active=is_active,
+                features={"analytics": True, "automations": True, "team_members": True},
+                limits={"feedbacks_per_month": 0},  # 0 = ilimitado
+                **kwargs,
+            )
+
+    return create_plan
+
+
+@pytest.fixture
+def tenant_factory(db, plan_factory):
     """Factory para criar tenants de teste."""
     from apps.tenants.models import Client
 
@@ -109,9 +138,15 @@ def tenant_factory(db):
         ativo=True,
         **kwargs,
     ):
-        return Client.objects.create(
+        # Cria o plano se não existir (necessário para o signal criar a subscription)
+        plan_factory(slug=plano)
+
+        # Cria o tenant - o signal será acionado automatically para criar a subscription
+        tenant = Client.objects.create(
             nome=nome, subdominio=subdominio, plano=plano, ativo=ativo, **kwargs
         )
+
+        return tenant
 
     return create_tenant
 
@@ -156,17 +191,14 @@ def feedback_factory(db, tenant_factory):
 def authenticated_user(db, user_factory, tenant_factory):
     """Usuário autenticado com tenant associado."""
     from apps.tenants.models import TeamMember
-    
+
     tenant = tenant_factory()
     user = user_factory(email="admin@tenant.com")
     tenant.owner = user
     tenant.save()
     # Criar TeamMember para que o sistema de permissões funcione
     TeamMember.objects.create(
-        user=user,
-        client=tenant,
-        role=TeamMember.OWNER,
-        status=TeamMember.ACTIVE
+        user=user, client=tenant, role=TeamMember.OWNER, status=TeamMember.ACTIVE
     )
 
     return user, tenant

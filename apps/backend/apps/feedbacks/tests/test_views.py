@@ -6,9 +6,11 @@ Cobertura: CRUD, validações, permissões, rate limiting, isolamento multi-tena
 import pytest
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APIClient
 
+from apps.billing.models import Plan, Subscription
 from apps.feedbacks.models import Feedback
 from apps.tenants.models import Client
 
@@ -26,21 +28,59 @@ class TestFeedbackViewSet:
 
     @pytest.fixture
     def tenant(self):
-        return Client.objects.create(
-            nome="Test Company", subdominio="testcompany", plano="pro", ativo=True
+        # Create the plan FIRST (signal depends on it)
+        try:
+            Plan.objects.get(slug="pro")
+        except Plan.DoesNotExist:
+            Plan.objects.create(
+                name="Pro",
+                slug="pro",
+                price_cents=9900,
+                is_active=True,
+                trial_days=14,  # Must have trial days for signal to work
+                features={"analytics": True, "automations": True, "team_members": True},
+                limits={"feedbacks_per_month": 0},  # 0 = ilimitado
+            )
+
+        # NOW create the tenant (signal will fire and create subscription)
+        tenant, _ = Client.objects.get_or_create(
+            nome="Test Company",
+            defaults={"subdominio": "testcompany", "plano": "pro", "ativo": True},
         )
+        return tenant
 
     @pytest.fixture
     def tenant2(self):
         """Segundo tenant para testes de isolamento"""
-        return Client.objects.create(
-            nome="Other Company", subdominio="othercompany", plano="starter", ativo=True
+        # Create the plan FIRST (signal depends on it)
+        try:
+            Plan.objects.get(slug="starter")
+        except Plan.DoesNotExist:
+            Plan.objects.create(
+                name="Starter",
+                slug="starter",
+                price_cents=2900,
+                is_active=True,
+                trial_days=14,  # Must have trial days for signal to work
+                features={
+                    "analytics": False,
+                    "automations": False,
+                    "team_members": False,
+                },
+                limits={"feedbacks_per_month": 0},  # 0 = ilimitado
+            )
+
+        # NOW create the tenant (signal will fire and create subscription)
+        tenant, _ = Client.objects.get_or_create(
+            nome="Other Company",
+            defaults={"subdominio": "othercompany", "plano": "starter", "ativo": True},
         )
+        return tenant
 
     @pytest.fixture
     def user(self, tenant):
         from apps.tenants.models import TeamMember
-        
+
         user = User.objects.create_user(
             username="admin@testcompany.com",
             email="admin@testcompany.com",
@@ -51,10 +91,7 @@ class TestFeedbackViewSet:
         tenant.save()
         # Criar TeamMember para que o sistema de permissões funcione
         TeamMember.objects.create(
-            user=user,
-            client=tenant,
-            role=TeamMember.OWNER,
-            status=TeamMember.ACTIVE
+            user=user, client=tenant, role=TeamMember.OWNER, status=TeamMember.ACTIVE
         )
         return user
 
@@ -62,7 +99,7 @@ class TestFeedbackViewSet:
     def user2(self, tenant2):
         """Usuário do segundo tenant"""
         from apps.tenants.models import TeamMember
-        
+
         user = User.objects.create_user(
             username="admin@othercompany.com",
             email="admin@othercompany.com",
@@ -72,10 +109,7 @@ class TestFeedbackViewSet:
         tenant2.save()
         # Criar TeamMember para que o sistema de permissões funcione
         TeamMember.objects.create(
-            user=user,
-            client=tenant2,
-            role=TeamMember.OWNER,
-            status=TeamMember.ACTIVE
+            user=user, client=tenant2, role=TeamMember.OWNER, status=TeamMember.ACTIVE
         )
         return user
 
