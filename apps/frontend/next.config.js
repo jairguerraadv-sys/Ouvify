@@ -147,7 +147,6 @@ const path = require("path");
 
 // Bundle Analyzer (apenas quando ANALYZE=true)
 if (process.env.ANALYZE === "true") {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: true,
     openAnalyzer: true,

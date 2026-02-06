@@ -7,11 +7,9 @@ type ContrastTest = {
 
 type Rgb = { r: number; g: number; b: number };
 
-
 const GLOBALS_CSS_PATH = new URL("../app/globals.css", import.meta.url);
 
 function readFileText(url: URL): string {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const fs = require("fs") as typeof import("fs");
   return fs.readFileSync(url, "utf-8");
 }
@@ -82,7 +80,13 @@ function parseHslTriplet(value: string) {
 
 function hexToRgb(hex: string): Rgb {
   const normalized = hex.replace("#", "");
-  const full = normalized.length === 3 ? normalized.split("").map((c) => c + c).join("") : normalized;
+  const full =
+    normalized.length === 3
+      ? normalized
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : normalized;
   const value = parseInt(full, 16);
   return {
     r: (value >> 16) & 255,
@@ -99,7 +103,9 @@ function resolveToRgb(color: string, vars: Record<string, string>): Rgb {
 
   // color-mix(in srgb, <color1> <p1>%, <color2> <p2>%)
   // Example from tokens: color-mix(in srgb, hsl(var(--primary)) 75%, black 25%)
-  const mixMatch = trimmed.match(/^color-mix\(in\s+srgb,\s*(.+)\s+(\d+(?:\.\d+)?)%\s*,\s*(.+)\s+(\d+(?:\.\d+)?)%\s*\)$/);
+  const mixMatch = trimmed.match(
+    /^color-mix\(in\s+srgb,\s*(.+)\s+(\d+(?:\.\d+)?)%\s*,\s*(.+)\s+(\d+(?:\.\d+)?)%\s*\)$/,
+  );
   if (mixMatch) {
     const c1 = mixMatch[1].trim();
     const p1 = Number(mixMatch[2]);
@@ -127,21 +133,29 @@ function resolveToRgb(color: string, vars: Record<string, string>): Rgb {
     const raw = vars[varName];
     if (!raw) throw new Error(`CSS var ${varName} not found in globals.css`);
     const triplet = parseHslTriplet(raw);
-    if (!triplet) throw new Error(`CSS var ${varName} has unsupported value: ${raw}`);
+    if (!triplet)
+      throw new Error(`CSS var ${varName} has unsupported value: ${raw}`);
     return hslToRgb(triplet.h, triplet.s, triplet.l);
   }
 
   // If it's a plain var name (e.g. "--background"), support it too.
   if (trimmed.startsWith("--") && vars[trimmed]) {
     const triplet = parseHslTriplet(vars[trimmed]);
-    if (!triplet) throw new Error(`CSS var ${trimmed} has unsupported value: ${vars[trimmed]}`);
+    if (!triplet)
+      throw new Error(
+        `CSS var ${trimmed} has unsupported value: ${vars[trimmed]}`,
+      );
     return hslToRgb(triplet.h, triplet.s, triplet.l);
   }
 
   throw new Error(`Unsupported color format for contrast check: ${trimmed}`);
 }
 
-function tokenScale(baseVar: string, amount: number, target: "white" | "black") {
+function tokenScale(
+  baseVar: string,
+  amount: number,
+  target: "white" | "black",
+) {
   // Mirrors styles/design-tokens.ts: mixWith(baseVar, target, amount)
   return `color-mix(in srgb, hsl(var(${baseVar})) ${100 - amount}%, ${target} ${amount}%)`;
 }
@@ -169,18 +183,53 @@ function contrastRatio(color1: Rgb, color2: Rgb) {
 
 const contrastTests: ContrastTest[] = [
   // Base body tokens
-  { name: "Body primary", bg: "hsl(var(--background))", fg: "hsl(var(--foreground))", min: 7 },
-  { name: "Body secondary", bg: "hsl(var(--background))", fg: "hsl(var(--muted-foreground))", min: 4.5 },
+  {
+    name: "Body primary",
+    bg: "hsl(var(--background))",
+    fg: "hsl(var(--foreground))",
+    min: 7,
+  },
+  {
+    name: "Body secondary",
+    bg: "hsl(var(--background))",
+    fg: "hsl(var(--muted-foreground))",
+    min: 4.5,
+  },
   // Buttons (match actual component classes)
   // button.tsx default: bg-primary-700 text-white
-  { name: "Primary button (bg-primary-700/text-white)", bg: tokenScale("--primary", 25, "black"), fg: "white", min: 4.5 },
+  {
+    name: "Primary button (bg-primary-700/text-white)",
+    bg: tokenScale("--primary", 25, "black"),
+    fg: "white",
+    min: 4.5,
+  },
   // button.tsx secondary: bg-secondary-600 text-white
-  { name: "Secondary button (bg-secondary-600/text-white)", bg: tokenScale("--secondary", 15, "black"), fg: "white", min: 4.5 },
+  {
+    name: "Secondary button (bg-secondary-600/text-white)",
+    bg: tokenScale("--secondary", 15, "black"),
+    fg: "white",
+    min: 4.5,
+  },
   // button.tsx destructive: bg-error-600 text-white
-  { name: "Error button (bg-error-600/text-white)", bg: tokenScale("--error", 15, "black"), fg: "white", min: 4.5 },
-  { name: "Warning button", bg: "hsl(var(--warning))", fg: "hsl(var(--warning-foreground))", min: 4.5 },
+  {
+    name: "Error button (bg-error-600/text-white)",
+    bg: tokenScale("--error", 15, "black"),
+    fg: "white",
+    min: 4.5,
+  },
+  {
+    name: "Warning button",
+    bg: "hsl(var(--warning))",
+    fg: "hsl(var(--warning-foreground))",
+    min: 4.5,
+  },
   // button.tsx success: bg-success-800 text-white
-  { name: "Success button (bg-success-800/text-white)", bg: tokenScale("--success", 35, "black"), fg: "white", min: 4.5 },
+  {
+    name: "Success button (bg-success-800/text-white)",
+    bg: tokenScale("--success", 35, "black"),
+    fg: "white",
+    min: 4.5,
+  },
 ];
 
 function runForTheme(theme: "light" | "dark") {
@@ -199,7 +248,9 @@ function runForTheme(theme: "light" | "dark") {
     const ok = ratio >= test.min;
     if (!ok) failed += 1;
     const status = ok ? "✅" : "❌";
-    console.log(`${status} ${test.name}: ${ratio.toFixed(2)}:1 (min ${test.min})`);
+    console.log(
+      `${status} ${test.name}: ${ratio.toFixed(2)}:1 (min ${test.min})`,
+    );
   });
 
   return failed;
@@ -210,7 +261,9 @@ const failedDark = runForTheme("dark");
 const failedTotal = failedLight + failedDark;
 
 if (failedTotal > 0) {
-  console.error(`\n${failedTotal} contraste(s) abaixo do mínimo (somando light+dark).`);
+  console.error(
+    `\n${failedTotal} contraste(s) abaixo do mínimo (somando light+dark).`,
+  );
   process.exit(1);
 }
 
