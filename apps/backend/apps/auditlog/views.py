@@ -132,7 +132,7 @@ class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
         # Top usuários por atividade
         top_users_qs = (
             queryset.exclude(user__isnull=True)
-            .values("user__id", "user__email", "user__nome")
+            .values("user__id", "user__email", "user__first_name", "user__last_name")
             .annotate(action_count=Count("id"))
             .order_by("-action_count")[:5]
         )
@@ -140,7 +140,10 @@ class AuditLogViewSet(viewsets.ReadOnlyModelViewSet):
             {
                 "user_id": item["user__id"],
                 "user_email": item["user__email"],
-                "user_nome": item["user__nome"] or "N/A",
+                "user_full_name": (
+                    f"{item['user__first_name']} {item['user__last_name']}".strip()
+                    or item["user__email"].split("@")[0]
+                ),
                 "action_count": item["action_count"],
             }
             for item in top_users_qs

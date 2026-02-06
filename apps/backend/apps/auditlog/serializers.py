@@ -13,10 +13,16 @@ User = get_user_model()
 class AuditLogUserSerializer(serializers.ModelSerializer):
     """Serializer simplificado para usuário em audit logs."""
 
+    full_name = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "email", "nome"]
+        fields = ["id", "email", "first_name", "last_name", "full_name"]
         read_only_fields = fields
+
+    def get_full_name(self, obj):
+        """Retorna nome completo ou username como fallback."""
+        return obj.get_full_name() or obj.username
 
 
 class AuditLogSerializer(serializers.ModelSerializer):
@@ -174,7 +180,7 @@ class TopUsersSerializer(serializers.Serializer):
 
     user_id = serializers.IntegerField()
     user_email = serializers.EmailField()
-    user_nome = serializers.CharField()
+    user_full_name = serializers.CharField()
     action_count = serializers.IntegerField()
 
 
