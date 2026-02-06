@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Badge, type BadgeProps } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PageContent, PageLayout } from "@/components/ui";
@@ -91,7 +91,7 @@ function FeedbacksContent() {
     const variants: {
       [key: string]: {
         label: string;
-        className: string;
+        variant: BadgeProps["variant"];
         icon: React.ReactNode;
       };
     } = {
