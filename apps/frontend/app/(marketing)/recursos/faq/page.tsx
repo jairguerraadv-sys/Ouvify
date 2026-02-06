@@ -92,9 +92,9 @@ export default function FAQPage() {
       <div className="bg-card border-b">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <nav className="text-sm">
-            <Link href="/" className="text-primary-600 hover:underline">Início</Link>
+            <Link href="/" className="text-primary hover:underline">Início</Link>
             <span className="mx-2 text-muted-foreground">/</span>
-            <Link href="/recursos" className="text-primary-600 hover:underline">Recursos</Link>
+            <Link href="/recursos" className="text-primary hover:underline">Recursos</Link>
             <span className="mx-2 text-muted-foreground">/</span>
             <span className="text-muted-foreground">FAQ</span>
           </nav>
@@ -108,7 +108,7 @@ export default function FAQPage() {
             <span className="text-6xl">❓</span>
             <h1 className="text-5xl font-bold">Perguntas Frequentes</h1>
           </div>
-          <p className="text-xl text-success-100">
+          <p className="text-xl text-success">
             Encontre respostas para as dúvidas mais comuns sobre a plataforma Ouvify.
           </p>
         </div>
@@ -120,7 +120,7 @@ export default function FAQPage() {
           <input
             type="text"
             placeholder="Buscar pergunta..."
-            className="w-full px-6 py-4 rounded-xl border-2 border-border focus:border-success-500 focus:outline-none text-lg shadow-lg"
+            className="w-full px-6 py-4 rounded-xl border-2 border-border focus:border-success focus:outline-none text-lg shadow-lg"
           />
           <span className="absolute right-6 top-1/2 -translate-y-1/2 text-2xl">🔍</span>
         </div>
@@ -149,7 +149,7 @@ export default function FAQPage() {
                     >
                       <FlexBetween className="w-full">
                         <span className="font-semibold text-lg text-foreground pr-4">{faq.q}</span>
-                        <span className={`text-success-600 transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
+                        <span className={`text-success transition-transform flex-shrink-0 ${isOpen ? 'rotate-180' : ''}`}>
                           ▼
                         </span>
                       </FlexBetween>
@@ -169,7 +169,7 @@ export default function FAQPage() {
         ))}
 
         {/* CTA Contato */}
-        <div className="bg-success-50 border border-success-200 rounded-xl p-8 text-center mt-12">
+        <div className="bg-success/10 border border-success rounded-xl p-8 text-center mt-12">
           <h3 className="text-2xl font-bold text-foreground mb-4">
             Não encontrou a resposta que procurava?
           </h3>
@@ -179,13 +179,13 @@ export default function FAQPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-success-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-success-700 transition"
+              className="bg-success text-foreground px-8 py-3 rounded-lg font-medium hover:bg-success transition"
             >
               Entrar em Contato
             </Link>
             <Link
               href="/recursos"
-              className="bg-card text-success-600 px-8 py-3 rounded-lg font-medium border-2 border-success-600 hover:bg-success-50 transition"
+              className="bg-card text-success px-8 py-3 rounded-lg font-medium border-2 border-success hover:bg-success/10 transition"
             >
               ← Voltar para Recursos
             </Link>

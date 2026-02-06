@@ -386,8 +386,8 @@ export default function RecursosPage() {
               {WORKFLOW_FEATURES.map((feature, idx) => (
                 <Card key={idx} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <div className="w-10 h-10 bg-success-100 rounded-lg flex items-center justify-center mb-3">
-                      <feature.icon className="w-5 h-5 text-success-600" />
+                    <div className="w-10 h-10 bg-success/10 rounded-lg flex items-center justify-center mb-3">
+                      <feature.icon className="w-5 h-5 text-success" />
                     </div>
                     <CardTitle className="text-lg mb-2">
                       {feature.title}
@@ -400,7 +400,7 @@ export default function RecursosPage() {
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
-                          <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-3.5 h-3.5 text-success flex-shrink-0 mt-0.5" />
                           <span className="text-xs text-muted-foreground">
                             {detail}
                           </span>
@@ -426,8 +426,8 @@ export default function RecursosPage() {
               {INTEGRATION_FEATURES.map((feature, idx) => (
                 <Card key={idx} className="hover:shadow-lg transition-shadow">
                   <CardHeader>
-                    <div className="w-10 h-10 bg-info-100 rounded-lg flex items-center justify-center mb-3">
-                      <feature.icon className="w-5 h-5 text-info-600" />
+                    <div className="w-10 h-10 bg-info/10 rounded-lg flex items-center justify-center mb-3">
+                      <feature.icon className="w-5 h-5 text-info" />
                     </div>
                     <CardTitle className="text-lg mb-2">
                       {feature.title}
@@ -440,7 +440,7 @@ export default function RecursosPage() {
                     <ul className="space-y-2">
                       {feature.details.map((detail, i) => (
                         <li key={i} className="flex gap-2 items-start">
-                          <CheckCircle className="w-3.5 h-3.5 text-success-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle className="w-3.5 h-3.5 text-success flex-shrink-0 mt-0.5" />
                           <span className="text-xs text-muted-foreground">
                             {detail}
                           </span>
@@ -462,7 +462,7 @@ export default function RecursosPage() {
             <h2 className="text-3xl font-bold mb-4">
               Por Que Escolher o Ouvify?
             </h2>
-            <p className="text-xl text-primary-100">
+            <p className="text-xl text-primary">
               Benefícios comprovados por centenas de empresas
             </p>
           </div>
@@ -476,7 +476,7 @@ export default function RecursosPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-primary-100">
+                <p className="text-primary">
                   Reduza em até 85% o tempo de gestão de feedbacks com
                   automações inteligentes
                 </p>
@@ -491,7 +491,7 @@ export default function RecursosPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-primary-100">
+                <p className="text-primary">
                   Visibilidade completa de todos os feedbacks com
                   rastreabilidade total
                 </p>
@@ -506,7 +506,7 @@ export default function RecursosPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-primary-100">
+                <p className="text-primary">
                   Segurança e privacidade garantidas com certificação ISO 27001
                 </p>
               </CardContent>
@@ -537,15 +537,15 @@ export default function RecursosPage() {
 
           <div className="flex flex-wrap justify-center gap-8 mt-12 text-sm text-muted-foreground">
             <FlexRow>
-              <CheckCircle className="w-4 h-4 text-success-600" />
+              <CheckCircle className="w-4 h-4 text-success" />
               <span>Setup em 5 minutos</span>
             </FlexRow>
             <FlexRow>
-              <CheckCircle className="w-4 h-4 text-success-600" />
+              <CheckCircle className="w-4 h-4 text-success" />
               <span>Suporte em português</span>
             </FlexRow>
             <FlexRow>
-              <CheckCircle className="w-4 h-4 text-success-600" />
+              <CheckCircle className="w-4 h-4 text-success" />
               <span>Cancele quando quiser</span>
             </FlexRow>
           </div>

@@ -148,7 +148,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/settings/privacy"
-                className="inline-block bg-success-600 text-foreground px-6 py-3 rounded-lg font-medium hover:bg-success-700 transition"
+                className="inline-block bg-success text-foreground px-6 py-3 rounded-lg font-medium hover:bg-success transition"
               >
                 Ir para Configurações
               </Link>

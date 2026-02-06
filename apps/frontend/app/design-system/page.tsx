@@ -111,35 +111,35 @@ export default function DesignSystemPage() {
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
-              <Alert className="border-green-200 bg-green-50">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <AlertTitle className="text-green-900">Success</AlertTitle>
-                <AlertDescription className="text-green-700">
-                  Operação concluída com sucesso! (Green 600)
+              <Alert className="border-success bg-success/10">
+                <CheckCircle2 className="h-5 w-5 text-success" />
+                <AlertTitle className="text-success">Success</AlertTitle>
+                <AlertDescription className="text-success">
+                  Operação concluída com sucesso! (Success token)
                 </AlertDescription>
               </Alert>
 
-              <Alert className="border-amber-200 bg-amber-50">
-                <AlertTriangle className="h-5 w-5 text-amber-600" />
-                <AlertTitle className="text-amber-900">Warning</AlertTitle>
-                <AlertDescription className="text-amber-700">
-                  Atenção: esta ação requer confirmação. (Amber 500)
+              <Alert className="border-warning bg-warning/10">
+                <AlertTriangle className="h-5 w-5 text-warning" />
+                <AlertTitle className="text-warning">Warning</AlertTitle>
+                <AlertDescription className="text-warning">
+                  Atenção: esta ação requer confirmação. (Warning token)
                 </AlertDescription>
               </Alert>
 
-              <Alert className="border-red-200 bg-red-50">
-                <XCircle className="h-5 w-5 text-red-600" />
-                <AlertTitle className="text-red-900">Error</AlertTitle>
-                <AlertDescription className="text-red-700">
-                  Erro ao processar requisição. Tente novamente. (Red 500)
+              <Alert className="border-error bg-error/10">
+                <XCircle className="h-5 w-5 text-error" />
+                <AlertTitle className="text-error">Error</AlertTitle>
+                <AlertDescription className="text-error">
+                  Erro ao processar requisição. Tente novamente. (Error token)
                 </AlertDescription>
               </Alert>
 
-              <Alert className="border-blue-200 bg-blue-50">
-                <Info className="h-5 w-5 text-blue-600" />
-                <AlertTitle className="text-blue-900">Info</AlertTitle>
-                <AlertDescription className="text-blue-700">
-                  Informação importante sobre este recurso. (Blue 500)
+              <Alert className="border-info bg-info/10">
+                <Info className="h-5 w-5 text-info" />
+                <AlertTitle className="text-info">Info</AlertTitle>
+                <AlertDescription className="text-info">
+                  Informação importante sobre este recurso. (Info token)
                 </AlertDescription>
               </Alert>
 
@@ -236,53 +236,53 @@ export default function DesignSystemPage() {
               <Badge variant="secondary">Secondary Badge</Badge>
               <Badge variant="outline">Outline Badge</Badge>
               <Badge variant="destructive">Destructive Badge</Badge>
-              <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Success Badge</Badge>
-              <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-100">Warning Badge</Badge>
-              <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Info Badge</Badge>
+              <Badge className="bg-success/10 text-success hover:bg-success/10">Success Badge</Badge>
+              <Badge className="bg-warning/10 text-warning hover:bg-warning/10">Warning Badge</Badge>
+              <Badge className="bg-info/10 text-info hover:bg-info/10">Info Badge</Badge>
             </div>
           </CardContent>
         </Card>
 
         {/* Contrast & Accessibility */}
-        <Card className="mb-8 border-blue-200 bg-blue-50">
+        <Card className="mb-8 border-info bg-info/10">
           <CardHeader>
-            <CardTitle className="text-blue-900">♿ Acessibilidade & Contraste</CardTitle>
-            <CardDescription className="text-blue-700">
+            <CardTitle className="text-info">♿ Acessibilidade & Contraste</CardTitle>
+            <CardDescription className="text-info">
               WCAG 2.1 Level AA/AAA Compliance
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-blue-800">
+          <CardContent className="text-info">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               
-              <div className="bg-white p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-900 mb-2">Contraste Foreground/Background</h4>
+              <div className="bg-white p-4 rounded-lg border border-info">
+                <h4 className="font-semibold text-info mb-2">Contraste Foreground/Background</h4>
                 <p className="text-3xl font-bold text-foreground mb-1">21:1</p>
-                <p className="text-sm text-blue-700">WCAG AAA ✅ (requer 7:1)</p>
+                <p className="text-sm text-info">WCAG AAA ✅ (requer 7:1)</p>
               </div>
 
-              <div className="bg-white p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-900 mb-2">Contraste Primary/Primary-Foreground</h4>
+              <div className="bg-white p-4 rounded-lg border border-info">
+                <h4 className="font-semibold text-info mb-2">Contraste Primary/Primary-Foreground</h4>
                 <p className="text-3xl font-bold text-primary mb-1">8.5:1</p>
-                <p className="text-sm text-blue-700">WCAG AA ✅ (requer 4.5:1)</p>
+                <p className="text-sm text-info">WCAG AA ✅ (requer 4.5:1)</p>
               </div>
 
-              <div className="bg-white p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-900 mb-2">Contraste Muted Text</h4>
+              <div className="bg-white p-4 rounded-lg border border-info">
+                <h4 className="font-semibold text-info mb-2">Contraste Muted Text</h4>
                 <p className="text-3xl font-bold text-muted-foreground mb-1">4.8:1</p>
-                <p className="text-sm text-blue-700">WCAG AA ✅ (requer 4.5:1)</p>
+                <p className="text-sm text-info">WCAG AA ✅ (requer 4.5:1)</p>
               </div>
 
-              <div className="bg-white p-4 rounded-lg border border-blue-200">
-                <h4 className="font-semibold text-blue-900 mb-2">Touch Targets</h4>
+              <div className="bg-white p-4 rounded-lg border border-info">
+                <h4 className="font-semibold text-info mb-2">Touch Targets</h4>
                 <p className="text-3xl font-bold text-foreground mb-1">44×44px</p>
-                <p className="text-sm text-blue-700">WCAG AAA ✅ (mínimo recomendado)</p>
+                <p className="text-sm text-info">WCAG AAA ✅ (mínimo recomendado)</p>
               </div>
 
             </div>
 
-            <div className="mt-6 p-4 bg-white rounded-lg border border-blue-200">
-              <h4 className="font-semibold text-blue-900 mb-3">Recursos de Acessibilidade</h4>
-              <ul className="space-y-2 text-blue-800">
+            <div className="mt-6 p-4 bg-white rounded-lg border border-info">
+              <h4 className="font-semibold text-info mb-3">Recursos de Acessibilidade</h4>
+              <ul className="space-y-2 text-info">
                 <li>✅ <strong>Focus Visible:</strong> Ring de 2px com offset em todos os elementos interativos</li>
                 <li>✅ <strong>Contraste Alto:</strong> Todas as combinações passam WCAG AA ou AAA</li>
                 <li>✅ <strong>Font Smoothing:</strong> -webkit-font-smoothing e -moz-osx-font-smoothing ativos</li>

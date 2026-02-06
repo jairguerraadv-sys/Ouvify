@@ -375,23 +375,23 @@ function PerfilContent() {
         </Card>
 
         {/* LGPD - Privacidade e Dados */}
-        <Card className="border-warning-200 bg-warning-50/50">
+        <Card className="border-warning bg-warning/10">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-warning-900">
-              <Shield className="w-5 h-5 text-warning-600" />
+            <CardTitle className="flex items-center gap-2 text-warning">
+              <Shield className="w-5 h-5 text-warning" />
               Privacidade e Dados (LGPD)
             </CardTitle>
-            <p className="text-sm text-warning-700 mt-2">
+            <p className="text-sm text-warning mt-2">
               De acordo com a Lei Geral de Proteção de Dados, você tem direito
               de acessar, corrigir e excluir seus dados pessoais.
             </p>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Exportar Dados */}
-            <div className="flex items-start justify-between py-4 border-b border-warning-200">
+            <div className="flex items-start justify-between py-4 border-b border-warning">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <Download className="w-4 h-4 text-warning-600" />
+                  <Download className="w-4 h-4 text-warning" />
                   <p className="font-semibold text-secondary">
                     Exportar Meus Dados
                   </p>
@@ -407,7 +407,7 @@ function PerfilContent() {
                 size="sm"
                 onClick={handleExportData}
                 disabled={exportLoading}
-                className="ml-4 border-warning-300 text-warning-700 hover:bg-warning-100"
+                className="ml-4 border-warning text-warning hover:bg-warning/10"
               >
                 {exportLoading ? (
                   <>
@@ -424,19 +424,19 @@ function PerfilContent() {
             </div>
 
             {/* Excluir Conta */}
-            <div className="flex items-start justify-between py-4 bg-error-50 -mx-6 px-6 rounded-lg border border-error-200">
+            <div className="flex items-start justify between py-4 bg-error/10 -mx-6 px-6 rounded-lg border border-error">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
-                  <AlertTriangle className="w-4 h-4 text-error-600" />
-                  <p className="font-semibold text-error-900">
+                  <AlertTriangle className="w-4 h-4 text-error" />
+                  <p className="font-semibold text-error">
                     Excluir Minha Conta
                   </p>
                 </div>
-                <p className="text-sm text-error-700 mb-2">
+                <p className="text-sm text-error mb-2">
                   <strong>⚠️ Ação irreversível!</strong> Todos os seus dados
                   serão permanentemente removidos.
                 </p>
-                <p className="text-sm text-error-600">
+                <p className="text-sm text-error">
                   Ao excluir sua conta: sua assinatura será cancelada, todos os
                   feedbacks e relatórios serão apagados, e não será possível
                   recuperar nenhuma informação.
@@ -447,7 +447,7 @@ function PerfilContent() {
                 size="sm"
                 onClick={handleDeleteAccount}
                 disabled={deleteLoading}
-                className="ml-4 bg-error-600 hover:bg-error-700"
+                className="ml-4 bg-error hover:bg-error"
               >
                 {deleteLoading ? (
                   <>
@@ -478,7 +478,7 @@ function PerfilContent() {
                 nossa{" "}
                 <a
                   href="/privacidade"
-                  className="text-warning-600 hover:underline"
+                  className="text-warning hover:underline"
                 >
                   Política de Privacidade
                 </a>

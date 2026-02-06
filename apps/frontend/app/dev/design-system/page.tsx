@@ -94,16 +94,16 @@ export default function DesignSystemPage() {
         <Container>
           <Tabs defaultValue="colors" className="w-full">
             <TabsList className="w-full justify-start bg-transparent h-12 p-0 gap-6">
-              <TabsTrigger value="colors" className="data-[state=active]:border-b-2 data-[state=active]:border-primary-500 rounded-none bg-transparent">
+              <TabsTrigger value="colors" className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none bg-transparent">
                 🎨 Cores
               </TabsTrigger>
-              <TabsTrigger value="typography" className="data-[state=active]:border-b-2 data-[state=active]:border-primary-500 rounded-none bg-transparent">
+              <TabsTrigger value="typography" className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none bg-transparent">
                 📝 Tipografia
               </TabsTrigger>
-              <TabsTrigger value="components" className="data-[state=active]:border-b-2 data-[state=active]:border-primary-500 rounded-none bg-transparent">
+              <TabsTrigger value="components" className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none bg-transparent">
                 📦 Componentes
               </TabsTrigger>
-              <TabsTrigger value="spacing" className="data-[state=active]:border-b-2 data-[state=active]:border-primary-500 rounded-none bg-transparent">
+              <TabsTrigger value="spacing" className="data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none bg-transparent">
                 📐 Espaçamento
               </TabsTrigger>
             </TabsList>
@@ -116,7 +116,7 @@ export default function DesignSystemPage() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded bg-primary-500" />
+                        <div className="w-4 h-4 rounded bg-primary" />
                         Primary (Brand)
                       </CardTitle>
                       <CardDescription>
@@ -136,7 +136,7 @@ export default function DesignSystemPage() {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <div className="w-4 h-4 rounded bg-secondary-500" />
+                        <div className="w-4 h-4 rounded bg-secondary" />
                         Secondary (Accent)
                       </CardTitle>
                       <CardDescription>
@@ -163,7 +163,7 @@ export default function DesignSystemPage() {
                     <CardContent>
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-success-700">Success</h4>
+                          <h4 className="text-sm font-medium text-success">Success</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="success-light" name="light" hex={colors.semantic.success.light} />
                             <ColorSwatch color="success-main" name="main" hex={colors.semantic.success.main} />
@@ -171,7 +171,7 @@ export default function DesignSystemPage() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-warning-700">Warning</h4>
+                          <h4 className="text-sm font-medium text-warning">Warning</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="warning-light" name="light" hex={colors.semantic.warning.light} />
                             <ColorSwatch color="warning-main" name="main" hex={colors.semantic.warning.main} />
@@ -179,7 +179,7 @@ export default function DesignSystemPage() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-error-700">Error</h4>
+                          <h4 className="text-sm font-medium text-error">Error</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="error-light" name="light" hex={colors.semantic.error.light} />
                             <ColorSwatch color="error-main" name="main" hex={colors.semantic.error.main} />
@@ -187,7 +187,7 @@ export default function DesignSystemPage() {
                           </div>
                         </div>
                         <div className="space-y-2">
-                          <h4 className="text-sm font-medium text-cyan-700">Info</h4>
+                          <h4 className="text-sm font-medium text-info">Info</h4>
                           <div className="flex gap-2">
                             <ColorSwatch color="info-light" name="light" hex={colors.semantic.info.light} />
                             <ColorSwatch color="info-main" name="main" hex={colors.semantic.info.main} />
@@ -401,9 +401,9 @@ export default function DesignSystemPage() {
                           <Input id="disabled" disabled placeholder="Não editável" />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="error" className="text-error-500">Com erro</Label>
-                          <Input id="error" className="border-error-500 focus:ring-error-500" placeholder="Campo inválido" />
-                          <p className="text-xs text-error-500">Este campo é obrigatório.</p>
+                          <Label htmlFor="error" className="text-error">Com erro</Label>
+                          <Input id="error" className="border-error focus:ring-error" placeholder="Campo inválido" />
+                          <p className="text-xs text-error">Este campo é obrigatório.</p>
                         </div>
                       </div>
                     </CardContent>
@@ -460,14 +460,14 @@ export default function DesignSystemPage() {
                             <Button variant="outline" className="w-full">Selecionar</Button>
                           </CardFooter>
                         </Card>
-                        <Card className="border-primary-500 shadow-md">
+                        <Card className="border-primary shadow-md">
                           <CardHeader>
                             <Badge className="w-fit mb-2">Popular</Badge>
                             <CardTitle className="text-lg">Plano Pro</CardTitle>
                             <CardDescription>Para equipes</CardDescription>
                           </CardHeader>
                           <CardContent>
-                            <p className="text-3xl font-bold text-primary-600">R$ 99</p>
+                            <p className="text-3xl font-bold text-primary">R$ 99</p>
                             <MutedText block>/mês</MutedText>
                           </CardContent>
                           <CardFooter>
@@ -746,7 +746,7 @@ export default function DesignSystemPage() {
                           return (
                             <div key={scale} className="flex items-center gap-4">
                               <MutedText className="w-8">{scale}</MutedText>
-                              <div className={cn("h-4 bg-primary-500 rounded", widthClasses[scale])} />
+                              <div className={cn("h-4 bg-primary rounded", widthClasses[scale])} />
                               <span className="text-xs text-muted-foreground">{scale * 4}px</span>
                             </div>
                           );
@@ -777,7 +777,7 @@ export default function DesignSystemPage() {
 
                           return (
                             <div key={name} className="flex flex-col items-center gap-2">
-                              <div className={cn("w-16 h-16 bg-primary-500", radiusClassMap[name] || "rounded")}></div>
+                              <div className={cn("w-16 h-16 bg-primary", radiusClassMap[name] || "rounded")}></div>
                               <span className="text-xs text-muted-foreground">{name}</span>
                               <span className="text-[10px] text-muted-foreground">{value}</span>
                             </div>
