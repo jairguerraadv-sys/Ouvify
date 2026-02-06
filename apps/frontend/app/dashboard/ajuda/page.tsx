@@ -174,8 +174,8 @@ function AjudaContent() {
           }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-secondary-100 flex items-center justify-center">
-              <PlayCircle className="w-5 h-5 text-secondary-600" />
+            <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+              <PlayCircle className="w-5 h-5 text-secondary" />
             </div>
             <div>
               <p className="font-medium text-sm">Refazer Tour</p>
@@ -193,8 +193,8 @@ function AjudaContent() {
             rel="noopener noreferrer"
             className="flex items-center gap-3"
           >
-            <div className="w-10 h-10 rounded-lg bg-primary-100 flex items-center justify-center">
-              <BookOpen className="w-5 h-5 text-primary-600" />
+            <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+              <BookOpen className="w-5 h-5 text-primary" />
             </div>
             <div>
               <p className="font-medium text-sm">Documentação</p>
@@ -208,8 +208,8 @@ function AjudaContent() {
             href="mailto:suporte@ouvify.com"
             className="flex items-center gap-3"
           >
-            <div className="w-10 h-10 rounded-lg bg-success-100 flex items-center justify-center">
-              <Mail className="w-5 h-5 text-success-600" />
+            <div className="w-10 h-10 rounded-lg bg-success/10 flex items-center justify-center">
+              <Mail className="w-5 h-5 text-success" />
             </div>
             <div>
               <p className="font-medium text-sm">Email Suporte</p>
@@ -225,8 +225,8 @@ function AjudaContent() {
             href="/dashboard/configuracoes"
             className="flex items-center gap-3"
           >
-            <div className="w-10 h-10 rounded-lg bg-warning-100 flex items-center justify-center">
-              <Settings className="w-5 h-5 text-warning-600" />
+            <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+              <Settings className="w-5 h-5 text-warning" />
             </div>
             <div>
               <p className="font-medium text-sm">Configurações</p>

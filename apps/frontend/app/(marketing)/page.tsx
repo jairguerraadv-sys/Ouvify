@@ -272,7 +272,7 @@ export default function LandingPage() {
                   <FlexBetween className="p-4 bg-card/50 rounded-xl border border-border">
                     <FlexRow gap="3">
                       <Shield className="w-5 h-5 text-muted-foreground" />
-                      <span className="font-semibold text-secondary-600">Backup Automático</span>
+                      <span className="font-semibold text-secondary">Backup Automático</span>
                     </FlexRow>
                     <span className="text-xs text-muted-foreground font-medium">Diário</span>
                   </FlexBetween>

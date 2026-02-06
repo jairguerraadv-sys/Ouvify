@@ -11,7 +11,7 @@ import { useTenantTheme } from "@/hooks/use-tenant-theme";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOnboarding } from "@/components/OnboardingTour";
 import { useState, useEffect, useRef } from "react";
-import { Save, Upload, Building2, Palette, Settings, Image as ImageIcon, Loader2, HelpCircle, PlayCircle, BookOpen, MessageCircle, Webhook } from "lucide-react";
+import { Save, Upload, Building2, Palette, Settings, Image as ImageIcon, Loader2, HelpCircle, PlayCircle, BookOpen, MessageCircle, Webhook, Shield } from "lucide-react";
 import { uploadBrandingImages, updateBrandingSettings, validateImageFile, createImagePreview, revokeImagePreview } from "@/lib/branding-upload";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -519,6 +519,24 @@ function ConfiguracoesContent() {
             </Link>
           </Card>
 
+          {/* Segurança / 2FA */}
+          <Card className="p-6 border-primary/20 bg-primary/5">
+            <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
+              <Shield className="w-5 h-5 text-primary" />
+              Segurança
+              <Badge variant="default" className="ml-2">Novo</Badge>
+            </h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Proteja sua conta com autenticação de dois fatores (2FA) e outras configurações de segurança.
+            </p>
+            <Link href="/dashboard/configuracoes/seguranca">
+              <Button variant="default" className="w-full justify-start gap-2">
+                <Shield className="w-4 h-4" />
+                Configurar Segurança
+              </Button>
+            </Link>
+          </Card>
+
           {/* Ajuda & Tour */}
           <Card className="p-6">
             <h3 className="text-lg font-medium mb-4 flex items-center gap-2">
@@ -562,9 +580,9 @@ function ConfiguracoesContent() {
           </Card>
 
           {/* Zona de Perigo */}
-          <Card className="p-6 border-error-200 bg-error-50">
-            <h3 className="text-lg font-medium mb-2 text-error-800">⚠️ Zona de Perigo</h3>
-            <p className="text-sm text-error-700 mb-4">
+          <Card className="p-6 border-error bg-error/10">
+            <h3 className="text-lg font-medium mb-2 text-error">⚠️ Zona de Perigo</h3>
+            <p className="text-sm text-error mb-4">
               Ações irreversíveis que afetam toda a conta
             </p>
             <Button variant="destructive">Desativar Conta</Button>

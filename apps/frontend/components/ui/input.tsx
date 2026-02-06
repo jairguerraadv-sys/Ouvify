@@ -14,9 +14,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="w-full">
         {label && (
-          <label className="block text-sm font-medium text-text-secondary mb-2">
+          <label className="block text-sm font-medium text-muted-foreground mb-2">
             {label}
-            {required && <span className="text-error-500 ml-1">*</span>}
+            {required && <span className="text-error ml-1">*</span>}
           </label>
         )}
         
@@ -24,14 +24,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           className={cn(
             "flex h-10 w-full rounded-lg border px-4 py-2 text-base transition-colors duration-200",
-            "bg-background text-text-primary",
-            "placeholder:text-text-tertiary",
-            "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-text-primary",
+            "bg-background text-foreground",
+            "placeholder:text-muted-foreground",
+            "file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground",
             "focus:outline-none focus:ring-2",
-            "disabled:cursor-not-allowed disabled:bg-background-secondary disabled:opacity-50",
+            "disabled:cursor-not-allowed disabled:bg-muted disabled:opacity-50",
             error 
-              ? "border-error-500 focus:ring-error-500 focus:border-error-500" 
-              : "border-border-light hover:border-border-focus focus:ring-border-focus focus:border-transparent",
+              ? "border-error focus:ring-error focus:border-error" 
+              : "border-border hover:border-primary focus:ring-primary focus:border-transparent",
             className
           )}
           required={required}
@@ -40,11 +40,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         />
         
         {error && (
-          <p className="mt-1 text-sm text-error-500">{error}</p>
+          <p className="mt-1 text-sm text-error">{error}</p>
         )}
         
         {helperText && !error && (
-          <p className="mt-1 text-sm text-text-tertiary">{helperText}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{helperText}</p>
         )}
       </div>
     )

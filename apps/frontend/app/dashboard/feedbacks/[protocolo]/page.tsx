@@ -30,33 +30,29 @@ import Link from "next/link";
 import { deleteFeedback } from "@/hooks/use-dashboard";
 
 function StatusBadge({ status }: { status: string }) {
-  const variants: Record<string, { bg: string; text: string; label: string }> =
+  const variants: Record<string, { variant: "outline" | "secondary" | "success" | "warning" | "default"; label: string }> =
     {
       pendente: {
-        bg: "bg-warning-100",
-        text: "text-warning-800",
+        variant: "warning",
         label: "Pendente",
       },
       em_analise: {
-        bg: "bg-primary-100",
-        text: "text-primary-800",
+        variant: "default",
         label: "Em Análise",
       },
       resolvido: {
-        bg: "bg-success-100",
-        text: "text-success-800",
+        variant: "success",
         label: "Resolvido",
       },
       fechado: {
-        bg: "bg-neutral-100",
-        text: "text-neutral-800",
+        variant: "outline",
         label: "Fechado",
       },
     };
-  const variant = variants[status] || variants.pendente;
+  const variantConfig = variants[status] || variants.pendente;
   return (
-    <Badge className={`${variant.bg} ${variant.text} border-0`}>
-      {variant.label}
+    <Badge variant={variantConfig.variant}>
+      {variantConfig.label}
     </Badge>
   );
 }

@@ -290,24 +290,24 @@ export default function CadastroPage() {
   if (success) {
     return (
       <main className="min-h-screen bg-gradient-mesh flex items-center justify-center p-4">
-        <DecorativeBlob className="top-1/4 left-1/4 bg-primary-500/20 opacity-100 animate-wave-pulse" />
+        <DecorativeBlob className="top-1/4 left-1/4 bg-primary/10 opacity-100 animate-wave-pulse" />
         <Card variant="elevated" className="w-full max-w-md text-center relative z-10 animate-scale-in shadow-elegant">
           <CardHeader>
             <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6 shadow-glow">
               <CheckCircle className="w-12 h-12 text-foreground" />
             </div>
-            <h2 className="text-3xl font-bold text-secondary-900 mb-2">
+            <h2 className="text-3xl font-bold text-secondary mb-2">
               Conta Criada!
             </h2>
-            <p className="text-secondary-600">
+            <p className="text-secondary">
               Bem-vindo ao <span className="text-gradient-primary font-semibold">Ouvify</span>, {formData.nome.split(' ')[0]}!
             </p>
           </CardHeader>
           <div className="p-6">
-            <p className="text-secondary-600 mb-6">
+            <p className="text-secondary mb-6">
               Você será redirecionado para seu dashboard em segundos...
             </p>
-            <div className="w-8 h-8 border-4 border-primary-200 border-t-primary-500 rounded-full animate-spin mx-auto"></div>
+            <div className="w-8 h-8 border-4 border-primary border-t-primary rounded-full animate-spin mx-auto"></div>
           </div>
         </Card>
       </main>
@@ -317,8 +317,8 @@ export default function CadastroPage() {
   return (
     <main className="min-h-screen bg-gradient-mesh pt-12 pb-12 px-4">
       {/* Elementos decorativos */}
-      <DecorativeBlob placement="topRightQuarter" className="top-40 bg-primary-500/10 opacity-100 animate-float" />
-      <DecorativeBlob placement="bottomLeftQuarter" className="bottom-40 bg-primary-600/10 opacity-100 animate-float delay-2000" />
+      <DecorativeBlob placement="topRightQuarter" className="top-40 bg-primary/10 opacity-100 animate-float" />
+      <DecorativeBlob placement="bottomLeftQuarter" className="bottom-40 bg-primary/10 opacity-100 animate-float delay-2000" />
       
       <div className="max-w-md mx-auto relative z-10">
         {/* Header */}
@@ -326,10 +326,10 @@ export default function CadastroPage() {
           <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
             <LogoAuth />
           </Link>
-          <h1 className="text-4xl font-bold text-secondary-900 mt-6 mb-2">
+          <h1 className="text-4xl font-bold text-secondary mt-6 mb-2">
             Criar Conta
           </h1>
-          <p className="text-secondary-600">
+          <p className="text-secondary">
             Comece seu <span className="text-gradient-primary font-semibold">canal de ética</span> agora
           </p>
         </div>
@@ -352,7 +352,7 @@ export default function CadastroPage() {
 
             {/* Nome Completo */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-secondary-900">
+              <label className="block text-sm font-semibold text-secondary">
                 Nome Completo
               </label>
               <input
@@ -361,10 +361,10 @@ export default function CadastroPage() {
                 value={formData.nome}
                 onChange={handleChange}
                 placeholder="João Silva Santos"
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-ring focus:border-transparent ${
                   errors.nome
                     ? 'border-error bg-error/5'
-                    : 'border-secondary-200 hover:border-secondary-300'
+                    : 'border-secondary hover:border-secondary'
                 }`}
               />
               {errors.nome && (
@@ -377,7 +377,7 @@ export default function CadastroPage() {
 
             {/* Email */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-secondary-900">
+              <label className="block text-sm font-semibold text-secondary">
                 Email Corporativo
               </label>
               <input
@@ -386,10 +386,10 @@ export default function CadastroPage() {
                 value={formData.email}
                 onChange={handleChange}
                 placeholder="seu@empresa.com"
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-ring focus:border-transparent ${
                   errors.email
                     ? 'border-error bg-error/5'
-                    : 'border-secondary-200 hover:border-secondary-300'
+                    : 'border-secondary hover:border-secondary'
                 }`}
               />
               {errors.email && (
@@ -402,7 +402,7 @@ export default function CadastroPage() {
 
             {/* Senha */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-secondary-900">
+              <label className="block text-sm font-semibold text-secondary">
                 Senha
               </label>
               <input
@@ -411,10 +411,10 @@ export default function CadastroPage() {
                 value={formData.senha}
                 onChange={handleChange}
                 placeholder="Mínimo 8 caracteres"
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-ring focus:border-transparent ${
                   errors.senha
                     ? 'border-error bg-error/5'
-                    : 'border-secondary-200 hover:border-secondary-300'
+                    : 'border-secondary hover:border-secondary'
                 }`}
               />
               {errors.senha && (
@@ -428,16 +428,16 @@ export default function CadastroPage() {
             {/* Divider */}
             <div className="relative py-3">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-secondary-200"></div>
+                <div className="w-full border-t border-secondary"></div>
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-secondary-600 font-semibold">Dados da Empresa</span>
+                <span className="px-4 bg-white text-secondary font-semibold">Dados da Empresa</span>
               </div>
             </div>
 
             {/* Nome da Empresa */}
             <div className="space-y-2">
-              <label className="block text-sm font-semibold text-secondary-900">
+              <label className="block text-sm font-semibold text-secondary">
                 Nome da Empresa
               </label>
               <input
@@ -446,10 +446,10 @@ export default function CadastroPage() {
                 value={formData.nome_empresa}
                 onChange={handleChange}
                 placeholder="Minha Empresa LTDA"
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-primary-500 focus:border-transparent ${
+                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-ring focus:border-transparent ${
                   errors.nome_empresa
                     ? 'border-error bg-error/5'
-                    : 'border-secondary-200 hover:border-secondary-300'
+                    : 'border-secondary hover:border-secondary'
                 }`}
               />
               {errors.nome_empresa && (
@@ -466,7 +466,7 @@ export default function CadastroPage() {
               tooltip="Este será o endereço público onde seus clientes poderão enviar feedbacks. Exemplo: minhaempresa.ouvify.com/enviar"
               required
             >
-              <div className="flex items-center rounded-lg overflow-hidden border border-secondary-200 focus-within:ring-2 focus-within:ring-primary-500 focus-within:border-transparent transition-all duration-200">
+              <div className="flex items-center rounded-lg overflow-hidden border border-secondary focus-within:ring-2 focus-within:ring-ring focus-within:border-transparent transition-all duration-200">
                 <input
                   type="text"
                   name="subdominio_desejado"
@@ -479,7 +479,7 @@ export default function CadastroPage() {
                       : 'bg-transparent'
                   }`}
                 />
-                <div className="bg-gradient-primary-soft px-4 py-3 text-primary-700 text-sm font-semibold">
+                <div className="bg-gradient-primary-soft px-4 py-3 text-primary text-sm font-semibold">
                   .ouvify.com
                 </div>
               </div>
@@ -488,11 +488,11 @@ export default function CadastroPage() {
             <div>
               {/* Preview do subdomínio */}
               {formData.subdominio_desejado && subdominioStatus === 'available' && (
-                <div className="mt-2 p-3 bg-primary-50 border border-primary-200 rounded-lg">
-                    <p className="text-sm text-primary-900 mb-1 font-medium">
+                <div className="mt-2 p-3 bg-primary/10 border border-primary rounded-lg">
+                    <p className="text-sm text-primary mb-1 font-medium">
                       ✨ Seu link público será:
                     </p>
-                    <code className="text-sm text-primary-700 bg-white px-2 py-1 rounded border border-primary-300">
+                    <code className="text-sm text-primary bg-white px-2 py-1 rounded border border-primary">
                       https://{formData.subdominio_desejado}.ouvify.com/enviar
                     </code>
                   </div>
@@ -500,7 +500,7 @@ export default function CadastroPage() {
                 
                 <div className="mt-2">
                   {subdominioStatus === 'checking' && (
-                    <span className="text-sm text-secondary-500 flex items-center gap-2 font-medium">
+                    <span className="text-sm text-secondary flex items-center gap-2 font-medium">
                       <Loader className="w-4 h-4 animate-spin" />
                       Verificando...
                     </span>
@@ -545,9 +545,9 @@ export default function CadastroPage() {
               {!loading && <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />}
             </Button>
 
-            <p className="text-center text-secondary-600 text-sm">
+            <p className="text-center text-secondary text-sm">
               Ja tem conta?{' '}
-              <Link href="/login" className="text-primary-500 font-semibold hover:text-primary-600 transition-colors">
+              <Link href="/login" className="text-primary font-semibold hover:text-primary transition-colors">
                 Entre aqui
               </Link>
             </p>
@@ -556,24 +556,24 @@ export default function CadastroPage() {
 
         {/* Benefícios */}
         <div className="mt-10 space-y-3 animate-fade-in delay-200">
-          <p className="text-sm text-secondary-700 font-semibold mb-4">✨ Incluso no plano:</p>
+          <p className="text-sm text-secondary font-semibold mb-4">✨ Incluso no plano:</p>
           <div className="flex items-center gap-3 group">
             <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
-            <span className="text-sm text-secondary-700 font-medium">30 dias de teste grátis - sem cartão de crédito</span>
+            <span className="text-sm text-secondary font-medium">30 dias de teste grátis - sem cartão de crédito</span>
           </div>
           <div className="flex items-center gap-3 group">
             <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
-            <span className="text-sm text-secondary-700 font-medium">Suporte por email 24/7</span>
+            <span className="text-sm text-secondary font-medium">Suporte por email 24/7</span>
           </div>
           <div className="flex items-center gap-3 group">
             <div className="w-6 h-6 bg-success/10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
               <CheckCircle className="w-4 h-4 text-success" />
             </div>
-            <span className="text-sm text-secondary-700 font-medium">Personalizável com sua logo e cores</span>
+            <span className="text-sm text-secondary font-medium">Personalizável com sua logo e cores</span>
           </div>
         </div>
       </div>

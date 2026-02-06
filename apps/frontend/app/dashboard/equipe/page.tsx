@@ -166,9 +166,9 @@ export default function TeamManagementPage() {
 
   const getRoleBadgeColor = (role: string) => {
     const colors: Record<string, string> = {
-      OWNER: "bg-secondary-100 text-secondary-800",
-      ADMIN: "bg-primary-100 text-primary-800",
-      MODERATOR: "bg-success-100 text-success-800",
+      OWNER: "bg-secondary/10 text-secondary",
+      ADMIN: "bg-primary/10 text-primary",
+      MODERATOR: "bg-success/10 text-success",
       VIEWER: "bg-neutral-100 text-neutral-800",
     };
     return colors[role] || "bg-neutral-100 text-neutral-800";
@@ -294,21 +294,21 @@ export default function TeamManagementPage() {
 
           <Card className="p-4">
             <div className="text-sm text-text-secondary">Proprietários</div>
-            <div className="text-2xl font-bold text-secondary-600">
+            <div className="text-2xl font-bold text-secondary">
               {stats.members_by_role.owner}
             </div>
           </Card>
 
           <Card className="p-4">
             <div className="text-sm text-text-secondary">Administradores</div>
-            <div className="text-2xl font-bold text-primary-600">
+            <div className="text-2xl font-bold text-primary">
               {stats.members_by_role.admin}
             </div>
           </Card>
 
           <Card className="p-4">
             <div className="text-sm text-text-secondary">Moderadores</div>
-            <div className="text-2xl font-bold text-success-600">
+            <div className="text-2xl font-bold text-success">
               {stats.members_by_role.moderator}
             </div>
           </Card>

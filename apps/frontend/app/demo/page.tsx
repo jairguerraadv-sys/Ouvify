@@ -312,17 +312,17 @@ export default function DemoPage() {
                     'Integrações disponíveis via API'
                   ].map((item, idx) => (
                     <div key={idx} className="flex gap-3">
-                      <CheckCircle className="w-5 h-5 text-success-600 flex-shrink-0 mt-0.5" />
+                      <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
                       <span className="text-muted-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <Card className="bg-primary-50 border-primary-200">
+              <Card className="bg-primary/10 border-primary">
                 <CardContent className="pt-6">
                   <div className="flex gap-3 mb-3">
-                    <Clock className="w-5 h-5 text-primary-600 flex-shrink-0" />
+                    <Clock className="w-5 h-5 text-primary flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-foreground mb-1">Duração: 30 minutos</h4>
                       <MutedText block>
@@ -333,10 +333,10 @@ export default function DemoPage() {
                 </CardContent>
               </Card>
 
-              <Card className="bg-success-50 border-success-200">
+              <Card className="bg-success/10 border-success">
                 <CardContent className="pt-6">
                   <div className="flex gap-3 mb-3">
-                    <Eye className="w-5 h-5 text-success-600 flex-shrink-0" />
+                    <Eye className="w-5 h-5 text-success flex-shrink-0" />
                     <div>
                       <h4 className="font-semibold text-foreground mb-1">Teste Grátis por 14 dias</h4>
                       <MutedText block>
@@ -357,7 +357,7 @@ export default function DemoPage() {
             <h2 className="text-3xl font-bold mb-4">
               Prefere começar agora?
             </h2>
-            <p className="text-xl mb-8 text-primary-100">
+            <p className="text-xl mb-8 text-primary">
               Crie sua conta gratuita e comece a usar em minutos
             </p>
             <div className="flex gap-4 justify-center">

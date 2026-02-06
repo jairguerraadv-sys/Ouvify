@@ -2,13 +2,16 @@ import json
 import logging
 from datetime import timedelta
 
+from django.core.exceptions import PermissionDenied as DjangoPermissionDenied
 from django.db.models import Prefetch, Q, QuerySet
 from django.utils import timezone
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
 from rest_framework.response import Response
 
+from apps.billing.feature_gating import check_feature_limit
 from apps.core.decorators import require_feature
 from apps.core.exceptions import FeatureNotAvailableError
 from apps.core.pagination import StandardResultsSetPagination
@@ -162,19 +165,38 @@ class FeedbackViewSet(viewsets.ModelViewSet):
         O protocolo também é gerado automaticamente no save() do modelo.
 
         Valida limite de feedbacks por plano antes de criar.
+        
+        🔒 SEGURANÇA: Valida que o tenant existe para evitar feedbacks órfãos.
+        📊 FEATURE GATING (2026-02): Limite de 50 feedbacks/mês para plano Free.
         """
         tenant = get_current_tenant()
-
-        # Validar limite de feedbacks
-        if tenant and not tenant.can_create_feedback():
+        
+        # 🔒 VALIDAÇÃO CRÍTICA: Garantir que o tenant existe
+        if not tenant:
+            logger.error(
+                "⛔ Tentativa de criar feedback sem tenant válido | "
+                f"IP: {anonymize_ip(get_client_ip(self.request))}"
+            )
             raise FeatureNotAvailableError(
-                feature="feedback_limit",
+                feature="multi_tenancy",
                 message=(
-                    f"Limite de {tenant.get_feedback_limit()} feedbacks atingido para plano {tenant.plano.upper()}. "
-                    f"Você já possui {tenant.get_current_feedback_count()} feedbacks. "
-                    f"Faça upgrade para continuar criando feedbacks."
+                    "Não foi possível identificar a empresa. "
+                    "Certifique-se de acessar através do domínio correto."
                 ),
             )
+
+        # 📊 VALIDAÇÃO DE LIMITE: Feature Gating (Sprint 4 - FASE 1)
+        # Free plan: 50 feedbacks/mês | Pro/Enterprise: ilimitado
+        try:
+            check_feature_limit(tenant, 'feedbacks')
+        except DjangoPermissionDenied as e:
+            # Converte PermissionDenied do Django para DRF exception
+            logger.warning(
+                f"⚠️ Limite de feedbacks atingido | "
+                f"Tenant: {tenant.nome} | "
+                f"Plano: {getattr(tenant, 'plano', 'N/A')}"
+            )
+            raise PermissionDenied(detail=str(e))
 
         feedback = serializer.save()
 

@@ -247,9 +247,9 @@ function AdminContent() {
   const getPlanoBadgeColor = (plano: string) => {
     const colors: Record<string, string> = {
       free: "bg-muted",
-      starter: "bg-primary-600",
-      pro: "bg-secondary-600",
-      enterprise: "bg-warning-600",
+      starter: "bg-primary",
+      pro: "bg-secondary",
+      enterprise: "bg-warning",
     };
     return colors[plano] || "bg-muted";
   };
@@ -339,21 +339,21 @@ function AdminContent() {
               title="Ativos"
               value={metrics?.tenants_ativos}
               icon={Users}
-              color="text-success-400"
+              color="text-success"
               loading={metricsLoading}
             />
             <KPICard
               title="Novos no Mês"
               value={metrics?.novos_mes}
               icon={UserPlus}
-              color="text-primary-400"
+              color="text-primary"
               loading={metricsLoading}
             />
             <KPICard
               title="MRR"
               value={metrics?.mrr}
               icon={DollarSign}
-              color="text-success-400"
+              color="text-success"
               format="currency"
               loading={metricsLoading}
             />
@@ -361,7 +361,7 @@ function AdminContent() {
               title="MRR Stripe"
               value={metrics?.mrr_stripe}
               icon={TrendingUp}
-              color="text-secondary-400"
+              color="text-secondary"
               format="currency"
               loading={metricsLoading}
             />
@@ -369,7 +369,7 @@ function AdminContent() {
               title="Churn Rate"
               value={metrics?.churn_rate}
               icon={Activity}
-              color="text-error-400"
+              color="text-error"
               format="percent"
               loading={metricsLoading}
             />
@@ -398,12 +398,12 @@ function AdminContent() {
                   <p className="text-muted-foreground text-xs uppercase tracking-wide">
                     Starter
                   </p>
-                  <p className="text-2xl font-bold text-primary-400">
+                  <p className="text-2xl font-bold text-primary">
                     {metrics?.distribuicao_planos?.starter || 0}
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-primary-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-primary-400" />
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-primary" />
                 </div>
               </FlexBetween>
             </Card>
@@ -413,12 +413,12 @@ function AdminContent() {
                   <p className="text-muted-foreground text-xs uppercase tracking-wide">
                     Pro
                   </p>
-                  <p className="text-2xl font-bold text-secondary-400">
+                  <p className="text-2xl font-bold text-secondary">
                     {metrics?.distribuicao_planos?.pro || 0}
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-secondary-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-secondary-400" />
+                <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-secondary" />
                 </div>
               </FlexBetween>
             </Card>
@@ -428,12 +428,12 @@ function AdminContent() {
                   <p className="text-muted-foreground text-xs uppercase tracking-wide">
                     Enterprise
                   </p>
-                  <p className="text-2xl font-bold text-warning-400">
+                  <p className="text-2xl font-bold text-warning">
                     {metrics?.distribuicao_planos?.enterprise || 0}
                   </p>
                 </div>
-                <div className="w-10 h-10 rounded-lg bg-warning-500/20 flex items-center justify-center">
-                  <PieChart className="w-5 h-5 text-warning-400" />
+                <div className="w-10 h-10 rounded-lg bg-warning/10 flex items-center justify-center">
+                  <PieChart className="w-5 h-5 text-warning" />
                 </div>
               </FlexBetween>
             </Card>
@@ -593,7 +593,7 @@ function AdminContent() {
                             href={`http://${tenant.subdominio}.localhost:3000/dashboard`}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-primary-400 hover:text-primary-300 hover:underline text-sm"
+                            className="text-primary hover:text-primary hover:underline text-sm"
                           >
                             {tenant.subdominio}
                           </a>
@@ -630,10 +630,8 @@ function AdminContent() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            className={
-                              tenant.ativo
-                                ? "bg-success-600/20 text-success-400 border-success-600/30"
-                                : "bg-error-600/20 text-error-400 border-error-600/30"
+                            variant={
+                              tenant.ativo ? "success" : "destructive"
                             }
                           >
                             {tenant.ativo ? "Ativo" : "Inativo"}
@@ -693,7 +691,11 @@ function AdminContent() {
                               </DropdownMenuItem>
                               <DropdownMenuSeparator className="bg-border" />
                               <DropdownMenuItem
-                                className={`cursor-pointer ${tenant.ativo ? "text-error-400 hover:bg-error-500/20" : "text-success-400 hover:bg-success-500/20"}`}
+                                className={`cursor-pointer ${
+                                  tenant.ativo
+                                    ? "text-error hover:bg-error/10"
+                                    : "text-success hover:bg-success/10"
+                                }`}
                                 onClick={() =>
                                   setConfirmDialog({
                                     open: true,

@@ -287,7 +287,7 @@ export default function PrecosPage() {
                 >
                   {plan.popular && (
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                      <Badge className="bg-primary-600 text-foreground">Mais Popular</Badge>
+                      <Badge className="bg-primary text-foreground">Mais Popular</Badge>
                     </div>
                   )}
                   

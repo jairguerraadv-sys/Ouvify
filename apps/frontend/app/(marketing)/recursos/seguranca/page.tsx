@@ -237,7 +237,7 @@ export default function SegurancaPage() {
         </section>
 
         {/* CTA */}
-        <div className="bg-primary-50 border border-primary-200 rounded-xl p-8 text-center">
+        <div className="bg-primary/10 border border-primary rounded-xl p-8 text-center">
           <h3 className="text-2xl font-bold text-foreground mb-4">
             Quer saber mais sobre nossa segurança?
           </h3>
@@ -248,13 +248,13 @@ export default function SegurancaPage() {
           <div className="flex flex-wrap gap-4 justify-center">
             <Link
               href="/contato"
-              className="bg-primary-600 text-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+              className="bg-primary text-foreground px-8 py-3 rounded-lg font-medium hover:bg-primary transition"
             >
               Falar com Especialista
             </Link>
             <Link
               href="/recursos"
-              className="bg-card text-primary-600 px-8 py-3 rounded-lg font-medium border-2 border-primary-600 hover:bg-primary-50 transition"
+              className="bg-card text-primary px-8 py-3 rounded-lg font-medium border-2 border-primary hover:bg-primary/10 transition"
             >
               ← Voltar para Recursos
             </Link>

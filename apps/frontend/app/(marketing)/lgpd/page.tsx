@@ -55,10 +55,10 @@ export default function LGPDPage() {
             <span className="text-6xl">🇧🇷</span>
             <div>
               <h1 className="text-5xl font-bold mb-2">LGPD</h1>
-              <p className="text-2xl text-primary-200">Lei Geral de Proteção de Dados</p>
+              <p className="text-2xl text-primary">Lei Geral de Proteção de Dados</p>
             </div>
           </div>
-          <p className="text-xl text-primary-100 mt-6">
+          <p className="text-xl text-primary mt-6">
             A Ouvify está em total conformidade com a Lei nº 13.709/2018. 
             Conheça e exerça seus direitos como titular de dados.
           </p>
@@ -80,7 +80,7 @@ export default function LGPDPage() {
                 <p className="text-muted-foreground mb-4">{direito.description}</p>
                 <Link
                   href={`/lgpd/solicitacao?tipo=${direito.title.toLowerCase()}`}
-                  className="text-primary-600 font-medium hover:underline"
+                  className="text-primary font-medium hover:underline"
                 >
                   {direito.action} →
                 </Link>
@@ -94,7 +94,7 @@ export default function LGPDPage() {
           <h2 className="text-4xl font-bold text-foreground mb-8">Como Exercer Seus Direitos</h2>
           
           <div className="space-y-6">
-            <div className="bg-card rounded-xl p-8 border-l-4 border-primary-600">
+            <div className="bg-card rounded-xl p-8 border-l-4 border-primary">
               <h3 className="text-xl font-semibold mb-4">
                 <InlineFlexRow gap="2">
                   <span>📧</span>
@@ -106,7 +106,7 @@ export default function LGPDPage() {
               </p>
               <a
                 href="mailto:privacidade@ouvify.com"
-                className="inline-block bg-primary-600 text-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary-700 transition"
+                className="inline-block bg-primary text-foreground px-6 py-3 rounded-lg font-medium hover:bg-primary transition"
               >
                 privacidade@ouvify.com
               </a>
@@ -115,7 +115,7 @@ export default function LGPDPage() {
               </MutedText>
             </div>
 
-            <div className="bg-card rounded-xl p-8 border-l-4 border-secondary-600">
+            <div className="bg-card rounded-xl p-8 border-l-4 border-secondary">
               <h3 className="text-xl font-semibold mb-4">
                 <InlineFlexRow gap="2">
                   <span>🌐</span>
@@ -127,7 +127,7 @@ export default function LGPDPage() {
               </p>
               <Link
                 href="/lgpd/solicitacao"
-                className="inline-block bg-secondary-600 text-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary-700 transition"
+                className="inline-block bg-secondary text-foreground px-6 py-3 rounded-lg font-medium hover:bg-secondary transition"
               >
                 Acessar Portal LGPD
               </Link>
@@ -136,7 +136,7 @@ export default function LGPDPage() {
               </MutedText>
             </div>
 
-            <div className="bg-card rounded-xl p-8 border-l-4 border-success-600">
+            <div className="bg-card rounded-xl p-8 border-l-4 border-success">
               <h3 className="text-xl font-semibold mb-4">
                 <InlineFlexRow gap="2">
                   <span>⚙️</span>

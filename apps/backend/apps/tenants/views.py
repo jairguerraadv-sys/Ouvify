@@ -796,52 +796,6 @@ class CreateCheckoutSessionView(APIView):
             )
 
 
-class StripeWebhookView(APIView):
-    """
-    Webhook do Stripe para processar eventos de pagamento.
-
-    O Stripe chama isso quando um evento acontece (ex: checkout.session.completed).
-    Esta view processa o evento e atualiza o banco de dados.
-
-    POST /api/tenants/webhook/
-    Headers: X-Stripe-Signature: <signature>
-    Body: (raw JSON do Stripe)
-    """
-
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        payload = request.body
-        sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
-
-        if not sig_header:
-            logger.warning("❌ Webhook recebido sem assinatura Stripe")
-            return Response(
-                {
-                    "detail": "Header X-Stripe-Signature ausente",
-                    "error": "missing_signature",
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        try:
-            StripeService.handle_webhook(payload, sig_header)
-            logger.info("✅ Webhook do Stripe processado com sucesso")
-            return Response({"status": "success"}, status=status.HTTP_200_OK)
-        except ValueError as e:
-            logger.warning(f"⚠️ Webhook inválido: {str(e)}")
-            return Response(
-                {"detail": str(e), "error": "invalid_webhook"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        except Exception as e:
-            logger.error(f"❌ Erro ao processar webhook: {str(e)}")
-            return Response(
-                {"detail": "Erro ao processar webhook", "error": "internal_error"},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
-
-
 class UserMeView(APIView):
     """
     Retorna dados completos do usuário autenticado.

@@ -172,70 +172,101 @@
 }
 
 /* ===== Design System Ouvify - HSL Variables ===== */
-/* ===== shadcn/ui (HSL) variables ===== */
+/* ===== Modern SaaS Professional Palette ===== */
 :root {
-  /* 🎨 CORES PRIMÁRIAS */
-  --primary: 199 89% 48%;
-  --primary-foreground: 0 0% 100%;
-  --primary-light: 199 95% 62%;
-  --primary-dark: 201 96% 40%;
+  /* 🎨 BACKGROUNDS & BASE */
+  --background: 0 0% 100%;                    /* Pure white */
+  --foreground: 222.2 84% 4.9%;               /* Slate 950 - Deep, high contrast */
   
-  /* 🎯 SECUNDÁRIA */
-  --secondary: 271 91% 65%;
-  --secondary-foreground: 0 0% 100%;
-  --secondary-light: 270 95% 75%;
-  --secondary-dark: 272 72% 47%;
+  /* 🎯 PRIMARY - Professional Blue */
+  --primary: 221.2 83.2% 53.3%;               /* Blue 600 - Vibrant but serious */
+  --primary-foreground: 210 40% 98%;           /* Very light text on blue */
+  --primary-light: 217.2 91.2% 59.8%;          /* Blue 500 - Lighter shade */
+  --primary-dark: 224 76.3% 48%;               /* Blue 700 - Darker shade */
   
-  --accent: 271 91% 65%;
-  --accent-foreground: 0 0% 100%;
+  /* 🎨 SECONDARY - Subtle Gray */
+  --secondary: 210 40% 96.1%;                  /* Slate 50 - Very light gray */
+  --secondary-foreground: 222.2 47.4% 11.2%;   /* Slate 900 - Dark text on gray */
+  --secondary-light: 214.3 31.8% 91.4%;        /* Slate 100 */
+  --secondary-dark: 215 20.2% 65.1%;           /* Slate 400 */
   
-  /* 🎯 NEUTROS & BACKGROUNDS */
-  --background: 0 0% 100%;
-  --foreground: 0 0% 9%;
+  /* 🎨 ACCENT - Same as secondary for consistency */
+  --accent: 210 40% 96.1%;                     /* Slate 50 */
+  --accent-foreground: 222.2 47.4% 11.2%;      /* Slate 900 */
   
-  --muted: 210 40% 96%;
-  --muted-foreground: 0 0% 45%;
+  /* 🎯 MUTED - Supporting Backgrounds */
+  --muted: 210 40% 96.1%;                      /* Slate 50 - Subtle background */
+  --muted-foreground: 215.4 16.3% 46.9%;       /* Slate 600 - Medium gray text */
   
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+  /* 📄 CARD - Clean white with shadow */
+  --card: 0 0% 100%;                           /* White */
+  --card-foreground: 222.2 84% 4.9%;           /* Slate 950 */
   
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  /* 🔲 POPOVER - Elevated surfaces */
+  --popover: 0 0% 100%;                        /* White */
+  --popover-foreground: 222.2 84% 4.9%;        /* Slate 950 */
   
-  /* ✅ SEMÂNTICAS - STATUS & FEEDBACK */
-  --success: 142 71% 45%;
-  --success-foreground: 0 0% 100%;
-  --warning: 38 92% 50%;
-  --warning-foreground: 222 47% 11%;
-  --error: 0 84% 60%;
-  --error-foreground: 0 0% 100%;
-  --info: 217 91% 60%;
-  --info-foreground: 0 0% 100%;
+  /* ✅ SEMANTIC - Status & Feedback */
+  --success: 142 76% 36%;                      /* Green 600 - Professional success */
+  --success-foreground: 0 0% 100%;             /* White text */
+  --warning: 38 92% 50%;                       /* Amber 500 - Clear warning */
+  --warning-foreground: 26 83.3% 14.1%;        /* Amber 950 - Dark text on yellow */
+  --error: 0 84.2% 60.2%;                      /* Red 500 - Clear error */
+  --error-foreground: 0 0% 100%;               /* White text */
+  --info: 217.2 91.2% 59.8%;                   /* Blue 500 - Info blue */
+  --info-foreground: 0 0% 100%;                /* White text */
   
-  /* 🚨 DESTRUCTIVE */
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  /* 🚨 DESTRUCTIVE - Matches error */
+  --destructive: 0 84.2% 60.2%;                /* Red 500 */
+  --destructive-foreground: 0 0% 100%;         /* White text */
   
-  /* 🔗 INPUTS & BORDERS */
-  --input: 220 14% 96%;
-  --border: 220 13% 91%;
-  --ring: 199 89% 48%;
+  /* 🔗 INPUTS & BORDERS - Subtle & Clean */
+  --input: 214.3 31.8% 91.4%;                  /* Slate 200 - Subtle input bg */
+  --border: 214.3 31.8% 91.4%;                 /* Slate 200 - Consistent border */
+  --ring: 221.2 83.2% 53.3%;                   /* Blue 600 - Focus ring matches primary */
   
-  --radius: 0.5rem;
+  /* 🔘 BORDER RADIUS */
+  --radius: 0.5rem;                            /* 8px - Modern but not too rounded */
 }
 
-/* Dark Mode (compatibilidade) */
+/* 🌙 DARK MODE - Professional Dark Slate */
 .dark {
-  --background: 0 0% 9%;
-  --foreground: 0 0% 98%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 64%;
-  --input: 0 0% 15%;
-  --border: 0 0% 15%;
-  --card: 0 0% 9%;
-  --card-foreground: 0 0% 98%;
-  --popover: 0 0% 9%;
-  --popover-foreground: 0 0% 98%;
+  --background: 222.2 84% 4.9%;                /* Slate 950 - Deep dark */
+  --foreground: 210 40% 98%;                   /* Slate 50 - Light text */
+  
+  --primary: 217.2 91.2% 59.8%;                /* Blue 500 - Lighter blue for dark mode */
+  --primary-foreground: 222.2 47.4% 11.2%;     /* Dark text on blue */
+  
+  --secondary: 217.2 32.6% 17.5%;              /* Slate 800 - Dark gray */
+  --secondary-foreground: 210 40% 98%;         /* Light text */
+  
+  --muted: 217.2 32.6% 17.5%;                  /* Slate 800 */
+  --muted-foreground: 215 20.2% 65.1%;         /* Slate 400 - Muted text */
+  
+  --accent: 217.2 32.6% 17.5%;                 /* Slate 800 */
+  --accent-foreground: 210 40% 98%;            /* Light text */
+  
+  --card: 222.2 84% 4.9%;                      /* Slate 950 */
+  --card-foreground: 210 40% 98%;              /* Light text */
+  
+  --popover: 222.2 84% 4.9%;                   /* Slate 950 */
+  --popover-foreground: 210 40% 98%;           /* Light text */
+  
+  --border: 217.2 32.6% 17.5%;                 /* Slate 800 - Subtle borders */
+  --input: 217.2 32.6% 17.5%;                  /* Slate 800 */
+  --ring: 217.2 91.2% 59.8%;                   /* Blue 500 - Focus ring */
+  
+  /* Semantic colors stay similar but adjusted for dark mode readability */
+  --success: 142 76% 36%;
+  --success-foreground: 0 0% 100%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 26 83.3% 14.1%;
+  --error: 0 84.2% 60.2%;
+  --error-foreground: 0 0% 100%;
+  --info: 217.2 91.2% 59.8%;
+  --info-foreground: 222.2 47.4% 11.2%;
+  --destructive: 0 62.8% 30.6%;                /* Darker red for dark mode */
+  --destructive-foreground: 0 0% 100%;
 }
 
 /* ===== Acessibilidade: Skip to content ===== */

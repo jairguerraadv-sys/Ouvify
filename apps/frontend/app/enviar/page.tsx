@@ -14,6 +14,9 @@ import { DecorativeBlob, FlexRow, MutedText } from '@/components/ui';
 import { Shield, Lock, AlertCircle, MessageSquare, Send } from 'lucide-react';
 import Link from 'next/link';
 import type { FeedbackType } from '@/lib/types';
+import { ConsentCheckbox } from '@/components/consent/ConsentCheckbox';
+import { useConsent } from '@/hooks/use-consent';
+import { useTenantTheme } from '@/hooks/use-tenant-theme';
 
 interface FormData {
   tipo: FeedbackType;
@@ -28,6 +31,7 @@ interface FormErrors {
 }
 
 export default function EnviarFeedbackPage() {
+  const theme = useTenantTheme(); // 🎨 WHITE LABEL: Aplica tema do tenant
   const [formData, setFormData] = useState<FormData>({
     tipo: 'denuncia',
     titulo: '',
@@ -39,11 +43,20 @@ export default function EnviarFeedbackPage() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
   const [protocolo, setProtocolo] = useState<string | null>(null);
+  const [consentAccepted, setConsentAccepted] = useState(false);
+  const { acceptConsentAnonymous } = useConsent();
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setErrors({});
+
+    // Validar consentimento LGPD
+    if (!consentAccepted) {
+      setErrors({ consent: 'Você deve aceitar os termos de consentimento para continuar' });
+      setLoading(false);
+      return;
+    }
 
     // Validar formulário
     const validation = validateForm(formData, {
@@ -66,6 +79,19 @@ export default function EnviarFeedbackPage() {
         descricao: sanitizeTextOnly(formData.descricao.trim()),
         email_contato: formData.anonimo ? '' : stripHtml(formData.email_contato.trim().toLowerCase()),
       };
+
+      // Aceitar consentimento LGPD antes de enviar o feedback
+      const consentEmail = sanitizedData.email_contato || undefined;
+      const consentAccepted = await acceptConsentAnonymous(
+        [{ document_type: 'lgpd', version: '1.0' }],
+        consentEmail
+      );
+
+      if (!consentAccepted) {
+        setErrors({ submit: 'Erro ao registrar consentimento. Por favor, tente novamente.' });
+        setLoading(false);
+        return;
+      }
       
       const response = await api.post<{ protocolo: string }>('/api/feedbacks/', sanitizedData);
       
@@ -80,6 +106,7 @@ export default function EnviarFeedbackPage() {
         anonimo: false,
         email_contato: ''
       });
+      setConsentAccepted(false);
     } catch (err) {
       console.error('Erro ao enviar feedback:', err);
       const errorMessage = getErrorMessage(err);
@@ -92,7 +119,7 @@ export default function EnviarFeedbackPage() {
     } finally {
       setLoading(false);
     }
-  }, [formData]);
+  }, [formData, consentAccepted, acceptConsentAnonymous]);
 
   const handleChange = useCallback((field: keyof FormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -111,7 +138,23 @@ export default function EnviarFeedbackPage() {
           {/* Header */}
           <div className="text-center mb-10 animate-fade-in">
             <Link href="/" className="inline-block mb-6 hover:scale-105 transition-transform">
-              <Logo size="xl" />
+              {/* 🎨 WHITE LABEL: Logo customizada ou nome da empresa */}
+              {theme?.logo ? (
+                <img 
+                  src={theme.logo} 
+                  alt={theme.nome}
+                  className="h-16 w-auto mx-auto object-contain"
+                />
+              ) : (
+                <div className="flex flex-col items-center gap-2">
+                  <Logo size="xl" />
+                  {theme?.nome && theme.nome !== 'Ouvify' && (
+                    <span className="text-lg font-bold text-primary">
+                      {theme.nome}
+                    </span>
+                  )}
+                </div>
+              )}
             </Link>
             <div className="mb-4">
               <Badge variant="primary" size="lg" className="gap-2 border border-primary/20 bg-primary/10">
@@ -121,6 +164,11 @@ export default function EnviarFeedbackPage() {
             </div>
             <H2 className="text-primary mb-3">
               📢 Canal de <span className="text-secondary">Ouvidoria</span>
+              {theme?.nome && theme.nome !== 'Ouvify' && (
+                <span className="block text-xl mt-2 text-muted-foreground font-normal">
+                  {theme.nome}
+                </span>
+              )}
             </H2>
             <Paragraph>
               <MutedText size="inherit">
@@ -281,6 +329,22 @@ export default function EnviarFeedbackPage() {
                 </div>
               )}
 
+              {/* Checkbox de Consentimento LGPD */}
+              <ConsentCheckbox
+                checked={consentAccepted}
+                onChange={setConsentAccepted}
+                email={formData.email_contato}
+                className="mb-4"
+              />
+              {errors.consent && (
+                <div className="p-3 bg-error/10 border border-error/30 rounded-lg -mt-2 mb-4">
+                  <p className="text-error text-sm flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                    <span>{errors.consent}</span>
+                  </p>
+                </div>
+              )}
+
               {/* Mensagem de Erro */}
               {errors.submit && !errors.submit.includes('conectar ao servidor') && (
                 <div className="p-4 bg-error/10 border border-error/30 rounded-lg">
@@ -306,6 +370,12 @@ export default function EnviarFeedbackPage() {
                   </>
                 )}
               </Button>
+              
+              {/* Texto de Segurança */}
+              <div className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+                <Lock className="h-3.5 w-3.5" />
+                <p>Suas informações são protegidas por criptografia de ponta a ponta</p>
+              </div>
 
               {/* Link para Acompanhar */}
               <div className="text-center pt-4 border-t border-border">
@@ -314,7 +384,7 @@ export default function EnviarFeedbackPage() {
                 </MutedText>
                 <Link 
                   href="/acompanhar" 
-                  className="text-primary hover:text-primary-dark font-semibold inline-flex items-center gap-2 group transition-colors"
+                  className="text-primary hover:text-primary font-semibold inline-flex items-center gap-2 group transition-colors"
                 >
                   <MessageSquare className="w-4 h-4 group-hover:scale-110 transition-transform" />
                   Acompanhar Status do Protocolo

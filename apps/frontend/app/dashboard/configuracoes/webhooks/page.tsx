@@ -559,7 +559,7 @@ function WebhookCard({
             <Switch checked={webhook.is_active} onCheckedChange={onToggle} />
             <div>
               <div className="flex items-center gap-2">
-                <code className="text-sm font-mono bg-background-tertiary px-2 py-0.5 rounded">
+                <code className="text-sm font-mono bg-muted px-2 py-0.5 rounded">
                   {webhook.url}
                 </code>
                 <Button
@@ -613,11 +613,11 @@ function WebhookCard({
         {/* Stats */}
         <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
           <span className="flex items-center gap-1">
-            <Check className="w-4 h-4 text-success-500" />
+            <Check className="w-4 h-4 text-success" />
             {webhook.successful_deliveries} sucesso
           </span>
           <span className="flex items-center gap-1">
-            <X className="w-4 h-4 text-error-500" />
+            <X className="w-4 h-4 text-error" />
             {webhook.failed_deliveries} falhas
           </span>
           <span>Taxa: {successRate}%</span>
@@ -683,9 +683,9 @@ function WebhookCard({
                   >
                     <div className="flex items-center gap-2">
                       {delivery.success ? (
-                        <Check className="w-4 h-4 text-success-500" />
+                        <Check className="w-4 h-4 text-success" />
                       ) : (
-                        <X className="w-4 h-4 text-error-500" />
+                        <X className="w-4 h-4 text-error" />
                       )}
                       <Badge variant="outline">{delivery.event_type}</Badge>
                       <span className="text-muted-foreground">

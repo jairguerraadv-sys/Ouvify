@@ -160,3 +160,21 @@ class CancelSubscriptionSerializer(serializers.Serializer):
     """Serializer para cancelamento de assinatura."""
 
     at_period_end = serializers.BooleanField(default=True)
+
+
+class UsageStatsSerializer(serializers.Serializer):
+    """
+    Serializer para estatísticas de uso de features (Feature Gating).
+    
+    Retorna informações sobre uso atual vs limites do plano.
+    Usado pelo frontend para exibir alertas e bloquear ações.
+    """
+
+    plan = serializers.CharField(help_text="Slug do plano atual")
+    plan_name = serializers.CharField(help_text="Nome do plano atual")
+    feedbacks_used = serializers.IntegerField(help_text="Feedbacks criados este mês")
+    feedbacks_limit = serializers.IntegerField(help_text="Limite de feedbacks/mês (-1 = ilimitado)")
+    usage_percent = serializers.FloatField(help_text="Porcentagem de uso (0-100)")
+    is_blocked = serializers.BooleanField(help_text="Se atingiu o limite e está bloqueado")
+    is_near_limit = serializers.BooleanField(help_text="Se está próximo do limite (>80%)")
+

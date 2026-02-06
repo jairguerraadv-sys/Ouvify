@@ -225,7 +225,7 @@ export default function RelatoriosPage() {
                 <button
                   onClick={() => handleExport('json')}
                   disabled={loading}
-                  className="w-full bg-primary-600 hover:bg-primary-700 disabled:bg-muted disabled:cursor-not-allowed text-text-inverse font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
+                  className="w-full bg-primary hover:bg-primary disabled:bg-muted disabled:cursor-not-allowed text-text-inverse font-medium py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
                 >
                   <Download className="w-4 h-4" />
                   {loading ? 'Exportando...' : 'Exportar JSON'}
@@ -235,14 +235,14 @@ export default function RelatoriosPage() {
           </div>
 
           {/* Informações Adicionais */}
-          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4">
+          <div className="bg-primary/10 border border-primary rounded-lg p-4">
             <div className="flex gap-3">
-              <AlertCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-primary-900 mb-2">
+                <h4 className="text-sm font-medium text-primary mb-2">
                   Sobre os Relatórios
                 </h4>
-                <ul className="text-sm text-primary-800 space-y-1">
+                <ul className="text-sm text-primary space-y-1">
                   <li>• Os dados exportados respeitam os filtros aplicados acima</li>
                   <li>• Relatórios incluem todos os campos dos feedbacks</li>
                   <li>• Dados sensíveis são mascarados conforme LGPD</li>

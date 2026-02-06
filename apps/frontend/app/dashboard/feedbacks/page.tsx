@@ -97,41 +97,41 @@ function FeedbacksContent() {
     } = {
       resolvido: {
         label: "Resolvido",
-        className: "bg-success-100 text-success-700 hover:bg-success-100",
+        variant: "success" as const,
         icon: <CheckCircle className="h-3 w-3 mr-1" />,
       },
       em_analise: {
         label: "Em Análise",
-        className: "bg-primary-100 text-primary-700 hover:bg-primary-100",
+        variant: "default" as const,
         icon: <Clock className="h-3 w-3 mr-1" />,
       },
       pendente: {
         label: "Pendente",
-        className: "bg-neutral-100 text-neutral-700 hover:bg-neutral-100",
+        variant: "outline" as const,
         icon: <AlertCircle className="h-3 w-3 mr-1" />,
       },
     };
 
-    const variant = variants[status] || variants.pendente;
+    const badgeVariant = variants[status] || variants.pendente;
 
     return (
-      <Badge variant="outline" className={variant.className}>
-        {variant.icon}
-        {variant.label}
+      <Badge variant={badgeVariant.variant}>
+        {badgeVariant.icon}
+        {badgeVariant.label}
       </Badge>
     );
   };
 
   const getCategoryColor = (categoria: string) => {
     const colors: { [key: string]: string } = {
-      Conduta: "bg-error-100 text-error-700",
-      Benefícios: "bg-primary-100 text-primary-700",
-      Reconhecimento: "bg-success-100 text-success-700",
-      Segurança: "bg-warning-100 text-warning-700",
-      Infraestrutura: "bg-secondary-100 text-secondary-700",
+      Conduta: "bg-error/10 text-error",
+      Benefícios: "bg-primary/10 text-primary",
+      Reconhecimento: "bg-success/10 text-success",
+      Segurança: "bg-warning/10 text-warning",
+      Infraestrutura: "bg-secondary/10 text-secondary",
     };
 
-    return colors[categoria] || "bg-neutral-100 text-neutral-700";
+    return colors[categoria] || "bg-muted text-muted-foreground";
   };
 
   return (
@@ -153,7 +153,7 @@ function FeedbacksContent() {
               <div className="flex flex-col md:flex-row gap-4">
                 {/* Search */}
                 <div className="flex-1 relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-text-tertiary" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
                     placeholder="Buscar por protocolo ou assunto..."
                     value={searchInput}
@@ -216,15 +216,15 @@ function FeedbacksContent() {
               {isLoading ? (
                 <div className="text-center py-12">
                   <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4"></div>
-                  <p className="text-text-secondary">Carregando feedbacks...</p>
+                  <p className="text-muted-foreground">Carregando feedbacks...</p>
                 </div>
               ) : error ? (
                 <div className="text-center py-12">
-                  <AlertCircle className="h-12 w-12 text-error-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-semibold text-text-primary mb-2">
+                  <AlertCircle className="h-12 w-12 text-error mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
                     Erro ao carregar feedbacks
                   </h3>
-                  <p className="text-text-tertiary">{error}</p>
+                  <p className="text-muted-foreground">{error}</p>
                 </div>
               ) : filteredFeedbacks.length === 0 ? (
                 // Empty state diferente se é filtro ou se realmente não tem feedbacks
@@ -250,7 +250,7 @@ function FeedbacksContent() {
                   />
                 )
               ) : (
-                <div className="rounded-lg border border-border-light overflow-hidden">
+                <div className="rounded-lg border border-border overflow-hidden">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -271,16 +271,16 @@ function FeedbacksContent() {
                           className="hover:bg-background-secondary"
                         >
                           <TableCell>
-                            <code className="text-xs font-mono bg-background-tertiary px-2 py-1 rounded">
+                            <code className="text-xs font-mono bg-muted px-2 py-1 rounded">
                               {feedback.protocolo}
                             </code>
                           </TableCell>
                           <TableCell>
                             <div>
-                              <p className="font-medium text-secondary-600 text-sm">
+                              <p className="font-medium text-foreground text-sm">
                                 {feedback.titulo}
                               </p>
-                              <p className="text-xs text-text-tertiary mt-0.5">
+                              <p className="text-xs text-muted-foreground mt-0.5">
                                 {feedback.tipo}
                               </p>
                             </div>
@@ -293,7 +293,7 @@ function FeedbacksContent() {
                               {feedback.categoria}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-sm text-text-secondary">
+                          <TableCell className="text-sm text-muted-foreground">
                             {formatDate(feedback.data_criacao, "short")}
                           </TableCell>
                           <TableCell>

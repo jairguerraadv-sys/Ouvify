@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import ConsentGate from '@/components/consent/ConsentGate';
 import { useAuth } from '@/contexts/AuthContext';
 import { cn } from '@/lib/utils';
 
@@ -348,25 +349,27 @@ interface DashboardLayoutProps {
 
 /**
  * Layout wrapper para páginas do dashboard
- * Inclui sidebar e área de conteúdo principal
+ * Inclui sidebar, área de conteúdo principal e gate de consentimento LGPD
  */
 export function DashboardLayout({ children, className }: DashboardLayoutProps) {
   const { user } = useAuth();
 
   return (
     <ProtectedRoute>
-      <div className="flex min-h-screen bg-background-secondary">
-        <Sidebar user={user || undefined} />
-        <main className={cn(
-          'flex-1 overflow-auto',
-          'px-6 py-8',
-          className
-        )}>
-          <div className="max-w-7xl mx-auto">
-            {children}
-          </div>
-        </main>
-      </div>
+      <ConsentGate>
+        <div className="flex min-h-screen bg-background-secondary">
+          <Sidebar user={user || undefined} />
+          <main className={cn(
+            'flex-1 overflow-auto',
+            'px-6 py-8',
+            className
+          )}>
+            <div className="max-w-7xl mx-auto">
+              {children}
+            </div>
+          </main>
+        </div>
+      </ConsentGate>
     </ProtectedRoute>
   );
 }

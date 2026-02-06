@@ -146,7 +146,7 @@ function EditFeedbackContent() {
     return (
       <div className="container mx-auto p-6 max-w-4xl">
         <Card className="p-6 text-center">
-          <p className="text-text-secondary">Feedback não encontrado</p>
+          <p className="text-muted-foreground">Feedback não encontrado</p>
           <Button className="mt-4" onClick={() => router.push('/dashboard/feedbacks')}>
             Voltar para Feedbacks
           </Button>
@@ -165,8 +165,8 @@ function EditFeedbackContent() {
           </Button>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Editar Feedback</h1>
-          <p className="text-sm text-text-secondary">
+          <h1 className="text-2xl font-bold text-foreground">Editar Feedback</h1>
+          <p className="text-sm text-muted-foreground">
             Protocolo: {feedback.protocolo}
           </p>
         </div>
@@ -177,14 +177,14 @@ function EditFeedbackContent() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Tipo */}
           <div>
-            <label htmlFor="tipo" className="block text-sm font-medium text-text-secondary mb-2">
+            <label htmlFor="tipo" className="block text-sm font-medium text-muted-foreground mb-2">
               Tipo de Feedback
             </label>
             <select
               id="tipo"
               value={tipo}
               onChange={(e) => setTipo(e.target.value)}
-              className="w-full px-3 py-2 border border-border-light bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-border-focus"
+              className="w-full px-3 py-2 border border-border bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               required
             >
               {FEEDBACK_TIPOS.map((item) => (
@@ -197,8 +197,8 @@ function EditFeedbackContent() {
 
           {/* Título */}
           <div>
-            <label htmlFor="titulo" className="block text-sm font-medium text-text-secondary mb-2">
-              Título <span className="text-error-500">*</span>
+            <label htmlFor="titulo" className="block text-sm font-medium text-muted-foreground mb-2">
+              Título <span className="text-error">*</span>
             </label>
             <Input
               id="titulo"
@@ -210,15 +210,15 @@ function EditFeedbackContent() {
               minLength={10}
               maxLength={200}
             />
-            <p className="text-xs text-text-tertiary mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {titulo.length}/200 caracteres
             </p>
           </div>
 
           {/* Descrição */}
           <div>
-            <label htmlFor="descricao" className="block text-sm font-medium text-text-secondary mb-2">
-              Descrição <span className="text-error-500">*</span>
+            <label htmlFor="descricao" className="block text-sm font-medium text-muted-foreground mb-2">
+              Descrição <span className="text-error">*</span>
             </label>
             <Textarea
               id="descricao"
@@ -229,21 +229,21 @@ function EditFeedbackContent() {
               minLength={20}
               rows={6}
             />
-            <p className="text-xs text-text-tertiary mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {descricao.length} caracteres
             </p>
           </div>
 
           {/* Status */}
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-text-secondary mb-2">
+            <label htmlFor="status" className="block text-sm font-medium text-muted-foreground mb-2">
               Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full px-3 py-2 border border-border-light bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-border-focus"
+              className="w-full px-3 py-2 border border-border bg-background rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               required
             >
               {FEEDBACK_STATUS.map((item) => (
@@ -257,16 +257,16 @@ function EditFeedbackContent() {
           {/* Email de Contato (read-only) */}
           {feedback.email_contato && (
             <div>
-              <label className="block text-sm font-medium text-text-secondary mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Email de Contato
               </label>
               <Input
                 type="email"
                 value={feedback.email_contato}
                 disabled
-                className="bg-background-secondary"
+                className="bg-muted"
               />
-              <p className="text-xs text-text-tertiary mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Este campo não pode ser editado
               </p>
             </div>
@@ -306,8 +306,8 @@ function EditFeedbackContent() {
       </Card>
 
       {/* Info Card */}
-      <Card className="p-4 mt-4 bg-primary-50 border-primary-200">
-        <p className="text-sm text-primary-800">
+      <Card className="p-4 mt-4 bg-primary/10 border-primary">
+        <p className="text-sm text-primary">
           <strong>Nota:</strong> Ao editar um feedback, todas as interações e histórico serão mantidos.
           Apenas os campos acima serão atualizados.
         </p>

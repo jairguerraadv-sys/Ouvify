@@ -59,23 +59,23 @@ export default function AuditLogPage() {
                 </h3>
                 <ul className="space-y-3 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
-                    <span className="text-success-500">✓</span>
+                    <span className="text-success">✓</span>
                     Revise alertas de segurança regularmente
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-success-500">✓</span>
+                    <span className="text-success">✓</span>
                     Monitore tentativas de login falhadas
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-success-500">✓</span>
+                    <span className="text-success">✓</span>
                     Verifique acessos de IPs desconhecidos
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-success-500">✓</span>
+                    <span className="text-success">✓</span>
                     Configure alertas automáticos para eventos críticos
                   </li>
                   <li className="flex items-start gap-2">
-                    <span className="text-success-500">✓</span>
+                    <span className="text-success">✓</span>
                     Exporte logs periodicamente para backup
                   </li>
                 </ul>
@@ -87,22 +87,22 @@ export default function AuditLogPage() {
                 </h3>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   <div className="flex items-center gap-2">
-                    <span className="text-primary-500">🔐</span> Login/Logout
+                    <span className="text-primary">🔐</span> Login/Logout
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-success-500">➕</span> Criações
+                    <span className="text-success">➕</span> Criações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-warning-500">✏️</span> Alterações
+                    <span className="text-warning">✏️</span> Alterações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-error-500">🗑️</span> Exclusões
+                    <span className="text-error">🗑️</span> Exclusões
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-secondary-500">📥</span> Exportações
+                    <span className="text-secondary">📥</span> Exportações
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-error-600">🚨</span> Alertas
+                    <span className="text-error">🚨</span> Alertas
                   </div>
                 </div>
               </div>

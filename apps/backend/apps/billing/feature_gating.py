@@ -254,3 +254,81 @@ def get_plan_features(client) -> dict:
     if not subscription:
         return {}
     return subscription.plan.features
+
+
+def check_feature_limit(client, feature_slug: str) -> bool:
+    """
+    Verifica se o client pode usar uma feature baseado em limites do plano.
+    
+    Implementa hard enforcement de quotas mensais:
+    - Free plan: 50 feedbacks/mês
+    - Pro/Enterprise: ilimitado
+    
+    Args:
+        client: Instância do Client (tenant)
+        feature_slug: Slug da feature a verificar ('feedbacks', 'team_members', etc)
+        
+    Returns:
+        True se pode usar a feature
+        
+    Raises:
+        PermissionDenied: Se limite foi excedido
+        
+    Example:
+        >>> check_feature_limit(request.user.client, 'feedbacks')
+        True  # OK, pode criar feedback
+    """
+    from django.core.exceptions import PermissionDenied
+    from django.utils import timezone
+    
+    # Busca subscription ativa
+    subscription = get_client_subscription(client)
+    
+    if not subscription:
+        # Fallback: se não tem subscription, bloqueia
+        raise PermissionDenied(
+            "Assinatura não encontrada. Entre em contato com o suporte."
+        )
+    
+    # Implementação específica para feedbacks
+    if feature_slug == 'feedbacks':
+        # Busca limite do plano
+        limit = subscription.plan.get_limit('feedbacks_per_month')
+        
+        # Se não tem limite definido, verifica pelo slug do plano
+        if limit is None:
+            # Free plan = 50 feedbacks/mês (hard limit)
+            if subscription.plan.slug == 'free':
+                limit = 50
+            else:
+                # Pro/Enterprise/Starter = ilimitado
+                return True
+        
+        # Se limite é 0 ou negativo = ilimitado
+        if limit <= 0:
+            return True
+        
+        # Conta feedbacks do mês atual
+        from apps.feedbacks.models import Feedback
+        
+        now = timezone.now()
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        
+        feedbacks_count = Feedback.objects.filter(
+            client=client,
+            data_criacao__gte=month_start
+        ).count()
+        
+        # Verifica se está no limite
+        if feedbacks_count >= limit:
+            raise PermissionDenied(
+                f"Limite de {limit} feedbacks/mês atingido para o plano {subscription.plan.name}. "
+                f"Você já possui {feedbacks_count} feedbacks este mês. "
+                f"Faça upgrade para o plano Pro para criar feedbacks ilimitados."
+            )
+        
+        return True
+    
+    # Para outras features, usar lógica genérica
+    # (pode ser expandido futuramente)
+    return True

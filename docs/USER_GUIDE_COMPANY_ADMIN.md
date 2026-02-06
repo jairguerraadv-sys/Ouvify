@@ -1,103 +1,558 @@
-# 📋 Guia do Administrador da Empresa - Ouvify
+# 📋 Company Administrator Guide - Ouvify
 
-**Versão:** 1.0  
-**Data:** 05 de Fevereiro de 2026  
-**Para:** Administradores de empresas que usam o Ouvify
-
----
-
-## 📖 Índice
-
-1. [Primeiros Passos](#1-primeiros-passos)
-2. [Configuração Inicial](#2-configuração-inicial)
-3. [Gestão de Equipe](#3-gestão-de-equipe)
-4. [Gerenciamento de Feedbacks](#4-gerenciamento-de-feedbacks)
-5. [Analytics e Relatórios](#5-analytics-e-relatórios)
-6. [Configurações Avançadas](#6-configurações-avançadas)
-7. [Billing e Assinatura](#7-billing-e-assinatura)
-8. [Troubleshooting](#8-troubleshooting)
+**Version:** 1.0 (Release Candidate)  
+**Date:** February 6, 2026  
+**Audience:** Business administrators managing their Ouvify instance
 
 ---
 
-## 1. Primeiros Passos
+## 📖 Table of Contents
 
-### 1.1 Como criar conta da empresa
-
-1. Acesse [ouvify.vercel.app/cadastro](https://ouvify.vercel.app/cadastro)
-2. Preencha os dados da empresa:
-   - **Razão Social:** Nome oficial da empresa
-   - **CNPJ:** Identificação fiscal
-   - **Email empresarial:** Será usado para login e notificações
-   - **Senha forte:** Mínimo 8 caracteres, letras e números
-3. Escolha um **subdomínio** único:
-   - Exemplo: se escolher "minhaempresa", seu canal será `minhaempresa.ouvify.com`
-   - Este endereço será usado pelos seus clientes para enviar feedbacks
-4. Aceite os termos de uso e política de privacidade
-5. Clique em **"Criar Conta"**
-6. Verifique seu email (pode chegar em spam)
-7. Clique no link de verificação
-
-**Pronto!** Você criou sua conta e já pode acessar o dashboard.
-
-### 1.2 Tour pela Interface
-
-Após fazer login, você verá:
-
-**📊 Dashboard Principal** (`/dashboard`)
-- Visão geral de feedbacks recebidos
-- Métricas rápidas: total, novos hoje, em análise, resolvidos
-- Gráficos de tendências
-
-**📝 Feedbacks** (`/dashboard/feedbacks`)
-- Lista de todos os feedbacks recebidos
-- Filtros por status, tipo, prioridade, data
-- Busca por palavras-chave ou protocolo
-
-**👥 Equipe** (`/dashboard/equipe`)
-- Membros da sua equipe
-- Convites pendentes
-- Gerenciamento de roles (Owner/Admin/Viewer)
-
-**⚙️ Configurações** (`/dashboard/configuracoes`)
-- Personalização do white label (logo, cores)
-- Webhooks
-- Notificações
-
-**📈 Analytics** (`/dashboard/analytics`)
-- Estatísticas detalhadas
-- Exportar relatórios
-
-**💳 Assinatura** (`/dashboard/assinatura`)
-- Plano atual
-- Uso, billing
+1. [🚀 Getting Started](#-getting-started)
+2. [🎨 White-Label Customization](#-white-label-customization)
+3. [🛡️ Security Settings](#️-security-settings)
+4. [📊 Audit Log](#-audit-log)
+5. [👥 Team Management](#-team-management)
+6. [🎫 Feedback Management](#-feedback-management)
+7. [💳 Billing & Subscription](#-billing--subscription)
+8. [❓ Troubleshooting](#-troubleshooting)
 
 ---
 
-## 2. Configuração Inicial
+## 🚀 Getting Started
 
-### 2.1 Personalizar White Label (Branding)
+### Creating Your Company Account
 
-Deixe o canal com a cara da sua empresa:
+1. **Access:** Navigate to [ouvify.vercel.app/cadastro](https://ouvify.vercel.app/cadastro)
+2. **Fill Company Information:**
+   - **Company Name**: Legal business name
+   - **Tax ID (CNPJ)**: Business registration number
+   - **Business Email**: Will be your login credential
+   - **Strong Password**: Minimum 8 characters with letters and numbers
+3. **Choose Subdomain:**
+   - Example: If you choose `mycompany`, your feedback page will be `mycompany.ouvify.com`
+   - ⚠️ **Cannot be changed later** - choose wisely!
+4. **Accept Terms**: Review and accept the Terms of Service and Privacy Policy
+5. **Create Account**
+6. **Email Verification**: Check your inbox (may be in spam folder)
+7. **Activate Account**: Click the verification link
 
-1. Vá em **Configurações** > **Aparência**
-2. **Upload do Logo:**
-   - Tamanho recomendado: 200x200px
-   - Formatos: PNG, JPG, SVG
-   - Aparecerá na página de feedback dos seus clientes
-3. **Cores Primária e Secundária:**
-   - Escolha cores que combinem com sua marca
-   - Use o seletor de cores ou insira código HEX
-   - Preview automático
-4. **Mensagem de Boas-Vindas** (opcional):
-   - Texto que aparece no topo da página de feedback
-   - Exemplo: "Sua opinião é importante! Envie seu feedback."
-5. Clique em **"Salvar Alterações"**
+✅ **Done!** You can now log in to your dashboard.
 
-**Dica:** Teste o link público (`{seu-subdominio}.ouvify.com`) para ver como seus clientes verão.
+---
 
-###2.2 Configurar Domínio Personalizado (Opcional)
+### 🎓 Onboarding Checklist
 
-Quer usar `feedback.minhaempresa.com` em vez de `minhaempresa.ouvify.com`?
+After your first login, you'll see an **Onboarding Checklist** with 4 tasks:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ ✨ Configure Your Account                             X │
+│ Complete the steps below to get started (0/3 completed) │
+├─────────────────────────────────────────────────────────┤
+│ Progress: 0/4                                  [0%] ▒▒▒▒▒│
+├─────────────────────────────────────────────────────────┤
+│ ○ 🎨 Customize Branding            [Configure →]        │
+│ ○ 🏷️ Create Tags/Channels          [Create Tags →]      │
+│ ○ 💬 Submit Test Feedback          [View Feedbacks →]   │
+│ ○ 👥 Invite Team (Optional)        [Invite →]           │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Each task is critical:**
+
+1. **🎨 Customize Branding** (Required)
+   - Upload your logo and set brand colors
+   - Your public feedback page will reflect your brand
+   
+2. **🏷️ Create Tags/Channels** (Required)
+   - Organize feedbacks by department or category
+   - Example: "HR", "Finance", "IT Support"
+   
+3. **💬 Submit Test Feedback** (Required)
+   - Test the feedback flow from a user's perspective
+   - Ensure everything works as expected
+   
+4. **👥 Invite Team** (Optional)
+   - Add collaborators to manage feedbacks
+   - Assign different permission levels
+
+**Auto-Dismiss:** When you complete all required tasks (3/3), the checklist automatically closes after 3 seconds. You can manually dismiss it anytime by clicking the **X**.
+
+**Progress Tracking:**
+- **0-33%**: Just getting started
+- **34-66%**: Making good progress
+- **67-99%**: Almost there!
+- **100%**: 🎉 Account fully configured!
+
+---
+
+## 🎨 White-Label Customization
+
+Make Ouvify look like your own product. Navigate to **Settings** > **Branding**.
+
+### 📸 Logo Upload
+
+**Requirements:**
+- **Format**: PNG, JPG, or SVG
+- **Size**: Recommended 200x200px (max 2MB)
+- **Background**: Transparent PNG works best
+
+**Steps:**
+1. Click **"Upload Logo"**
+2. Select your file
+3. Preview appears instantly
+4. Click **"Save Changes"**
+
+**Where it appears:**
+- ✅ Public feedback page header
+- ✅ Email notifications
+- ✅ Customer portal
+
+---
+
+### 🎨 Brand Colors
+
+**Primary Color:**
+- Main brand color (buttons, links, headers)
+- Use your company's primary color
+- Default: `#6366F1` (Indigo)
+
+**Secondary Color:**
+- Accent color (badges, alerts, hover states)
+- Complementary to primary
+- Default: `#8B5CF6` (Purple)
+
+**How to set:**
+1. Click the color picker
+2. Choose your color OR paste HEX code (e.g., `#FF5733`)
+3. See live preview
+4. Click **"Save Changes"**
+
+**Pro Tip:** Use your brand style guide colors for perfect consistency.
+
+---
+
+### 🌐 Custom Domain (Enterprise Plan)
+
+Want `feedback.mycompany.com` instead of `mycompany.ouvify.com`?
+
+**Available on:** Enterprise Plan only
+
+**Setup:**
+1. Go to **Settings** > **Domains**
+2. Enter your desired domain: `feedback.mycompany.com`
+3. Add DNS records (we'll provide CNAME values)
+4. Click **"Verify Domain"**
+5. Wait 24-48 hours for propagation
+
+**DNS Configuration:**
+```
+Type: CNAME
+Host: feedback
+Value: cname.vercel-dns.com
+TTL: 3600
+```
+
+---
+
+## 🛡️ Security Settings
+
+Navigate to **Profile** > **Security** for advanced security controls.
+
+### 🔐 Two-Factor Authentication (2FA/MFA)
+
+Add an extra security layer to your account. **Highly recommended for admins!**
+
+#### Setup 2FA
+
+1. Go to **Profile** > **Security** > **Two-Factor Authentication**
+2. Click **"Enable 2FA"**
+3. **Scan QR Code:**
+   - Open your authenticator app (Google Authenticator, Authy, 1Password, etc.)
+   - Scan the QR code displayed
+   - If you can't scan, manually enter the secret key
+4. **Verify Setup:**
+   - Enter the 6-digit code from your app
+   - Click **"Confirm"**
+5. **Save Backup Codes:**
+   - You'll see 10 single-use recovery codes
+   - Click **"Download .txt"** or **"Copy All"**
+   - ⚠️ **Store securely!** These are your recovery method if you lose your device
+
+✅ **2FA is now active!** Next login will require a code.
+
+---
+
+#### Using 2FA at Login
+
+After entering your email/password, you'll be redirected to:
+
+**Challenge Page:**
+```
+┌─────────────────────────────────────────┐
+│  🔐 Two-Factor Authentication           │
+├─────────────────────────────────────────┤
+│  Open your authenticator app and enter  │
+│  the 6-digit code:                      │
+│                                         │
+│  [ ]  [ ]  [ ]  [ ]  [ ]  [ ]          │
+│                                         │
+│  [Verify Code]                          │
+│                                         │
+│  Lost your device? → Use backup code    │
+└─────────────────────────────────────────┘
+```
+
+**If you lost your device:**
+1. Click **"Lost your device?"**
+2. Toggle **"Use Backup Code"**
+3. Enter one of your 10 recovery codes
+4. ⚠️ That code will be invalidated after use
+
+---
+
+#### Disable 2FA
+
+**Security Warning:** Only disable if absolutely necessary.
+
+1. Go to **Security** > **Two-Factor Authentication**
+2. Click **"Disable 2FA"**
+3. **Enter your password**
+4. **Enter a valid 6-digit code** from your app
+5. Confirm
+
+**Why both?** Prevents unauthorized disabling if someone steals your password.
+
+---
+
+#### Regenerate Backup Codes
+
+Used up your backup codes? Generate new ones:
+
+1. Go to **Security** > **Backup Codes**
+2. Click **"Regenerate Codes"**
+3. ⚠️ **Old codes will be invalidated**
+4. Download/copy new codes
+
+---
+
+## 📊 Audit Log
+
+Track every action in your system. Navigate to **Audit & Analytics** > **Logs**.
+
+### What is Recorded
+
+**20+ Action Types:**
+- 🔓 **LOGIN** / 🔒 **LOGOUT**
+- ❌ **LOGIN_FAILED** (security alert)
+- 🔑 **PASSWORD_CHANGE** / **PASSWORD_RESET**
+- 🛡️ **MFA_ENABLED** / **MFA_DISABLED**
+- ➕ **CREATE** / ✏️ **UPDATE** / 🗑️ **DELETE**
+- 👁️ **VIEW** / 📥 **EXPORT**
+
+**For each log:**
+- ⏱️ **Timestamp**: Exact date/time
+- 👤 **User**: Who performed the action
+- 🎯 **Action**: What happened
+- 📊 **Severity**: INFO, WARNING, ERROR, CRITICAL
+- 📝 **Description**: Human-readable details
+- 🌐 **IP Address**: User's IP
+- 🎯 **Target**: Affected object (e.g., "Feedback #1234")
+
+---
+
+### Using the Audit Log Table
+
+**Filters:**
+- **Action Type**: Dropdown with all 20+ types
+- **Severity**: INFO, WARNING, ERROR, CRITICAL
+- **Date Range**: From/To date pickers
+- **Search**: Free text (searches description, user email, object name)
+
+**Example Use Cases:**
+
+1. **Security Investigation:**
+   - Filter by **"LOGIN_FAILED"**
+   - Check if IPs are unusual
+   - Action: Block IP if brute-force detected
+
+2. **Compliance Audit:**
+   - Export last 90 days
+   - Filter by **"DELETE"** or **"UPDATE"**
+   - Provide to auditors
+
+3. **User Activity:**
+   - Search by user email
+   - See all actions by that user
+   - Useful for internal investigations
+
+---
+
+### Export Audit Logs
+
+**Formats:**
+- 📄 **CSV**: For Excel/Sheets analysis
+
+**Steps:**
+1. Apply desired filters
+2. Click **"Export CSV"** button
+3. File downloads: `audit-logs-2026-02-06.csv`
+
+**CSV Columns:**
+```
+ID, Timestamp, User, Action, Severity, Description, IP Address, Target
+```
+
+---
+
+## 👥 Team Management
+
+Navigate to **Team** to manage collaborators.
+
+### Roles & Permissions
+
+| Permission | Viewer | Admin | Owner |
+|------------|--------|-------|-------|
+| View feedbacks | ✅ | ✅ | ✅ |
+| Comment on feedbacks | ✅ | ✅ | ✅ |
+| Change feedback status | ❌ | ✅ | ✅ |
+| Delete feedbacks | ❌ | ✅ | ✅ |
+| Invite team members | ❌ | ✅ | ✅ |
+| Billing & subscription | ❌ | ❌ | ✅ |
+| White-label settings | ❌ | ❌ | ✅ |
+| Delete account | ❌ | ❌ | ✅ |
+
+---
+
+### Inviting Team Members
+
+1. Go to **Team** > **Invite Member**
+2. Enter **email address**
+3. Select **role** (Viewer / Admin)
+4. Click **"Send Invitation"**
+5. Invitee receives email with activation link (valid 7 days)
+6. They create password and join your team
+
+**Team Size Limits:**
+- **Starter**: 3 members
+- **Pro**: 10 members
+- **Enterprise**: Unlimited
+
+---
+
+### Managing Existing Members
+
+**Change Role:**
+1. Find member in team list
+2. Click **"Edit"**
+3. Select new role
+4. Confirm
+
+**Remove Member:**
+1. Click **"Remove"** next to member name
+2. Confirm deletion
+3. They immediately lose access
+
+⚠️ **Warning:** Owner cannot be removed. Transfer ownership first.
+
+---
+
+## 🎫 Feedback Management
+
+Navigate to **Feedbacks** to view and manage submissions.
+
+### Feedback Status Workflow
+
+```
+NEW → IN REVIEW → RESOLVED → ARCHIVED
+```
+
+**Status Meanings:**
+- 🆕 **NEW**: Just received, not reviewed yet
+- 🔍 **IN REVIEW**: Team is investigating
+- ✅ **RESOLVED**: Issue fixed or answered
+- 📦 **ARCHIVED**: Closed and filed
+
+### Viewing Feedback Details
+
+Click any feedback to see:
+- 📝 **Full description**
+- 📎 **Attachments** (images/files)
+- 👤 **Submitter info** (if not anonymous)
+- 📅 **Submission date/time**
+- 🏷️ **Tags/Categories**
+- ⚡ **Priority level**
+- 💬 **Internal comments**
+- 📊 **Status history**
+
+### Internal Comments
+
+Add notes visible only to your team:
+
+1. Open feedback
+2. Scroll to **"Internal Comments"**
+3. Type your note
+4. Click **"Add Comment"**
+
+**Use cases:**
+- Assign to colleague: "@John, please handle this"
+- Update status: "Contacted customer, awaiting response"
+- Document resolution: "Refunded $50, issue closed"
+
+---
+
+## 💳 Billing & Subscription
+
+Navigate to **Subscription** to manage your plan.
+
+### Current Plan Overview
+
+You'll see:
+- 💳 **Plan name**: Starter / Pro / Enterprise
+- 💰 **Price**: $0, $49/mo, $199/mo
+- 📊 **Usage**:
+  - Feedbacks: 15/50 (30% used)
+  - Storage: 0.3GB/1GB
+  - Team: 2/3 members
+- 📅 **Next billing date**: March 6, 2026
+
+### Upgrading Your Plan
+
+**Why upgrade?**
+- 📈 More feedbacks per month
+- 👥 Larger team capacity
+- 💾 More storage
+- 🔗 Webhooks (Pro+)
+- 🎨 Custom domains (Enterprise)
+
+**Steps:**
+1. Go to **Subscription** > **Change Plan**
+2. Select desired tier
+3. Click **"Upgrade to [Plan]"**
+4. Enter payment details (Stripe Checkout)
+5. Confirm purchase
+
+**Billing:**
+- **Prorated**: You only pay the difference for remaining period
+- **Example**: Upgrade on Feb 15 (halfway through month) → Pay $24.50 instead of $49
+
+### Downgrading Your Plan
+
+**Before downgrading:**
+- ⚠️ Check if you exceed new plan limits
+- Delete extra team members if needed
+- Archive old feedbacks to reduce count
+
+**Steps:**
+1. Go to **Subscription** > **Change Plan**
+2. Select lower tier
+3. Confirm downgrade
+4. **Takes effect**: Next billing cycle (not immediately)
+
+### Billing Portal
+
+Stripe provides a self-service portal for:
+- 💳 Update payment method
+- 📄 Download invoices
+- 📧 Update billing email
+- ❌ Cancel subscription
+
+**Access:**
+1. Go to **Subscription**
+2. Click **"Manage Billing"**
+3. Stripe portal opens in new tab
+
+---
+
+## ❓ Troubleshooting
+
+### I can't receive feedbacks on my public page
+
+**Checklist:**
+1. ✅ Subdomain configured? (Check **Settings** > **Domain**)
+2. ✅ Account verified? (Check email)
+3. ✅ Payment method added? (Starter plan needs card on file)
+
+**Test:**
+1. Open `{your-subdomain}.ouvify.com` in incognito window
+2. Try submitting a feedback
+3. Check **Feedbacks** dashboard
+
+If still not working: Contact support with your subdomain.
+
+---
+
+### Team member can't log in
+
+**Common causes:**
+1. ❌ **Invitation expired** (7-day validity)
+   - Solution: Resend invitation
+2. ❌ **Wrong email**
+   - Solution: Verify email address
+3. ❌ **Account not activated**
+   - Solution: Check spam folder for activation email
+
+---
+
+### 2FA issues
+
+**Lost authenticator app:**
+1. Use one of your 10 backup codes at login
+2. After logging in, disable 2FA
+3. Re-enable with new device
+
+**Backup codes lost too:**
+- Contact support with ID verification
+- We'll temporarily disable 2FA for password reset
+
+---
+
+### Webhook not receiving events
+
+**Debugging:**
+1. Go to **Settings** > **Webhooks**
+2. Check **"Delivery Logs"**
+3. Look for failed attempts
+
+**Common issues:**
+- ❌ **Invalid URL**: Must be `https://` (not `http://`)
+- ❌ **Timeout**: Endpoint takes >30s to respond
+- ❌ **Wrong signature**: Validate HMAC-SHA256 signature
+
+---
+
+### LGPD/Consent questions
+
+**User wants to delete data:**
+1. Go to **Settings** > **Privacy**
+2. Click **"Export My Data"** (send to user first)
+3. Click **"Delete Account"**
+4. All personal data is anonymized
+
+**Check consent status:**
+1. Go to **Audit & Analytics** > **Privacy**
+2. See who accepted/declined
+3. Export consent log for audits
+
+---
+
+## 📞 Need More Help?
+
+- 📧 **Email Support**: jairguerraadv@gmail.com
+- 📚 **Documentation**: [/docs](../README.md)
+- 🎥 **Video Tutorials**: Coming soon
+- 💬 **Live Chat**: Pro/Enterprise only (dashboard bottom-right)
+
+---
+
+<div align="center">
+
+**🚀 Ouvify - Enterprise Feedback Platform**
+
+Version 1.0 | Release Candidate
+
+</div>
 
 1. Entre em contato com suporte@ouvify.com
 2. Forneça o domínio desejado

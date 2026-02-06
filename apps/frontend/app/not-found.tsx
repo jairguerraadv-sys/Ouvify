@@ -18,11 +18,11 @@ export default function NotFound() {
           404
         </h1>
         
-        <h2 className="text-3xl font-bold text-text-primary mb-4">
+        <h2 className="text-3xl font-bold text-foreground mb-4">
           Página não encontrada
         </h2>
         
-        <p className="text-lg text-text-secondary mb-8">
+        <p className="text-lg text-muted-foreground mb-8">
           Desculpe, a página que você está procurando não existe ou foi movida.
         </p>
 

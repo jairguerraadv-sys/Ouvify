@@ -195,11 +195,7 @@ function TenantDetailsContent() {
                   </p>
                   <div className="flex items-center gap-3 mt-3">
                     <Badge
-                      className={
-                        tenant.ativo
-                          ? "bg-success-500/20 text-success-400 border-success-500/30"
-                          : "bg-error-500/20 text-error-400 border-error-500/30"
-                      }
+                      variant={tenant.ativo ? "success" : "destructive"}
                     >
                       {tenant.ativo ? (
                         <>
@@ -213,7 +209,7 @@ function TenantDetailsContent() {
                         </>
                       )}
                     </Badge>
-                    <Badge className="bg-primary-500/20 text-primary-400 border-primary-500/30 uppercase">
+                    <Badge variant="default" className="uppercase">
                       {tenant.plano || "Free"}
                     </Badge>
                   </div>
@@ -241,8 +237,8 @@ function TenantDetailsContent() {
                   variant={tenant.ativo ? "destructive" : "default"}
                   className={
                     tenant.ativo
-                      ? "bg-error-600 hover:bg-error-700"
-                      : "bg-success-600 hover:bg-success-700"
+                      ? "bg-error hover:bg-error"
+                      : "bg-success hover:bg-success"
                   }
                 >
                   <Power className="w-4 h-4 mr-2" />
@@ -263,7 +259,7 @@ function TenantDetailsContent() {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Mail className="w-5 h-5 text-primary-400" />
+                <Mail className="w-5 h-5 text-primary" />
                 Contato
               </CardTitle>
             </CardHeader>
@@ -278,7 +274,7 @@ function TenantDetailsContent() {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-success-400" />
+                <Calendar className="w-5 h-5 text-success" />
                 Conta
               </CardTitle>
             </CardHeader>
@@ -313,7 +309,7 @@ function TenantDetailsContent() {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="text-lg flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-secondary-400" />
+                <CreditCard className="w-5 h-5 text-secondary" />
                 Assinatura
               </CardTitle>
             </CardHeader>
@@ -372,7 +368,7 @@ function TenantDetailsContent() {
           <Card className="bg-card border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Palette className="w-5 h-5 text-secondary-400" />
+                <Palette className="w-5 h-5 text-secondary" />
                 Configuração White-label
               </CardTitle>
               <CardDescription className="text-muted-foreground">
@@ -466,11 +462,11 @@ interface StatsCardProps {
 
 function StatsCard({ icon: Icon, label, value, color }: StatsCardProps) {
   const colorClasses = {
-    blue: "bg-primary-500/20 text-primary-400",
-    green: "bg-success-500/20 text-success-400",
-    red: "bg-error-500/20 text-error-400",
-    purple: "bg-secondary-500/20 text-secondary-400",
-    orange: "bg-warning-500/20 text-warning-400",
+    blue: "bg-primary/10 text-primary",
+    green: "bg-success/10 text-success",
+    red: "bg-error/10 text-error",
+    purple: "bg-secondary/10 text-secondary",
+    orange: "bg-warning/10 text-warning",
   };
 
   return (

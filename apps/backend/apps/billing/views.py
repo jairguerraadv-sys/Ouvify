@@ -252,3 +252,94 @@ class StripeWebhookView(APIView):
                 {"error": "Webhook processing failed"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
+class UsageStatsView(APIView):
+    """
+    Endpoint para estatísticas de uso de features (Feature Gating).
+    
+    GET /api/v1/billing/usage/
+    
+    Retorna:
+        - plan: slug do plano atual
+        - plan_name: nome do plano
+        - feedbacks_used: feedbacks criados este mês
+        - feedbacks_limit: limite de feedbacks/mês (-1 = ilimitado)
+        - usage_percent: porcentagem de uso (0-100)
+        - is_blocked: se atingiu o limite
+        - is_near_limit: se está próximo do limite (>80%)
+    
+    Usado pelo frontend para:
+    - Exibir alertas quando próximo do limite (80%)
+    - Bloquear botão "Novo Feedback" quando no limite (100%)
+    - Mostrar barra de progresso de uso
+    """
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        from django.utils import timezone
+        from apps.feedbacks.models import Feedback
+        from .feature_gating import get_client_subscription
+
+        client = getattr(request.user, "client", None)
+        if not client:
+            return Response(
+                {"error": "Usuário não possui client associado"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Busca subscription ativa
+        subscription = get_client_subscription(client)
+        
+        if not subscription:
+            return Response(
+                {"error": "Assinatura não encontrada"},
+                status=status.HTTP_402_PAYMENT_REQUIRED,
+            )
+
+        plan = subscription.plan
+
+        # Conta feedbacks do mês atual
+        now = timezone.now()
+        month_start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+        feedbacks_used = Feedback.objects.filter(
+            client=client,
+            data_criacao__gte=month_start
+        ).count()
+
+        # Determina limite do plano
+        feedbacks_limit = plan.get_limit('feedbacks_per_month')
+        
+        # Se não tem limite no JSON, usa lógica por slug
+        if feedbacks_limit is None:
+            if plan.slug == 'free':
+                feedbacks_limit = 50
+            else:
+                feedbacks_limit = -1  # Ilimitado
+
+        # Calcula porcentagem e flags
+        if feedbacks_limit > 0:
+            usage_percent = (feedbacks_used / feedbacks_limit) * 100
+            is_blocked = feedbacks_used >= feedbacks_limit
+            is_near_limit = usage_percent > 80
+        else:
+            # Ilimitado
+            usage_percent = 0
+            is_blocked = False
+            is_near_limit = False
+
+        data = {
+            'plan': plan.slug,
+            'plan_name': plan.name,
+            'feedbacks_used': feedbacks_used,
+            'feedbacks_limit': feedbacks_limit,
+            'usage_percent': round(usage_percent, 1),
+            'is_blocked': is_blocked,
+            'is_near_limit': is_near_limit,
+        }
+
+        from .serializers import UsageStatsSerializer
+        serializer = UsageStatsSerializer(data)
+        return Response(serializer.data)
+

@@ -62,7 +62,7 @@ RegisterTenantView = tenant_views.RegisterTenantView  # type: ignore[attr-define
 CheckSubdominioView = tenant_views.CheckSubdominioView  # type: ignore[attr-defined]
 TenantAdminViewSet = tenant_views.TenantAdminViewSet  # type: ignore[attr-defined]
 CreateCheckoutSessionView = tenant_views.CreateCheckoutSessionView  # type: ignore[attr-defined]
-StripeWebhookView = tenant_views.StripeWebhookView  # type: ignore[attr-defined]
+# StripeWebhookView removido - usar /api/v1/billing/webhook/ do app billing
 UserMeView = tenant_views.UserMeView  # type: ignore[attr-defined]
 SubscriptionView = tenant_views.SubscriptionView  # type: ignore[attr-defined]
 
@@ -140,7 +140,7 @@ urlpatterns = [
         CreateCheckoutSessionView.as_view(),
         name="create-checkout-session",
     ),
-    path("api/tenants/webhook/", StripeWebhookView.as_view(), name="stripe-webhook"),
+    # Webhook Stripe movido para /api/v1/billing/webhook/ (ver apps/billing/urls.py)
     # Endpoints de Gestão de Assinaturas
     path(
         "api/tenants/subscription/",
@@ -162,13 +162,6 @@ urlpatterns = [
     ),
     # Busca Global (ElasticSearch)
     path("api/", include("apps.core.search_urls")),
-    # Logout aliases (compat com clientes antigos)
-    path("api/auth/logout/", LogoutView.as_view(), name="api-auth-logout"),
-    path(
-        "api/auth/logout/all/",
-        LogoutAllDevicesView.as_view(),
-        name="api-auth-logout-all-devices",
-    ),
     # Two-Factor Authentication (2FA)
     path("api/auth/", include("apps.core.two_factor_urls")),
     # Push Notifications

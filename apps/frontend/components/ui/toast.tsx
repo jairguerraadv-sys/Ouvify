@@ -22,11 +22,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border-border-light bg-background text-text-primary",
-        destructive: "border-error-200 bg-error-50 text-error-900",
-        success: "border-success-200 bg-success-50 text-success-900",
-        warning: "border-warning-200 bg-warning-50 text-warning-900",
-        info: "border-info-200 bg-info-50 text-info-900",
+        default: "border-border bg-background text-foreground",
+        destructive: "border-error/20 bg-error/10 text-error",
+        success: "border-success/20 bg-success/10 text-success",
+        warning: "border-warning/20 bg-warning/10 text-warning",
+        info: "border-info/20 bg-info/10 text-info",
       },
     },
     defaultVariants: {
@@ -68,7 +68,7 @@ const ToastClose = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <ToastPrimitives.Close
     ref={ref}
-    className={`absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-error-300 group-[.destructive]:hover:text-error-50 group-[.destructive]:focus:ring-error-400 group-[.destructive]:focus:ring-offset-red-600 ${className || ''}`}
+    className={`absolute right-2 top-2 rounded-md p-1 text-foreground/50 opacity-0 transition-opacity hover:text-foreground focus:opacity-100 focus:outline-none focus:ring-2 group-hover:opacity-100 group-[.destructive]:text-error/70 group-[.destructive]:hover:text-error group-[.destructive]:focus:ring-error ${className || ''}`}
     toast-close=""
     {...props}
   >

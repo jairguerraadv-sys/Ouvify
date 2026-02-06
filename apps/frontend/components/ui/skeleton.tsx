@@ -36,7 +36,7 @@ function Skeleton({
  */
 function StatCardSkeleton() {
   return (
-    <div className="bg-background rounded-xl p-5 shadow-sm border border-border-light">
+    <div className="bg-background rounded-xl p-5 shadow-sm border border-border">
       <div className="flex items-start justify-between">
         <div className="space-y-2">
           <Skeleton className="h-4 w-24" />
@@ -56,7 +56,7 @@ function FeedbackListSkeleton({ count = 5 }: { count?: number }) {
   return (
     <div className="space-y-3">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="bg-background rounded-lg p-4 border border-border-light">
+        <div key={i} className="bg-background rounded-lg p-4 border border-border">
           <div className="flex items-center justify-between">
             <div className="space-y-2 flex-1">
               <div className="flex items-center gap-2">
@@ -96,7 +96,7 @@ function DashboardSkeleton() {
       </div>
 
       {/* Content */}
-      <div className="bg-background rounded-xl p-6 border border-border-light">
+      <div className="bg-background rounded-xl p-6 border border-border">
         <Skeleton className="h-6 w-40 mb-4" />
         <FeedbackListSkeleton count={3} />
       </div>

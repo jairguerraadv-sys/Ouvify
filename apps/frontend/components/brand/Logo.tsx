@@ -104,19 +104,8 @@ export function Logo({
   
   const { height, width } = sizeMap[size];
   
-  // Determinar arquivo de imagem
-  const getLogoSrc = () => {
-    // Prefer SVG assets (Phase 2 prompt requirement). Keep PNGs as fallback via onError.
-    // White variant uses a dedicated SVG wrapper to avoid relying purely on CSS filters.
-    if (color === 'white' && variant === 'full') return '/logo/logo-white.svg';
-    if (variant === 'icon') return '/logo/logo-icon.svg';
-    if (variant === 'text') return '/logo/logo-text.svg';
-    return '/logo/logo-full.svg';
-  };
-
-  const getPngFallback = () => {
-    return '/logo/logo-full.png';
-  };
+  // Usar logo.png como fonte única (disponível em /workspaces/Ouvify/apps/frontend/public/logo.png)
+  const logoSrc = '/logo.png';
 
   const logoContent = (
     <div 
@@ -127,25 +116,20 @@ export function Logo({
       )}
     >
       <Image 
-        src={getLogoSrc()}
+        src={logoSrc}
         alt="Ouvify"
         width={width}
         height={height}
         className={cn(
           'object-contain',
-          color === 'white' && 'invert brightness-0',
+          // Filtro para modo escuro (se color === 'white')
+          color === 'white' && 'brightness-0 invert',
+          // Animação de hover se for clicável
           href && animated && 'transition-transform duration-200 group-hover:scale-105'
         )}
         priority={priority}
-        quality={75}
-        // Fallback se imagem não existir
-        onError={(e) => {
-          const target = e.target as HTMLImageElement;
-          const fallback = getPngFallback();
-          if (!target.src.endsWith(fallback)) {
-            target.src = fallback;
-          }
-        }}
+        quality={90}
+        unoptimized={false} // Next.js otimiza automaticamente
       />
     </div>
   );

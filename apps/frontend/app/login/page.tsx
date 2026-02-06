@@ -12,6 +12,7 @@ import { ArrowRight, Lock, Mail, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { isValidEmail } from "@/lib/validation";
 import { useAuth } from "@/contexts/AuthContext";
+import { apiClient } from "@/lib/api";
 
 interface LoginForm {
   email: string;
@@ -67,6 +68,26 @@ export default function LoginPage() {
 
     try {
       await login(formData.email, formData.senha);
+      
+      // Verificar se o usuário tem 2FA ativo
+      try {
+        const response = await apiClient.get("/api/2fa/status/");
+        
+        // Se 2FA está ativo, redirecionar para verificação
+        if (response.data?.enabled) {
+          const redirect =
+            typeof window !== "undefined"
+              ? new URLSearchParams(window.location.search).get("redirect")
+              : null;
+          router.push(`/login/2fa${redirect ? `?redirect=${redirect}` : ""}`);
+          return;
+        }
+      } catch (error) {
+        // Se falhar ao verificar 2FA, continua normalmente
+        console.warn("Erro ao verificar status 2FA:", error);
+      }
+
+      // Login sem 2FA ou erro ao verificar - ir direto para o dashboard
       const redirect =
         typeof window !== "undefined"
           ? new URLSearchParams(window.location.search).get("redirect")
@@ -159,7 +180,7 @@ export default function LoginPage() {
               </label>
               <Link
                 href="/recuperar-senha"
-                className="text-sm text-primary hover:text-primary-dark font-medium transition-colors"
+                className="text-sm text-primary hover:text-primary font-medium transition-colors"
                 tabIndex={loading ? -1 : 0}
               >
                 Esqueceu?
@@ -206,7 +227,7 @@ export default function LoginPage() {
             Não tem uma conta?{" "}
             <Link
               href="/cadastro"
-              className="text-primary hover:text-primary-dark font-semibold transition-colors"
+              className="text-primary hover:text-primary font-semibold transition-colors"
               tabIndex={loading ? -1 : 0}
             >
               Cadastre-se grátis

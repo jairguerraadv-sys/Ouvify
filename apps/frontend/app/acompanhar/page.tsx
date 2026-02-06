@@ -27,6 +27,7 @@ import {
 import Link from "next/link";
 import type { Feedback, FeedbackStatus, FeedbackType } from "@/lib/types";
 import { useDebounce } from "@/hooks/use-common";
+import { useTenantTheme } from '@/hooks/use-tenant-theme';
 
 interface FeedbackInteraction {
   id: number;
@@ -44,6 +45,7 @@ interface FeedbackStatusResponse extends Feedback {
 }
 
 export default function AcompanharPage() {
+  const theme = useTenantTheme(); // 🎨 WHITE LABEL: Aplica tema do tenant
   const [protocolo, setProtocolo] = useState("");
   const debouncedProtocolo = useDebounce(protocolo, 300);
   const [feedback, setFeedback] = useState<FeedbackStatusResponse | null>(null);
@@ -180,9 +182,9 @@ export default function AcompanharPage() {
 
   const getStatusColor = useCallback((status: string) => {
     const cores: Record<string, string> = {
-      pendente: "bg-warning-100 text-warning-800 border-warning-300",
+      pendente: "bg-warning/10 text-warning border-warning",
       em_analise: "bg-primary/10 text-primary border-primary/30",
-      resolvido: "bg-success-100 text-success-800 border-success-300",
+      resolvido: "bg-success/10 text-success border-success",
       fechado: "bg-neutral-100 text-secondary border-neutral-300",
     };
     return cores[status] || "bg-neutral-100 text-secondary border-neutral-300";
@@ -211,7 +213,23 @@ export default function AcompanharPage() {
             href="/"
             className="inline-block mb-6 hover:scale-105 transition-transform"
           >
-            <Logo size="xl" />
+            {/* 🎨 WHITE LABEL: Logo customizada ou nome da empresa */}
+            {theme?.logo ? (
+              <img 
+                src={theme.logo} 
+                alt={theme.nome}
+                className="h-16 w-auto mx-auto object-contain"
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <Logo size="xl" />
+                {theme?.nome && theme.nome !== 'Ouvify' && (
+                  <span className="text-lg font-bold text-primary">
+                    {theme.nome}
+                  </span>
+                )}
+              </div>
+            )}
           </Link>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
             <Search className="w-4 h-4 text-primary" />
@@ -221,6 +239,11 @@ export default function AcompanharPage() {
           </div>
           <H2 className="text-primary mb-3">
             🔍 Acompanhar <span className="text-secondary">Feedback</span>
+            {theme?.nome && theme.nome !== 'Ouvify' && (
+              <span className="block text-xl mt-2 text-muted-foreground font-normal">
+                {theme.nome}
+              </span>
+            )}
           </H2>
           <Paragraph className="text-muted-foreground">
             Digite o código do protocolo para consultar o status da sua
@@ -410,7 +433,7 @@ export default function AcompanharPage() {
                         <p className="font-semibold text-primary">
                           🔍 Em Análise
                         </p>
-                        <p className="text-sm text-primary-dark mt-1">
+                        <p className="text-sm text-primary mt-1">
                           Estamos avaliando sua manifestação
                         </p>
                       </div>
@@ -420,11 +443,11 @@ export default function AcompanharPage() {
                   {/* Evento: Resposta da Empresa */}
                   {feedback.resposta_empresa && (
                     <div className="relative">
-                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-secondary-500 border-2 border-white animate-pulse"></div>
-                      <div className="bg-secondary-50 rounded-lg p-4 border-l-4 border-secondary-500">
+                      <div className="absolute -left-8 w-4 h-4 rounded-full bg-secondary border-2 border-white animate-pulse"></div>
+                      <div className="bg-secondary/10 rounded-lg p-4 border-l-4 border-secondary">
                         <div className="flex items-center mb-2">
                           <span className="text-lg mr-2">💬</span>
-                          <p className="font-semibold text-secondary-800">
+                          <p className="font-semibold text-secondary">
                             Resposta da Empresa
                           </p>
                         </div>
@@ -432,7 +455,7 @@ export default function AcompanharPage() {
                           {feedback.resposta_empresa}
                         </p>
                         {feedback.data_resposta && (
-                          <p className="text-sm text-secondary-600 mt-2">
+                          <p className="text-sm text-secondary mt-2">
                             Respondido em:{" "}
                             {formatDate(feedback.data_resposta, "long")}
                           </p>

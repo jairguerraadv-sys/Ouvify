@@ -1,103 +1,466 @@
-# 👤 Guia do Usuário Final - Ouvify
+# 👤 End User Guide - Ouvify
 
-**Para:** Usuários que querem enviar feedbacks e acompanhar pelo protocolo
+**For:** Users submitting feedback and tracking by protocol number
 
----
-
-## 📖 Índice
-
-1. [O que é o Ouvify?](#1-o-que-é-o-ouvify)
-2. [Como Enviar um Feedback](#2-como-enviar-um-feedback)
-3. [Como Acompanhar pelo Protocolo](#3-como-acompanhar-pelo-protocolo)
-4. [Tipos de Feedback](#4-tipos-de-feedback)
-5. [Status do Feedback](#5-status-do-feedback)
-6. [Anônimo vs Identificado](#6-anônimo-vs-identificado)
-7. [Privacidade e Segurança](#7-privacidade-e-segurança)
-8. [Perguntas Frequentes](#8-perguntas-frequentes)
+**Version:** 1.0 (Release Candidate) | February 6, 2026
 
 ---
 
-## 1. O que é o Ouvify?
+## 📖 Table of Contents
 
-O **Ouvify** é um canal de feedback onde você pode:
-- ✅ Enviar denúncias, reclamações, sugestões ou elogios
-- ✅ Acompanhar o andamento pelo código de protocolo
-- ✅ Receber respostas da empresa
-- ✅ Fazer tudo de forma anônima (se preferir)
-
-**É seguro?** Sim! Suas informações são criptografadas e protegidas. A empresa só vê o que você decidir compartilhar.
+1. [🎯 What is Ouvify?](#-what-is-ouvify)
+2. [📝 How to Submit Feedback](#-how-to-submit-feedback)
+3. [🔍 Tracking Your Submission](#-tracking-your-submission)
+4. [🕵️ Anonymous vs Identified](#️-anonymous-vs-identified)
+5. [⚖️ Your Rights (LGPD/GDPR)](#️-your-rights-lgpdgdpr)
+6. [❓ FAQ](#-faq)
 
 ---
 
-## 2. Como Enviar um Feedback
+## 🎯 What is Ouvify?
 
-### Passo 1: Acesse o canal da empresa
+**Ouvify** is a secure feedback platform where you can:
 
-Cada empresa tem seu próprio link, exemplo:
-- `minhaempresa.ouvify.com`
-- `feedback.minhaempresa.com`
+✅ **Submit reports** anonymously or with identification  
+✅ **Track status** using a unique protocol number  
+✅ **Receive responses** from the organization  
+✅ **Stay safe** - your data is encrypted and protected  
 
-**Onde encontrar o link:**
-- Site da empresa
-- Email de boas-vindas
-- Redes sociais
-- Peça ao atendimento
+**Is it really anonymous?**  
+Yes! If you don't provide your name/email, the organization has **no way** to identify you. Not even the IP address is shared.
 
-### Passo 2: Escolha o Tipo de Feedback
+---
 
-Na página inicial, você verá 4 opções:
+## 📝 How to Submit Feedback
 
-🚨 **Denúncia**  
-Para reportar algo irregular, antiético ou ilegal. Exemplo: assédio, fraude, discriminação.
+### Step 1: Access the Organization's Feedback Page
 
-💢 **Reclamação**  
-Para reportar problemas com produtos, serviços ou atendimento. Exemplo: produto defeituoso, atraso na entrega.
+Each organization has a unique link, such as:
+- `company.ouvify.com`
+- `feedback.company.com`
 
-💡 **Sugestão**  
-Para dar ideias de melhorias. Exemplo: "seria ótimo se vocês oferecessem entrega aos sábados".
+**Where to find the link:**
+- Organization's website (usually in footer)
+- Welcome emails
+- Social media
+- Ask customer support
 
-⭐ **Elogio**  
-Para reconhecer um bom trabalho. Exemplo: "fui muito bem atendido pela Ana".
+---
 
-### Passo 3: Preencha o Formulário
+### Step 2: Choose Feedback Type
 
-**Campos obrigatórios:**
-- ✏️ **Descrição:** Conte o que aconteceu. Seja claro e detalhado.
-  - ❌ Ruim: "produto ruim"
-  - ✅ Bom: "Comprei o produto X no dia 01/02 e ele parou de funcionar no dia 03/02. Quando ligo, aparece erro na tela."
+You'll see 4 options:
 
-- 📅 **Quando aconteceu?** (opcional mas ajuda): Data e hora aproximadas
+| Icon | Type | When to Use | Examples |
+|------|------|-------------|----------|
+| 🚨 | **Whistleblowing** | Report something irregular, unethical, or illegal | Harassment, fraud, discrimination, safety violations |
+| 💢 | **Complaint** | Report problems with products, services, or treatment | Defective product, poor service, billing errors |
+| 💡 | **Suggestion** | Share ideas for improvement | New features, process improvements, better experiences |
+| ⭐ | **Testimonial** | Recognize good work | Excellent service, helpful staff, positive experience |
 
-**Campos opcionais:**
-- 📎 **Anexos:** Fotos, PDFs, prints (até 5MB cada)
-- 📍 **Local:** Onde aconteceu (loja, departamento, etc.)
+**Tip:** Choose the type that best matches your situation. It helps the organization prioritize responses.
 
-**Informações de contato (opcional):**
-- 📧 **Email:** Se quiser receber respostas por email
-- 📱 **Telefone:** Se a empresa precisar te ligar
-- 👤 **Seu nome:** Se não se importar em se identificar
+---
 
-**⚠️ Importante:** 
-- Se você NÃO preencher nome/email/telefone, seu feedback será **100% anônimo**
-- A empresa não conseguirá saber quem você é
+### Step 3: Fill Out the Form
 
-### Passo 4: Enviar
+**📝 Required Fields:**
 
-1. Revise tudo
-2. Marque ✓ que aceitou a política de privacidade
-3. Clique em **"Enviar Feedback"**
+**Description** (Required)
+- Explain what happened clearly and in detail
+- Include relevant facts: dates, times, locations, people involved
+- Be objective and factual
 
-### Passo 5: Salve o Protocolo
+**❌ Bad Example:**
+> "Product is bad"
 
-Após enviar, você verá uma tela assim:
+**✅ Good Example:**
+> "I purchased Product X (Model ABC-123) on February 1st at the Downtown store. On February 3rd, it stopped working. When I turn it on, the screen shows 'Error 404' and shuts down. I tried resetting it per the manual, but the issue persists."
+
+**Why the good example works:**
+- Specific product model
+- Exact dates
+- Detailed symptoms
+- Steps already taken
+
+---
+
+**📎 Optional Fields:**
+
+**Attachments** (up to 5 files, 5MB each)
+- Photos of defects
+- Screenshots of errors
+- Receipts/invoices
+- Supporting documents
+
+**Location/Department**
+- Where did it happen?
+- Which store/branch?
+- Which department (HR, Finance, IT)?
+
+**When did it happen?**
+- Approximate date and time
+
+---
+
+**👤 Contact Information (Optional - Only if you want responses):**
+
+| Field | Purpose | Anonymous Impact |
+|-------|---------|------------------|
+| **Name** | For personalized responses | ⚠️ Reveals identity |
+| **Email** | To receive status updates | ⚠️ Reveals identity |
+| **Phone** | For urgent follow-up | ⚠️ Reveals identity |
+
+**⚠️ IMPORTANT:**  
+If you leave name/email/phone **blank**, your submission is **100% anonymous**. The organization cannot identify you by any means.
+
+---
+
+### Step 4: Accept Terms (LGPD Compliance)
+
+Before submitting, you must accept the **Privacy Policy**.
+
+**What you're agreeing to:**
+- ✅ Your feedback will be stored and processed
+- ✅ If you provided contact info, it may be used to respond
+- ✅ Your data is protected by encryption
+- ✅ You can request deletion later (see **Your Rights** section)
+
+**ConsentGate (Required):**
+```
+┌─────────────────────────────────────────────────────┐
+│ 🔒 Privacy & Data Protection                        │
+├─────────────────────────────────────────────────────┤
+│ To submit feedback, please review and accept our:   │
+│                                                     │
+│ • Privacy Policy (v2.1)                             │
+│ • Terms of Service                                  │
+│                                                     │
+│ [✓] I have read and accept the terms               │
+│                                                     │
+│ [Submit Feedback]                                   │
+└─────────────────────────────────────────────────────┘
+```
+
+❗ **You must scroll to the bottom** of the policy before the checkbox enables (LGPD requirement).
+
+---
+
+### Step 5: Submit & Save Your Protocol
+
+Click **"Submit Feedback"**. You'll see:
 
 ```
-✅ Feedback enviado com sucesso!
+┌─────────────────────────────────────────────────────┐
+│ ✅ Feedback submitted successfully!                 │
+├─────────────────────────────────────────────────────┤
+│                                                     │
+│ Your tracking protocol is:                          │
+│                                                     │
+│         ╔═══════════════════╗                       │
+│         ║ OUVY-2026-00123   ║                       │
+│         ║                   ║                       │
+│         ║ Keep this number  ║                       │
+│         ║ to track status   ║                       │
+│         ╚═══════════════════╝                       │
+│                                                     │
+│ [Copy Protocol]  [Download PDF]                     │
+│                                                     │
+│ 📧 Track at: company.ouvify.com/track               │
+└─────────────────────────────────────────────────────┘
+```
 
-Seu protocolo de acompanhamento é:
+**📌 SAVE THIS NUMBER!**
+- Take a screenshot
+- Write it down
+- Copy to notes app
+- Download the PDF receipt
 
-┌─────────────────────────┐
-│   OUVY-2026-0042        │
+**Why?** This is the **ONLY way** to check status if you submitted anonymously (no email).
+
+---
+
+## 🔍 Tracking Your Submission
+
+### How to Check Status
+
+1. **Go to tracking page:**
+   - Visit `{company}.ouvify.com/track`
+   - Look for **"Track Feedback"** link on homepage
+
+2. **Enter your protocol:**
+   - Type: `OUVY-2026-00123`
+   - Click **"Track"**
+
+3. **View status:**
+
+```
+┌─────────────────────────────────────────────────────┐
+│ Protocol: OUVY-2026-00123                           │
+├─────────────────────────────────────────────────────┤
+│ Type: 💢 Complaint                                   │
+│ Status: 🔍 IN REVIEW                                 │
+│ Submitted: Feb 6, 2026 at 10:30 AM                  │
+│ Last Update: Feb 6, 2026 at 2:15 PM                 │
+├─────────────────────────────────────────────────────┤
+│ Timeline:                                           │
+│                                                     │
+│ ● Feb 6, 10:30 AM - Submitted                       │
+│ ● Feb 6, 11:00 AM - Received by team               │
+│ ● Feb 6, 2:15 PM - Under investigation             │
+│                                                     │
+│ 💬 Organization Response:                           │
+│ "Thank you for reporting this. Our team is          │
+│  investigating and will provide an update within    │
+│  48 hours."                                         │
+└─────────────────────────────────────────────────────┘
+```
+
+---
+
+### Status Meanings
+
+| Status | Icon | Meaning | What's Next |
+|--------|------|---------|-------------|
+| **NEW** | 🆕 | Just received, not yet reviewed | Organization will review within 24-48h |
+| **IN REVIEW** | 🔍 | Team is investigating | You'll be updated when resolved |
+| **RESOLVED** | ✅ | Issue fixed or question answered | Check the response message |
+| **ARCHIVED** | 📦 | Closed and filed | No further action expected |
+
+---
+
+### Email Notifications (If You Provided Email)
+
+You'll receive updates:
+- 📧 **Submission confirmation**
+- 📧 **Status changes**
+- 📧 **Responses from organization**
+- 📧 **Resolution notice**
+
+**Didn't provide email?** Use the tracking page to check manually.
+
+---
+
+## 🕵️ Anonymous vs Identified
+
+### 100% Anonymous Submission
+
+**When you DON'T provide:**
+- ❌ Name
+- ❌ Email
+- ❌ Phone
+
+**Organization sees:**
+- ✅ Your feedback description
+- ✅ Attachments (if any)
+- ✅ Timestamp
+- ✅ Protocol number
+- ❌ **NOT your identity**
+- ❌ **NOT your IP address**
+- ❌ **NOT your location**
+
+**Pros:**
+- 🛡️ **Complete privacy** - they can't identify you
+- 🔒 **Safe for whistleblowers** - report without fear
+- 🎭 **No repercussions** - total protection
+
+**Cons:**
+- ❌ No email updates (must check tracking page)
+- ❌ Organization can't ask clarifying questions directly
+- ❌ Harder to provide evidence later if needed
+
+---
+
+### Identified Submission
+
+**When you provide:**
+- ✅ Name
+- ✅ Email
+- ✅ Phone (optional)
+
+**Organization sees:**
+- ✅ Everything above, PLUS
+- ✅ Your name
+- ✅ Your email
+- ✅ Your phone (if provided)
+
+**Pros:**
+- 📧 Automatic email updates
+- 💬 Direct communication with organization
+- 🤝 Faster resolution (they can ask questions)
+- 🎁 Possible compensation (refunds, credits)
+
+**Cons:**
+- ⚠️ Your identity is revealed
+- ⚠️ Not suitable for sensitive whistleblowing
+
+---
+
+### Which Should I Choose?
+
+| Use Anonymous If... | Use Identified If... |
+|---------------------|---------------------|
+| Reporting harassment/discrimination | Simple service complaint |
+| Whistleblowing on illegal activity | Product defect report |
+| Fear of retaliation | Want status updates by email |
+| Internal employee reporting | Looking for refund/compensation |
+| Sensitive personal matter | Suggestion for improvement |
+
+---
+
+## ⚖️ Your Rights (LGPD/GDPR)
+
+Ouvify complies with **LGPD** (Brazil) and **GDPR** (EU) data protection laws.
+
+### Your Data Rights
+
+| Right | What It Means | How to Exercise |
+|-------|---------------|-----------------|
+| 📄 **Access** | Get a copy of your data | Email: privacy@company.com |
+| ✏️ **Correction** | Fix incorrect information | Update via tracking page |
+| 🗑️ **Deletion** | Delete your feedback | Email: privacy@company.com with protocol |
+| 🚫 **Object** | Opt-out of processing | Contact support |
+| 📦 **Portability** | Export data in JSON/CSV | Email: privacy@company.com |
+
+---
+
+### Request Data Deletion
+
+**Anonymous submissions:**
+- Already anonymous - no personal data to delete
+- Feedback content remains (without identifying info)
+
+**Identified submissions:**
+1. Email privacy@company.com
+2. Include your protocol number
+3. Verify your identity (security measure)
+4. Data deleted within 30 days
+
+**What gets deleted:**
+- ✅ Name
+- ✅ Email
+- ✅ Phone
+- ✅ IP address
+- ✅ Attachments (if contain personal info)
+- ❌ Feedback description (anonymized but kept for compliance)
+
+---
+
+## ❓ FAQ
+
+### ❓ What happens after I submit feedback?
+
+1. **Instant confirmation** - You get your protocol number
+2. **Team notification** - Organization receives alert
+3. **Review assignment** - A team member is assigned
+4. **Investigation** - They analyze and gather info
+5. **Response** - Status updates on tracking page (or email)
+6. **Resolution** - Issue marked as resolved
+
+**Timeline:** Most organizations respond within 24-48 hours.
+
+---
+
+### ❓ Can I edit my feedback after submitting?
+
+**No.** Once submitted, feedback cannot be edited to maintain audit integrity.
+
+**If you need to add information:**
+- Use the tracking page (if available)
+- Submit a new feedback referencing the original protocol
+- Contact support with your protocol number
+
+---
+
+### ❓ Can I delete my feedback?
+
+**Yes**, but:
+- **Immediate deletion:** Only within 1 hour of submission
+- **After 1 hour:** Request via email (takes 30 days for compliance)
+
+**Why the delay?** Organizations need time to comply with legal/regulatory requirements.
+
+---
+
+### ❓ Is my data encrypted?
+
+**Yes!** 
+- 🔒 **In transit**: HTTPS/TLS 1.3
+- 🔒 **At rest**: AES-256 encryption
+- 🔒 **Passwords**: Bcrypt hashing
+
+---
+
+### ❓ What if I lose my protocol number?
+
+**If you provided email:**
+- Check your inbox for confirmation email
+- Search for "OUVY-" in your email
+
+**If anonymous (no email):**
+- ⚠️ Unfortunately, we cannot recover it
+- You'll need to submit a new feedback
+
+**Tip:** Always save your protocol number immediately!
+
+---
+
+### ❓ Will I get a response?
+
+**Depends on feedback type:**
+- 🚨 **Whistleblowing**: Yes (unless anonymous without email)
+- 💢 **Complaint**: Yes, usually within 48-72h
+- 💡 **Suggestion**: May be acknowledged, may not
+- ⭐ **Testimonial**: Appreciated, rarely replied to
+
+**If you provided email:** You'll be notified of any updates.
+
+---
+
+### ❓ Can the organization see my IP address?
+
+**No.** IP addresses are:
+- Captured for security (prevent spam/abuse)
+- **NOT** shared with organizations
+- **NOT** visible in the dashboard
+- Automatically anonymized after 7 days
+
+---
+
+### ❓ What if I'm not satisfied with the response?
+
+1. **Escalate internally:**
+   - Reply via tracking page (if enabled)
+   - Submit a new feedback referencing the original
+
+2. **External escalation:**
+   - Contact regulatory authorities (e.g., Procon in Brazil)
+   - File formal complaint with consumer protection agencies
+
+3. **Legal action:**
+   - Ouvify provides audit trail for court proceedings
+   - Export your timeline as evidence
+
+---
+
+## 📞 Need Help?
+
+- 🌐 **Organization's Support**: Contact via their website
+- 📧 **Ouvify Technical Support**: support@ouvify.com
+- 📚 **Privacy Questions**: privacy@ouvify.com
+- 🛡️ **Security Issues**: security@ouvify.com
+
+---
+
+<div align="center">
+
+**🔒 Protected by Ouvify**
+
+Your voice matters. Your privacy is guaranteed.
+
+Version 1.0 | Release Candidate
+
+</div>
 └─────────────────────────┘
 
 ⚠️ GUARDE ESTE CÓDIGO!

@@ -11,36 +11,36 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Default/Primary: Azul #3B82F6 - para ações principais
+        // Default/Primary: Blue 600 - para ações principais
         default:
-          "bg-primary-700 text-white shadow-sm hover:bg-primary-800 hover:shadow-md focus-visible:ring-primary-700 active:scale-[0.98]",
-        // Secundário: Roxo #A855F7 - para ações secundárias
+          "bg-primary text-primary-foreground shadow-sm hover:bg-primary-hover hover:shadow-md focus-visible:ring-primary active:scale-[0.98]",
+        // Secundário: Purple 600 - para ações secundárias
         secondary:
-          "bg-secondary-600 text-white shadow-sm hover:bg-secondary-700 hover:shadow-md focus-visible:ring-secondary-600 active:scale-[0.98]",
+          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary-hover hover:shadow-md focus-visible:ring-secondary active:scale-[0.98]",
         // Outline: Bordas primárias
         outline:
-          "border-2 border-primary-500 text-primary-500 bg-transparent hover:bg-primary-50 focus-visible:ring-primary-500 active:scale-[0.98]",
+          "border-2 border-primary text-primary bg-transparent hover:bg-primary/10 focus-visible:ring-primary active:scale-[0.98]",
         // Outline secundário
         "outline-secondary":
-          "border-2 border-secondary-500 text-secondary-500 bg-transparent hover:bg-secondary-50 focus-visible:ring-secondary-500 active:scale-[0.98]",
+          "border-2 border-secondary text-secondary bg-transparent hover:bg-secondary/10 focus-visible:ring-secondary active:scale-[0.98]",
         // Ghost: Sem fundo - para ações terciárias
         ghost: 
-          "text-text-secondary hover:bg-background-secondary focus-visible:ring-border-focus",
+          "text-muted-foreground hover:bg-muted focus-visible:ring-border-focus",
         "ghost-primary":
-          "text-primary-500 hover:bg-primary-50 hover:text-primary-600 focus-visible:ring-primary-500",
+          "text-primary hover:bg-primary/10 hover:text-primary focus-visible:ring-primary",
         // Destrutivo - para ações perigosas
         destructive:
-          "bg-error-600 text-white shadow-sm hover:bg-error-700 hover:shadow-md focus-visible:ring-error-600 active:scale-[0.98]",
+          "bg-error text-white shadow-sm hover:bg-error-hover hover:shadow-md focus-visible:ring-error active:scale-[0.98]",
         danger:
-          "bg-error-600 text-white shadow-sm hover:bg-error-700 hover:shadow-md focus-visible:ring-error-600 active:scale-[0.98]",
+          "bg-error text-white shadow-sm hover:bg-error-hover hover:shadow-md focus-visible:ring-error active:scale-[0.98]",
         // Link - para navegação inline
-        link: "text-primary-500 underline-offset-4 hover:underline hover:text-primary-600",
+        link: "text-primary underline-offset-4 hover:underline hover:text-primary focus-visible:ring-primary",
         // Success - para ações positivas
         success:
-          "bg-success-800 text-white shadow-sm hover:bg-success-900 hover:shadow-md focus-visible:ring-success-800 active:scale-[0.98]",
+          "bg-success text-white shadow-sm hover:bg-success-hover hover:shadow-md focus-visible:ring-success active:scale-[0.98]",
         // Warning - para ações de aviso
         warning:
-          "bg-warning-500 text-text-primary shadow-sm hover:bg-warning-600 hover:shadow-md focus-visible:ring-warning-500 active:scale-[0.98]",
+          "bg-warning text-foreground shadow-sm hover:bg-warning-hover hover:shadow-md focus-visible:ring-warning active:scale-[0.98]",
       },
       size: {
         sm: "h-8 px-3 py-1.5 text-sm rounded-md touch-target",
