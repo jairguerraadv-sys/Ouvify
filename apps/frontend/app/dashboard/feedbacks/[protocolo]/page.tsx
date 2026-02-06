@@ -28,33 +28,35 @@ import { api, getErrorMessage } from "@/lib/api";
 import { toast } from "sonner";
 import Link from "next/link";
 import { deleteFeedback } from "@/hooks/use-dashboard";
+import { AssignFeedback } from "@/components/feedback/AssignFeedback";
 
 function StatusBadge({ status }: { status: string }) {
-  const variants: Record<string, { variant: "outline" | "secondary" | "success" | "warning" | "default"; label: string }> =
+  const variants: Record<
+    string,
     {
-      pendente: {
-        variant: "warning",
-        label: "Pendente",
-      },
-      em_analise: {
-        variant: "default",
-        label: "Em Análise",
-      },
-      resolvido: {
-        variant: "success",
-        label: "Resolvido",
-      },
-      fechado: {
-        variant: "outline",
-        label: "Fechado",
-      },
-    };
+      variant: "outline" | "secondary" | "success" | "warning" | "default";
+      label: string;
+    }
+  > = {
+    pendente: {
+      variant: "warning",
+      label: "Pendente",
+    },
+    em_analise: {
+      variant: "default",
+      label: "Em Análise",
+    },
+    resolvido: {
+      variant: "success",
+      label: "Resolvido",
+    },
+    fechado: {
+      variant: "outline",
+      label: "Fechado",
+    },
+  };
   const variantConfig = variants[status] || variants.pendente;
-  return (
-    <Badge variant={variantConfig.variant}>
-      {variantConfig.label}
-    </Badge>
-  );
+  return <Badge variant={variantConfig.variant}>{variantConfig.label}</Badge>;
 }
 
 export default function FeedbackTicketPage() {
