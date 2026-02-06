@@ -15,7 +15,11 @@ interface TwoFactorQRCodeProps {
   className?: string;
 }
 
-export function TwoFactorQRCode({ qrCodeDataUrl, secret, className }: TwoFactorQRCodeProps) {
+export function TwoFactorQRCode({
+  qrCodeDataUrl,
+  secret,
+  className,
+}: TwoFactorQRCodeProps) {
   const [copied, setCopied] = useState(false);
 
   const copySecret = async () => {
@@ -44,10 +48,10 @@ export function TwoFactorQRCode({ qrCodeDataUrl, secret, className }: TwoFactorQ
               unoptimized
             />
           </div>
-          
+
           <p className="text-sm text-center text-muted-foreground max-w-sm">
-            Escaneie este QR Code com seu aplicativo autenticador 
-            (Google Authenticator, Authy, Microsoft Authenticator, etc.)
+            Escaneie este QR Code com seu aplicativo autenticador (Google
+            Authenticator, Authy, Microsoft Authenticator, etc.)
           </p>
         </div>
 
@@ -57,11 +61,9 @@ export function TwoFactorQRCode({ qrCodeDataUrl, secret, className }: TwoFactorQ
             <AlertCircle className="h-4 w-4" />
             <span>Não consegue escanear? Use o código manual:</span>
           </div>
-          
+
           <div className="flex items-center gap-2 p-3 bg-muted rounded-lg">
-            <code className="flex-1 text-sm font-mono break-all">
-              {secret}
-            </code>
+            <code className="flex-1 text-sm font-mono break-all">{secret}</code>
             <Button
               variant="ghost"
               size="sm"
@@ -82,7 +84,7 @@ export function TwoFactorQRCode({ qrCodeDataUrl, secret, className }: TwoFactorQ
           <p className="text-sm font-medium">Como configurar:</p>
           <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
             <li>Abra seu app autenticador</li>
-            <li>Toque em "Adicionar conta" ou "+"</li>
+            <li>Toque em &quot;Adicionar conta&quot; ou &quot;+&quot;</li>
             <li>Escaneie o QR Code ou digite o código manual</li>
             <li>Digite o código de 6 dígitos exibido no app</li>
           </ol>
