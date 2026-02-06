@@ -6,12 +6,6 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AuditLogPage from "@/app/dashboard/configuracoes/auditlog/page";
 
-// Mock do toast (deve ser definido antes do jest.mock)
-const mockToast = {
-  success: jest.fn(),
-  error: jest.fn(),
-};
-
 // Mock do API client
 const mockGet = jest.fn();
 
@@ -22,9 +16,15 @@ jest.mock("@/lib/api", () => ({
   getErrorMessage: (error: any) => error?.message || "Erro desconhecido",
 }));
 
+// Mock do toast com factory function inline
 jest.mock("sonner", () => ({
-  toast: mockToast,
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
 }));
+
+const mockToast = require("sonner").toast;
 
 // Mock do window.URL
 global.URL.createObjectURL = jest.fn(() => "blob:mock-url");

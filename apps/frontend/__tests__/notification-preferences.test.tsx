@@ -6,12 +6,6 @@ import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import NotificationPreferencesPage from "@/app/dashboard/configuracoes/notificacoes/page";
 
-// Mock do toast (deve ser definido antes do jest.mock)
-const mockToast = {
-  success: jest.fn(),
-  error: jest.fn(),
-};
-
 // Mock do API client
 const mockGet = jest.fn();
 const mockPatch = jest.fn();
@@ -24,9 +18,15 @@ jest.mock("@/lib/api", () => ({
   getErrorMessage: (error: any) => error?.message || "Erro desconhecido",
 }));
 
+// Mock do toast com factory function inline
 jest.mock("sonner", () => ({
-  toast: mockToast,
+  toast: {
+    success: jest.fn(),
+    error: jest.fn(),
+  },
 }));
+
+const mockToast = require("sonner").toast;
 
 describe("Notification Preferences Page", () => {
   const mockPreferences = {

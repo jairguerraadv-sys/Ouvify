@@ -1,0 +1,168 @@
+name: Frontend E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - "apps/frontend/**"
+      - ".github/workflows/frontend-e2e.yml"
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - "apps/frontend/**"
+  workflow_dispatch: # Permite execução manual
+
+env:
+  NODE_VERSION: "22"
+  HUSKY: "0"
+
+jobs:
+  # ============================================
+  # Playwright E2E Tests
+  # ============================================
+  e2e:
+    name: Playwright E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
+      - name: Install dependencies
+        working-directory: ./apps/frontend
+        run: npm install --legacy-peer-deps
+
+      - name: Install Playwright Browsers
+        working-directory: ./apps/frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Build application
+        working-directory: ./apps/frontend
+        run: npm run build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:8000
+
+      - name: Start application
+        working-directory: ./apps/frontend
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000 --timeout 60000
+
+      - name: Run Playwright tests
+        working-directory: ./apps/frontend
+        run: npx playwright test
+        env:
+          CI: true
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: apps/frontend/playwright-report/
+          retention-days: 30
+
+      - name: Upload Playwright Videos
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-videos
+          path: apps/frontend/test-results/
+          retention-days: 7
+
+  # ============================================
+  # E2E Tests - Fase 3 Features
+  # ============================================
+  e2e-phase3:
+    name: E2E Phase 3 Features
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
+      - name: Install dependencies
+        working-directory: ./apps/frontend
+        run: npm install --legacy-peer-deps
+
+      - name: Install Playwright
+        working-directory: ./apps/frontend
+        run: npx playwright install chromium
+
+      - name: Build application
+        working-directory: ./apps/frontend
+        run: npm run build
+
+      - name: Start application
+        working-directory: ./apps/frontend
+        run: |
+          npm run start &
+          npx wait-on http://localhost:3000
+
+      - name: Run Phase 3 E2E tests
+        working-directory: ./apps/frontend
+        run: npx playwright test e2e/phase3-features.spec.ts
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase3-e2e-results
+          path: apps/frontend/test-results/
+          retention-days: 7
+
+  # ============================================
+  # Visual Regression Tests (opcional)
+  # ============================================
+  visual-regression:
+    name: Visual Regression Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    continue-on-error: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+          cache-dependency-path: "./package-lock.json"
+
+      - name: Install dependencies
+        working-directory: ./apps/frontend
+        run: npm install --legacy-peer-deps
+
+      - name: Install Playwright
+        working-directory: ./apps/frontend
+        run: npx playwright install chromium
+
+      - name: Run visual regression tests
+        working-directory: ./apps/frontend
+        run: npx playwright test --grep @visual
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-regression-diff
+          path: apps/frontend/test-results/
+          retention-days: 7
